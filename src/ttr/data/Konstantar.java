@@ -1,6 +1,4 @@
-package ttr.gui;
-
-import ttr.data.Farge;
+package ttr.data;
 
 import java.awt.*;
 

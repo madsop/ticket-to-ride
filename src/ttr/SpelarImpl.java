@@ -2,7 +2,7 @@ package ttr;
 
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
-import ttr.gui.Konstantar;
+import ttr.data.Konstantar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,7 @@ import java.util.Iterator;
  * @author mads
  *
  */
-public class SpelarImpl extends UnicastRemoteObject implements Spelar {
+public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	private static final long serialVersionUID = 1L;
 	private Hovud hovud;
 
@@ -342,9 +342,9 @@ public class SpelarImpl extends UnicastRemoteObject implements Spelar {
 	 * Kokt frå distsys, øving 2.
 	 * @param p	The client that is registering as the adversary
 	 */
-	public void registrerKlient(Spelar s) throws RemoteException {
+	public void registrerKlient(ISpelar s) throws RemoteException {
 		boolean cont = false;
-		for (Spelar p : hovud.getSpelarar()) {
+		for (ISpelar p : hovud.getSpelarar()) {
 			if (p == s) {
 				cont = true;
 			}
@@ -357,7 +357,7 @@ public class SpelarImpl extends UnicastRemoteObject implements Spelar {
 		}
 	}
 
-	public void settSinTur(Spelar s) throws RemoteException {
+	public void settSinTur(ISpelar s) throws RemoteException {
 		hovud.settSinTur(s);
 	}
 
@@ -384,7 +384,7 @@ public class SpelarImpl extends UnicastRemoteObject implements Spelar {
 		return f;
 	}
 	
-	public void nybygdRute(int ruteId, Spelar byggjandeSpelar) throws RemoteException {
+	public void nybygdRute(int ruteId, ISpelar byggjandeSpelar) throws RemoteException {
 		Rute vald = null;
 		for (Rute r : Hovud.getRuter()) {
 			if (r.getRuteId() == ruteId) {
@@ -427,11 +427,11 @@ public class SpelarImpl extends UnicastRemoteObject implements Spelar {
 	public void leggUtFem() {
 		hovud.getBord().leggUtFem();
 	}
-	public ArrayList<Spelar> getSpelarar() {
+	public ArrayList<ISpelar> getSpelarar() {
 		return hovud.getSpelarar();
 	}	
 	public boolean sjekkJokrar() throws RemoteException{
-		return hovud.getBord().sjekkJokrar();
+		return hovud.getBord().sjekkOmJokrarPaaBordetErOK();
 	}
 	
 	public void trekt(int oppdragsid) throws RemoteException {

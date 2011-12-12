@@ -1,10 +1,10 @@
 package ttr.nettverk;
 
-import ttr.Spelar;
+import ttr.ISpelar;
 import ttr.SpelarImpl;
 import ttr.data.Farge;
+import ttr.data.Konstantar;
 import ttr.gui.GUI;
-import ttr.gui.Konstantar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,14 +12,14 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
-public class Nettverk {
+public class InitialiserNettverk {
 
 	/** The port used for RMI */
     private final String hostAddress;
 	private final String PORT = "1226";
 	private final GUI gui;
 
-	public Nettverk(GUI gui, String hostAddress) {
+	public InitialiserNettverk(GUI gui, String hostAddress) {
 		this.hostAddress = hostAddress;
 		this.gui = gui;
 	}
@@ -46,7 +46,7 @@ public class Nettverk {
 	void hostGame() throws HeadlessException, RemoteException {
 		System.setSecurityManager(new LiberalSecurityManager());
 		String address = hostAddress+":"+PORT;
-		String url = "rmi://"+address+"/Spelar"; // URL-en min i RMI-registeret.
+		String url = "rmi://"+address+"/ISpelar"; // URL-en min i RMI-registeret.
 		System.out.println(gui.getHovud().getMinSpelar().getNamn() +" er spelar nummer " 
 				+gui.getHovud().getMinSpelar().getSpelarNummer());
 		gui.getHovud().getBord().leggUtFem();
@@ -54,7 +54,7 @@ public class Nettverk {
 		try {
 			LocateRegistry.createRegistry(Integer.parseInt(PORT));
 			long time = System.currentTimeMillis();
-			Spelar meg = gui.getHovud().getMinSpelar();
+			ISpelar meg = gui.getHovud().getMinSpelar();
 			Naming.rebind(url, meg); // Legg til spelar i RMI-registeret
 			time = System.currentTimeMillis() - time;
 			System.out.println("Time to register with RMI registry: "+(time/1000)+"s");
@@ -72,7 +72,7 @@ public class Nettverk {
 
 	void joinGame(String remoteAddress) throws HeadlessException, RemoteException {
 		System.setSecurityManager(new LiberalSecurityManager());
-		String url = "rmi://"+remoteAddress+":"+PORT+"/Spelar"; // URL-en til verten i RMI-registeret.
+		String url = "rmi://"+remoteAddress+":"+PORT+"/ISpelar"; // URL-en til verten i RMI-registeret.
 		System.out.println(url);
 
 		if (gui.getHovud().getSpelarar().size()+1 >= Konstantar.MAKS_ANTAL_SPELARAR) {
@@ -82,11 +82,11 @@ public class Nettverk {
 
 		try {
 			// Sei ifrå til host-spelaren
-			Spelar join = (Spelar)Naming.lookup(url);
+			ISpelar join = (ISpelar)Naming.lookup(url);
 
 			gui.getHovud().getMinSpelar().registrerKlient(join); // Finn verten i RMI-registeret og registrér han som motstandaren min.
 			int[] paaVertBordet = null;
-			for (Spelar s : gui.getHovud().getSpelarar()) {
+			for (ISpelar s : gui.getHovud().getSpelarar()) {
 
 				if (s.getSpelarNummer() == 0) {
 					gui.getHovud().getMinSpelar().setSpelarNummer(s.getSpelarteljar());
@@ -109,7 +109,7 @@ public class Nettverk {
 			}					
 			gui.getHovud().getMinSpelar().setPaaBord(paaBord);
 			
-			for (Spelar s : join.getSpelarar()){
+			for (ISpelar s : join.getSpelarar()){
 				if (!(s.getNamn().equals(gui.getHovud().getMinSpelar().getNamn()))){
 					//gui.getHovud().getSpelarar().add(s);
 					gui.getHovud().getMinSpelar().registrerKlient(s);

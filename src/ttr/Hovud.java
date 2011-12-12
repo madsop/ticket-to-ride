@@ -1,8 +1,8 @@
 package ttr;
 
 import ttr.data.Farge;
+import ttr.data.Konstantar;
 import ttr.gui.GUI;
-import ttr.gui.Konstantar;
 import ttr.utgaave.nordic.Nordic;
 import ttr.utgaave.ISpelUtgaave;
 
@@ -23,7 +23,7 @@ public class Hovud {
 
 	private Bord bord;
 	private static Set<Rute> ruter;
-	private ArrayList<Spelar> spelarar;
+	private ArrayList<ISpelar> spelarar;
 	private static GUI gui;
 
 	private final boolean nett;
@@ -31,9 +31,9 @@ public class Hovud {
 
 	// Variablar
 	private ArrayList<Oppdrag> gjenverandeOppdrag;
-	private Spelar kvenSinTur;
+	private ISpelar kvenSinTur;
 	private ArrayList<Rute> alleBygdeRuter;
-	private Spelar minSpelar;
+	private ISpelar minSpelar;
 
 	/**
 	 * Oppretter ein hovud-instans
@@ -61,7 +61,7 @@ public class Hovud {
 	public ArrayList<Rute> getAlleBygdeRuter() {
 		return alleBygdeRuter;
 	}
-	public void setMinSpelar(Spelar spelar){
+	public void setMinSpelar(ISpelar spelar){
 		minSpelar = spelar;
 	}
 
@@ -74,10 +74,10 @@ public class Hovud {
 	/**
 	 * @return Kva for spelar er det sin tur no?
 	 */
-	public Spelar getKvenSinTur() {
+	public ISpelar getKvenSinTur() {
 		return kvenSinTur;
 	}
-	public ArrayList<Spelar> getSpelarar() {
+	public ArrayList<ISpelar> getSpelarar() {
 		return spelarar;
 	}
 	/**
@@ -120,7 +120,7 @@ public class Hovud {
 	 * @throws RemoteException 
 	 */
 	private void LagBrettet(boolean nett) throws RemoteException {
-		spelarar = new ArrayList<Spelar>();
+		spelarar = new ArrayList<ISpelar>();
 		bord = new Bord(gui,nett);
 		ruter = spel.getRuter();
 		alleBygdeRuter = new ArrayList<Rute>();
@@ -150,7 +150,7 @@ public class Hovud {
 		}
 
 		//antalSpelarar = 3;
-		spelarar = new ArrayList<Spelar>();
+		spelarar = new ArrayList<ISpelar>();
 		for (int i = 1; i <= antalSpelarar; i++) { // Opprettar spelarar
 			try {
 				spelarar.add(new SpelarImpl(this,JOptionPane.showInputDialog(gui,"Skriv inn namnet på spelar " +i)));
@@ -162,7 +162,7 @@ public class Hovud {
 		settSinTur(spelarar.get(0));
 	}
 
-	public Spelar getMinSpelar() {
+	public ISpelar getMinSpelar() {
 		return minSpelar;
 	}
 
@@ -170,7 +170,7 @@ public class Hovud {
 	 * Sett at det er denne spelaren sin tur;
 	 * @throws RemoteException 
 	 */
-	public void settSinTur(Spelar spelar) throws RemoteException {
+	public void settSinTur(ISpelar spelar) throws RemoteException {
 		kvenSinTur = spelar;
 		gui.setSpelarnamn(kvenSinTur.getNamn());
 	}
@@ -189,12 +189,12 @@ public class Hovud {
 
 	void nesteMedNett() throws RemoteException{
 		int no = kvenSinTur.getSpelarNummer();
-		Spelar host = null;
+		ISpelar host = null;
 		if (minSpelar.getSpelarNummer() == 0) {
 			host = minSpelar;
 		}
 		else {
-			for (Spelar s : spelarar) {
+			for (ISpelar s : spelarar) {
 				if (s.getSpelarNummer() == 0) {
 					host = s;
 				}
@@ -214,14 +214,14 @@ public class Hovud {
 			kvenSinTur = minSpelar;
 		}
 		else {
-			for (Spelar s : spelarar) {
+			for (ISpelar s : spelarar) {
 				if (s.getSpelarNummer() == neste) {
 					kvenSinTur = s;
 				}
 			}
 		}
 
-		for (Spelar s : spelarar) {
+		for (ISpelar s : spelarar) {
 			s.settSinTur(kvenSinTur);
 		}
 
@@ -265,20 +265,20 @@ public class Hovud {
 				totalpoeng = new int[spelarar.size()+1];
 			}
 			if (nett) {gui.getMeldingarModell().nyMelding(poeng);}
-			for (Spelar s : spelarar){
+			for (ISpelar s : spelarar){
 				s.faaMelding(poeng);
 			}
 
-			Spelar vinnar = null;
+			ISpelar vinnar = null;
 			int vinnarpoeng = 0;
 			if (spel.getTittel().equals(Nordic.tittel)){
 				int flestoppdrag = -1;
-				Spelar flest = null;
+				ISpelar flest = null;
 				if (nett){
 					flestoppdrag = minSpelar.getAntalFullfoerteOppdrag();
 					flest = minSpelar;
 				}
-				for (Spelar s : spelarar){
+				for (ISpelar s : spelarar){
 					int oppdragspoeng = s.getAntalFullfoerteOppdrag();
 					
 					if (oppdragspoeng > flestoppdrag){
@@ -293,7 +293,7 @@ public class Hovud {
 				if (nett){
 					gui.getMeldingarModell().nyMelding(flest.getNamn() +" klarte flest oppdrag, " +flestoppdrag);
 				}
-				for (Spelar s : spelarar){
+				for (ISpelar s : spelarar){
 					s.faaMelding(flest.getNamn() +" klarte flest oppdrag, " +flestoppdrag);
 				}
 				
@@ -304,7 +304,7 @@ public class Hovud {
 				String p = minSpelar.getNamn() + " fekk " + totalpoeng[minSpelar.getSpelarNummer()] + " poeng. ";
 				poeng += " " +p;
 				gui.getMeldingarModell().nyMelding(p);
-				for (Spelar s : spelarar){
+				for (ISpelar s : spelarar){
 					s.faaMelding(p);
 				}
 				vinnar = minSpelar;
@@ -312,12 +312,12 @@ public class Hovud {
 			}
 
 			
-			for (Spelar s : spelarar) {
+			for (ISpelar s : spelarar) {
 				totalpoeng[s.getSpelarNummer()]= reknUtPoeng(s);
 				String sp = s.getNamn() +" fekk " +totalpoeng[s.getSpelarNummer()] +" poeng. ";
 				poeng += " " +sp;
 				gui.getMeldingarModell().nyMelding(sp);
-				for (Spelar t : spelarar){
+				for (ISpelar t : spelarar){
 					t.faaMelding(sp);
 				}
 				if (totalpoeng[s.getSpelarNummer()]>vinnarpoeng){
@@ -336,7 +336,7 @@ public class Hovud {
             String vinnaren = vinnar.getNamn() +" vann spelet, gratulerer!";
 			poeng += vinnaren;
 			gui.getMeldingarModell().nyMelding(vinnaren);
-			for (Spelar s : spelarar){
+			for (ISpelar s : spelarar){
 				s.faaMelding(vinnaren);
 				s.visSpeletErFerdigmelding(poeng);
 			}
@@ -350,7 +350,7 @@ public class Hovud {
 	 * @return kor mange poeng spelar s har
 	 * @throws RemoteException
 	 */
-	private int reknUtPoeng(Spelar s) throws RemoteException {
+	private int reknUtPoeng(ISpelar s) throws RemoteException {
 		int poeng = s.getOppdragspoeng();
 		for (int j = 0; j < s.getBygdeRuterStr(); j++) {
 			for (Rute r : ruter) {
@@ -369,7 +369,7 @@ public class Hovud {
 	 */
 	public Rute[] finnFramRuter() throws RemoteException {
 		Set<Rute> ruter = Hovud.getRuter();
-        for (Spelar aSpelarar1 : spelarar) {
+        for (ISpelar aSpelarar1 : spelarar) {
             for (int j = 0; j < aSpelarar1.getBygdeRuterStr(); j++) {
                 int ruteId = aSpelarar1.getBygdeRuterId(j);
                 for (Rute r : ruter) {
@@ -388,7 +388,7 @@ public class Hovud {
 		}
 
 		/*	ArrayList<Rute>	bR = new ArrayList<Rute>();
-        for (Spelar aSpelarar : spelarar) {
+        for (ISpelar aSpelarar : spelarar) {
             for (int j = 0; j < aSpelarar.getBygdeRuter().size(); j++) {
                 bR.add(aSpelarar.getBygdeRuter().get(j));
             }
@@ -424,7 +424,7 @@ public class Hovud {
 		return ruterArray;
 	}
 
-	int velAntalJokrarDuVilBruke(Rute rute, Spelar s, Farge valdFarge) throws RemoteException{
+	int velAntalJokrarDuVilBruke(Rute rute, ISpelar s, Farge valdFarge) throws RemoteException{
 		int jokrar = s.getKort()[Konstantar.ANTAL_FARGAR-1];
 		int kormange = -1;
 		while (kormange < 0 || kormange > jokrar || kormange > rute.getLengde()) {
@@ -446,7 +446,7 @@ public class Hovud {
 	 */
 	private Farge valdFarge;
 	public void bygg(Rute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
-		Spelar byggjandeSpelar;
+		ISpelar byggjandeSpelar;
 
 		if (nett) {
 			byggjandeSpelar = minSpelar;
@@ -526,7 +526,7 @@ public class Hovud {
 		alleBygdeRuter.add(bygd);
 
 		if (nett) {
-			for (Spelar s : spelarar) {
+			for (ISpelar s : spelarar) {
 				System.out.println("så langt bra");
 				s.nybygdRute(bygd.getRuteId(),byggjandeSpelar);
 				s.setTogAtt(byggjandeSpelar.getSpelarNummer()+1, byggjandeSpelar.getGjenverandeTog());
@@ -538,7 +538,7 @@ public class Hovud {
 		gui.getMeldingarModell().nyMelding(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getDestinasjonar().toArray()[0] + " - " +bygd.getDestinasjonar().toArray()[1] + " i farge " + bygd.getFarge());
 
 		if (nett) {
-			for (Spelar s : spelarar) {
+			for (ISpelar s : spelarar) {
 				s.leggIStokken(plass, (kortKrevd-(jokrar-krevdJokrar)));
 				s.leggIStokken(Konstantar.ANTAL_FARGAR-1,jokrar);
 				s.faaMelding(byggjandeSpelar.getNamn() + " bygde ruta " +bygd.getDestinasjonar().toArray()[0] + " - " +bygd.getDestinasjonar().toArray()[1] + " i farge " + bygd.getFarge());

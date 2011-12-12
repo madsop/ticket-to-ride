@@ -2,7 +2,8 @@ package ttr.gui;
 
 import ttr.*;
 import ttr.data.Farge;
-import ttr.nettverk.Nettverk;
+import ttr.data.Konstantar;
+import ttr.nettverk.InitialiserNettverk;
 import ttr.utgaave.ISpelUtgaave;
 
 import javax.swing.*;
@@ -111,11 +112,11 @@ public class GUI extends JPanel implements PropertyChangeListener {
 		hovud = new Hovud(this, nettv,spel);
 
 		if (nett == JOptionPane.YES_OPTION) {
-            Nettverk nettverk = new Nettverk(this, hostAddress);
-			nettverk.initialiserSpel(); // Nettverk
+            InitialiserNettverk nettverk = new InitialiserNettverk(this, hostAddress);
+			nettverk.initialiserSpel(); // InitialiserNettverk
 			trekkOppdrag(hovud.getMinSpelar(),true);
 
-			for (Spelar s : hovud.getSpelarar()){
+			for (ISpelar s : hovud.getSpelarar()){
 				for (Oppdrag o : s.getOppdrag()){
 					s.trekt(o.getOppdragsid());
 				}
@@ -124,7 +125,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 			Main.getFrame().setTitle(Main.getFrame().getTitle() +" - " +hovud.getMinSpelar());
 		}
 		else {
-			for (Spelar s : hovud.getSpelarar()) {
+			for (ISpelar s : hovud.getSpelarar()) {
 				trekkOppdrag(s,true);
 			}
 			// ??
@@ -505,7 +506,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 			hovud.getMinSpelar().faaMelding(melding);
 		}
 
-		for (Spelar s : hovud.getSpelarar()){
+		for (ISpelar s : hovud.getSpelarar()){
 			if (hovud.isNett() || hovud.getKvenSinTur()==s){
 				if (!tilfeldig){
 					s.faaMelding(melding);
@@ -547,13 +548,13 @@ public class GUI extends JPanel implements PropertyChangeListener {
 			}
 			hovud.getKvenSinTur().setEinVald(true);
 		}
-		Spelar vert = null;
+		ISpelar vert = null;
 		if (hovud.isNett()){
 			if (hovud.getMinSpelar().getSpelarNummer()==0) {
 				vert = hovud.getMinSpelar();
 			}
 		}
-		for (Spelar s : hovud.getSpelarar()) {
+		for (ISpelar s : hovud.getSpelarar()) {
 			if (!hovud.isNett()){
 				s.getTilfeldigKortFråBordet(i);
 			}
@@ -579,16 +580,16 @@ public class GUI extends JPanel implements PropertyChangeListener {
 		}
 	}		
 
-	void nyPaaPlass(Spelar vert, Farge nyFarge, int i) throws RemoteException{
+	void nyPaaPlass(ISpelar vert, Farge nyFarge, int i) throws RemoteException{
 		if (vert.getNamn().equals(hovud.getMinSpelar().getNamn())){
-			for (Spelar s : hovud.getSpelarar()){
+			for (ISpelar s : hovud.getSpelarar()){
 				// metode for å legge kortet vert nettopp trakk på plass i på bordet hos spelar s
 				s.setPaaBordet(nyFarge,i);
 			}
 		}
 		else {
 			hovud.getMinSpelar().setPaaBordet(nyFarge, i);
-			for (Spelar s : hovud.getSpelarar()){
+			for (ISpelar s : hovud.getSpelarar()){
 				if (!vert.getNamn().equals(s.getNamn())){
 					s.setPaaBordet(nyFarge, i);
 				}
@@ -602,7 +603,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	 * @param start - er det i byrjinga av spelet? (dvs. fem eller tre oppdrag)
 	 * @param talPaaOppdrag
 	 */
-    void trekkOppdrag(Spelar s, boolean start) throws RemoteException{
+    void trekkOppdrag(ISpelar s, boolean start) throws RemoteException{
 		int talPaaOppdrag;
 		if (start){
 			talPaaOppdrag = Konstantar.ANTAL_STARTOPPDRAG;
@@ -759,7 +760,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 				 // vis korta mine
 				 JPanel korta = new JPanel();
 
-				 Spelar visSine;
+				 ISpelar visSine;
 				 if (hovud.isNett()) {
 					 visSine = hovud.getMinSpelar();
 				 }
@@ -810,7 +811,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 				 // vis oppdraga mine
 				 JPanel oppdraga = new JPanel();
 
-				 Spelar visSine;
+				 ISpelar visSine;
 				 if (hovud.isNett()) {
 					 visSine = hovud.getMinSpelar();
 				 }
@@ -1005,7 +1006,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 						melding = hovud.getMinSpelar().getNamn();
 					} catch (RemoteException e) {
 						e.printStackTrace();
-					} 
+					}
 				}
 				else{
 					try {
@@ -1019,7 +1020,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 					meldingarmodell.nyMelding(melding);
 				}
 
-				for (Spelar s : hovud.getSpelarar()){
+				for (ISpelar s : hovud.getSpelarar()){
 					try {
 						s.faaMelding(melding);
 					} catch (RemoteException e) {
@@ -1032,7 +1033,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 				chat.setText(String.valueOf(arg0.getKeyChar()));
 			}
 		}
-		public void keyTyped(KeyEvent arg0) {}		
+		public void keyTyped(KeyEvent arg0) {}
 	}
 
 

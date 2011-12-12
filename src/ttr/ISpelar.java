@@ -6,8 +6,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public interface Spelar extends Remote{
-	public void registrerKlient(Spelar s) throws RemoteException;
+public interface ISpelar extends Remote{
+	public void registrerKlient(ISpelar s) throws RemoteException;
 	public void bygg(Rute rute) throws RemoteException;
 	public Farge trekkFargekort() throws RemoteException;
 	public Oppdrag trekkOppdragskort() throws RemoteException;
@@ -25,19 +25,19 @@ public interface Spelar extends Remote{
 	public ArrayList<Rute> getBygdeRuter() throws RemoteException;
 	public boolean getValdAllereie() throws RemoteException;
 	public Hovud getHovud() throws RemoteException;
-	public void settSinTur(Spelar s) throws RemoteException;
+	public void settSinTur(ISpelar s) throws RemoteException;
 	public int getSpelarNummer() throws RemoteException;
 	public void setSpelarNummer(int nummer) throws RemoteException;
 	public int getSpelarteljar() throws RemoteException;
 	public void setSpelarteljar(int teljar) throws RemoteException;
 	public void setTogAtt(int plass, int tog) throws RemoteException;
 	public Farge getTilfeldigKortFråBordet(int i) throws RemoteException;
-	public void nybygdRute(int ruteId, Spelar byggjandeSpelar) throws RemoteException;
+	public void nybygdRute(int ruteId, ISpelar byggjandeSpelar) throws RemoteException;
 	public int getBygdeRuterStr() throws RemoteException;
 	public int getBygdeRuterId(int j) throws RemoteException;
 	public int[] getPaaBordetInt() throws RemoteException;
 	public void setPaaBord(Farge[] f) throws RemoteException;
-	public ArrayList<Spelar> getSpelarar() throws RemoteException;
+	public ArrayList<ISpelar> getSpelarar() throws RemoteException;
 	public void setPaaBordet(Farge f, int plass) throws RemoteException;
 	public void leggUtFem() throws RemoteException;
 	public boolean sjekkJokrar() throws RemoteException;

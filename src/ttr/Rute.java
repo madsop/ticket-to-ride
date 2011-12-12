@@ -14,7 +14,7 @@ public class Rute {
 	private final Farge farge;
 	private final boolean tunnel;
 	private final int antaljokrar;
-	private Spelar bygdAv;
+	private ISpelar bygdAv;
 	private final int ruteId;
 
 
@@ -89,14 +89,14 @@ public class Rute {
 	/**
 	 * @return kven, om nokon, har bygd ruta?
 	 */
-	public Spelar getBygdAv() {
+	public ISpelar getBygdAv() {
 		return bygdAv;
 	}
 
 	/**
 	 * @param spelar har no bygd denne ruta
 	 */
-	public void setBygdAv(Spelar spelar) {
+	public void setBygdAv(ISpelar spelar) {
 		bygdAv = spelar;
 	}
 

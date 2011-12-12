@@ -1,8 +1,5 @@
 package ttr.data;
 
-//import java.util.HashSet;
-//import java.util.Set;
-
 public enum Destinasjon {
 	
 	/**
@@ -63,21 +60,4 @@ public enum Destinasjon {
 	// Iberia
 	Lisboa, Madrid, Barcelona, Cadiz, Pamplona
 
-
-    /*private String spel;
-        private Destinasjon(String spel) {
-            this.spel = spel;
-        }
-
-        public Set<Destinasjon> getFraaSpel(String spelnamn) {
-            Set<Destinasjon> dest = new HashSet<Destinasjon>();
-            for (int i = 0; i < values().length; i++) {
-                if (values()[i].spel == spelnamn) {
-                    dest.add(values()[i]);
-                }
-            }
-            return dest;
-        }
-    */
-	// Fyll inn destinasjonar her, med komma mellom.
 }

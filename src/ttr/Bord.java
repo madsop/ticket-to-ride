@@ -1,19 +1,23 @@
 package ttr;
 
 import ttr.data.Farge;
+import ttr.data.Konstantar;
 import ttr.gui.GUI;
-import ttr.gui.Konstantar;
 
 public class Bord {
-	/*
-	 * Kallhierarki her:
-	 * 
-	 */
+    private final GUI gui;
+    private Farge[] paaBordet;
 
-	private Farge[] paaBordet;
-	/**
-	 * Får inn eit array over kva for kort som skal liggje på bordet.
-	 */
+    public Bord(GUI gui, boolean nett) {
+        this.gui = gui;
+        paaBordet = new Farge[Konstantar.ANTAL_KORT_PÅ_BORDET];
+
+        // Legg ut dei fem korta på bordet
+        if (!nett){       // TODO: Få generalisert bort denne if-en
+            leggUtFem();
+        }
+    }
+
 	public void setPaaBordet(Farge[] paaBordet) {
 		this.paaBordet = paaBordet;
 
@@ -22,19 +26,14 @@ public class Bord {
 			leggKortPåBordet(i, fargenr);
 		}
 	}
-	/**
-	 * Samme som over, men for eitt fastsett kort.
-	 * @param f - kva for farge
-	 * @param plass - kva for plass på bordet
-	 */
-	public void setEinPaaBordet(Farge f, int plass) {
+
+    public void setEinPaaBordet(Farge f, int plass) {
 		paaBordet[plass] = f;
 		int j = Konstantar.finnPosisjonForFarg(f);
 		igjenAvFargekort[j]--;
 		gui.setKortPaaBordet(plass, f);
 	}
 
-	private final GUI gui;
 	private final int[] igjenAvFargekort = {
 			Konstantar.ANTAL_AV_KVART_FARGEKORT,
 			Konstantar.ANTAL_AV_KVART_FARGEKORT,
@@ -46,50 +45,23 @@ public class Bord {
 			Konstantar.ANTAL_AV_KVART_FARGEKORT,
 			Konstantar.ANTAL_AV_KVART_FARGEKORT+2
 	}; // samme rekkjefølge som i fargar
-	
-	/**
-	 * Legg ut så mange kort det skal vera på bordet.
-	 */
+
 	public void leggUtFem() {
 		for (int i = 0; i < Konstantar.ANTAL_KORT_PÅ_BORDET; i++) { // Legg ut fem kort på bordet
 			getTilfeldigKortFråBordet(i,true);			
 		}
 	}
 
-	/**
-	 * Opprettar eit bord-objekt.
-	 * @param gui
-	 * @param nett
-	 */
-	public Bord(GUI gui, boolean nett) {
-		this.gui = gui;
-		paaBordet = new Farge[Konstantar.ANTAL_KORT_PÅ_BORDET];
-
-		// Legg ut dei fem korta på bordet
-		if (!nett){
-			leggUtFem();
-		}
-	}
-
-	/**
-	 * @return Kor mange fargekort som er igjen i bunken.
-	 */
 	public int[] getIgjenAvFargekort() {
 		return igjenAvFargekort;
 	}
 
-	/**
-	 * @return eit farge-array med korta som ligg på bordet.
-	 */
+
 	public Farge[] getPaaBordet() {
 		return paaBordet;
 	}
 
 
-	/**
-	 * Tel kor mange kort som ligg i stokken på bordet
-	 * @return antalet
-	 */
 	public int getAntalFargekortPåBordet() {
 		int fargekortpåbordet = 0;
 		for (int i = 0; i < Konstantar.ANTAL_FARGAR; i++) {
@@ -114,12 +86,6 @@ public class Bord {
 		return teljar;
 	}
 
-	/**
-	 * Vel eit fargekort tilfeldig blant dei som ligg i stokken ("det øvste")
-	 * @param plass - for å kunne sende vidare
-	 * @param leggPåBordet - skal kortet leggjast på bordet eller ikkje?
-	 * @return
-	 */
 	public Farge getTilfeldigKortFråBordet(int plass, boolean leggPåBordet) {
 		int teljar = tilfeldigFarge();
 		if (teljar >= 0 && teljar <= Konstantar.ANTAL_FARGAR) {
@@ -129,7 +95,7 @@ public class Bord {
 			return Konstantar.FARGAR[teljar];
 		}
 		else {
-			// stokk();
+			//TODO: stokk();
 			System.out.println("stokk!");
 			return null;
 		}
@@ -153,11 +119,7 @@ public class Bord {
 		}
 	}
 
-	/**
-	 * Kor mange jokrar ligg på bordet?
-	 * @return
-	 */
-	public boolean sjekkJokrar() {
+	public boolean sjekkOmJokrarPaaBordetErOK() {
 		int jokrar = 0;
 		for (Farge f : paaBordet) {
 			if (f == Farge.valfri) {
