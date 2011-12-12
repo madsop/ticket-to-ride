@@ -1,7 +1,7 @@
 package ttr.nettverk;
 
-import ttr.ISpelar;
-import ttr.SpelarImpl;
+import ttr.spelar.ISpelar;
+import ttr.spelar.SpelarImpl;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.gui.GUI;

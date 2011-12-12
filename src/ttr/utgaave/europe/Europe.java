@@ -1,7 +1,7 @@
 package ttr.utgaave.europe;
 
-import ttr.Oppdrag;
-import ttr.Rute;
+import ttr.struktur.Oppdrag;
+import ttr.struktur.Rute;
 import ttr.utgaave.ISpelUtgaave;
 import ttr.utgaave.AbstractSpelUtgaave;
 import ttr.data.Destinasjon;

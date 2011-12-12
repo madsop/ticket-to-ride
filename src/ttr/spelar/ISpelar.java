@@ -1,6 +1,9 @@
-package ttr;
+package ttr.spelar;
 
+import ttr.Hovud;
 import ttr.data.Farge;
+import ttr.struktur.Oppdrag;
+import ttr.struktur.Rute;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

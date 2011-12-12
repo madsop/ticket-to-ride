@@ -4,6 +4,9 @@ import ttr.*;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.nettverk.InitialiserNettverk;
+import ttr.spelar.ISpelar;
+import ttr.struktur.Oppdrag;
+import ttr.struktur.Rute;
 import ttr.utgaave.ISpelUtgaave;
 
 import javax.swing.*;

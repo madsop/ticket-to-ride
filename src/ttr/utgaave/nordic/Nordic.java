@@ -1,7 +1,7 @@
 package ttr.utgaave.nordic;
 
-import ttr.Oppdrag;
-import ttr.Rute;
+import ttr.struktur.Oppdrag;
+import ttr.struktur.Rute;
 import ttr.utgaave.ISpelUtgaave;
 import ttr.utgaave.AbstractSpelUtgaave;
 import ttr.data.Destinasjon;
@@ -126,7 +126,7 @@ public final class Nordic extends AbstractSpelUtgaave implements ISpelUtgaave {
 		ruteid++; ruter.add(new Rute (ruteid,Destinasjon.Kiruna,Destinasjon.Narvik,1,Farge.kvit,true,0));
 		ruteid++; ruter.add(new Rute (ruteid,Destinasjon.Tromsø,Destinasjon.Honningsvåg,4,Farge.lilla,false,2));
 		ruteid++; ruter.add(new Rute (ruteid,Destinasjon.Honningsvåg,Destinasjon.Kirkenes,2,Farge.grønn,false,1));
-		ruteid++; ruter.add(new Rute (ruteid,Destinasjon.Kirkenes,Destinasjon.Murmansk,3,Farge.kvit,false,1));
+		ruteid++; ruter.add(new Rute(ruteid,Destinasjon.Kirkenes,Destinasjon.Murmansk,3,Farge.kvit,false,1));
 		return ruter;
 	}
 

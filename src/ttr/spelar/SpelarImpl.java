@@ -1,8 +1,11 @@
-package ttr;
+package ttr.spelar;
 
+import ttr.Hovud;
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
+import ttr.struktur.Oppdrag;
+import ttr.struktur.Rute;
 
 import javax.swing.*;
 import java.awt.*;

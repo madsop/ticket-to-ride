@@ -1,5 +1,6 @@
-package ttr;
+package ttr.struktur;
 
+import ttr.spelar.ISpelar;
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
 
@@ -23,16 +24,6 @@ public class Rute {
 		return ruteId;
 	}
 
-	/**
-	 * Lagar ei ny rute
-	 * @param d1 - destinasjon 1, "frå"
-	 * @param d2 - destinasjon 2, "til"
-	 * @param lengde - kor lang ruta er
-	 * @param farge - kva for farge har ruta
-	 * @param tunnel - er ruta tunnel?
-	 * @param antaljokrar - kor mange jokrar trengs for ruta?
-	 * @return ei ny rute
-	 */
 	public Rute(int ruteId, Destinasjon d1, Destinasjon d2, int lengde, Farge farge, boolean tunnel, int antaljokrar) {
 		this.ruteId = ruteId;
 		destinasjonar = new HashSet<Destinasjon>();
@@ -44,65 +35,38 @@ public class Rute {
 		this.antaljokrar = antaljokrar;
 	}
 
-	/**
-	 * @return kor mange poeng denne ruta gir
-	 */
 	public int getVerdi() {
 		return ruteverdiar[lengde-1];
 	}
 
-	/**
-	 * @return kor denne ruta går frå og til
-	 */
 	public Set<Destinasjon> getDestinasjonar() {
 		return destinasjonar;
 	}
 
-	/**
-	 * @return kor lang ruta er
-	 */
 	public int getLengde() {
 		return lengde;
 	}
 
-	/**
-	 * @return kva for farge ruta har.
-	 */
 	public Farge getFarge() {
 		return farge;
 	}
 
-	/**
-	 * @return er ruta tunnellagt?
-	 */
 	public boolean isTunnel() {
 		return tunnel;
 	}
 
-	/**
-	 * @return kor mange ruter treng du for å bygge ruta?
-	 */
 	public int getAntaljokrar() {
 		return antaljokrar;
 	}
 
-	/**
-	 * @return kven, om nokon, har bygd ruta?
-	 */
 	public ISpelar getBygdAv() {
 		return bygdAv;
 	}
 
-	/**
-	 * @param spelar har no bygd denne ruta
-	 */
 	public void setBygdAv(ISpelar spelar) {
 		bygdAv = spelar;
 	}
 
-	/**
-	 * toString
-	 */
 	@Override
 	@SuppressWarnings("finally")
 	public String toString() {
@@ -118,9 +82,8 @@ public class Rute {
 		finally {
             //noinspection ReturnInsideFinallyBlock,ReturnInsideFinallyBlock
             return destinasjonar.toArray()[0] +" - " +destinasjonar.toArray()[1] +", lengde " +lengde +", av farge " +farge
-			+", tunnel? " +tunnel +", og " +antaljokrar +" jokrar krevs for å byggje denne. Ruta er bygd av " 
+			+", tunnel? " +tunnel +", og " +antaljokrar +" jokrar krevs for å byggje denne. Ruta er bygd av "
 			+bygdaf +", og er verdt " +ruteverdiar[lengde-1] +" poeng.";
 		}
 	}
-
 }

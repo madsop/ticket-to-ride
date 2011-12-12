@@ -3,6 +3,10 @@ package ttr;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.gui.GUI;
+import ttr.spelar.ISpelar;
+import ttr.spelar.SpelarImpl;
+import ttr.struktur.Oppdrag;
+import ttr.struktur.Rute;
 import ttr.utgaave.nordic.Nordic;
 import ttr.utgaave.ISpelUtgaave;
 

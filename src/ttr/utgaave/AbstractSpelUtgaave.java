@@ -1,7 +1,7 @@
 package ttr.utgaave;
 
-import ttr.Oppdrag;
-import ttr.Rute;
+import ttr.struktur.Oppdrag;
+import ttr.struktur.Rute;
 
 import java.net.URL;
 import java.util.ArrayList;

@@ -1,4 +1,6 @@
-package ttr;
+package ttr.struktur;
+
+import ttr.Hovud;
 
 import javax.swing.*;
 import javax.swing.event.ListDataListener;

@@ -3,13 +3,13 @@ package ttr.data;
 import java.awt.*;
 
 public class Konstantar {
-	public static final Farge[] FARGAR = {Farge.blå, Farge.raud, Farge.kvit, Farge.svart, 
+	public static final Farge[] FARGAR = {Farge.blå, Farge.raud, Farge.kvit, Farge.svart,
 		Farge.gul, Farge.grønn, Farge.oransje, Farge.lilla, Farge.valfri};
 	public static final int ANTAL_KORT_PÅ_BORDET = 5;
 	public static final int ANTAL_AV_KVART_FARGEKORT = 12;
 	public static final int ANTAL_STARTOPPDRAG = 5;
 	public static final int ANTAL_STARTKORT = 4;
-	public static final int ANTAL_FARGAR = FARGAR.length;
+	public static final int ANTAL_FARGAR = 9; // FARGAR.length;
 	public static final int ANTAL_TOG = 40;
 	public static final int MAKS_JOKRAR_PAA_BORDET = 2;
 	public static final int MAKS_ANTAL_SPELARAR = 3;
@@ -81,5 +81,5 @@ public class Konstantar {
 		}
 		return fargenr;
 	}
-	
 }
+

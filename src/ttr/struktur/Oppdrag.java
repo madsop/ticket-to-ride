@@ -1,4 +1,4 @@
-package ttr;
+package ttr.struktur;
 
 import ttr.data.Destinasjon;
 
