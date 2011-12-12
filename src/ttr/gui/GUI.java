@@ -716,7 +716,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 					 if (bygd.getFarge() == Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1]){
 						 if (bygd.isTunnel()) {
 							 try {
-								 hovud.byggTunnel(bygd, plass, spelarensKort, kortKrevd, krevdJokrar);
+								 hovud.byggTunnel(bygd, plass, kortKrevd, krevdJokrar);
 							 }
 							 catch (RemoteException re){
 								 re.printStackTrace();
@@ -724,7 +724,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 						 }
 						 else {
 							 try {
-								 hovud.bygg(bygd, plass, spelarensKort, kortKrevd, krevdJokrar);
+								 hovud.bygg(bygd, plass, kortKrevd, krevdJokrar);
 							 }
 							 catch (RemoteException re){
 								 re.printStackTrace();
@@ -735,10 +735,10 @@ public class GUI extends JPanel implements PropertyChangeListener {
 						 try {
 							 if (hovud.getKvenSinTur().getGjenverandeTog() >= kortKrevd+krevdJokrar) {
 								 if (bygd.isTunnel()) {
-									 hovud.byggTunnel(bygd, plass, spelarensKort, kortKrevd, krevdJokrar);
+									 hovud.byggTunnel(bygd, plass, kortKrevd, krevdJokrar);
 								 }
 								 else {
-									 hovud.bygg(bygd, plass, spelarensKort, kortKrevd, krevdJokrar);
+									 hovud.bygg(bygd, plass, kortKrevd, krevdJokrar);
 								 }
 							 }
 							 else {

@@ -3,7 +3,7 @@ package ttr.utgaave.nordic;
 import ttr.Oppdrag;
 import ttr.Rute;
 import ttr.utgaave.ISpelUtgaave;
-import ttr.utgaave.SpelUtgaave;
+import ttr.utgaave.AbstractSpelUtgaave;
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
 
@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public final class Nordic extends SpelUtgaave implements ISpelUtgaave {
+public final class Nordic extends AbstractSpelUtgaave implements ISpelUtgaave {
 	public static final String tittel = "Nordic countries";
 	private static final String bilde = "nordic_map.jpg";
 	

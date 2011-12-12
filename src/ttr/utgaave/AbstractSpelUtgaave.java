@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
 
-public abstract class SpelUtgaave {
+public abstract class AbstractSpelUtgaave {
 	private final String tittel;
 	protected ArrayList<Oppdrag> oppdrag;
 	protected Set<Rute> ruter;
@@ -18,7 +18,7 @@ public abstract class SpelUtgaave {
 		return bakgrunnsbildet;
 	}
 	
-	protected SpelUtgaave(String tittel, String adresse) {
+	protected AbstractSpelUtgaave(String tittel, String adresse) {
 		this.tittel = tittel;
 		bakgrunnsbildet = getClass().getResource(adresse);
         ruter = leggTilRuter();

@@ -3,7 +3,7 @@ package ttr.utgaave.europe;
 import ttr.Oppdrag;
 import ttr.Rute;
 import ttr.utgaave.ISpelUtgaave;
-import ttr.utgaave.SpelUtgaave;
+import ttr.utgaave.AbstractSpelUtgaave;
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
 
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Europe extends SpelUtgaave implements ISpelUtgaave {
+public class Europe extends AbstractSpelUtgaave implements ISpelUtgaave {
 	private static final String tittel = "Europe";
 	private static final String bilde = "";
 	

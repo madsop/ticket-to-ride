@@ -445,7 +445,7 @@ public class Hovud {
 	 * @throws RemoteException 
 	 */
 	private Farge valdFarge;
-	public void bygg(Rute bygd, int plass, int[] spelarensKort, int kortKrevd, int krevdJokrar) throws RemoteException {
+	public void bygg(Rute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
 		Spelar byggjandeSpelar;
 
 		if (nett) {
@@ -557,7 +557,7 @@ public class Hovud {
 	 * @param krevdJokrar
 	 * @throws RemoteException 
 	 */
-	public void byggTunnel(Rute bygd, int plass, int[] spelarensKort, int kortKrevd, int krevdJokrar) throws RemoteException {
+	public void byggTunnel(Rute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
 		Farge[] treTrekte = new Farge[3];
 		int ekstra = 0;
 		for (int i = 0; i < treTrekte.length; i++) {
@@ -576,7 +576,7 @@ public class Hovud {
 				+treTrekte[1] +" og " +treTrekte[2] 
 				                                 +". Altså må du betale " +ekstra +" ekstra kort. Vil du det?");
 		if (byggLell == JOptionPane.OK_OPTION) {
-			bygg(bygd, plass, spelarensKort, kortKrevd+ekstra, krevdJokrar);
+			bygg(bygd, plass, kortKrevd+ekstra, krevdJokrar);
 		}
 	}
 }
