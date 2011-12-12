@@ -1,5 +1,7 @@
 package ttr;
 
+import ttr.data.Farge;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;

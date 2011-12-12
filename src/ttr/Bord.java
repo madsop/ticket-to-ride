@@ -1,5 +1,9 @@
 package ttr;
 
+import ttr.data.Farge;
+import ttr.gui.GUI;
+import ttr.gui.Konstantar;
+
 public class Bord {
 	/*
 	 * Kallhierarki her:

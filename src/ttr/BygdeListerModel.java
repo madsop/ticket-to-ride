@@ -1,6 +1,6 @@
 package ttr;
 
-import javax.swing.ListModel;
+import javax.swing.*;
 import javax.swing.event.ListDataListener;
 
 public class BygdeListerModel implements ListModel {

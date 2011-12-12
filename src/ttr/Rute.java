@@ -1,9 +1,11 @@
 package ttr;
 
+import ttr.data.Destinasjon;
+import ttr.data.Farge;
+
 import java.rmi.RemoteException;
 import java.util.HashSet;
 import java.util.Set;
-
 
 public class Rute {
 	private Set<Destinasjon> destinasjonar;

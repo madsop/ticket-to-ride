@@ -1,14 +1,16 @@
 package ttr;
 
-import java.awt.Color;
+import ttr.data.Farge;
+import ttr.gui.GUI;
+import ttr.gui.Konstantar;
+import ttr.nordic.Nordic;
+
+import javax.swing.*;
+import java.awt.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
-
-import javax.swing.JOptionPane;
-
-import ttr.nordic.Nordic;
 
 public class Hovud {
 
@@ -248,7 +250,7 @@ public class Hovud {
 		sjekkOmFerdig();
 	}
 
-	// Todo: Utrekning av lengst rute / flest oppdrag
+	//TODO: Utrekning av lengst rute / flest oppdrag
 	public void sjekkOmFerdig() throws RemoteException{
 		if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
 			String poeng = new String("Spelet er ferdig.");

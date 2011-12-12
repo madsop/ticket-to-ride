@@ -1,12 +1,15 @@
 package ttr;
 
-import java.awt.Color;
+import ttr.data.Destinasjon;
+import ttr.data.Farge;
+import ttr.gui.Konstantar;
+
+import javax.swing.*;
+import java.awt.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import javax.swing.JOptionPane;
 
 /**
  * Ein spelar. All nettverkskommunikasjon går via denne, så litt hårate klasse med ein del ad hoc-metodar.

@@ -1,15 +1,15 @@
 package ttr.nordic;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
-import ttr.Farge;
-import ttr.Destinasjon;
 import ttr.Oppdrag;
 import ttr.Rute;
 import ttr.SpelUtgaave;
 import ttr.Utgaave;
+import ttr.data.Destinasjon;
+import ttr.data.Farge;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public final class Nordic extends Utgaave implements SpelUtgaave {

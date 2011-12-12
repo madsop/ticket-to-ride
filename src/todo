@@ -1,0 +1,32 @@
+ * Store utfordringar:
+ * - Det grafiske (GUI mm)
+ * 	- Bygg ved å klikke på skjermen
+ * 	- Kva som er bygd visast på skjermen (drawline e.l.)
+ * - Kunstig intelligens
+ * 	- Programmere inn støtte for dataspelar
+ * 	- Trekkje oppdrag
+ * 	- Byggje, trekkje oppdrag eller trekkje kort?
+ * 	- Kva for rute/kort?
+ * - Lesmeg og dokumentering
+ * 
+ * Mindre utfordringar:
+ * 	Bør på plass:
+ *	- Trekk tilfeldig kort (og legg ut på bordet) fungerer ikkje veldig bra
+	
+	Ikkje altfor viktig:
+ * 	- Oppstartsskjerm
+ * 		- Nødvendige innstillingar
+ * 		- Vel sjølv om ein vi ha duplikatruter, bonus for lengst rute mm
+ *	- Nordic manglar eitt oppdrag. No 45 oppdrag, skal vera 46.
+ *	- Ordentleg avslutt-spelet-viss-nokon-lukkar-vinduet-funksjon
+ *	- Kven har lengst samanhengjande rute-funksjonalitet
+ *	- Vis berre antal tog for spelarane som er med, og framvising av antal tog att for fleire enn tre spelarar
+ *	- Endring av konstantar for forskjellige spelutgåver
+ *	- Vis kartet i ein skrollbar boks med fastsett storleik
+
+ * Eventuelt:
+ * 	- Når har spelet starta? Kan folk bli med da?
+ *	- Sortering av ledige (og bygde) ruter
+ *	- Forskjellig bakgrunn for forskjellige spelarar på bygde ruter-lista - koss?
+ *	- Lagring av meldings-lista?
+ 

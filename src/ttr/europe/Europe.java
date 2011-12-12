@@ -1,15 +1,15 @@
 package ttr.europe;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
-import ttr.Destinasjon;
-import ttr.Farge;
 import ttr.Oppdrag;
 import ttr.Rute;
 import ttr.SpelUtgaave;
 import ttr.Utgaave;
+import ttr.data.Destinasjon;
+import ttr.data.Farge;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Europe extends Utgaave implements SpelUtgaave  {
 	private static final String tittel = "Europe";

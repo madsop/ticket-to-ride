@@ -1,5 +1,7 @@
 package ttr;
 
+import ttr.data.Destinasjon;
+
 import java.util.HashSet;
 import java.util.Set;
 
