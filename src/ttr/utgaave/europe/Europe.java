@@ -23,7 +23,7 @@ public class Europe extends SpelUtgaave implements ISpelUtgaave {
 		ruter = new HashSet<Rute>();
 		int ruteId = 0;
 		ruter.add(new Rute(ruteId,Destinasjon.Brest,Destinasjon.Dieppe,2,Farge.oransje,false,0));
-		ruteId++;
+		//ruteId++;
 		return ruter;
 	}
 	
@@ -31,7 +31,7 @@ public class Europe extends SpelUtgaave implements ISpelUtgaave {
 		oppdrag = new ArrayList<Oppdrag>();
 		int oppdragsid = 0;
 		oppdrag.add(new Oppdrag(oppdragsid,Destinasjon.Brest,Destinasjon.Petrograd,21));
-		oppdragsid++;
+		//oppdragsid++;
 		return oppdrag;
 	}
 }

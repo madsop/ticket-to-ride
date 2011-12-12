@@ -3,8 +3,8 @@ package ttr;
 import javax.swing.*;
 import javax.swing.event.ListDataListener;
 
-public class BygdeListerModel implements ListModel {
-	private Hovud hovud;
+class BygdeListerModel implements ListModel {
+	private final Hovud hovud;
 	
 	public BygdeListerModel(Hovud hovud){
 		this.hovud=hovud;

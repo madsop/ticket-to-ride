@@ -31,7 +31,7 @@ public interface Spelar extends Remote{
 	public int getSpelarteljar() throws RemoteException;
 	public void setSpelarteljar(int teljar) throws RemoteException;
 	public void setTogAtt(int plass, int tog) throws RemoteException;
-	public Farge getTilfeldigKortFråBordet(int i , boolean b) throws RemoteException;
+	public Farge getTilfeldigKortFråBordet(int i) throws RemoteException;
 	public void nybygdRute(int ruteId, Spelar byggjandeSpelar) throws RemoteException;
 	public int getBygdeRuterStr() throws RemoteException;
 	public int getBygdeRuterId(int j) throws RemoteException;

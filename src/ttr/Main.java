@@ -17,7 +17,7 @@ public class Main {
 		Main.frame = frame;
 	}
 
-	public static ISpelUtgaave[] spela = new ISpelUtgaave[2];
+	private static final ISpelUtgaave[] spela = new ISpelUtgaave[2];
 	public static void main(String args[]) throws RemoteException {
 		frame = new JFrame("Ticket to ride");
 		String arg;

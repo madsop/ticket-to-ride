@@ -9,8 +9,8 @@ import java.util.ArrayList;
 public class MeldingarModell extends AbstractListModel{
 	
 	private static final long serialVersionUID = 1L;
-	private PropertyChangeSupport pcs;
-	private ArrayList<String> meldingar;
+	private final PropertyChangeSupport pcs;
+	private final ArrayList<String> meldingar;
 	public static final String MELDINGAR_PROPERTY = "meldingar";
 	
 	public ArrayList<String> getMeldingar(){
@@ -33,9 +33,6 @@ public class MeldingarModell extends AbstractListModel{
 
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener(listener);
-	}
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		pcs.removePropertyChangeListener(listener);
 	}
 	public Object getElementAt(int index) {
 		return meldingar.get(index);

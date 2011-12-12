@@ -16,7 +16,7 @@ import java.util.Set;
 public class Hovud {
 
 	// "Variablar"
-	private ISpelUtgaave spel;
+	private final ISpelUtgaave spel;
 	public ISpelUtgaave getSpel() {
 		return spel;
 	}
@@ -26,7 +26,7 @@ public class Hovud {
 	private ArrayList<Spelar> spelarar;
 	private static GUI gui;
 
-	private boolean nett;
+	private final boolean nett;
 	private int antalSpelarar;
 
 	// Variablar
@@ -155,7 +155,7 @@ public class Hovud {
 			try {
 				spelarar.add(new SpelarImpl(this,JOptionPane.showInputDialog(gui,"Skriv inn namnet på spelar " +i)));
 			}
-			catch (RemoteException re) {
+			catch (RemoteException ignored) {
 
 			}
 		}
@@ -178,7 +178,7 @@ public class Hovud {
 	/** Spelaren er ferdig med sin tur, no er det neste spelar
 	 * @throws RemoteException 
 	 */
-	public void nesteUtanNett(int sp){
+    void nesteUtanNett(int sp){
 		if (sp == spelarar.size()) {
 			kvenSinTur = spelarar.get(0);
 		}
@@ -187,7 +187,7 @@ public class Hovud {
 		}
 	}
 
-	public void nesteMedNett() throws RemoteException{
+	void nesteMedNett() throws RemoteException{
 		int no = kvenSinTur.getSpelarNummer();
 		Spelar host = null;
 		if (minSpelar.getSpelarNummer() == 0) {
@@ -202,7 +202,8 @@ public class Hovud {
 		}
 
 		int neste;
-		if (no+1 < host.getSpelarteljar()) {
+        assert host != null;
+        if (no+1 < host.getSpelarteljar()) {
 			neste = no+1;
 		}
 		else {
@@ -252,9 +253,9 @@ public class Hovud {
 	}
 
 	//TODO: Utrekning av lengst rute / flest oppdrag
-	public void sjekkOmFerdig() throws RemoteException{
+    void sjekkOmFerdig() throws RemoteException{
 		if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
-			String poeng = new String("Spelet er ferdig.");
+			String poeng = "Spelet er ferdig.";
 
 			int[] totalpoeng;			
 			if (!nett){
@@ -285,8 +286,9 @@ public class Hovud {
 						flest = s;
 					}
 				}
-				
-				totalpoeng[flest.getSpelarNummer()] = 10;
+
+                assert flest != null;
+                totalpoeng[flest.getSpelarNummer()] = 10;
 				
 				if (nett){
 					gui.getMeldingarModell().nyMelding(flest.getNamn() +" klarte flest oppdrag, " +flestoppdrag);
@@ -322,15 +324,16 @@ public class Hovud {
 					vinnarpoeng = totalpoeng[s.getSpelarNummer()];
 					vinnar = s;
 				}
-				else if (totalpoeng[s.getSpelarNummer()]==vinnarpoeng){
+				else if (vinnar != null && totalpoeng[s.getSpelarNummer()]==vinnarpoeng){
 					if (vinnar.getOppdragspoeng() < s.getOppdragspoeng()){
 						vinnar = s;
 					}
 				}
 			}
 			// Legg inn spelutgaave-spesifikk bonus her
-			
-			String vinnaren = vinnar.getNamn() +" vann spelet, gratulerer!";
+
+            assert vinnar != null;
+            String vinnaren = vinnar.getNamn() +" vann spelet, gratulerer!";
 			poeng += vinnaren;
 			gui.getMeldingarModell().nyMelding(vinnaren);
 			for (Spelar s : spelarar){
@@ -366,16 +369,16 @@ public class Hovud {
 	 */
 	public Rute[] finnFramRuter() throws RemoteException {
 		Set<Rute> ruter = Hovud.getRuter();
-		for (int i = 0; i < spelarar.size(); i++) {
-			for (int j = 0; j < spelarar.get(i).getBygdeRuterStr(); j++) {
-				int ruteId = spelarar.get(i).getBygdeRuterId(j);
-				for (Rute r : ruter) {
-					if (r.getRuteId() == ruteId && !(alleBygdeRuter.contains(r))) {
-						alleBygdeRuter.add(r);
-					}
-				}
-			}
-		}
+        for (Spelar aSpelarar1 : spelarar) {
+            for (int j = 0; j < aSpelarar1.getBygdeRuterStr(); j++) {
+                int ruteId = aSpelarar1.getBygdeRuterId(j);
+                for (Rute r : ruter) {
+                    if (r.getRuteId() == ruteId && !(alleBygdeRuter.contains(r))) {
+                        alleBygdeRuter.add(r);
+                    }
+                }
+            }
+        }
 
 		int str = ruter.size();
 		Rute[] ruterTemp = new Rute[str];
@@ -384,31 +387,31 @@ public class Hovud {
 			ruterTemp[i] = it2.next();
 		}
 
-			ArrayList<Rute>	bR = new ArrayList<Rute>();
-		for (int i = 0; i < spelarar.size(); i++) {
-			for (int j = 0; j < spelarar.get(i).getBygdeRuter().size(); j++ ) {
-				bR.add(spelarar.get(i).getBygdeRuter().get(j));
-			}
-			for (int j = 0; j < spelarar.get(i).getBygdeRuterStr(); j++) {
-				int ruteId = spelarar.get(i).getBygdeRuterId(j);
-				for (Rute r : ruter) {
-					if (r.getRuteId() == ruteId) {
-						bR.add(r);
-					}
-				}
-			}
-		}
+		/*	ArrayList<Rute>	bR = new ArrayList<Rute>();
+        for (Spelar aSpelarar : spelarar) {
+            for (int j = 0; j < aSpelarar.getBygdeRuter().size(); j++) {
+                bR.add(aSpelarar.getBygdeRuter().get(j));
+            }
+            for (int j = 0; j < aSpelarar.getBygdeRuterStr(); j++) {
+                int ruteId = aSpelarar.getBygdeRuterId(j);
+                for (Rute r : ruter) {
+                    if (r.getRuteId() == ruteId) {
+                        bR.add(r);
+                    }
+                }
+            }
+        }              */
 		 
 		Rute[] ruterArray = new Rute[str-alleBygdeRuter.size()];
 		int c = 0;
 
 		for (int i = 0; i < str; i++) {
 			boolean b = true;
-			for (int j = 0; j < alleBygdeRuter.size(); j++) {
-				if (ruterTemp[i] == alleBygdeRuter.get(j)) {
-					b = false;
-				}
-			}
+            for (Rute anAlleBygdeRuter : alleBygdeRuter) {
+                if (ruterTemp[i] == anAlleBygdeRuter) {
+                    b = false;
+                }
+            }
 			if (b) {
 				Rute r = ruterTemp[i];
 				if (c < ruterArray.length) {
@@ -421,7 +424,7 @@ public class Hovud {
 		return ruterArray;
 	}
 
-	public int velAntalJokrarDuVilBruke(Rute rute, Spelar s, Farge valdFarge) throws RemoteException{
+	int velAntalJokrarDuVilBruke(Rute rute, Spelar s, Farge valdFarge) throws RemoteException{
 		int jokrar = s.getKort()[Konstantar.ANTAL_FARGAR-1];
 		int kormange = -1;
 		while (kormange < 0 || kormange > jokrar || kormange > rute.getLengde()) {

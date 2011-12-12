@@ -37,8 +37,8 @@ public class Konstantar {
 	 * @param farge - kva for farge ein skal gjera om
 	 * @return - fargen i Color
 	 */
-	public static final Color fargeTilColor(Farge farge) {
-		Color ret = null;
+	public static Color fargeTilColor(Farge farge) {
+		Color ret;
 		switch (farge) {
 		case blå:
 			ret = Color.BLUE;
@@ -74,7 +74,7 @@ public class Konstantar {
 		return ret;
 	}
 	
-	public static final int finnPosisjonForFarg(Farge farge){
+	public static int finnPosisjonForFarg(Farge farge){
 		int fargenr = -1;
 		for (int j = 0; j < ANTAL_FARGAR; j++) {
 			if (farge == Konstantar.FARGAR[j]) {

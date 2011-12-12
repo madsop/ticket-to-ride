@@ -8,9 +8,9 @@ import java.util.Hashtable;
  * This is a SecurityManager that grants all kinds of permissions, but
  * logs and outputs any non-standard permissions granted.
  */
-public class LiberalSecurityManager extends SecurityManager {
+class LiberalSecurityManager extends SecurityManager {
     @SuppressWarnings("unchecked")
-	private Hashtable grantedPermissions;
+	private final Hashtable grantedPermissions;
 
     @SuppressWarnings("unchecked")
 	public LiberalSecurityManager() {

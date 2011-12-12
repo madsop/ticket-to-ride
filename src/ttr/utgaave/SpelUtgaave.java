@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public abstract class SpelUtgaave {
-	private String tittel;
+	private final String tittel;
 	protected ArrayList<Oppdrag> oppdrag;
 	protected Set<Rute> ruter;
 	
-	private URL bakgrunnsbildet;
+	private final URL bakgrunnsbildet;
 
 	public URL getBakgrunnsbildet() {
 		return bakgrunnsbildet;
 	}
 	
-	public SpelUtgaave(String tittel, String adresse) {
+	protected SpelUtgaave(String tittel, String adresse) {
 		this.tittel = tittel;
 		bakgrunnsbildet = getClass().getResource(adresse);
         ruter = leggTilRuter();

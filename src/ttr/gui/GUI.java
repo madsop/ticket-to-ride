@@ -25,18 +25,16 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	private static final long serialVersionUID = 1L;
 
 	// Oppsettet rundt
-	private JFrame frame;
+	private final JFrame frame;
 	private Hovud hovud;
 	public Hovud getHovud() {
 		return hovud;
 	}
 
-	private GridBagLayout gbl, hogregbl;
-	private BildePanel bp;
+    private final BildePanel bp;
 	private JPanel hogre, meldingsboks;
-	private double bilderatio;
 
-	// Oppdraga
+    // Oppdraga
 	private JButton ok;
 	private int oppdragstr;
 
@@ -50,12 +48,11 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	private JButton[] kortButtons;
 	private JButton kortBunke;
 	private JLabel[] togAtt;
-	private JList meldingar;
-	private JScrollPane mp;
-	private MeldingarModell meldingarmodell;
+	private JList<MeldingarModell> meldingar;
+    private MeldingarModell meldingarmodell;
 	private JTextField chat;
-	public static final String starttekst = "Prat her!";
-	private ISpelUtgaave spel;
+	private static final String starttekst = "Prat her!";
+	private final ISpelUtgaave spel;
 
 	public JButton[] getKortButtons(){
 		return kortButtons;
@@ -65,13 +62,9 @@ public class GUI extends JPanel implements PropertyChangeListener {
 		return togAtt;
 	}
 
-	private gjerNokoListener gNL;
+	private final gjerNokoListener gNL;
 
-	private Nettverk nettverk;
-
-	// Vel oppdrag-variablane
-	private JPanel vel;
-	private ArrayList<Oppdrag> valde;
+    private ArrayList<Oppdrag> valde;
 	private ArrayList<JCheckBox> jcb;
 	private JDialog jd;
 	private ArrayList<Oppdrag> oppdrag;
@@ -84,7 +77,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	public GUI(JFrame frame, String hostAddress, ISpelUtgaave spel) throws RemoteException {
 
 		this.frame = frame;
-		gbl = new GridBagLayout();
+        GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
 		GridBagConstraints c;
 		c = new GridBagConstraints();
@@ -111,25 +104,19 @@ public class GUI extends JPanel implements PropertyChangeListener {
 		add(meldingsboks,c);
 
 		int nett = JOptionPane.showConfirmDialog(this, "Vil du spela eit nettverksspel?"); 
-		boolean nettv;		
+		boolean nettv;
 
-		if (nett == JOptionPane.YES_OPTION) {
-			nettv = true;
-		}
-		else {
-			nettv = false;
-		}
+        nettv = nett == JOptionPane.YES_OPTION;
 
 		hovud = new Hovud(this, nettv,spel);
 
 		if (nett == JOptionPane.YES_OPTION) {
-			nettverk = new Nettverk(this, hostAddress);
+            Nettverk nettverk = new Nettverk(this, hostAddress);
 			nettverk.initialiserSpel(); // Nettverk
-			ArrayList<Oppdrag> trekte = new ArrayList<Oppdrag>();
 			trekkOppdrag(hovud.getMinSpelar(),true);
 
 			for (Spelar s : hovud.getSpelarar()){
-				for (Oppdrag o : trekte){
+				for (Oppdrag o : s.getOppdrag()){
 					s.trekt(o.getOppdragsid());
 				}
 			}
@@ -155,7 +142,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	 */
 	private void byggHogrepanel() {
 		hogre = new JPanel();
-		hogregbl = new GridBagLayout();
+        GridBagLayout hogregbl = new GridBagLayout();
 		hogre.setLayout(hogregbl);
 		GridBagConstraints d;
 		d = new GridBagConstraints();
@@ -253,11 +240,12 @@ public class GUI extends JPanel implements PropertyChangeListener {
 
 		meldingarmodell = new MeldingarModell();
 		meldingarmodell.addPropertyChangeListener(this);
-		meldingar = new JList(meldingarmodell);
+        //noinspection unchecked,unchecked
+        meldingar = new JList(meldingarmodell);
 
 
-		mp = new JScrollPane();
-		mp.setPreferredSize(new Dimension(Konstantar.MELDINGSPANELBREIDDE,Konstantar.HOGDE-Konstantar.DIFF));
+        JScrollPane mp = new JScrollPane();
+		mp.setPreferredSize(new Dimension(Konstantar.MELDINGSPANELBREIDDE, Konstantar.HOGDE - Konstantar.DIFF));
 		mp.getViewport().add(meldingar);
 		meldingsboks.add(mp);
 
@@ -418,7 +406,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	public ArrayList<Oppdrag> velOppdrag(ArrayList<Oppdrag> oppd) {
 		this.oppdrag = oppd;
 		oppdragstr = oppdrag.size() - 2;
-		vel = new JPanel();
+        JPanel vel = new JPanel();
 		GridLayout gl = new GridLayout(0, 2);
 
 		vel.setLayout(gl);
@@ -464,28 +452,24 @@ public class GUI extends JPanel implements PropertyChangeListener {
 		return valde;
 	}
 
-	/**
-	 * Teiknar bakgrunnsbildet.
-	 * @author mads
-	 *
-	 */
-	int bildehogde = 0;
-	int br = 0;
-	@SuppressWarnings("serial")
+    @SuppressWarnings("serial")
 	class BildePanel extends JPanel {
 		//		ImageIcon a = new ImageIcon("/home/mads/Dropbox/Programmering/Eclipse-workspace/TTR/src/ttr/nordic/nordic_map.jpg");
 		//		Image b = a.getImage();
-		URL c = spel.getBakgrunnsbildet();
-		Image b = new ImageIcon(c).getImage();
+        final URL c = spel.getBakgrunnsbildet();
+		final Image b = new ImageIcon(c).getImage();
 
 		@Override
 		public void paintComponent(Graphics g) {
-			bilderatio = (double)b.getHeight(null) / (double)b.getWidth(null);
-			bildehogde = Konstantar.HOGDE;
-			br = (int) ((bildehogde / bilderatio)*1.3);
+            double bilderatio = (double) b.getHeight(null) / (double) b.getWidth(null);
+            /*
+         Teiknar bakgrunnsbildet.
+         */
+            int bildehogde = Konstantar.HOGDE;
+            int br = (int) ((bildehogde / bilderatio) * 1.3);
 			try {
 				g.drawImage(b, 0, 25, br, bildehogde, null);
-				bp.setPreferredSize(new Dimension(br+50,bildehogde+50));
+				bp.setPreferredSize(new Dimension(br +50, bildehogde +50));
 			}
 			catch (NullPointerException npe) {
 				npe.printStackTrace();
@@ -498,7 +482,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	 * @param tittel - kva tittelen på ramma skal vera
 	 * @param panel - eit JPanel med alt som skal vises fram 
 	 */
-	public void lagRamme(String tittel, JPanel panel) {
+    void lagRamme(String tittel, JPanel panel) {
 		JFrame frame = new JFrame();
 		frame.setContentPane(panel);
 		frame.setBackground(Color.DARK_GRAY);
@@ -509,8 +493,8 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	}
 
 
-	public void sendKortMelding(boolean kort,boolean tilfeldig, Farge f) throws RemoteException{
-		String melding = "";
+	void sendKortMelding(boolean kort, boolean tilfeldig, Farge f) throws RemoteException{
+		String melding;
 		if (kort) {
 			melding = hovud.getKvenSinTur().getNamn() +" trakk inn " +f;
 		}
@@ -538,7 +522,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	 * @param i plassen på bordet
 	 * @throws RemoteException 
 	 */
-	public void kortButton(int i) throws RemoteException {
+    void kortButton(int i) throws RemoteException {
 		Farge f = hovud.getBord().getPaaBordet()[i];
 		if (hovud.getKvenSinTur().getValdAllereie()) {
 			if (f == Farge.valfri) {
@@ -571,7 +555,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 		}
 		for (Spelar s : hovud.getSpelarar()) {
 			if (!hovud.isNett()){
-				s.getTilfeldigKortFråBordet(i, true);
+				s.getTilfeldigKortFråBordet(i);
 			}
 			else {
 				if (s.getSpelarNummer()==0) {
@@ -579,8 +563,8 @@ public class GUI extends JPanel implements PropertyChangeListener {
 				}
 			}
 		}
-		if (hovud.isNett()){
-			Farge nyFarge = vert.getTilfeldigKortFråBordet(i, true);
+		if (hovud.isNett() && vert!=null){
+			Farge nyFarge = vert.getTilfeldigKortFråBordet(i);
 			while (vert.sjekkJokrar()) {
 				vert.leggUtFem();
 				int[] paaSomInt = vert.getPaaBordetInt();
@@ -595,7 +579,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 		}
 	}		
 
-	public void nyPaaPlass(Spelar vert, Farge nyFarge, int i) throws RemoteException{
+	void nyPaaPlass(Spelar vert, Farge nyFarge, int i) throws RemoteException{
 		if (vert.getNamn().equals(hovud.getMinSpelar().getNamn())){
 			for (Spelar s : hovud.getSpelarar()){
 				// metode for å legge kortet vert nettopp trakk på plass i på bordet hos spelar s
@@ -618,8 +602,8 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	 * @param start - er det i byrjinga av spelet? (dvs. fem eller tre oppdrag)
 	 * @param talPaaOppdrag
 	 */
-	public void trekkOppdrag(Spelar s, boolean start) throws RemoteException{
-		int talPaaOppdrag = 0;
+    void trekkOppdrag(Spelar s, boolean start) throws RemoteException{
+		int talPaaOppdrag;
 		if (start){
 			talPaaOppdrag = Konstantar.ANTAL_STARTOPPDRAG;
 		}
@@ -628,27 +612,17 @@ public class GUI extends JPanel implements PropertyChangeListener {
 		}
 		ArrayList<Oppdrag> oppdrag = new ArrayList<Oppdrag>();
 		for (int i = 0; i < talPaaOppdrag; i++) {
-			try {
 				Oppdrag opp = s.trekkOppdragskort();
 				oppdrag.add(opp);
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
 		}
 		ArrayList<Oppdrag> k = new ArrayList<Oppdrag>();
 		while (k.size() < talPaaOppdrag-2){
 			k = velOppdrag(oppdrag);
     	}
 		oppdrag = k;
-		for (int i = 0; i < oppdrag.size(); i++) {
-			try {
-				s.faaOppdrag(oppdrag.get(i));
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-		}
+        for (Oppdrag anOppdrag : oppdrag) {
+                s.faaOppdrag(anOppdrag);
+        }
 
 	}
 
@@ -657,8 +631,9 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	 * @author mads
 	 *
 	 */
-	class gjerNokoListener implements ActionListener {
-		public void actionPerformed(ActionEvent arg0) {
+    private class gjerNokoListener implements ActionListener {
+		@SuppressWarnings("unchecked")
+        public void actionPerformed(ActionEvent arg0) {
 
 			/*			try {
 				System.out.println("minSpelar: " +hovud.getMinSpelar().getNamn() +", kvenSinTur: " +hovud.getKvenSinTur().getNamn());
@@ -718,11 +693,11 @@ public class GUI extends JPanel implements PropertyChangeListener {
 						 JOptionPane.QUESTION_MESSAGE,null,ruterArray,ruterArray[1]);
 
 				 Rute bygd = null;
-				 for (int i = 0; i < ruterArray.length; i++) {
-					 if (ruterArray[i] == ubygdeRuter) {
-						 bygd = ruterArray[i];
-					 }
-				 }
+                 for (Rute aRuterArray : ruterArray) {
+                     if (aRuterArray == ubygdeRuter) {
+                         bygd = aRuterArray;
+                     }
+                 }
 
 				 if (bygd!=null) {
 					 int[] spelarensKort = null;
@@ -784,7 +759,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 				 // vis korta mine
 				 JPanel korta = new JPanel();
 
-				 Spelar visSine = null;
+				 Spelar visSine;
 				 if (hovud.isNett()) {
 					 visSine = hovud.getMinSpelar();
 				 }
@@ -835,7 +810,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 				 // vis oppdraga mine
 				 JPanel oppdraga = new JPanel();
 
-				 Spelar visSine = null;
+				 Spelar visSine;
 				 if (hovud.isNett()) {
 					 visSine = hovud.getMinSpelar();
 				 }
@@ -879,7 +854,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 				 JPanel bygde = new JPanel();
 
 				 if (hovud.getAlleBygdeRuter().size()>0) {
-					 JList bygd = new JList(hovud.getAlleBygdeRuter().toArray());
+					 @SuppressWarnings("unchecked") JList<Rute> bygd = new JList(hovud.getAlleBygdeRuter().toArray());
 
 					 /*	if (hovud.isNett()){
 						 // Finn spel-verten
@@ -1019,7 +994,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 			}
 		}
 	}
-	class ChatListener implements KeyListener{
+	private class ChatListener implements KeyListener{
 		public void keyPressed(KeyEvent arg0) {	}
 
 		public void keyReleased(KeyEvent arg0) {
@@ -1062,10 +1037,11 @@ public class GUI extends JPanel implements PropertyChangeListener {
 
 
 	public void propertyChange(PropertyChangeEvent arg0) {
-		if (arg0.getPropertyName() == MeldingarModell.MELDINGAR_PROPERTY){
+		if (arg0.getPropertyName().equals(MeldingarModell.MELDINGAR_PROPERTY)){
 			meldingarmodell = new MeldingarModell(meldingarmodell.getMeldingar());
 			meldingarmodell.addPropertyChangeListener(this);
-			meldingar.setModel(meldingarmodell);
+            //noinspection unchecked
+            meldingar.setModel(meldingarmodell);
 			meldingar.setSelectedIndex(meldingarmodell.getSize()-1);
 			meldingar.ensureIndexIsVisible(meldingar.getSelectedIndex());
 		}

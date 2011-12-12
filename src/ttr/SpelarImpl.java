@@ -188,18 +188,17 @@ public class SpelarImpl extends UnicastRemoteObject implements Spelar {
 	 */
 	public int getOppdragspoeng() throws RemoteException  {
 		int ret = 0;
-		for (int i = 0; i < oppdrag.size(); i++) {
-			Destinasjon d1 = (Destinasjon) oppdrag.get(i).getDestinasjonar().toArray()[0];
-			int d = d1.ordinal();
-			Destinasjon d2 = (Destinasjon) oppdrag.get(i).getDestinasjonar().toArray()[1];
-			int e = d2.ordinal();
-			if (bygdRuteMatrise[d][e] || bygdRuteMatrise[e][d]){
-				ret+=oppdrag.get(i).getVerdi();
-			}
-			else {
-				ret -= oppdrag.get(i).getVerdi();
-			}
-		}
+        for (Oppdrag anOppdrag : oppdrag) {
+            Destinasjon d1 = (Destinasjon) anOppdrag.getDestinasjonar().toArray()[0];
+            int d = d1.ordinal();
+            Destinasjon d2 = (Destinasjon) anOppdrag.getDestinasjonar().toArray()[1];
+            int e = d2.ordinal();
+            if (bygdRuteMatrise[d][e] || bygdRuteMatrise[e][d]) {
+                ret += anOppdrag.getVerdi();
+            } else {
+                ret -= anOppdrag.getVerdi();
+            }
+        }
 		
 		return ret;
 	}
@@ -219,12 +218,7 @@ public class SpelarImpl extends UnicastRemoteObject implements Spelar {
 		int d = d1.ordinal();
 		Destinasjon d2 = (Destinasjon) o.getDestinasjonar().toArray()[1];
 		int e = d2.ordinal();
-		if (bygdRuteMatrise[d][e] || bygdRuteMatrise[e][d]){
-			return true;
-		}
-		else {
-			return false;
-		}
+        return bygdRuteMatrise[d][e] || bygdRuteMatrise[e][d];
 	}
 	
 	public int getAntalFullfoerteOppdrag() throws RemoteException{
@@ -246,9 +240,9 @@ public class SpelarImpl extends UnicastRemoteObject implements Spelar {
 	 */
 	public int getRutepoeng() throws RemoteException  {
 		int ret = 0;
-		for (int i = 0; i < bygdeRuter.size(); i++) {
-			ret += bygdeRuter.get(i).getVerdi();
-		}
+        for (Rute aBygdeRuter : bygdeRuter) {
+            ret += aBygdeRuter.getVerdi();
+        }
 		return ret;
 	}
 	
@@ -257,9 +251,9 @@ public class SpelarImpl extends UnicastRemoteObject implements Spelar {
 	 */
 	public int getGjenverandeTog()  throws RemoteException {
 		int brukteTog = 0;
-		for (int i = 0; i < bygdeRuter.size(); i++) {
-			brukteTog += bygdeRuter.get(i).getLengde();
-		}
+        for (Rute aBygdeRuter : bygdeRuter) {
+            brukteTog += aBygdeRuter.getLengde();
+        }
 		return Konstantar.ANTAL_TOG - brukteTog;
 	}
 	
@@ -367,8 +361,8 @@ public class SpelarImpl extends UnicastRemoteObject implements Spelar {
 		hovud.settSinTur(s);
 	}
 
-	public Farge getTilfeldigKortFråBordet(int i, boolean b) throws RemoteException {
-		Farge f = hovud.getBord().getTilfeldigKortFråBordet(i, b);
+	public Farge getTilfeldigKortFråBordet(int i) throws RemoteException {
+		Farge f = hovud.getBord().getTilfeldigKortFråBordet(i, true);
 		if (f == null){
 			JOptionPane.showMessageDialog(Hovud.getGui(), "Det er ikkje noko kort der, ser du vel.");
 			Hovud.getGui().getKortButtons()[i].setBackground(Color.GRAY);
@@ -397,8 +391,9 @@ public class SpelarImpl extends UnicastRemoteObject implements Spelar {
 				vald = r;
 			}
 		}
-		
-		if (vald.getBygdAv() == null) {
+
+        assert vald != null;
+        if (vald.getBygdAv() == null) {
 			vald.setBygdAv(byggjandeSpelar);
 			if (!hovud.getAlleBygdeRuter().contains(vald)) {
 				hovud.getAlleBygdeRuter().add(vald);

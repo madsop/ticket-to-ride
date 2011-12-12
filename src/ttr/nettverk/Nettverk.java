@@ -15,9 +15,9 @@ import java.rmi.registry.LocateRegistry;
 public class Nettverk {
 
 	/** The port used for RMI */
-	public String hostAddress;
-	public final String PORT = "1226";
-	private GUI gui;
+    private final String hostAddress;
+	private final String PORT = "1226";
+	private final GUI gui;
 
 	public Nettverk(GUI gui, String hostAddress) {
 		this.hostAddress = hostAddress;
@@ -32,7 +32,7 @@ public class Nettverk {
 			hostGame();
 		}else if (option == 1){ // Vel å bli med i eit spel
 			String remoteAddress = JOptionPane.showInputDialog("Kven vil du kople deg til? (IP-adresse eller hostnamn)");
-			if (remoteAddress == "" || remoteAddress == null || remoteAddress.length()==0) { 
+			if (remoteAddress.equals("") || remoteAddress.length()==0) {
 				remoteAddress = "localhost"; 
 			}
 			System.out.println(remoteAddress);
@@ -43,7 +43,7 @@ public class Nettverk {
 		}
 	}
 
-	public void hostGame() throws HeadlessException, RemoteException {
+	void hostGame() throws HeadlessException, RemoteException {
 		System.setSecurityManager(new LiberalSecurityManager());
 		String address = hostAddress+":"+PORT;
 		String url = "rmi://"+address+"/Spelar"; // URL-en min i RMI-registeret.
@@ -70,7 +70,7 @@ public class Nettverk {
 		}
 	}
 
-	public void joinGame(String remoteAddress) throws HeadlessException, RemoteException {
+	void joinGame(String remoteAddress) throws HeadlessException, RemoteException {
 		System.setSecurityManager(new LiberalSecurityManager());
 		String url = "rmi://"+remoteAddress+":"+PORT+"/Spelar"; // URL-en til verten i RMI-registeret.
 		System.out.println(url);

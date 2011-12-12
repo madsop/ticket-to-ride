@@ -8,9 +8,9 @@ import java.util.Set;
 
 
 public class Oppdrag {
-	private int oppdragsid;
-	private Set<Destinasjon> destinasjonar;
-	private int verdi;
+	private final int oppdragsid;
+	private final Set<Destinasjon> destinasjonar;
+	private final int verdi;
 	
 	public int getOppdragsid(){
 		return oppdragsid;

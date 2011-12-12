@@ -34,8 +34,8 @@ public class Bord {
 		gui.setKortPaaBordet(plass, f);
 	}
 
-	private GUI gui;
-	private int[] igjenAvFargekort = {
+	private final GUI gui;
+	private final int[] igjenAvFargekort = {
 			Konstantar.ANTAL_AV_KVART_FARGEKORT,
 			Konstantar.ANTAL_AV_KVART_FARGEKORT,
 			Konstantar.ANTAL_AV_KVART_FARGEKORT,
@@ -98,7 +98,7 @@ public class Bord {
 		return fargekortpåbordet;
 	}
 
-	public int tilfeldigFarge(){
+	int tilfeldigFarge(){
 		int fargekortpåbordet = getAntalFargekortPåBordet();
 		int valtkort = (int) (Math.random() * fargekortpåbordet);
 
@@ -140,7 +140,7 @@ public class Bord {
 	 * Viss det tabbar seg ut, ror det litt. (else[...])
 	 * @param Kva for plass på bordet det får (0 til 4)
 	 */
-	public void leggKortPåBordet(int plass, int teljar) {
+    void leggKortPåBordet(int plass, int teljar) {
 		if (teljar >= 0 && teljar < Konstantar.ANTAL_FARGAR) {	
 			paaBordet[plass] = Konstantar.FARGAR[teljar];
 			igjenAvFargekort[teljar]--;
@@ -165,9 +165,6 @@ public class Bord {
 			}
 		}
 
-		if (jokrar > Konstantar.MAKS_JOKRAR_PAA_BORDET) {
-			return true;
-		}
-		return false;
-	}	
+        return jokrar > Konstantar.MAKS_JOKRAR_PAA_BORDET;
+    }
 }

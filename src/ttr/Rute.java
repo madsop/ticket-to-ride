@@ -8,14 +8,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Rute {
-	private Set<Destinasjon> destinasjonar;
+	private final Set<Destinasjon> destinasjonar;
 	private static final int[] ruteverdiar = {1,2,4,7,10,15,0,0,27};
-	private int lengde;
-	private Farge farge;
-	private boolean tunnel;
-	private int antaljokrar;
+	private final int lengde;
+	private final Farge farge;
+	private final boolean tunnel;
+	private final int antaljokrar;
 	private Spelar bygdAv;
-	private int ruteId;
+	private final int ruteId;
 
 
 
@@ -116,7 +116,8 @@ public class Rute {
 			e.printStackTrace();
 		}
 		finally {
-			return destinasjonar.toArray()[0] +" - " +destinasjonar.toArray()[1] +", lengde " +lengde +", av farge " +farge 
+            //noinspection ReturnInsideFinallyBlock,ReturnInsideFinallyBlock
+            return destinasjonar.toArray()[0] +" - " +destinasjonar.toArray()[1] +", lengde " +lengde +", av farge " +farge
 			+", tunnel? " +tunnel +", og " +antaljokrar +" jokrar krevs for å byggje denne. Ruta er bygd av " 
 			+bygdaf +", og er verdt " +ruteverdiar[lengde-1] +" poeng.";
 		}
