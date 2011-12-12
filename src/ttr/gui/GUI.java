@@ -637,9 +637,9 @@ public class GUI extends JPanel implements PropertyChangeListener {
 			}
 		}
 		ArrayList<Oppdrag> k = new ArrayList<Oppdrag>();
-//		while (k.size() < talPaaOppdrag-2){
-//			k = velOppdrag(oppdrag);
-//		}
+		while (k.size() < talPaaOppdrag-2){
+			k = velOppdrag(oppdrag);
+    	}
 		oppdrag = k;
 		for (int i = 0; i < oppdrag.size(); i++) {
 			try {

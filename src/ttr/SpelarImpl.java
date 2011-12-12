@@ -110,7 +110,7 @@ public class SpelarImpl extends UnicastRemoteObject implements Spelar {
 		}
 	}
 	
-	/*
+
 	public void faaOppdragInt(int oppdragsid)  throws RemoteException {
 		boolean muleg = true;
 		for (Oppdrag o : oppdrag){
@@ -129,7 +129,7 @@ public class SpelarImpl extends UnicastRemoteObject implements Spelar {
 			this.oppdrag.add(o);
 		}
 	}
-	*/
+
 	
 	public void faaOppdrag(Oppdrag o) throws RemoteException{
 		if(!this.oppdrag.contains(o)){
@@ -374,7 +374,7 @@ public class SpelarImpl extends UnicastRemoteObject implements Spelar {
 			Hovud.getGui().getKortButtons()[i].setBackground(Color.GRAY);
 			Hovud.getGui().getKortButtons()[i].setText("Tom");
 			
-/*			int l = -1;
+			int l = -1;
 			for (int j = 0; j < Konstantar.FARGAR.length; j++){
 				if (f == Konstantar.FARGAR[j]){
 					l = j;
@@ -382,7 +382,7 @@ public class SpelarImpl extends UnicastRemoteObject implements Spelar {
 			}
 			if (l >= 0 && l < Konstantar.FARGAR.length){
 				kort[l]--;
-			}*/
+			}
 			
 			return null;
 		}

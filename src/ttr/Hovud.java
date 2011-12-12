@@ -383,9 +383,9 @@ public class Hovud {
 			ruterTemp[i] = it2.next();
 		}
 
-		/*		bR = new ArrayList<Rute>();
+			ArrayList<Rute>	bR = new ArrayList<Rute>();
 		for (int i = 0; i < spelarar.size(); i++) {
-			/*for (int j = 0; j < spelarar.get(i).getBygdeRuter().size(); j++ ) {
+			for (int j = 0; j < spelarar.get(i).getBygdeRuter().size(); j++ ) {
 				bR.add(spelarar.get(i).getBygdeRuter().get(j));
 			}
 			for (int j = 0; j < spelarar.get(i).getBygdeRuterStr(); j++) {
@@ -397,7 +397,7 @@ public class Hovud {
 				}
 			}
 		}
-		 */
+		 
 		Rute[] ruterArray = new Rute[str-alleBygdeRuter.size()];
 		int c = 0;
 
@@ -575,5 +575,4 @@ public class Hovud {
 			bygg(bygd, plass, spelarensKort, kortKrevd+ekstra, krevdJokrar);
 		}
 	}
-
 }
