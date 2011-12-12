@@ -1,8 +1,9 @@
 package ttr;
 
-import ttr.europe.Europe;
+import ttr.utgaave.europe.Europe;
 import ttr.gui.GUI;
-import ttr.nordic.Nordic;
+import ttr.utgaave.nordic.Nordic;
+import ttr.utgaave.ISpelUtgaave;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
@@ -16,7 +17,7 @@ public class Main {
 		Main.frame = frame;
 	}
 
-	public static SpelUtgaave[] spela = new SpelUtgaave[2];
+	public static ISpelUtgaave[] spela = new ISpelUtgaave[2];
 	public static void main(String args[]) throws RemoteException {
 		frame = new JFrame("Ticket to ride");
 		String arg;

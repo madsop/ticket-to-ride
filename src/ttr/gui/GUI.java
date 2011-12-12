@@ -3,6 +3,7 @@ package ttr.gui;
 import ttr.*;
 import ttr.data.Farge;
 import ttr.nettverk.Nettverk;
+import ttr.utgaave.ISpelUtgaave;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +55,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	private MeldingarModell meldingarmodell;
 	private JTextField chat;
 	public static final String starttekst = "Prat her!";
-	private SpelUtgaave spel;
+	private ISpelUtgaave spel;
 
 	public JButton[] getKortButtons(){
 		return kortButtons;
@@ -80,7 +81,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	 * @param frame - ramma GUI-et lages inni
 	 * @throws RemoteException 
 	 */
-	public GUI(JFrame frame, String hostAddress, SpelUtgaave spel) throws RemoteException {
+	public GUI(JFrame frame, String hostAddress, ISpelUtgaave spel) throws RemoteException {
 
 		this.frame = frame;
 		gbl = new GridBagLayout();

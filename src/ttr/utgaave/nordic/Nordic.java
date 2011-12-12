@@ -1,9 +1,9 @@
-package ttr.nordic;
+package ttr.utgaave.nordic;
 
 import ttr.Oppdrag;
 import ttr.Rute;
-import ttr.SpelUtgaave;
-import ttr.Utgaave;
+import ttr.utgaave.ISpelUtgaave;
+import ttr.utgaave.SpelUtgaave;
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
 
@@ -12,10 +12,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public final class Nordic extends Utgaave implements SpelUtgaave {
+public final class Nordic extends SpelUtgaave implements ISpelUtgaave {
 	public static final String tittel = "Nordic countries";
-	private static Set<Rute> ruter = leggTilRuter();
-	private static ArrayList<Oppdrag> oppdrag = fyllMedOppdrag();
 	private static final String bilde = "nordic_map.jpg";
 	
 	public ArrayList<Oppdrag> getOppdrag(){
@@ -23,10 +21,10 @@ public final class Nordic extends Utgaave implements SpelUtgaave {
 	}
 	
 	public Nordic() {
-		super(tittel,ruter,oppdrag,bilde);
+		super(tittel,bilde);
 	}
 
-	private static final Set<Rute> leggTilRuter() {
+	protected Set<Rute> leggTilRuter() {
 		ruter = new HashSet<Rute>();
 		int ruteid = 0;
 		ruter.add(new Rute (ruteid,Destinasjon.Oslo,Destinasjon.Ørebro,2,Farge.gul,false,0));
@@ -135,7 +133,7 @@ public final class Nordic extends Utgaave implements SpelUtgaave {
 	/**
 	 * Lagar alle oppdraga
 	 */
-	private static final ArrayList<Oppdrag> fyllMedOppdrag() {
+	protected ArrayList<Oppdrag> fyllMedOppdrag() {
 		oppdrag = new ArrayList<Oppdrag>();
 		int oppdragsid = 0;
 		oppdrag.add(new Oppdrag(oppdragsid,Destinasjon.Oslo,Destinasjon.MoIRana,10));

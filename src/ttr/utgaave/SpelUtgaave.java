@@ -1,13 +1,16 @@
-package ttr;
+package ttr.utgaave;
+
+import ttr.Oppdrag;
+import ttr.Rute;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
 
-public abstract class Utgaave {
+public abstract class SpelUtgaave {
 	private String tittel;
-	private ArrayList<Oppdrag> oppdrag;
-	private Set<Rute> ruter;
+	protected ArrayList<Oppdrag> oppdrag;
+	protected Set<Rute> ruter;
 	
 	private URL bakgrunnsbildet;
 
@@ -15,13 +18,15 @@ public abstract class Utgaave {
 		return bakgrunnsbildet;
 	}
 	
-	public Utgaave(String tittel, Set<Rute> ruter, ArrayList<Oppdrag> oppdrag, String adresse) {
+	public SpelUtgaave(String tittel, String adresse) {
 		this.tittel = tittel;
-		this.ruter = ruter;
-		this.oppdrag = oppdrag;
 		bakgrunnsbildet = getClass().getResource(adresse);
+        ruter = leggTilRuter();
+        oppdrag = fyllMedOppdrag();
 	}
-	
+
+    protected abstract Set<Rute> leggTilRuter();
+    protected abstract ArrayList<Oppdrag> fyllMedOppdrag();
 	public ArrayList<Oppdrag> getOppdrag() {
 		return oppdrag;
 	}

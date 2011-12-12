@@ -3,7 +3,8 @@ package ttr;
 import ttr.data.Farge;
 import ttr.gui.GUI;
 import ttr.gui.Konstantar;
-import ttr.nordic.Nordic;
+import ttr.utgaave.nordic.Nordic;
+import ttr.utgaave.ISpelUtgaave;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,8 +16,8 @@ import java.util.Set;
 public class Hovud {
 
 	// "Variablar"
-	private SpelUtgaave spel;
-	public SpelUtgaave getSpel() {
+	private ISpelUtgaave spel;
+	public ISpelUtgaave getSpel() {
 		return spel;
 	}
 
@@ -39,7 +40,7 @@ public class Hovud {
 	 * @param gui
 	 * @throws RemoteException 
 	 */
-	public Hovud(GUI gui, boolean nett, SpelUtgaave spel) throws RemoteException {
+	public Hovud(GUI gui, boolean nett, ISpelUtgaave spel) throws RemoteException {
 		Hovud.gui = gui;
 		this.nett = nett;
 		this.spel = spel;
