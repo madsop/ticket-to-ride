@@ -1,6 +1,5 @@
 package ttr.spelar;
 
-import ttr.Hovud;
 import ttr.data.Farge;
 import ttr.struktur.Oppdrag;
 import ttr.struktur.Rute;
@@ -15,7 +14,7 @@ public interface ISpelar extends Remote{
 	public Farge trekkFargekort() throws RemoteException;
 	public Oppdrag trekkOppdragskort() throws RemoteException;
 	public int getGjenverandeTog() throws RemoteException;
-	public int getRutepoeng() throws RemoteException;
+	// --Commented out by Inspection (12.12.11 15:41):public int getRutepoeng() throws RemoteException;
 	public int getOppdragspoeng() throws RemoteException;
 	public String getNamn() throws RemoteException;
 	public int[] getKort() throws RemoteException;
@@ -25,9 +24,9 @@ public interface ISpelar extends Remote{
 	public void faaKort(Farge farge) throws RemoteException;
 	public int getAntalOppdrag() throws RemoteException;	
 	public void setEinVald(boolean b) throws RemoteException;
-	public ArrayList<Rute> getBygdeRuter() throws RemoteException;
+	// --Commented out by Inspection (12.12.11 15:41):public ArrayList<Rute> getBygdeRuter() throws RemoteException;
 	public boolean getValdAllereie() throws RemoteException;
-	public Hovud getHovud() throws RemoteException;
+	// --Commented out by Inspection (12.12.11 15:41):public Hovud getHovud() throws RemoteException;
 	public void settSinTur(ISpelar s) throws RemoteException;
 	public int getSpelarNummer() throws RemoteException;
 	public void setSpelarNummer(int nummer) throws RemoteException;
@@ -46,7 +45,7 @@ public interface ISpelar extends Remote{
 	public boolean sjekkJokrar() throws RemoteException;
 	public void trekt(int oppdragsid) throws RemoteException;
 	public void leggIStokken(int tabellplass, int kormange) throws RemoteException;
-	public int trekkOppdragskortInt() throws RemoteException;
+	// --Commented out by Inspection (12.12.11 15:41):public int trekkOppdragskortInt() throws RemoteException;
 	public void visSpeletErFerdigmelding(String melding) throws RemoteException;
 	public void faaMelding(String melding) throws RemoteException;
 	public int getAntalFullfoerteOppdrag() throws RemoteException;

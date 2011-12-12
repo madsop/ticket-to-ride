@@ -16,10 +16,6 @@ public final class Nordic extends AbstractSpelUtgaave implements ISpelUtgaave {
 	public static final String tittel = "Nordic countries";
 	private static final String bilde = "nordic_map.jpg";
 	
-	public ArrayList<Oppdrag> getOppdrag(){
-		return oppdrag;
-	}
-	
 	public Nordic() {
 		super(tittel,bilde);
 	}

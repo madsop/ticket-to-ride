@@ -7,8 +7,6 @@ import java.util.ArrayList;
 
 
 public class MeldingarModell extends AbstractListModel{
-	
-	private static final long serialVersionUID = 1L;
 	private final PropertyChangeSupport pcs;
 	private final ArrayList<String> meldingar;
 	public static final String MELDINGAR_PROPERTY = "meldingar";

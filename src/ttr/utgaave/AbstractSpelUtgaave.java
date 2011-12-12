@@ -27,9 +27,10 @@ public abstract class AbstractSpelUtgaave {
 
     protected abstract Set<Rute> leggTilRuter();
     protected abstract ArrayList<Oppdrag> fyllMedOppdrag();
-	public ArrayList<Oppdrag> getOppdrag() {
+
+    public ArrayList<Oppdrag> getOppdrag() {
 		return oppdrag;
-	}
+    }
 
 	public Set<Rute> getRuter() {
 		return ruter;

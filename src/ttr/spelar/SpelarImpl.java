@@ -20,7 +20,6 @@ import java.util.Iterator;
  *
  */
 public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
-	private static final long serialVersionUID = 1L;
 	private Hovud hovud;
 
 	private static int spelarteljar = 0;
@@ -34,9 +33,9 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	
 	private boolean einValdAllereie = false;
 	
-	/*
-	 * Get & set herifrå
-	 */
+	public SpelarImpl () throws RemoteException{
+
+    }
 	
 	public void setEinVald(boolean b) throws RemoteException {
 		einValdAllereie = b;
@@ -47,14 +46,18 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	public boolean getValdAllereie() throws RemoteException {
 		return einValdAllereie;
 	}
-	public Hovud getHovud() throws RemoteException{
-		return hovud;
-	}
-	
-	// Ad hoc-metodar
-	public ArrayList<Rute> getBygdeRuter() throws RemoteException  {
-		return bygdeRuter;
-	}
+// --Commented out by Inspection START (12.12.11 15:41):
+//	public Hovud getHovud() throws RemoteException{
+//		return hovud;
+//	}
+// --Commented out by Inspection STOP (12.12.11 15:41)
+
+// --Commented out by Inspection START (12.12.11 15:41):
+//	// Ad hoc-metodar
+//	public ArrayList<Rute> getBygdeRuter() throws RemoteException  {
+//		return bygdeRuter;
+//	}
+// --Commented out by Inspection STOP (12.12.11 15:41)
 	public int getAntalOppdrag()  throws RemoteException {
 		return oppdrag.size();
 	}
@@ -114,24 +117,26 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	}
 	
 
-	public void faaOppdragInt(int oppdragsid)  throws RemoteException {
-		boolean muleg = true;
-		for (Oppdrag o : oppdrag){
-			if (o.getOppdragsid()==oppdragsid){
-				muleg=false;
-			}
-		}
-		
-		if(muleg){
-			Oppdrag o = null;
-			for (Oppdrag opp : hovud.getSpel().getOppdrag()){
-				if (opp.getOppdragsid()==oppdragsid){
-					o=opp;
-				}
-			}
-			this.oppdrag.add(o);
-		}
-	}
+// --Commented out by Inspection START (12.12.11 15:40):
+//	public void faaOppdragInt(int oppdragsid)  throws RemoteException {
+//		boolean muleg = true;
+//		for (Oppdrag o : oppdrag){
+//			if (o.getOppdragsid()==oppdragsid){
+//				muleg=false;
+//			}
+//		}
+//
+//		if(muleg){
+//			Oppdrag o = null;
+//			for (Oppdrag opp : hovud.getSpel().getOppdrag()){
+//				if (opp.getOppdragsid()==oppdragsid){
+//					o=opp;
+//				}
+//			}
+//			this.oppdrag.add(o);
+//		}
+//	}
+// --Commented out by Inspection STOP (12.12.11 15:40)
 
 	
 	public void faaOppdrag(Oppdrag o) throws RemoteException{
@@ -158,14 +163,13 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 		return kort;
 	}
 	
-	/**
-	 * 
-	 */
-	public ArrayList<Oppdrag> velOppdrag(ArrayList<Oppdrag> oppdrag) throws RemoteException  {
-		ArrayList<Oppdrag> valde = new ArrayList<Oppdrag>();
-		Hovud.getGui().velOppdrag(oppdrag);
-		return valde;
-	}
+// --Commented out by Inspection START (12.12.11 15:40):
+//	public ArrayList<Oppdrag> velOppdrag(ArrayList<Oppdrag> oppdrag) throws RemoteException  {
+//		ArrayList<Oppdrag> valde = new ArrayList<Oppdrag>();
+//		Hovud.getGui().velOppdrag(oppdrag);
+//		return valde;
+//	}
+// --Commented out by Inspection STOP (12.12.11 15:40)
 
 	/**
 	 * Oppretter ei #destinasjonar*#destinasjonar med alle verdiar false.
@@ -238,17 +242,19 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 		return antal;
 	}
 	
-	/**
-	 * @return reknar ut kor mange poeng spelaren får på grunn av bygde ruter
-	 */
-	public int getRutepoeng() throws RemoteException  {
-		int ret = 0;
-        for (Rute aBygdeRuter : bygdeRuter) {
-            ret += aBygdeRuter.getVerdi();
-        }
-		return ret;
-	}
-	
+// --Commented out by Inspection START (12.12.11 15:41):
+//	/**
+//	 * @return reknar ut kor mange poeng spelaren får på grunn av bygde ruter
+//	 */
+//	public int getRutepoeng() throws RemoteException  {
+//		int ret = 0;
+//        for (Rute aBygdeRuter : bygdeRuter) {
+//            ret += aBygdeRuter.getVerdi();
+//        }
+//		return ret;
+//	}
+// --Commented out by Inspection STOP (12.12.11 15:41)
+
 	/**
 	 * @return kor mange tog har spelaren igjen?
 	 */
@@ -274,11 +280,13 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 		}
 		return trekt;
 	}
-	public int trekkOppdragskortInt() throws RemoteException{
-		Oppdrag o = trekkOppdragskort();
-		return o.getOppdragsid();
-	}
-	
+// --Commented out by Inspection START (12.12.11 15:41):
+//	public int trekkOppdragskortInt() throws RemoteException{
+//		Oppdrag o = trekkOppdragskort();
+//		return o.getOppdragsid();
+//	}
+// --Commented out by Inspection STOP (12.12.11 15:41)
+
 	/**
 	 * @return eit tilfeldig fargekort frå toppen av stokken
 	 */

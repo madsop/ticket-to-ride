@@ -13,18 +13,15 @@ public class Main {
 	public static JFrame getFrame() {
 		return frame;
 	}
-	public static void setFrame(JFrame frame) {
-		Main.frame = frame;
-	}
 
-	private static final ISpelUtgaave[] spela = new ISpelUtgaave[2];
 	public static void main(String args[]) throws RemoteException {
 		frame = new JFrame("Ticket to ride");
 		String arg;
 		if (args.length < 1) { arg = "localhost"; } // If there are no arguments passed, we choose localhost as default.
 		else { arg = args[0]; }
 		String valstring = "Vel Ticket to ride-utgåve";
-		spela[0] = new Nordic();
+        ISpelUtgaave[] spela = new ISpelUtgaave[2];
+        spela[0] = new Nordic();
 		spela[1] = new Europe();
 		int spel = JOptionPane.showOptionDialog(frame, valstring, valstring, JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, spela, spela[0]);
 		if (spel >= 0 && spel < spela.length){

@@ -21,12 +21,7 @@ import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-//import java.rmi.Naming;
-//import java.rmi.registry.LocateRegistry;
-
-
 public class GUI extends JPanel implements PropertyChangeListener {
-	private static final long serialVersionUID = 1L;
 
 	// Oppsettet rundt
 	private final JFrame frame;
@@ -350,14 +345,6 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	}
 
 	/**
-	 * Tilegnar GUI-et ei hovudklasse
-	 * @param hovud
-	 */
-	public void setHovud(Hovud hovud) {
-		this.hovud = hovud;
-	}
-
-	/**
 	 * Teiknar opp eit kort på bordet
 	 * @param plass - kva for ein av plassane på bordet
 	 * @param farge - i kva farge
@@ -407,7 +394,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	 * @param oppdrag
 	 * @return dei valde oppdraga.
 	 */
-	public ArrayList<Oppdrag> velOppdrag(ArrayList<Oppdrag> oppd) {
+    protected ArrayList<Oppdrag> velOppdrag(ArrayList<Oppdrag> oppd) {
 		this.oppdrag = oppd;
 		oppdragstr = oppdrag.size() - 2;
         JPanel vel = new JPanel();
