@@ -13,15 +13,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class GUI extends JPanel implements PropertyChangeListener {
+public class GUI extends JPanel {
 
 	// Oppsettet rundt
 	private final JFrame frame;
@@ -34,7 +30,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
     }
 
     private final BildePanel bp;
-	private JPanel meldingsboks;
+	private Meldingspanel meldingsboks;
     private Hogrepanelet hogre;
 
     // Oppdraga
@@ -42,10 +38,6 @@ public class GUI extends JPanel implements PropertyChangeListener {
 	private int oppdragstr;
 
 
-	private JList<MeldingarModell> meldingar;
-    private MeldingarModell meldingarmodell;
-	private JTextField chat;
-	private static final String starttekst = "Prat her!";
 	private final ISpelUtgaave spel;
 
     private ArrayList<Oppdrag> valde;
@@ -76,9 +68,10 @@ public class GUI extends JPanel implements PropertyChangeListener {
 
         nettv = nett == JOptionPane.YES_OPTION;
 
+        byggMeldingsboks(nettv);
         hovud = new Hovud(this, nettv,spel);
+        meldingsboks.setHovud(hovud);
 		byggHogrepanel();
-		byggMeldingsboks();
 
 		c.ipadx = 0;
 		c.ipady = 0;
@@ -128,40 +121,15 @@ public class GUI extends JPanel implements PropertyChangeListener {
         hogre.byggHogrepanelet();
 	}
 
-	private void byggMeldingsboks(){
-		meldingsboks = new JPanel();
-
-		meldingsboks.setBackground(Color.WHITE);	
-
-		//meldingsboks.setPreferredSize(new Dimension(150,Konstantar.HOGDE));
-
-		meldingarmodell = new MeldingarModell();
-		meldingarmodell.addPropertyChangeListener(this);
-        //noinspection unchecked,unchecked
-        meldingar = new JList(meldingarmodell);
-
-
-        JScrollPane mp = new JScrollPane();
-		mp.setPreferredSize(new Dimension(Konstantar.MELDINGSPANELBREIDDE, Konstantar.HOGDE - Konstantar.DIFF));
-		mp.getViewport().add(meldingar);
-		meldingsboks.add(mp);
-
-		meldingsboks.setPreferredSize(new Dimension(Konstantar.MELDINGSPANEL,Konstantar.HOGDE));
-
-		chat = new JTextField(starttekst);
-		chat.addKeyListener(new ChatListener());
-		chat.setPreferredSize(Konstantar.CHATDIM);
-		meldingsboks.add(chat);
-
-		meldingarmodell.nyMelding("Spelet startar. Velkommen!");
+	private void byggMeldingsboks(boolean nett){
+		meldingsboks = new Meldingspanel(nett);
+        meldingsboks.createModell();
 
 	}
 
-
-
-	public MeldingarModell getMeldingarModell(){
-		return meldingarmodell;
-	}
+    public MeldingarModell getMeldingarModell(){
+        return meldingsboks.getMeldingarModell();
+    }
 
 	/**
 	 * Viser namnet til den spelaren det er sin tur
@@ -172,10 +140,10 @@ public class GUI extends JPanel implements PropertyChangeListener {
 		if (hovud.isNett()){
 			try {
 				if (hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn())){
-                    hogre.getSpelarnamn().setText("Eg er " +hovud.getMinSpelar().getNamn() +", og det er min tur.");
+                    hogre.getSpelarnamn().setText("Eg er " + hovud.getMinSpelar().getNamn() + ", og det er min tur.");
 				}
 				else{
-                    hogre.getSpelarnamn().setText("Eg er " +hovud.getMinSpelar().getNamn() +", og det er " +spelarnamn +" sin tur.");
+                    hogre.getSpelarnamn().setText("Eg er " + hovud.getMinSpelar().getNamn() + ", og det er " + spelarnamn + " sin tur.");
 				}
 			} catch (RemoteException e) {
 				e.printStackTrace();
@@ -183,7 +151,7 @@ public class GUI extends JPanel implements PropertyChangeListener {
 		}
 		else{
 			try {
-                hogre.getSpelarnamn().setText("Eg er " +hovud.getKvenSinTur().getNamn() +", og det er min tur.");
+                hogre.getSpelarnamn().setText("Eg er " + hovud.getKvenSinTur().getNamn() + ", og det er min tur.");
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
@@ -415,56 +383,5 @@ public class GUI extends JPanel implements PropertyChangeListener {
 			}
 		}
 	}
-	private class ChatListener implements KeyListener{
-		public void keyPressed(KeyEvent arg0) {	}
 
-		public void keyReleased(KeyEvent arg0) {
-			if (arg0.getKeyCode() == KeyEvent.VK_ENTER){
-				String melding = "";
-				if (hovud.isNett()){
-					try {
-						melding = hovud.getMinSpelar().getNamn();
-					} catch (RemoteException e) {
-						e.printStackTrace();
-					}
-				}
-				else{
-					try {
-						melding = hovud.getKvenSinTur().getNamn();
-					} catch (RemoteException e) {
-						e.printStackTrace();
-					}
-				}
-				melding += ": " +chat.getText();
-				if (hovud.isNett()){
-					meldingarmodell.nyMelding(melding);
-				}
-
-				for (ISpelar s : hovud.getSpelarar()){
-					try {
-						s.faaMelding(melding);
-					} catch (RemoteException e) {
-						e.printStackTrace();
-					}
-				}
-				chat.setText("");
-			}
-			else if (chat.getText().contains(starttekst)){
-				chat.setText(String.valueOf(arg0.getKeyChar()));
-			}
-		}
-		public void keyTyped(KeyEvent arg0) {}
-	}
-
-
-	public void propertyChange(PropertyChangeEvent arg0) {
-		if (arg0.getPropertyName().equals(MeldingarModell.MELDINGAR_PROPERTY)){
-			meldingarmodell = new MeldingarModell(meldingarmodell.getMeldingar());
-			meldingarmodell.addPropertyChangeListener(this);
-            //noinspection unchecked
-            meldingar.setModel(meldingarmodell);
-			meldingar.setSelectedIndex(meldingarmodell.getSize()-1);
-			meldingar.ensureIndexIsVisible(meldingar.getSelectedIndex());
-		}
-	}
 }
