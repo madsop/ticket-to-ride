@@ -13,13 +13,11 @@ import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 
 /**
- * Created by IntelliJ IDEA.
  * User: mop
  * Date: 13.12.11
  * Time: 10:13
- * To change this template use File | Settings | File Templates.
  */
-public class Meldingspanel extends JPanel implements PropertyChangeListener {
+class Meldingspanel extends JPanel implements PropertyChangeListener {
     private MeldingarModell meldingarmodell;
     private JList<MeldingarModell> meldingar;
     private JTextField chat;

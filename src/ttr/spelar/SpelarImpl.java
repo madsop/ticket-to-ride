@@ -32,10 +32,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	private boolean[][] bygdRuteMatrise;
 	
 	private boolean einValdAllereie = false;
-	
-	public SpelarImpl () throws RemoteException{
 
-    }
 	
 	public void setEinVald(boolean b) throws RemoteException {
 		einValdAllereie = b;

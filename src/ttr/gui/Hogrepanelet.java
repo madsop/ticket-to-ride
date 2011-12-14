@@ -14,13 +14,11 @@ import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
 /**
- * Created by IntelliJ IDEA.
  * User: mop
  * Date: 13.12.11
  * Time: 09:42
- * To change this template use File | Settings | File Templates.
  */
-public class Hogrepanelet extends JPanel {
+class Hogrepanelet extends JPanel {
     // Brukargrensesnittet - på høgresida
     private JTextField spelarnamn;
     private Hovud hovud;

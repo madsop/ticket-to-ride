@@ -176,7 +176,7 @@ public class GUI extends JPanel {
 	 * @param oppdrag
 	 * @return dei valde oppdraga.
 	 */
-    protected ArrayList<Oppdrag> velOppdrag(ArrayList<Oppdrag> oppd) {
+    ArrayList<Oppdrag> velOppdrag(ArrayList<Oppdrag> oppd) {
 		this.oppdrag = oppd;
 		oppdragstr = oppdrag.size() - 2;
         JPanel vel = new JPanel();
