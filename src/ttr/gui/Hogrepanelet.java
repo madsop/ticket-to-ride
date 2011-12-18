@@ -1,6 +1,6 @@
 package ttr.gui;
 
-import ttr.Hovud;
+import ttr.IHovud;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.spelar.ISpelar;
@@ -13,17 +13,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
-/**
- * User: mop
- * Date: 13.12.11
- * Time: 09:42
- */
+
 class Hogrepanelet extends JPanel {
     // Brukargrensesnittet - på høgresida
     private JTextField spelarnamn;
-    private Hovud hovud;
-    private GUI gui;
-    private JFrame frame;
+    private final IHovud hovud;
+    private final IGUI gui;
+    private final JFrame frame;
     private JButton kortBunke;
 
     private JButton trekkOppdrag, bygg, visBygde, visMineKort, visMineOppdrag;
@@ -31,7 +27,7 @@ class Hogrepanelet extends JPanel {
     private JLabel[] togAtt;
 
     private gjerNokoListener gNL;
-    public Hogrepanelet(Hovud hovud, GUI gui, JFrame frame){
+    public Hogrepanelet(IHovud hovud, GUI gui, JFrame frame){
         this.hovud = hovud;
         this.gui = gui;
         this.frame = frame;
@@ -265,7 +261,7 @@ class Hogrepanelet extends JPanel {
                 */			try {
                 if (hovud.isNett() && (!hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn())) ) {
                     if (!(arg0.getSource() == visBygde || arg0.getSource() == visMineKort || arg0.getSource() == visMineOppdrag)) {
-                        JOptionPane.showMessageDialog(Hovud.getGui(), "Det er ikkje din tur!");
+                        JOptionPane.showMessageDialog(hovud.getGui(), "Det er ikkje din tur!");
                         return;
                     }
                 }

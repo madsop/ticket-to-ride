@@ -1,6 +1,6 @@
 package ttr.spelar;
 
-import ttr.Hovud;
+import ttr.IHovud;
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
@@ -20,7 +20,7 @@ import java.util.Iterator;
  *
  */
 public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
-	private Hovud hovud;
+	private IHovud hovud;
 
 	private static int spelarteljar = 0;
 	private int spelarNummer;
@@ -59,7 +59,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 		return oppdrag.size();
 	}
 	public void setTogAtt(int plass, int tog) throws RemoteException {
-		Hovud.getGui().getTogAtt()[plass].setText(String.valueOf(tog));
+		hovud.getGui().getTogAtt()[plass].setText(String.valueOf(tog));
 	}
 	public void setSpelarNummer(int nummer) throws RemoteException {
 		spelarNummer = nummer; 
@@ -84,7 +84,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	 * @param namn
 	 * @throws RemoteException
 	 */
-	public SpelarImpl (Hovud hovud, String namn) throws RemoteException{
+	public SpelarImpl (IHovud hovud, String namn) throws RemoteException{
 		super();
 		this.hovud = hovud;
 		this.namn = namn;
@@ -372,9 +372,9 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	public Farge getTilfeldigKortFråBordet(int i) throws RemoteException {
 		Farge f = hovud.getBord().getTilfeldigKortFråBordet(i, true);
 		if (f == null){
-			JOptionPane.showMessageDialog(Hovud.getGui(), "Det er ikkje noko kort der, ser du vel.");
-			Hovud.getGui().getKortButtons()[i].setBackground(Color.GRAY);
-			Hovud.getGui().getKortButtons()[i].setText("Tom");
+			JOptionPane.showMessageDialog(hovud.getGui(), "Det er ikkje noko kort der, ser du vel.");
+			hovud.getGui().getKortButtons()[i].setBackground(Color.GRAY);
+			hovud.getGui().getKortButtons()[i].setText("Tom");
 			
 			int l = -1;
 			for (int j = 0; j < Konstantar.FARGAR.length; j++){
@@ -394,7 +394,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	
 	public void nybygdRute(int ruteId, ISpelar byggjandeSpelar) throws RemoteException {
 		Rute vald = null;
-		for (Rute r : Hovud.getRuter()) {
+		for (Rute r : hovud.getRuter()) {
 			if (r.getRuteId() == ruteId) {
 				vald = r;
 			}
@@ -455,9 +455,9 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	}
 	
 	public void visSpeletErFerdigmelding(String melding) throws RemoteException {
-		JOptionPane.showMessageDialog(Hovud.getGui(), melding);
+		JOptionPane.showMessageDialog(hovud.getGui(), melding);
 	}
 	public void faaMelding(String melding) throws RemoteException{
-		Hovud.getGui().getMeldingarModell().nyMelding(melding);
+		hovud.getGui().getMeldingarModell().nyMelding(melding);
 	}
 }

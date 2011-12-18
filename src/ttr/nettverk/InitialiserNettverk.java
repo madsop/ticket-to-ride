@@ -1,5 +1,6 @@
 package ttr.nettverk;
 
+import ttr.gui.IGUI;
 import ttr.spelar.ISpelar;
 import ttr.spelar.SpelarImpl;
 import ttr.data.Farge;
@@ -17,7 +18,7 @@ public class InitialiserNettverk {
 	/** The port used for RMI */
     private final String hostAddress;
 	private final String PORT = "1226";
-	private final GUI gui;
+	private final IGUI gui;
 
 	public InitialiserNettverk(GUI gui, String hostAddress) {
 		this.hostAddress = hostAddress;
@@ -25,9 +26,11 @@ public class InitialiserNettverk {
 	}
 
 	public void initialiserSpel() throws HeadlessException, RemoteException {
-		gui.getHovud().setMinSpelar(new SpelarImpl(gui.getHovud(),JOptionPane.showInputDialog(gui,"Skriv inn namnet ditt")));
+        ISpelar spelar = new SpelarImpl(gui.getHovud(),gui.showInputDialog("Skriv inn namnet ditt"));
+		gui.getHovud().setMinSpelar(spelar);
+
 		Object[] options = {"Nytt spel", "Bli med i spel"};
-		int option = JOptionPane.showOptionDialog(gui, "Start spel eller bli med i spel?", "Nytt spel", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]); // Vel å starte spel
+		int option = JOptionPane.showOptionDialog((Component) gui, "Start spel eller bli med i spel?", "Nytt spel", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]); // Vel å starte spel
 		if(option == 0){
 			hostGame();
 		}else if (option == 1){ // Vel å bli med i eit spel
@@ -64,7 +67,7 @@ public class InitialiserNettverk {
 			meg.setSpelarteljar(1);
 			gui.getMeldingarModell().nyMelding(meg.getNamn() +" er vert for spelet.");
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(gui, "Kunne ikkje starta spelet. Det er sikkert porten som er opptatt.");
+			JOptionPane.showMessageDialog((Component) gui, "Kunne ikkje starta spelet. Det er sikkert porten som er opptatt.");
 			e.printStackTrace();
 			initialiserSpel(); // Vi prøver om att.
 		}
@@ -76,7 +79,7 @@ public class InitialiserNettverk {
 		System.out.println(url);
 
 		if (gui.getHovud().getSpelarar().size()+1 >= Konstantar.MAKS_ANTAL_SPELARAR) {
-			JOptionPane.showMessageDialog(gui, "Synd, men det kan ikkje vera med fleire spelarar enn dei som no spelar. Betre lukke neste gong!");
+			JOptionPane.showMessageDialog((Component) gui, "Synd, men det kan ikkje vera med fleire spelarar enn dei som no spelar. Betre lukke neste gong!");
 			System.exit(0);
 		}
 
@@ -121,7 +124,7 @@ public class InitialiserNettverk {
 			gui.getHovud().settSinTur(join);
 		}
 		catch (Exception e) {
-			JOptionPane.showMessageDialog(gui, "Klarte dessverre ikkje å bli med i spelet.");
+			JOptionPane.showMessageDialog((Component) gui, "Klarte dessverre ikkje å bli med i spelet.");
 			e.printStackTrace();
 			initialiserSpel(); // We try again
 		}

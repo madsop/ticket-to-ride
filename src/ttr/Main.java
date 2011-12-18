@@ -1,11 +1,13 @@
 package ttr;
 
+import ttr.gui.IGUI;
 import ttr.utgaave.europe.Europe;
 import ttr.gui.GUI;
 import ttr.utgaave.nordic.Nordic;
 import ttr.utgaave.ISpelUtgaave;
 
 import javax.swing.*;
+import java.awt.*;
 import java.rmi.RemoteException;
 
 public class Main {
@@ -25,9 +27,9 @@ public class Main {
 		spela[1] = new Europe();
 		int spel = JOptionPane.showOptionDialog(frame, valstring, valstring, JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, spela, spela[0]);
 		if (spel >= 0 && spel < spela.length){
-			GUI gui = new GUI(frame,arg,spela[spel]);	
+			IGUI gui = new GUI(frame,arg,spela[spel]);        // TODO: dependency injection
 			frame.setTitle(frame.getTitle() + " - " +spela[spel].getTittel());
-			frame.setContentPane(gui);
+			frame.setContentPane((Container) gui);
 			frame.pack();
 			frame.setLocationRelativeTo(null);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

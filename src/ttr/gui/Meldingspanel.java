@@ -1,6 +1,6 @@
 package ttr.gui;
 
-import ttr.Hovud;
+import ttr.IHovud;
 import ttr.data.Konstantar;
 import ttr.spelar.ISpelar;
 
@@ -22,14 +22,14 @@ class Meldingspanel extends JPanel implements PropertyChangeListener {
     private JList meldingar;
     private JTextField chat;
     private static final String starttekst = "Prat her!";
-    private boolean nett;
-    private Hovud hovud;
+    private final boolean nett;
+    private IHovud hovud;
     
     public Meldingspanel(boolean nett) {
         this.setBackground(Color.WHITE);
         this.nett = nett;
     }
-    public void setHovud(Hovud hovud){
+    public void setHovud(IHovud hovud){
         this.hovud = hovud;
     }
     

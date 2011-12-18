@@ -1,6 +1,7 @@
 package ttr.gui;
 
 import ttr.Hovud;
+import ttr.IHovud;
 import ttr.Main;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
@@ -17,12 +18,12 @@ import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class GUI extends JPanel {
+public class GUI extends JPanel implements  IGUI {
 
 	// Oppsettet rundt
 	private final JFrame frame;
-	private Hovud hovud;
-	public Hovud getHovud() {
+	private IHovud hovud;
+	public IHovud getHovud() {
 		return hovud;
 	}
     public JFrame getFrame(){
@@ -176,7 +177,7 @@ public class GUI extends JPanel {
 	 * @param oppdrag
 	 * @return dei valde oppdraga.
 	 */
-    ArrayList<Oppdrag> velOppdrag(ArrayList<Oppdrag> oppd) {
+    private ArrayList<Oppdrag> velOppdrag(ArrayList<Oppdrag> oppd) {
 		this.oppdrag = oppd;
 		oppdragstr = oppdrag.size() - 2;
         JPanel vel = new JPanel();
@@ -226,7 +227,7 @@ public class GUI extends JPanel {
 	}
 
     @SuppressWarnings("serial")
-	class BildePanel extends JPanel {
+	private class BildePanel extends JPanel {
 		//		ImageIcon a = new ImageIcon("/home/mads/Dropbox/Programmering/Eclipse-workspace/TTR/src/ttr/nordic/nordic_map.jpg");
 		//		Image b = a.getImage();
         final URL c = spel.getBakgrunnsbildet();
@@ -255,7 +256,7 @@ public class GUI extends JPanel {
 	 * @param tittel - kva tittelen på ramma skal vera
 	 * @param panel - eit JPanel med alt som skal vises fram 
 	 */
-    void lagRamme(String tittel, JPanel panel) {
+    public void lagRamme(String tittel, JPanel panel) {
 		JFrame frame = new JFrame();
 		frame.setContentPane(panel);
 		frame.setBackground(Color.DARK_GRAY);
@@ -265,8 +266,13 @@ public class GUI extends JPanel {
 		frame.setVisible(true);
 	}
 
+    @Override
+    public String showInputDialog(String string) {
+        return JOptionPane.showInputDialog(this, string);
+    }
 
-	void sendKortMelding(boolean kort, boolean tilfeldig, Farge f) throws RemoteException{
+
+    public void sendKortMelding(boolean kort, boolean tilfeldig, Farge f) throws RemoteException{
 		String melding;
 		if (kort) {
 			melding = hovud.getKvenSinTur().getNamn() +" trakk inn " +f;
@@ -292,7 +298,7 @@ public class GUI extends JPanel {
 
 
 
-	void nyPaaPlass(ISpelar vert, Farge nyFarge, int i) throws RemoteException{
+	public void nyPaaPlass(ISpelar vert, Farge nyFarge, int i) throws RemoteException{
 		if (vert.getNamn().equals(hovud.getMinSpelar().getNamn())){
 			for (ISpelar s : hovud.getSpelarar()){
 				// metode for å legge kortet vert nettopp trakk på plass i på bordet hos spelar s
@@ -315,7 +321,7 @@ public class GUI extends JPanel {
 	 * @param start - er det i byrjinga av spelet? (dvs. fem eller tre oppdrag)
 	 * @param talPaaOppdrag
 	 */
-    void trekkOppdrag(ISpelar s, boolean start) throws RemoteException{
+    public void trekkOppdrag(ISpelar s, boolean start) throws RemoteException{
 		int talPaaOppdrag;
 		if (start){
 			talPaaOppdrag = Konstantar.ANTAL_STARTOPPDRAG;
@@ -346,7 +352,7 @@ public class GUI extends JPanel {
 	 * @author mads
 	 *
 	 */
-	class okListener implements ActionListener {
+	private class okListener implements ActionListener {
 		public void gjer(int i, ActionEvent arg0){
 			if (arg0.getSource() == jcb.get(i)) {
 				if (valde.contains(oppdrag.get(i))){

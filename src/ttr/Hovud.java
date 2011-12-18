@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Hovud {
+public class Hovud implements IHovud {
 
 	// "Variablar"
 	private final ISpelUtgaave spel;
@@ -51,7 +51,7 @@ public class Hovud {
 		return gjenverandeOppdrag;
 	}
 
-	public static Set<Rute> getRuter() {
+	public Set<Rute> getRuter() {
 		return ruter;
 	}
 
@@ -77,7 +77,7 @@ public class Hovud {
 		return spelarar;
 	}
 
-	public static GUI getGui() {
+	public GUI getGui() {
 		return gui;
 	}
 
@@ -163,7 +163,7 @@ public class Hovud {
 	/** Spelaren er ferdig med sin tur, no er det neste spelar
 	 * @throws RemoteException 
 	 */
-    void nesteUtanNett(int sp){
+    private void nesteUtanNett(int sp){
 		if (sp == spelarar.size()) {
 			kvenSinTur = spelarar.get(0);
 		}
@@ -172,7 +172,7 @@ public class Hovud {
 		}
 	}
 
-	void nesteMedNett() throws RemoteException{
+	private void nesteMedNett() throws RemoteException{
 		int no = kvenSinTur.getSpelarNummer();
 		ISpelar host = null;
 		if (minSpelar.getSpelarNummer() == 0) {
@@ -238,7 +238,7 @@ public class Hovud {
 	}
 
 	//TODO: Utrekning av lengst rute / flest oppdrag
-    void sjekkOmFerdig() throws RemoteException{
+    private void sjekkOmFerdig() throws RemoteException{
 		if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
 			String poeng = "Spelet er ferdig.";
 
@@ -348,7 +348,7 @@ public class Hovud {
 	 * @throws RemoteException 
 	 */
 	public Rute[] finnFramRuter() throws RemoteException {
-		Set<Rute> ruter = Hovud.getRuter();
+		Set<Rute> ruter = getRuter();
         for (ISpelar aSpelarar1 : spelarar) {
             for (int j = 0; j < aSpelarar1.getBygdeRuterStr(); j++) {
                 int ruteId = aSpelarar1.getBygdeRuterId(j);
@@ -404,7 +404,7 @@ public class Hovud {
 		return ruterArray;
 	}
 
-	int velAntalJokrarDuVilBruke(Rute rute, ISpelar s, Farge valdFarge) throws RemoteException{
+	private int velAntalJokrarDuVilBruke(Rute rute, ISpelar s, Farge valdFarge) throws RemoteException{
 		int jokrar = s.getKort()[Konstantar.ANTAL_FARGAR-1];
 		int kormange = -1;
 		while (kormange < 0 || kormange > jokrar || kormange > rute.getLengde()) {
