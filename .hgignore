@@ -1,4 +1,4 @@
 syntax: glob
 
-*.class
+.class
 .svn
