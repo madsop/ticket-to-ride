@@ -475,7 +475,7 @@ class Hogrepanelet extends JPanel {
                 JPanel bygde = new JPanel();
 
                 if (hovud.getAlleBygdeRuter().size()>0) {
-                    @SuppressWarnings("unchecked") JList<Rute> bygd = new JList(hovud.getAlleBygdeRuter().toArray());
+                    @SuppressWarnings("unchecked") JList bygd = new JList(hovud.getAlleBygdeRuter().toArray());
 
                     /*	if (hovud.isNett()){
                               // Finn spel-verten

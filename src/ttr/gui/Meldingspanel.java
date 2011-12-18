@@ -19,7 +19,7 @@ import java.rmi.RemoteException;
  */
 class Meldingspanel extends JPanel implements PropertyChangeListener {
     private MeldingarModell meldingarmodell;
-    private JList<MeldingarModell> meldingar;
+    private JList meldingar;
     private JTextField chat;
     private static final String starttekst = "Prat her!";
     private boolean nett;
