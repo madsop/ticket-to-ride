@@ -30,7 +30,7 @@ public class Hovud implements IHovud {
 	private Bord bord;
 	private static Set<Rute> ruter;
 	private ArrayList<ISpelar> spelarar;
-	private IGUI gui;
+	private final IGUI gui;
 
 	private final boolean nett;
 	private int antalSpelarar;

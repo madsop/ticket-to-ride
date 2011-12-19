@@ -19,10 +19,12 @@ public class InitialiserNettverk {
     private final String hostAddress;
 	private final String PORT = "1226";
 	private final IGUI gui;
+    private int[] paaVertBordet;
 
 	public InitialiserNettverk(GUI gui, String hostAddress) {
 		this.hostAddress = hostAddress;
 		this.gui = gui;
+        paaVertBordet =new int[Konstantar.ANTAL_KORT_PÅ_BORDET];
 	}
 
 	public void initialiserSpel() throws HeadlessException, RemoteException {
@@ -72,38 +74,49 @@ public class InitialiserNettverk {
 			initialiserSpel(); // Vi prøver om att.
 		}
 	}
+    
+    private String initJoin(String remoteAddress){
+        System.setSecurityManager(new LiberalSecurityManager());
+        String url = "rmi://"+remoteAddress+":"+PORT+"/ISpelar"; // URL-en til verten i RMI-registeret.
+        System.out.println(url);
+
+        if (gui.getHovud().getSpelarar().size()+1 >= Konstantar.MAKS_ANTAL_SPELARAR) {
+            JOptionPane.showMessageDialog((Component) gui, "Synd, men det kan ikkje vera med fleire spelarar enn dei som no spelar. Betre lukke neste gong!");
+            System.exit(0);
+        }
+        return url;
+
+    } 
+    
+    private void faaMedSpelar(ISpelar s) throws RemoteException{
+        if (s.getSpelarNummer() == 0) {
+            gui.getHovud().getMinSpelar().setSpelarNummer(s.getSpelarteljar());
+            s.setSpelarteljar(s.getSpelarteljar()+1);
+
+            gui.getMeldingarModell().nyMelding(s.getNamn() +" er vert for spelet.");
+            paaVertBordet = s.getPaaBordetInt();
+        }
+
+        s.faaMelding(gui.getHovud().getMinSpelar().getNamn() + " har vorti med i spelet.");
+
+        if (s.getSpelarNummer()!=0){
+            gui.getMeldingarModell().nyMelding(s.getNamn() + " er òg med i spelet.");
+        }
+
+        s.registrerKlient(gui.getHovud().getMinSpelar());
+    }
 
 	void joinGame(String remoteAddress) throws HeadlessException, RemoteException {
-		System.setSecurityManager(new LiberalSecurityManager());
-		String url = "rmi://"+remoteAddress+":"+PORT+"/ISpelar"; // URL-en til verten i RMI-registeret.
-		System.out.println(url);
-
-		if (gui.getHovud().getSpelarar().size()+1 >= Konstantar.MAKS_ANTAL_SPELARAR) {
-			JOptionPane.showMessageDialog((Component) gui, "Synd, men det kan ikkje vera med fleire spelarar enn dei som no spelar. Betre lukke neste gong!");
-			System.exit(0);
-		}
+		String url = initJoin(remoteAddress);
 
 		try {
 			// Sei ifrå til host-spelaren
 			ISpelar join = (ISpelar)Naming.lookup(url);
 
 			gui.getHovud().getMinSpelar().registrerKlient(join); // Finn verten i RMI-registeret og registrér han som motstandaren min.
-			int[] paaVertBordet = null;
 			for (ISpelar s : gui.getHovud().getSpelarar()) {
-
-				if (s.getSpelarNummer() == 0) {
-					gui.getHovud().getMinSpelar().setSpelarNummer(s.getSpelarteljar());
-					s.setSpelarteljar(s.getSpelarteljar()+1);
-
-					gui.getMeldingarModell().nyMelding(s.getNamn() +" er vert for spelet.");
-					paaVertBordet = s.getPaaBordetInt();
-				}
-				s.faaMelding(gui.getHovud().getMinSpelar().getNamn() + " har vorti med i spelet.");
-
-				if (s.getSpelarNummer()!=0){
-					gui.getMeldingarModell().nyMelding(s.getNamn() + " er òg med i spelet.");
-				}
-				s.registrerKlient(gui.getHovud().getMinSpelar());
+                faaMedSpelar(s);
+                
 			}
 
 			Farge[] paaBord = new Farge[paaVertBordet.length];

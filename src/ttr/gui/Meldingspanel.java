@@ -21,16 +21,15 @@ class Meldingspanel extends JPanel implements PropertyChangeListener {
     private MeldingarModell meldingarmodell;
     private JList meldingar;
     private JTextField chat;
-    private static final String starttekst = "Prat her!";
     private final boolean nett;
-    private IHovud hovud;
-    
+
     public Meldingspanel(boolean nett) {
         this.setBackground(Color.WHITE);
         this.nett = nett;
     }
     public void setHovud(IHovud hovud){
-        this.hovud = hovud;
+        ChatListener cl = (ChatListener) chat.getKeyListeners()[0];
+        cl.setHovud(hovud);
     }
     
     public void createModell(){
@@ -47,9 +46,9 @@ class Meldingspanel extends JPanel implements PropertyChangeListener {
         this.add(mp);
     
         this.setPreferredSize(new Dimension(Konstantar.MELDINGSPANEL,Konstantar.HOGDE));
-    
-        chat = new JTextField(starttekst);
-        chat.addKeyListener(new ChatListener());
+
+        chat = new JTextField(ChatListener.starttekst);
+        chat.addKeyListener(new ChatListener(nett,chat,meldingarmodell));
         chat.setPreferredSize(Konstantar.CHATDIM);
         this.add(chat);
     
@@ -60,48 +59,7 @@ class Meldingspanel extends JPanel implements PropertyChangeListener {
         return meldingarmodell;
     }
 
-    private class ChatListener implements KeyListener {
-        public void keyPressed(KeyEvent arg0) {	}
 
-        public void keyReleased(KeyEvent arg0) {
-            if (arg0.getKeyCode() == KeyEvent.VK_ENTER){
-                String melding = "";
-                if (nett){
-                    try {
-                        System.out.println(hovud);
-                        System.out.println(hovud.getMinSpelar());
-                        melding = hovud.getMinSpelar().getNamn();
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else{
-                    try {
-                        melding = hovud.getKvenSinTur().getNamn();
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }
-                melding += ": " +chat.getText();
-                if (nett){
-                    meldingarmodell.nyMelding(melding);
-                }
-
-                for (ISpelar s : hovud.getSpelarar()){
-                    try {
-                        s.faaMelding(melding);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }
-                chat.setText("");
-            }
-            else if (chat.getText().contains(starttekst)){
-                chat.setText(String.valueOf(arg0.getKeyChar()));
-            }
-        }
-        public void keyTyped(KeyEvent arg0) {}
-    }
 
 
     public void propertyChange(PropertyChangeEvent arg0) {
