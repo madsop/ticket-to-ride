@@ -1,6 +1,6 @@
 package ttr.gui;
 
-import ttr.IHovud;
+import ttr.kjerna.IHovud;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.spelar.ISpelar;

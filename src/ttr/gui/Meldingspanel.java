@@ -1,22 +1,14 @@
 package ttr.gui;
 
-import ttr.IHovud;
+import ttr.kjerna.IHovud;
 import ttr.data.Konstantar;
-import ttr.spelar.ISpelar;
+import ttr.data.MeldingarModell;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.rmi.RemoteException;
 
-/**
- * User: mop
- * Date: 13.12.11
- * Time: 10:13
- */
 class Meldingspanel extends JPanel implements PropertyChangeListener {
     private MeldingarModell meldingarmodell;
     private JList meldingar;
@@ -47,20 +39,20 @@ class Meldingspanel extends JPanel implements PropertyChangeListener {
     
         this.setPreferredSize(new Dimension(Konstantar.MELDINGSPANEL,Konstantar.HOGDE));
 
+        prepareChat();
+        meldingarmodell.nyMelding("Spelet startar. Velkommen!");
+    }
+
+    public void prepareChat(){
         chat = new JTextField(ChatListener.starttekst);
         chat.addKeyListener(new ChatListener(nett,chat,meldingarmodell));
         chat.setPreferredSize(Konstantar.CHATDIM);
         this.add(chat);
-    
-        meldingarmodell.nyMelding("Spelet startar. Velkommen!");
     }
 
     public MeldingarModell getMeldingarModell(){
         return meldingarmodell;
     }
-
-
-
 
     public void propertyChange(PropertyChangeEvent arg0) {
         if (arg0.getPropertyName().equals(MeldingarModell.MELDINGAR_PROPERTY)){

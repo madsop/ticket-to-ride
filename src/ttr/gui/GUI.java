@@ -1,10 +1,13 @@
 package ttr.gui;
 
-import ttr.Hovud;
-import ttr.IHovud;
+import ttr.bord.Bord;
+import ttr.bord.IBord;
+import ttr.kjerna.Hovud;
+import ttr.kjerna.IHovud;
 import ttr.Main;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
+import ttr.data.MeldingarModell;
 import ttr.nettverk.InitialiserNettverk;
 import ttr.spelar.ISpelar;
 import ttr.struktur.Oppdrag;
@@ -67,7 +70,8 @@ public class GUI extends JPanel implements  IGUI {
         nettv = nett == JOptionPane.YES_OPTION;
 
         byggMeldingsboks(nettv);
-        hovud = new Hovud(this, nettv,spel);
+        IBord bord = new Bord(this,nettv);
+        hovud = new Hovud(this,bord,nettv,spel);            // TODO
         meldingsboks.setHovud(hovud);
 		byggHogrepanel();
 

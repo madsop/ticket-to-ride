@@ -1,11 +1,10 @@
-package ttr;
+package ttr.bord;
 
 import ttr.data.Farge;
 import ttr.data.Konstantar;
-import ttr.gui.GUI;
 import ttr.gui.IGUI;
 
-public class Bord {
+public class Bord implements IBord {
     private final IGUI gui;
     private Farge[] paaBordet;
 
@@ -35,7 +34,7 @@ public class Bord {
 		gui.setKortPaaBordet(plass, f);
 	}
 
-	private final int[] igjenAvFargekort = {
+	private final int[] igjenAvFargekort = {    // TODO lag ein finare struktur for fargar og fargekort generelt
 			Konstantar.ANTAL_AV_KVART_FARGEKORT,
 			Konstantar.ANTAL_AV_KVART_FARGEKORT,
 			Konstantar.ANTAL_AV_KVART_FARGEKORT,
@@ -71,7 +70,7 @@ public class Bord {
 		return fargekortpåbordet;
 	}
 
-	int tilfeldigFarge(){
+	private int tilfeldigFarge(){
 		int fargekortpåbordet = getAntalFargekortPåBordet();
 		int valtkort = (int) (Math.random() * fargekortpåbordet);
 
@@ -107,7 +106,7 @@ public class Bord {
 	 * Viss det tabbar seg ut, ror det litt. (else[...])
 	 * @param Kva for plass på bordet det får (0 til 4)
 	 */
-    void leggKortPåBordet(int plass, int teljar) {
+    private void leggKortPåBordet(int plass, int teljar) {
 		if (teljar >= 0 && teljar < Konstantar.ANTAL_FARGAR) {	
 			paaBordet[plass] = Konstantar.FARGAR[teljar];
 			igjenAvFargekort[teljar]--;

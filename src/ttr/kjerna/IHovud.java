@@ -1,5 +1,6 @@
-package ttr;
+package ttr.kjerna;
 
+import ttr.bord.IBord;
 import ttr.gui.IGUI;
 import ttr.spelar.ISpelar;
 import ttr.struktur.Oppdrag;
@@ -19,7 +20,7 @@ public interface IHovud extends Remote {
 
     public void setMinSpelar(ISpelar spelar);
 
-    public Bord getBord();
+    public IBord getBord();
     public boolean isNett();
 
 

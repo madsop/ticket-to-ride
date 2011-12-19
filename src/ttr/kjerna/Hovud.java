@@ -1,8 +1,9 @@
-package ttr;
+package ttr.kjerna;
 
+import ttr.bord.Bord;
+import ttr.bord.IBord;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
-import ttr.gui.GUI;
 import ttr.gui.IGUI;
 import ttr.spelar.ISpelar;
 import ttr.spelar.SpelarImpl;
@@ -27,7 +28,7 @@ public class Hovud implements IHovud {
 	}
 */
 
-	private Bord bord;
+	private IBord bord;
 	private static Set<Rute> ruter;
 	private ArrayList<ISpelar> spelarar;
 	private final IGUI gui;
@@ -41,10 +42,11 @@ public class Hovud implements IHovud {
 	private ArrayList<Rute> alleBygdeRuter;
 	private ISpelar minSpelar;
 
-	public Hovud(IGUI gui, boolean nett, ISpelUtgaave spel) throws RemoteException {
+	public Hovud(IGUI gui, IBord bord, boolean nett, ISpelUtgaave spel) throws RemoteException {
 		this.gui = gui;
 		this.nett = nett;
 		this.spel = spel;
+        this.bord = bord;
 		LagBrettet(nett);
 	}
 
@@ -63,7 +65,7 @@ public class Hovud implements IHovud {
 		minSpelar = spelar;
 	}
 
-	public Bord getBord() {
+	public IBord getBord() {
 		return bord;
 	}
 	public boolean isNett() {
@@ -107,7 +109,6 @@ public class Hovud implements IHovud {
 	 */
 	private void LagBrettet(boolean nett) throws RemoteException {
 		spelarar = new ArrayList<ISpelar>();
-		bord = new Bord(gui,nett);
 		ruter = spel.getRuter();
 		alleBygdeRuter = new ArrayList<Rute>();
 

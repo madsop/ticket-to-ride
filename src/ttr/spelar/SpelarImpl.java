@@ -1,6 +1,6 @@
 package ttr.spelar;
 
-import ttr.IHovud;
+import ttr.kjerna.IHovud;
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
 import ttr.data.Konstantar;

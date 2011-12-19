@@ -21,22 +21,32 @@ public class Main {
 		String arg;
 		if (args.length < 1) { arg = "localhost"; } // If there are no arguments passed, we choose localhost as default.
 		else { arg = args[0]; }
-		String valstring = "Vel Ticket to ride-utgåve";
+        
+        ISpelUtgaave spel = velSpel();
+
+        mekkGUI(spel,arg);
+	}
+    
+    public static ISpelUtgaave velSpel(){
+        String valstring = "Vel Ticket to ride-utgåve";
         ISpelUtgaave[] spela = new ISpelUtgaave[2];
         spela[0] = new Nordic();
-		spela[1] = new Europe();
-		int spel = JOptionPane.showOptionDialog(frame, valstring, valstring, JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, spela, spela[0]);
-		if (spel >= 0 && spel < spela.length){
-			IGUI gui = new GUI(frame,arg,spela[spel]);        // TODO: dependency injection
-			frame.setTitle(frame.getTitle() + " - " +spela[spel].getTittel());
-			frame.setContentPane((Container) gui);
-			frame.pack();
-			frame.setLocationRelativeTo(null);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setVisible(true);
-		}
-		else {
-			System.exit(0);
-		}
-	}
+        spela[1] = new Europe();
+        int spel = JOptionPane.showOptionDialog(frame, valstring, valstring, JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, spela, spela[0]);
+        if (!(spel >= 0 && spel < spela.length)){
+            System.exit(0);
+        }
+
+        return spela[spel];
+    }
+    
+    public static void mekkGUI(ISpelUtgaave utgaave, String hostAdresse) throws RemoteException{
+        IGUI gui = new GUI(frame,hostAdresse,utgaave);        // TODO: dependency injection
+        frame.setTitle(frame.getTitle() + " - " +utgaave.getTittel());
+        frame.setContentPane((Container) gui);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
 }

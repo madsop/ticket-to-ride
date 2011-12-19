@@ -1,4 +1,4 @@
-package ttr.gui;
+package ttr.data;
 
 import javax.swing.*;
 import java.beans.PropertyChangeListener;
