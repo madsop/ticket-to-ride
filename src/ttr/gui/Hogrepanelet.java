@@ -261,7 +261,7 @@ class Hogrepanelet extends JPanel {
                 */			try {
                 if (hovud.isNett() && (!hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn())) ) {
                     if (!(arg0.getSource() == visBygde || arg0.getSource() == visMineKort || arg0.getSource() == visMineOppdrag)) {
-                        JOptionPane.showMessageDialog(hovud.getGui(), "Det er ikkje din tur!");
+                        JOptionPane.showMessageDialog((Component) hovud.getGui(), "Det er ikkje din tur!");
                         return;
                     }
                 }

@@ -1,10 +1,9 @@
 package ttr;
 
-import ttr.gui.GUI;
+import ttr.gui.IGUI;
 import ttr.spelar.ISpelar;
 import ttr.struktur.Oppdrag;
 import ttr.struktur.Rute;
-import ttr.utgaave.ISpelUtgaave;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -28,7 +27,7 @@ public interface IHovud extends Remote {
 
     public ArrayList<ISpelar> getSpelarar();
 
-    public GUI getGui();
+    public IGUI getGui();
 
     public int getAntalGjenverandeOppdrag ();
     public Oppdrag getOppdrag();

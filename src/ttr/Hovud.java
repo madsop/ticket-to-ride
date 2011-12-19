@@ -3,6 +3,7 @@ package ttr;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.gui.GUI;
+import ttr.gui.IGUI;
 import ttr.spelar.ISpelar;
 import ttr.spelar.SpelarImpl;
 import ttr.struktur.Oppdrag;
@@ -29,7 +30,7 @@ public class Hovud implements IHovud {
 	private Bord bord;
 	private static Set<Rute> ruter;
 	private ArrayList<ISpelar> spelarar;
-	private static GUI gui;
+	private IGUI gui;
 
 	private final boolean nett;
 	private int antalSpelarar;
@@ -40,8 +41,8 @@ public class Hovud implements IHovud {
 	private ArrayList<Rute> alleBygdeRuter;
 	private ISpelar minSpelar;
 
-	public Hovud(GUI gui, boolean nett, ISpelUtgaave spel) throws RemoteException {
-		Hovud.gui = gui;
+	public Hovud(IGUI gui, boolean nett, ISpelUtgaave spel) throws RemoteException {
+		this.gui = gui;
 		this.nett = nett;
 		this.spel = spel;
 		LagBrettet(nett);
@@ -77,7 +78,7 @@ public class Hovud implements IHovud {
 		return spelarar;
 	}
 
-	public GUI getGui() {
+	public IGUI getGui() {
 		return gui;
 	}
 
@@ -130,7 +131,7 @@ public class Hovud implements IHovud {
 		// Legg til spelarar
 		while ( (antalSpelarar != 2) && (antalSpelarar != 3)) { // Sett antal spelarar
 			Object[] val = {2,3};
-			antalSpelarar = JOptionPane.showOptionDialog(gui, "Kor mange spelarar skal vera med??", "Antal spelarar?", 0, 3, null,val, 2);
+			antalSpelarar = JOptionPane.showOptionDialog((Component) gui, "Kor mange spelarar skal vera med??", "Antal spelarar?", 0, 3, null,val, 2);
 			antalSpelarar += 2;
 		}
 
@@ -325,7 +326,7 @@ public class Hovud implements IHovud {
 				s.faaMelding(vinnaren);
 				s.visSpeletErFerdigmelding(poeng);
 			}
-			JOptionPane.showMessageDialog(Hovud.gui, poeng);
+			JOptionPane.showMessageDialog((Component) gui, poeng);
 		}
 	}
 
@@ -456,7 +457,7 @@ public class Hovud implements IHovud {
 			if (mulegeFargar.size() > 0){
 				int i = -2;
 				while (i<0 || i > mulegeFargar.size()){
-					i = JOptionPane.showOptionDialog(gui, "Vel farge å byggje i", "Vel farge å byggje i", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, mulegeFargar.toArray(), mulegeFargar.get(0));
+					i = JOptionPane.showOptionDialog((Component) gui, "Vel farge å byggje i", "Vel farge å byggje i", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, mulegeFargar.toArray(), mulegeFargar.get(0));
 
 					if (i==-1){
 						return;
@@ -488,7 +489,7 @@ public class Hovud implements IHovud {
 		if (!(jokrar <= byggjandeSpelar.getKort()[Konstantar.ANTAL_FARGAR-1] 
 		                                          && (kortKrevd-(jokrar-krevdJokrar) <= byggjandeSpelar.getKort()[plass]))){
 			if (bygd.getFarge() != Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1]){
-				JOptionPane.showMessageDialog(gui, "Synd, men du har ikkje nok kort til det her. ");
+				JOptionPane.showMessageDialog((Component) gui, "Synd, men du har ikkje nok kort til det her. ");
 			}
 		}
 		for (int i = 0; i < Konstantar.ANTAL_FARGAR; i++){
@@ -532,7 +533,7 @@ public class Hovud implements IHovud {
 		for (int i = 0; i < treTrekte.length; i++) {
 			treTrekte[i] = bord.getTilfeldigKortFråBordet(0, false);
 			if (treTrekte[i] == null){
-				JOptionPane.showMessageDialog(gui, "Det er ikkje fleire kort igjen på bordet, du må vente til det kjem kort i bunken før du kan prøve å byggje tunnelen.");
+				JOptionPane.showMessageDialog((Component) gui, "Det er ikkje fleire kort igjen på bordet, du må vente til det kjem kort i bunken før du kan prøve å byggje tunnelen.");
 				return;
 			}
 			if (treTrekte[i] == Farge.valfri || treTrekte[i] == bygd.getFarge()) {
@@ -540,7 +541,7 @@ public class Hovud implements IHovud {
 			}
 		}
 
-		int byggLell = JOptionPane.showConfirmDialog(gui, "Du prøver å byggje ei rute som er tunnel. " +
+		int byggLell = JOptionPane.showConfirmDialog((Component) gui, "Du prøver å byggje ei rute som er tunnel. " +
 				"Det krev at du snur tre kort. Det vart " +treTrekte[0] +", "
 				+treTrekte[1] +" og " +treTrekte[2] 
 				                                 +". Altså må du betale " +ekstra +" ekstra kort. Vil du det?");

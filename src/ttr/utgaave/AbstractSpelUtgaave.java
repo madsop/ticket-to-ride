@@ -14,6 +14,7 @@ public abstract class AbstractSpelUtgaave {
 	
 	private final URL bakgrunnsbildet;
 
+    @SuppressWarnings("UnusedDeclaration")
 	public URL getBakgrunnsbildet() {
 		return bakgrunnsbildet;
 	}
@@ -28,14 +29,17 @@ public abstract class AbstractSpelUtgaave {
     protected abstract Set<Rute> leggTilRuter();
     protected abstract ArrayList<Oppdrag> fyllMedOppdrag();
 
+    @SuppressWarnings("UnusedDeclaration")
     public ArrayList<Oppdrag> getOppdrag() {
 		return oppdrag;
     }
 
+    @SuppressWarnings("UnusedDeclaration")
 	public Set<Rute> getRuter() {
 		return ruter;
 	}
 
+    @SuppressWarnings("UnusedDeclaration")
 	public String getTittel() {
 		return tittel;
 	}

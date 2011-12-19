@@ -26,9 +26,6 @@ public class GUI extends JPanel implements  IGUI {
 	public IHovud getHovud() {
 		return hovud;
 	}
-    public JFrame getFrame(){
-        return frame;
-    }
 
     private final BildePanel bp;
 	private Meldingspanel meldingsboks;

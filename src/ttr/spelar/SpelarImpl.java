@@ -372,7 +372,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	public Farge getTilfeldigKortFråBordet(int i) throws RemoteException {
 		Farge f = hovud.getBord().getTilfeldigKortFråBordet(i, true);
 		if (f == null){
-			JOptionPane.showMessageDialog(hovud.getGui(), "Det er ikkje noko kort der, ser du vel.");
+			JOptionPane.showMessageDialog((Component) hovud.getGui(), "Det er ikkje noko kort der, ser du vel.");
 			hovud.getGui().getKortButtons()[i].setBackground(Color.GRAY);
 			hovud.getGui().getKortButtons()[i].setText("Tom");
 			
@@ -455,7 +455,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	}
 	
 	public void visSpeletErFerdigmelding(String melding) throws RemoteException {
-		JOptionPane.showMessageDialog(hovud.getGui(), melding);
+		JOptionPane.showMessageDialog((Component) hovud.getGui(), melding);
 	}
 	public void faaMelding(String melding) throws RemoteException{
 		hovud.getGui().getMeldingarModell().nyMelding(melding);

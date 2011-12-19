@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
 
 public interface IGUI {
     public IHovud getHovud();
-    public JFrame getFrame();
+
     public MeldingarModell getMeldingarModell();
     public void setSpelarnamn(String spelarnamn);
     public JTextField getSpelarnamn();
@@ -20,6 +20,6 @@ public interface IGUI {
     void nyPaaPlass(ISpelar vert, Farge nyFarge, int i) throws RemoteException;
     void trekkOppdrag(ISpelar s, boolean start) throws RemoteException;
     void lagRamme(String tittel, JPanel panel);
-    public String showInputDialog(String string);
+    public String showInputDialog(String string);                       // TODO: bruk denne og liknande meir
 
 }

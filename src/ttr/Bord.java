@@ -3,12 +3,13 @@ package ttr;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.gui.GUI;
+import ttr.gui.IGUI;
 
 public class Bord {
-    private final GUI gui;
+    private final IGUI gui;
     private Farge[] paaBordet;
 
-    public Bord(GUI gui, boolean nett) {
+    public Bord(IGUI gui, boolean nett) {
         this.gui = gui;
         paaBordet = new Farge[Konstantar.ANTAL_KORT_PÅ_BORDET];
 
