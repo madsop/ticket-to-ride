@@ -79,62 +79,26 @@
       <file leaf-file-name="SpelarImpl.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ttr/spelar/SpelarImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="230" column="14" selection-start="6226" selection-end="6226" vertical-scroll-proportion="0.0">
+            <state line="114" column="59" selection-start="3187" selection-end="3187" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Hogrepanelet.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Hogrepanelet.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="7" selection-start="25" selection-end="25" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="InitialiserNettverk.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ttr/nettverk/InitialiserNettverk.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="59" column="0" selection-start="2058" selection-end="2058" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TCPTransport.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar:///usr/lib/jvm/java-6-sun/jre/lib/rt.jar!/sun/rmi/transport/tcp/TCPTransport.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="79" column="0" selection-start="3915" selection-end="3915" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GUI.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ttr/gui/GUI.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="350" column="17" selection-start="9332" selection-end="9332" vertical-scroll-proportion="0.73138297">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Nordic.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ttr/utgaave/nordic/Nordic.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="133" column="34" selection-start="9334" selection-end="9334" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Europe.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ttr/utgaave/europe/Europe.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="34" selection-start="821" selection-end="821" vertical-scroll-proportion="0.0">
-              <folding />
+            <state line="503" column="49" selection-start="16828" selection-end="16828" vertical-scroll-proportion="0.70277077">
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#setKortPaaBordet#0;class#Hogrepanelet#0" expanded="false" />
+                <element signature="method#trekkOppragHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
+                <element signature="method#byggHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
+                <element signature="method#visBygdeHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
+                <element signature="e#14623#14653#1" expanded="true" />
+                <element signature="method#visFargekorta#0;class#Hogrepanelet#0" expanded="false" />
+                <element signature="method#mekkKortButton#0;class#Hogrepanelet#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -149,10 +113,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/ttr/IBord.java" />
-        <option value="$PROJECT_DIR$/src/ttr/Bord.java" />
-        <option value="$PROJECT_DIR$/src/ttr/kjerna/IHovud.java" />
-        <option value="$PROJECT_DIR$/src/ttr/gui/IGUI.java" />
         <option value="$PROJECT_DIR$/src/ttr/Main.java" />
         <option value="$PROJECT_DIR$/src/ttr/spelar/IOppdragshandsamar.java" />
         <option value="$PROJECT_DIR$/src/ttr/spelar/Oppdragshandsamar.java" />
@@ -160,11 +120,15 @@
         <option value="$PROJECT_DIR$/src/ttr/nettverk/InitialiserNettverk.java" />
         <option value="$PROJECT_DIR$/src/ttr/spelar/ISpelar.java" />
         <option value="$PROJECT_DIR$/src/ttr/struktur/Oppdrag.java" />
+        <option value="$PROJECT_DIR$/src/ttr/spelar/SpelarImpl.java" />
+        <option value="$PROJECT_DIR$/src/ttr/utgaave/AbstractSpelUtgaave.java" />
         <option value="$PROJECT_DIR$/src/ttr/utgaave/nordic/Nordic.java" />
         <option value="$PROJECT_DIR$/src/ttr/utgaave/europe/Europe.java" />
-        <option value="$PROJECT_DIR$/src/ttr/spelar/SpelarImpl.java" />
-        <option value="$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java" />
         <option value="$PROJECT_DIR$/src/ttr/gui/GUI.java" />
+        <option value="$PROJECT_DIR$/src/ttr/bord/Bord.java" />
+        <option value="$PROJECT_DIR$/src/ttr/bord/BordHjelpar.java" />
+        <option value="$PROJECT_DIR$/src/ttr/gui/GjerNokoListener.java" />
+        <option value="$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java" />
       </list>
     </option>
   </component>
@@ -282,6 +246,54 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="utgaave" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TTR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ticket-to-ride" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ttr" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="utgaave" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nordic" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TTR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ticket-to-ride" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ttr" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="struktur" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -305,6 +317,94 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="spelar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TTR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ticket-to-ride" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ttr" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nettverk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TTR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ticket-to-ride" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ttr" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kjerna" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TTR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ticket-to-ride" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ttr" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TTR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ticket-to-ride" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ttr" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bord" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -422,7 +522,7 @@
   <component name="ShelveChangesManager" show_recycled="false" />
   <component name="ToolWindowManager">
     <frame x="0" y="24" width="1366" height="744" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -430,7 +530,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23827252" sideWeight="0.69648564" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23827252" sideWeight="0.69648564" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -496,28 +596,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ttr/bord/IBord.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="48" selection-start="589" selection-end="589" vertical-scroll-proportion="0.7233502" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/kjerna/IHovud.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="20" selection-end="20" vertical-scroll-proportion="-0.14213198" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="28" selection-start="645" selection-end="645" vertical-scroll-proportion="0.45053002">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/bord/Bord.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="16" selection-start="108" selection-end="108" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ttr/kjerna/Hovud.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="316" column="17" selection-start="7367" selection-end="7367" vertical-scroll-proportion="0.0">
@@ -546,38 +624,66 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/struktur/Rute.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="13" selection-start="198" selection-end="198" vertical-scroll-proportion="-2.2390745">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/utgaave/AbstractSpelUtgaave.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="22" selection-start="870" selection-end="870" vertical-scroll-proportion="1.0796915">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ttr/utgaave/nordic/Nordic.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="133" column="34" selection-start="9334" selection-end="9334" vertical-scroll-proportion="0.0">
-          <folding />
+        <state line="225" column="28" selection-start="13823" selection-end="13823" vertical-scroll-proportion="0.92287916">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ttr/utgaave/europe/Europe.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="34" selection-start="821" selection-end="821" vertical-scroll-proportion="0.0">
+        <state line="35" column="22" selection-start="964" selection-end="971" vertical-scroll-proportion="0.6529563">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/spelar/SpelarImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/ttr/gui/GUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="230" column="14" selection-start="6226" selection-end="6226" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="7" selection-start="25" selection-end="25" vertical-scroll-proportion="0.0">
+        <state line="12" column="29" selection-start="312" selection-end="312" vertical-scroll-proportion="0.2925532">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="jar:///usr/lib/jvm/java-6-sun/jre/lib/rt.jar!/sun/rmi/transport/tcp/TCPTransport.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="79" column="0" selection-start="3915" selection-end="3915" vertical-scroll-proportion="0.0">
+        <state line="79" column="0" selection-start="3915" selection-end="3915" vertical-scroll-proportion="0.77329975">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/bord/BordHjelpar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="0" selection-start="48" selection-end="48" vertical-scroll-proportion="0.103626944">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/bord/Bord.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="94" column="31" selection-start="2715" selection-end="2715" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="method#Bord#0;class#Bord#0" expanded="false" />
+            <element signature="method#setPaaBordet#0;class#Bord#0" expanded="false" />
+            <element signature="method#setEinPaaBordet#0;class#Bord#0" expanded="false" />
+            <element signature="method#leggUtFem#0;class#Bord#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -588,17 +694,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/struktur/Rute.java">
+    <entry file="file://$PROJECT_DIR$/src/ttr/gui/GjerNokoListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="13" selection-start="198" selection-end="198" vertical-scroll-proportion="-2.2390745">
+        <state line="22" column="58" selection-start="525" selection-end="525" vertical-scroll-proportion="0.5621806">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1320#1350#0" expanded="true" />
+            <element signature="e#9716#9746#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/spelar/SpelarImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="114" column="59" selection-start="3187" selection-end="3187" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/gui/GUI.java">
+    <entry file="file://$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="350" column="17" selection-start="9332" selection-end="9332" vertical-scroll-proportion="0.73138297">
-          <folding />
+        <state line="503" column="49" selection-start="16828" selection-end="16828" vertical-scroll-proportion="0.70277077">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#setKortPaaBordet#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="method#trekkOppragHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="method#byggHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="method#visBygdeHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="e#14623#14653#1" expanded="true" />
+            <element signature="method#visFargekorta#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="method#mekkKortButton#0;class#Hogrepanelet#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

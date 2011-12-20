@@ -11,7 +11,6 @@ import ttr.data.MeldingarModell;
 import ttr.nettverk.InitialiserNettverk;
 import ttr.spelar.ISpelar;
 import ttr.struktur.IOppdrag;
-import ttr.struktur.Oppdrag;
 import ttr.utgaave.ISpelUtgaave;
 
 import javax.swing.*;

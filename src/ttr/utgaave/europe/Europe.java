@@ -29,10 +29,10 @@ public class Europe extends AbstractSpelUtgaave implements ISpelUtgaave {
 	}
 	
 	protected ArrayList<IOppdrag> fyllMedOppdrag() {
-		IOppdrag = new ArrayList<IOppdrag>();
+		oppdrag = new ArrayList<IOppdrag>();
 		int oppdragsid = 0;
-		IOppdrag.add(new Oppdrag(oppdragsid,Destinasjon.Brest,Destinasjon.Petrograd,21));
+		oppdrag.add(new Oppdrag(oppdragsid,Destinasjon.Brest,Destinasjon.Petrograd,21));
 		//oppdragsid++;
-		return IOppdrag;
+		return oppdrag;
 	}
 }

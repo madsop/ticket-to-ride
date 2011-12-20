@@ -9,7 +9,7 @@ import java.util.Set;
 
 public abstract class AbstractSpelUtgaave {
 	private final String tittel;
-	protected ArrayList<IOppdrag> IOppdrag;
+	protected ArrayList<IOppdrag> oppdrag;
 	protected Set<Rute> ruter;
 	
 	private final URL bakgrunnsbildet;
@@ -23,7 +23,7 @@ public abstract class AbstractSpelUtgaave {
 		this.tittel = tittel;
 		bakgrunnsbildet = getClass().getResource(adresse);
         ruter = leggTilRuter();
-        IOppdrag = fyllMedOppdrag();
+        oppdrag = fyllMedOppdrag();
 	}
 
     protected abstract Set<Rute> leggTilRuter();
@@ -31,7 +31,7 @@ public abstract class AbstractSpelUtgaave {
 
     @SuppressWarnings("UnusedDeclaration")
     public ArrayList<IOppdrag> getOppdrag() {
-		return IOppdrag;
+		return oppdrag;
     }
 
     @SuppressWarnings("UnusedDeclaration")

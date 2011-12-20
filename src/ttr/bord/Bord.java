@@ -7,10 +7,23 @@ import ttr.gui.IGUI;
 public class Bord implements IBord {
     private final IGUI gui;
     private Farge[] paaBordet;
+    private BordHjelpar bordHjelpar;
+    private final int[] igjenAvFargekort = {    // TODO lag ein finare struktur for fargar og fargekort generelt
+            Konstantar.ANTAL_AV_KVART_FARGEKORT,
+            Konstantar.ANTAL_AV_KVART_FARGEKORT,
+            Konstantar.ANTAL_AV_KVART_FARGEKORT,
+            Konstantar.ANTAL_AV_KVART_FARGEKORT,
+            Konstantar.ANTAL_AV_KVART_FARGEKORT,
+            Konstantar.ANTAL_AV_KVART_FARGEKORT,
+            Konstantar.ANTAL_AV_KVART_FARGEKORT,
+            Konstantar.ANTAL_AV_KVART_FARGEKORT,
+            Konstantar.ANTAL_AV_KVART_FARGEKORT+2
+    }; // samme rekkjefølge som i fargar
 
     public Bord(IGUI gui, boolean nett) {
         this.gui = gui;
         paaBordet = new Farge[Konstantar.ANTAL_KORT_PÅ_BORDET];
+        bordHjelpar = new BordHjelpar();
 
         // Legg ut dei fem korta på bordet
         if (!nett){       // TODO: Få generalisert bort denne if-en
@@ -34,17 +47,6 @@ public class Bord implements IBord {
 		gui.setKortPaaBordet(plass, f);
 	}
 
-	private final int[] igjenAvFargekort = {    // TODO lag ein finare struktur for fargar og fargekort generelt
-			Konstantar.ANTAL_AV_KVART_FARGEKORT,
-			Konstantar.ANTAL_AV_KVART_FARGEKORT,
-			Konstantar.ANTAL_AV_KVART_FARGEKORT,
-			Konstantar.ANTAL_AV_KVART_FARGEKORT,
-			Konstantar.ANTAL_AV_KVART_FARGEKORT,
-			Konstantar.ANTAL_AV_KVART_FARGEKORT,
-			Konstantar.ANTAL_AV_KVART_FARGEKORT,
-			Konstantar.ANTAL_AV_KVART_FARGEKORT,
-			Konstantar.ANTAL_AV_KVART_FARGEKORT+2
-	}; // samme rekkjefølge som i fargar
 
 	public void leggUtFem() {
 		for (int i = 0; i < Konstantar.ANTAL_KORT_PÅ_BORDET; i++) { // Legg ut fem kort på bordet
@@ -70,24 +72,9 @@ public class Bord implements IBord {
 		return fargekortpåbordet;
 	}
 
-	private int tilfeldigFarge(){
-		int fargekortpåbordet = getAntalFargekortPåBordet();
-		int valtkort = (int) (Math.random() * fargekortpåbordet);
-
-		int teljar = 0;
-		int midlertidigverdi = 0;
-		while ((midlertidigverdi < valtkort) 
-				&& (teljar < Konstantar.ANTAL_FARGAR) 
-				&& (midlertidigverdi <= fargekortpåbordet)) {
-			midlertidigverdi += igjenAvFargekort[teljar];
-			teljar++;
-		}
-		teljar--;
-		return teljar;
-	}
-
 	public Farge getTilfeldigKortFråBordet(int plass, boolean leggPåBordet) {
-		int teljar = tilfeldigFarge();
+        int fargekortpåbordet = getAntalFargekortPåBordet();
+		int teljar = bordHjelpar.tilfeldigFarge(fargekortpåbordet,igjenAvFargekort);
 		if (teljar >= 0 && teljar <= Konstantar.ANTAL_FARGAR) {
 			if (leggPåBordet) {
 				leggKortPåBordet(plass, teljar);
@@ -126,7 +113,6 @@ public class Bord implements IBord {
 				jokrar++;
 			}
 		}
-
         return jokrar > Konstantar.MAKS_JOKRAR_PAA_BORDET;
     }
 }
