@@ -2,12 +2,13 @@ package ttr.struktur;
 
 import ttr.data.Destinasjon;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 
 
-public class Oppdrag {
+public class Oppdrag implements Serializable {
 	private final int oppdragsid;
 	private final Set<Destinasjon> destinasjonar;
 	private final int verdi;
