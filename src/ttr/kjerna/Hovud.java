@@ -27,7 +27,7 @@ public class Hovud implements IHovud {
 	}
 */
 
-	private IBord bord;
+	private final IBord bord;
 	private static Set<Rute> ruter;
 	private ArrayList<ISpelar> spelarar;
 	private final IGUI gui;

@@ -4,7 +4,7 @@ import ttr.data.Konstantar;
 
 class BordHjelpar {
 
-    protected int tilfeldigFarge(int fargekortpåbordet, int[] igjenAvFargekort){
+    int tilfeldigFarge(int fargekortpåbordet, int[] igjenAvFargekort){
         int valtkort = (int) (Math.random() * fargekortpåbordet);
 
         int teljar = 0;

@@ -7,7 +7,7 @@ import ttr.gui.IGUI;
 public class Bord implements IBord {
     private final IGUI gui;
     private Farge[] paaBordet;
-    private BordHjelpar bordHjelpar;
+    private final BordHjelpar bordHjelpar;
     private final int[] igjenAvFargekort = {    // TODO lag ein finare struktur for fargar og fargekort generelt
             Konstantar.ANTAL_AV_KVART_FARGEKORT,
             Konstantar.ANTAL_AV_KVART_FARGEKORT,
@@ -74,7 +74,7 @@ public class Bord implements IBord {
 
 	public Farge getTilfeldigKortFråBordet(int plass, boolean leggPåBordet) {
         int fargekortpåbordet = getAntalFargekortPåBordet();
-		int teljar = bordHjelpar.tilfeldigFarge(fargekortpåbordet,igjenAvFargekort);
+		int teljar = bordHjelpar.tilfeldigFarge(fargekortpåbordet, igjenAvFargekort);
 		if (teljar >= 0 && teljar <= Konstantar.ANTAL_FARGAR) {
 			if (leggPåBordet) {
 				leggKortPåBordet(plass, teljar);

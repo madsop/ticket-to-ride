@@ -27,7 +27,7 @@ public class Main {
         mekkGUI(spel,arg);
 	}
     
-    public static ISpelUtgaave velSpel(){
+    private static ISpelUtgaave velSpel(){
         String valstring = "Vel Ticket to ride-utgåve";
         ISpelUtgaave[] spela = new ISpelUtgaave[2];
         spela[0] = new Nordic();
@@ -40,7 +40,7 @@ public class Main {
         return spela[spel];
     }
     
-    public static void mekkGUI(ISpelUtgaave utgaave, String hostAdresse) throws RemoteException{
+    private static void mekkGUI(ISpelUtgaave utgaave, String hostAdresse) throws RemoteException{
         IGUI gui = new GUI(frame,hostAdresse,utgaave);        // TODO: dependency injection
         frame.setTitle(frame.getTitle() + " - " +utgaave.getTittel());
         frame.setContentPane((Container) gui);

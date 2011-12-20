@@ -43,7 +43,7 @@ class Meldingspanel extends JPanel implements PropertyChangeListener {
         meldingarmodell.nyMelding("Spelet startar. Velkommen!");
     }
 
-    public void prepareChat(){
+    void prepareChat(){
         chat = new JTextField(ChatListener.starttekst);
         chat.addKeyListener(new ChatListener(nett,chat,meldingarmodell));
         chat.setPreferredSize(Konstantar.CHATDIM);
