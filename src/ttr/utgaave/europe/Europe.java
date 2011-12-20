@@ -1,5 +1,6 @@
 package ttr.utgaave.europe;
 
+import ttr.struktur.IOppdrag;
 import ttr.struktur.Oppdrag;
 import ttr.struktur.Rute;
 import ttr.utgaave.ISpelUtgaave;
@@ -27,11 +28,11 @@ public class Europe extends AbstractSpelUtgaave implements ISpelUtgaave {
 		return ruter;
 	}
 	
-	protected ArrayList<Oppdrag> fyllMedOppdrag() {
-		oppdrag = new ArrayList<Oppdrag>();
+	protected ArrayList<IOppdrag> fyllMedOppdrag() {
+		IOppdrag = new ArrayList<IOppdrag>();
 		int oppdragsid = 0;
-		oppdrag.add(new Oppdrag(oppdragsid,Destinasjon.Brest,Destinasjon.Petrograd,21));
+		IOppdrag.add(new Oppdrag(oppdragsid,Destinasjon.Brest,Destinasjon.Petrograd,21));
 		//oppdragsid++;
-		return oppdrag;
+		return IOppdrag;
 	}
 }

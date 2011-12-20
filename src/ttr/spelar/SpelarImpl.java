@@ -4,6 +4,7 @@ import ttr.kjerna.IHovud;
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
+import ttr.struktur.IOppdrag;
 import ttr.struktur.Oppdrag;
 import ttr.struktur.Rute;
 
@@ -27,7 +28,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	private String namn;
 
 	private int[] kort;
-	private ArrayList<Oppdrag> oppdrag;
+	private ArrayList<IOppdrag> oppdrag;
 	private ArrayList<Rute> bygdeRuter; // Delvis unaudsynt pga. bygdRuteMatrise
 	private boolean[][] bygdRuteMatrise;
 	
@@ -89,7 +90,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 		this.hovud = hovud;
 		this.namn = namn;
 		kort = new int[Konstantar.ANTAL_FARGAR];
-		oppdrag = new ArrayList<Oppdrag>();
+		oppdrag = new ArrayList<IOppdrag>();
 		bygdeRuter = new ArrayList<Rute>();
 		bygdRuteMatrise = new boolean[Destinasjon.values().length][Destinasjon.values().length];
 		initialiserMatrise();
@@ -136,7 +137,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 // --Commented out by Inspection STOP (12.12.11 15:40)
 
 	
-	public void faaOppdrag(Oppdrag o) throws RemoteException{
+	public void faaOppdrag(IOppdrag o) throws RemoteException{
 		if(!this.oppdrag.contains(o)){
 			this.oppdrag.add(o);
 		}
@@ -152,7 +153,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 		kort[tel]++;
 	}
 	
-	public ArrayList<Oppdrag> getOppdrag() throws RemoteException  {
+	public ArrayList<IOppdrag> getOppdrag() throws RemoteException  {
 		return oppdrag;
 	}
 	
@@ -192,7 +193,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	 */
 	public int getOppdragspoeng() throws RemoteException  {
 		int ret = 0;
-        for (Oppdrag anOppdrag : oppdrag) {
+        for (IOppdrag anOppdrag : oppdrag) {
             Destinasjon d1 = (Destinasjon) anOppdrag.getDestinasjonar().toArray()[0];
             int d = d1.ordinal();
             Destinasjon d2 = (Destinasjon) anOppdrag.getDestinasjonar().toArray()[1];
@@ -208,8 +209,8 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	}
 	
 	public boolean erOppdragFerdig(int oppdragsid) throws RemoteException{
-		Oppdrag o = null;
-		for (Oppdrag opp : oppdrag){
+		IOppdrag o = null;
+		for (IOppdrag opp : oppdrag){
 			if (opp.getOppdragsid() == oppdragsid){
 				o = opp;
 			}
@@ -227,7 +228,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	
 	public int getAntalFullfoerteOppdrag() throws RemoteException{
 		int antal = 0;
-		for (Oppdrag o : oppdrag){
+		for (IOppdrag o : oppdrag){
 			Destinasjon d1 = (Destinasjon) o.getDestinasjonar().toArray()[0];
 			int d = d1.ordinal();
 			Destinasjon d2 = (Destinasjon) o.getDestinasjonar().toArray()[1];
@@ -266,8 +267,8 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	/**
 	 * @return trekk eit oppdrag frå kortbunken
 	 */
-	public Oppdrag trekkOppdragskort() throws RemoteException  {
-		Oppdrag trekt;
+	public IOppdrag trekkOppdragskort() throws RemoteException  {
+		IOppdrag trekt;
 		if (hovud.getAntalGjenverandeOppdrag() > 0) {
 			trekt = hovud.getOppdrag();
 			//System.out.println(trekt.getDestinasjonar().toArray()[1]);

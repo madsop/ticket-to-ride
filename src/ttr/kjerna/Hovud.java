@@ -1,13 +1,12 @@
 package ttr.kjerna;
 
-import ttr.bord.Bord;
 import ttr.bord.IBord;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
 import ttr.spelar.ISpelar;
 import ttr.spelar.SpelarImpl;
-import ttr.struktur.Oppdrag;
+import ttr.struktur.IOppdrag;
 import ttr.struktur.Rute;
 import ttr.utgaave.nordic.Nordic;
 import ttr.utgaave.ISpelUtgaave;
@@ -37,7 +36,7 @@ public class Hovud implements IHovud {
 	private int antalSpelarar;
 
 	// Variablar
-	private ArrayList<Oppdrag> gjenverandeOppdrag;
+	private ArrayList<IOppdrag> gjenverandeIOppdrag;
 	private ISpelar kvenSinTur;
 	private ArrayList<Rute> alleBygdeRuter;
 	private ISpelar minSpelar;
@@ -50,8 +49,8 @@ public class Hovud implements IHovud {
 		LagBrettet(nett);
 	}
 
-	public ArrayList<Oppdrag> getGjenverandeOppdrag(){
-		return gjenverandeOppdrag;
+	public ArrayList<IOppdrag> getGjenverandeOppdrag(){
+		return gjenverandeIOppdrag;
 	}
 
 	public Set<Rute> getRuter() {
@@ -85,21 +84,21 @@ public class Hovud implements IHovud {
 	}
 
 	public int getAntalGjenverandeOppdrag () {
-		return gjenverandeOppdrag.size();
+		return gjenverandeIOppdrag.size();
 	}
 
-	public Oppdrag getOppdrag() {
-		Oppdrag oppdrag = gjenverandeOppdrag.get(0);
-		gjenverandeOppdrag.remove(0);
-		return oppdrag;
+	public IOppdrag getOppdrag() {
+		IOppdrag IOppdrag = gjenverandeIOppdrag.get(0);
+		gjenverandeIOppdrag.remove(0);
+		return IOppdrag;
 	}
 
 	private void stokkOppdrag() {
-		for (int i = 0; i < gjenverandeOppdrag.size(); i++) {
-			Oppdrag temp = gjenverandeOppdrag.get(i);
-			int rand = (int) (Math.random() * gjenverandeOppdrag.size());
-			gjenverandeOppdrag.set(i, gjenverandeOppdrag.get(rand));
-			gjenverandeOppdrag.set(rand, temp);
+		for (int i = 0; i < gjenverandeIOppdrag.size(); i++) {
+			IOppdrag temp = gjenverandeIOppdrag.get(i);
+			int rand = (int) (Math.random() * gjenverandeIOppdrag.size());
+			gjenverandeIOppdrag.set(i, gjenverandeIOppdrag.get(rand));
+			gjenverandeIOppdrag.set(rand, temp);
 		}
 	}
 
@@ -113,7 +112,7 @@ public class Hovud implements IHovud {
 		alleBygdeRuter = new ArrayList<Rute>();
 
 		// Legg til oppdrag
-		gjenverandeOppdrag = spel.getOppdrag();
+		gjenverandeIOppdrag = spel.getOppdrag();
 		stokkOppdrag();
 
 		if (!nett) {

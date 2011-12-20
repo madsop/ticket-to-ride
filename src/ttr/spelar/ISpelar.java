@@ -1,7 +1,7 @@
 package ttr.spelar;
 
 import ttr.data.Farge;
-import ttr.struktur.Oppdrag;
+import ttr.struktur.IOppdrag;
 import ttr.struktur.Rute;
 
 import java.rmi.Remote;
@@ -12,15 +12,15 @@ public interface ISpelar extends Remote{
 	public void registrerKlient(ISpelar s) throws RemoteException;
 	public void bygg(Rute rute) throws RemoteException;
 	public Farge trekkFargekort() throws RemoteException;
-	public Oppdrag trekkOppdragskort() throws RemoteException;
+	public IOppdrag trekkOppdragskort() throws RemoteException;
 	public int getGjenverandeTog() throws RemoteException;
 	// --Commented out by Inspection (12.12.11 15:41):public int getRutepoeng() throws RemoteException;
 	public int getOppdragspoeng() throws RemoteException;
 	public String getNamn() throws RemoteException;
 	public int[] getKort() throws RemoteException;
-	public ArrayList<Oppdrag> getOppdrag() throws RemoteException;
+	public ArrayList<IOppdrag> getOppdrag() throws RemoteException;
 	//public void faaOppdragInt(int i) throws RemoteException;
-	public void faaOppdrag(Oppdrag o) throws RemoteException;
+	public void faaOppdrag(IOppdrag o) throws RemoteException;
 	public void faaKort(Farge farge) throws RemoteException;
 	public int getAntalOppdrag() throws RemoteException;	
 	public void setEinVald(boolean b) throws RemoteException;

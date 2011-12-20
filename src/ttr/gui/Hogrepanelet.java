@@ -4,7 +4,7 @@ import ttr.kjerna.IHovud;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.spelar.ISpelar;
-import ttr.struktur.Oppdrag;
+import ttr.struktur.IOppdrag;
 import ttr.struktur.Rute;
 
 import javax.swing.*;
@@ -443,7 +443,7 @@ class Hogrepanelet extends JPanel {
 
                 try {
                     for (int i = 0; i < visSine.getAntalOppdrag(); i++) {
-                        Oppdrag o = visSine.getOppdrag().get(i);
+                        IOppdrag o = visSine.getOppdrag().get(i);
                         oppdrg += o;
                         if (visSine.erOppdragFerdig(o.getOppdragsid())){
                             oppdrg += " (OK)";

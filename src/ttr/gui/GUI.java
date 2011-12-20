@@ -10,6 +10,7 @@ import ttr.data.Konstantar;
 import ttr.data.MeldingarModell;
 import ttr.nettverk.InitialiserNettverk;
 import ttr.spelar.ISpelar;
+import ttr.struktur.IOppdrag;
 import ttr.struktur.Oppdrag;
 import ttr.utgaave.ISpelUtgaave;
 
@@ -41,10 +42,10 @@ public class GUI extends JPanel implements  IGUI {
 
 	private final ISpelUtgaave spel;
 
-    private ArrayList<Oppdrag> valde;
+    private ArrayList<IOppdrag> valde;
 	private ArrayList<JCheckBox> jcb;
 	private JDialog jd;
-	private ArrayList<Oppdrag> oppdrag;
+	private ArrayList<IOppdrag> IOppdrag;
 
 	/**
 	 * Opprettar eit GUI-objekt
@@ -94,7 +95,7 @@ public class GUI extends JPanel implements  IGUI {
 			trekkOppdrag(hovud.getMinSpelar(),true);
 
 			for (ISpelar s : hovud.getSpelarar()){
-				for (Oppdrag o : s.getOppdrag()){
+				for (IOppdrag o : s.getOppdrag()){
 					s.trekt(o.getOppdragsid());
 				}
 			}
@@ -178,9 +179,9 @@ public class GUI extends JPanel implements  IGUI {
 	 * @param oppdrag
 	 * @return dei valde oppdraga.
 	 */
-    private ArrayList<Oppdrag> velOppdrag(ArrayList<Oppdrag> oppd) {
-		this.oppdrag = oppd;
-		oppdragstr = oppdrag.size() - 2;
+    private ArrayList<IOppdrag> velOppdrag(ArrayList<IOppdrag> oppd) {
+		this.IOppdrag = oppd;
+		oppdragstr = IOppdrag.size() - 2;
         JPanel vel = new JPanel();
 		GridLayout gl = new GridLayout(0, 2);
 
@@ -190,8 +191,8 @@ public class GUI extends JPanel implements  IGUI {
 		ArrayList<JTextField> jtf = new ArrayList<JTextField>();
 		jcb = new ArrayList<JCheckBox>();
 
-		for (int i = 0; i < oppdrag.size(); i++) {
-			Oppdrag o = oppdrag.get(i);
+		for (int i = 0; i < IOppdrag.size(); i++) {
+			IOppdrag o = IOppdrag.get(i);
 			Object[] d = o.getDestinasjonar().toArray();
 			jtf.add(new JTextField(d[0] +" - " +d[1] + " (" +o.getVerdi() +")"));
 			jcb.add(new JCheckBox());
@@ -201,7 +202,7 @@ public class GUI extends JPanel implements  IGUI {
 			vel.add(jcb.get(i));
 		}
 
-		valde = new ArrayList<Oppdrag>();
+		valde = new ArrayList<IOppdrag>();
 		ok = new JButton("OK");
 		ok.addActionListener(new okListener());
 		vel.add(ok);
@@ -330,17 +331,17 @@ public class GUI extends JPanel implements  IGUI {
 		else {
 			talPaaOppdrag = Konstantar.ANTAL_VELJEOPPDRAG;
 		}
-		ArrayList<Oppdrag> oppdrag = new ArrayList<Oppdrag>();
+		ArrayList<IOppdrag> oppdrag = new ArrayList<IOppdrag>();
 		for (int i = 0; i < talPaaOppdrag; i++) {
-				Oppdrag opp = s.trekkOppdragskort();
+				IOppdrag opp = s.trekkOppdragskort();
 				oppdrag.add(opp);
 		}
-		ArrayList<Oppdrag> k = new ArrayList<Oppdrag>();
+		ArrayList<IOppdrag> k = new ArrayList<IOppdrag>();
 		while (k.size() < talPaaOppdrag-2){
 			k = velOppdrag(oppdrag);
     	}
 		oppdrag = k;
-        for (Oppdrag anOppdrag : oppdrag) {
+        for (IOppdrag anOppdrag : oppdrag) {
                 s.faaOppdrag(anOppdrag);
         }
 
@@ -356,12 +357,12 @@ public class GUI extends JPanel implements  IGUI {
 	private class okListener implements ActionListener {
 		public void gjer(int i, ActionEvent arg0){
 			if (arg0.getSource() == jcb.get(i)) {
-				if (valde.contains(oppdrag.get(i))){
-					valde.remove(oppdrag.get(i));
+				if (valde.contains(IOppdrag.get(i))){
+					valde.remove(IOppdrag.get(i));
 					jcb.get(i).setSelected(false);
 				}
 				else{
-					valde.add(oppdrag.get(i));
+					valde.add(IOppdrag.get(i));
 					jcb.get(i).setSelected(true);
 					ok.setEnabled(true);
 				}
@@ -381,7 +382,7 @@ public class GUI extends JPanel implements  IGUI {
 
 			int count = 0;
 			for (int i = 0; i < jcb.size(); i++) {
-				if (valde.contains(oppdrag.get(i))) {
+				if (valde.contains(IOppdrag.get(i))) {
 					count++;
 				}
 			}

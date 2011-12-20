@@ -8,12 +8,13 @@ import java.util.Set;
 
 
 
-public class Oppdrag implements Serializable {
+public class Oppdrag implements IOppdrag {
 	private final int oppdragsid;
 	private final Set<Destinasjon> destinasjonar;
 	private final int verdi;
 	
-	public int getOppdragsid(){
+	@Override
+    public int getOppdragsid(){
 		return oppdragsid;
 	}
 
@@ -25,11 +26,13 @@ public class Oppdrag implements Serializable {
 		this.verdi = verdi;
 	}
 
-	public Set<Destinasjon> getDestinasjonar() {
+	@Override
+    public Set<Destinasjon> getDestinasjonar() {
 		return destinasjonar;
 	}
 
-	public int getVerdi() {
+	@Override
+    public int getVerdi() {
 		return verdi;
 	}
 	

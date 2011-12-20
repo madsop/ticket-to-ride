@@ -58,46 +58,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Bord.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ttr/bord/Bord.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="16" selection-start="108" selection-end="108" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Hovud.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ttr/kjerna/Hovud.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="317" column="31" selection-start="7369" selection-end="7369" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IGUI.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ttr/gui/IGUI.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ISpelar.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ttr/spelar/ISpelar.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="8" selection-start="2909" selection-end="2909" vertical-scroll-proportion="0.0">
+            <state line="52" column="1" selection-start="2913" selection-end="2913" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Oppdrag.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Oppdrag.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ttr/struktur/Oppdrag.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="42" selection-start="175" selection-end="175" vertical-scroll-proportion="0.05655527">
+            <state line="10" column="32" selection-start="165" selection-end="165" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -106,7 +79,16 @@
       <file leaf-file-name="SpelarImpl.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ttr/spelar/SpelarImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="202" column="76" selection-start="5573" selection-end="5573" vertical-scroll-proportion="0.0">
+            <state line="230" column="14" selection-start="6226" selection-end="6226" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Hogrepanelet.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="2" column="7" selection-start="25" selection-end="25" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -115,16 +97,43 @@
       <file leaf-file-name="InitialiserNettverk.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ttr/nettverk/InitialiserNettverk.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="63" selection-start="1198" selection-end="1198" vertical-scroll-proportion="0.0">
+            <state line="59" column="0" selection-start="2058" selection-end="2058" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GUI.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="TCPTransport.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar:///usr/lib/jvm/java-6-sun/jre/lib/rt.jar!/sun/rmi/transport/tcp/TCPTransport.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="79" column="0" selection-start="3915" selection-end="3915" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GUI.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ttr/gui/GUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="96" column="41" selection-start="2292" selection-end="2292" vertical-scroll-proportion="0.0">
+            <state line="350" column="17" selection-start="9332" selection-end="9332" vertical-scroll-proportion="0.73138297">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Nordic.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ttr/utgaave/nordic/Nordic.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="133" column="34" selection-start="9334" selection-end="9334" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Europe.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ttr/utgaave/europe/Europe.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="31" column="34" selection-start="821" selection-end="821" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -140,8 +149,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/ttr/IHovud.java" />
-        <option value="$PROJECT_DIR$/src/ttr/utgaave/ISpelUtgaave.java" />
         <option value="$PROJECT_DIR$/src/ttr/IBord.java" />
         <option value="$PROJECT_DIR$/src/ttr/Bord.java" />
         <option value="$PROJECT_DIR$/src/ttr/kjerna/IHovud.java" />
@@ -150,12 +157,14 @@
         <option value="$PROJECT_DIR$/src/ttr/spelar/IOppdragshandsamar.java" />
         <option value="$PROJECT_DIR$/src/ttr/spelar/Oppdragshandsamar.java" />
         <option value="$PROJECT_DIR$/src/ttr/kjerna/Hovud.java" />
-        <option value="$PROJECT_DIR$/src/ttr/gui/GUI.java" />
-        <option value="$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java" />
         <option value="$PROJECT_DIR$/src/ttr/nettverk/InitialiserNettverk.java" />
-        <option value="$PROJECT_DIR$/src/ttr/spelar/SpelarImpl.java" />
         <option value="$PROJECT_DIR$/src/ttr/spelar/ISpelar.java" />
         <option value="$PROJECT_DIR$/src/ttr/struktur/Oppdrag.java" />
+        <option value="$PROJECT_DIR$/src/ttr/utgaave/nordic/Nordic.java" />
+        <option value="$PROJECT_DIR$/src/ttr/utgaave/europe/Europe.java" />
+        <option value="$PROJECT_DIR$/src/ttr/spelar/SpelarImpl.java" />
+        <option value="$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java" />
+        <option value="$PROJECT_DIR$/src/ttr/gui/GUI.java" />
       </list>
     </option>
   </component>
@@ -421,7 +430,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3298585" sideWeight="0.69648564" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23827252" sideWeight="0.69648564" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -487,16 +496,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ttr/utgaave/AbstractSpelUtgaave.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="42" selection-start="1011" selection-end="1011" vertical-scroll-proportion="1.3235294" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/utgaave/ISpelUtgaave.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="55" selection-start="313" selection-end="313" vertical-scroll-proportion="0.25735295" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ttr/bord/IBord.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="19" column="48" selection-start="589" selection-end="589" vertical-scroll-proportion="0.7233502" />
@@ -514,13 +513,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="451" column="40" selection-start="16119" selection-end="16119" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ttr/bord/Bord.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="6" column="16" selection-start="108" selection-end="108" vertical-scroll-proportion="0.0" />
@@ -528,7 +520,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ttr/kjerna/Hovud.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="317" column="31" selection-start="7369" selection-end="7369" vertical-scroll-proportion="0.0">
+        <state line="316" column="17" selection-start="7367" selection-end="7367" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -540,37 +532,72 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/spelar/SpelarImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="202" column="76" selection-start="5573" selection-end="5573" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/nettverk/InitialiserNettverk.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="63" selection-start="1198" selection-end="1198" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/gui/GUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="96" column="41" selection-start="2292" selection-end="2292" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ttr/spelar/ISpelar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="8" selection-start="2909" selection-end="2909" vertical-scroll-proportion="0.0">
+        <state line="52" column="1" selection-start="2913" selection-end="2913" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ttr/struktur/Oppdrag.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="42" selection-start="175" selection-end="175" vertical-scroll-proportion="0.05655527">
+        <state line="10" column="32" selection-start="165" selection-end="165" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/utgaave/nordic/Nordic.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="133" column="34" selection-start="9334" selection-end="9334" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/utgaave/europe/Europe.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="34" selection-start="821" selection-end="821" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/spelar/SpelarImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="230" column="14" selection-start="6226" selection-end="6226" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="7" selection-start="25" selection-end="25" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-6-sun/jre/lib/rt.jar!/sun/rmi/transport/tcp/TCPTransport.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="79" column="0" selection-start="3915" selection-end="3915" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/nettverk/InitialiserNettverk.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="59" column="0" selection-start="2058" selection-end="2058" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/struktur/Rute.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="13" selection-start="198" selection-end="198" vertical-scroll-proportion="-2.2390745">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/gui/GUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="350" column="17" selection-start="9332" selection-end="9332" vertical-scroll-proportion="0.73138297">
           <folding />
         </state>
       </provider>
