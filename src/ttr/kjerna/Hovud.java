@@ -131,8 +131,7 @@ public class Hovud implements IHovud {
 		// Legg til spelarar
 		while ( (antalSpelarar != 2) && (antalSpelarar != 3)) { // Sett antal spelarar
 			Object[] val = {2,3};
-			antalSpelarar = JOptionPane.showOptionDialog((Component) gui, "Kor mange spelarar skal vera med??", "Antal spelarar?", 0, 3, null,val, 2);
-			antalSpelarar += 2;
+			antalSpelarar = 2+JOptionPane.showOptionDialog((Component) gui, "Kor mange spelarar skal vera med??", "Antal spelarar?", 0, 3, null,val, 2);
 		}
 
 		//antalSpelarar = 3;
@@ -238,6 +237,33 @@ public class Hovud implements IHovud {
 		sjekkOmFerdig();
 	}
 
+    private void finnSpelarSomKlarteFlestOppdrag(int[] totalpoeng) throws RemoteException{
+        int flestoppdrag = -1;
+        ISpelar flest = null;
+        if (nett){
+            flestoppdrag = minSpelar.getAntalFullfoerteOppdrag();
+            flest = minSpelar;
+        }
+        for (ISpelar s : spelarar){
+            int oppdragspoeng = s.getAntalFullfoerteOppdrag();
+
+            if (oppdragspoeng > flestoppdrag){
+                flestoppdrag = oppdragspoeng;
+                flest = s;
+            }
+        }
+
+        assert flest != null;
+        totalpoeng[flest.getSpelarNummer()] = 10;
+
+        if (nett){
+            gui.getMeldingarModell().nyMelding(flest.getNamn() +" klarte flest oppdrag, " +flestoppdrag);
+        }
+        for (ISpelar s : spelarar){
+            s.faaMelding(flest.getNamn() +" klarte flest oppdrag, " +flestoppdrag);
+        }
+    }
+
 	//TODO: Utrekning av lengst rute / flest oppdrag
     private void sjekkOmFerdig() throws RemoteException{
 		if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
@@ -250,39 +276,17 @@ public class Hovud implements IHovud {
 			else {
 				totalpoeng = new int[spelarar.size()+1];
 			}
-			if (nett) {gui.getMeldingarModell().nyMelding(poeng);}
+
+            ISpelar vinnar = null;
+            int vinnarpoeng = 0;
+
+            if (nett) {gui.getMeldingarModell().nyMelding(poeng);}
 			for (ISpelar s : spelarar){
 				s.faaMelding(poeng);
 			}
 
-			ISpelar vinnar = null;
-			int vinnarpoeng = 0;
 			if (spel.getTittel().equals(Nordic.tittel)){
-				int flestoppdrag = -1;
-				ISpelar flest = null;
-				if (nett){
-					flestoppdrag = minSpelar.getAntalFullfoerteOppdrag();
-					flest = minSpelar;
-				}
-				for (ISpelar s : spelarar){
-					int oppdragspoeng = s.getAntalFullfoerteOppdrag();
-					
-					if (oppdragspoeng > flestoppdrag){
-						flestoppdrag = oppdragspoeng;
-						flest = s;
-					}
-				}
-
-                assert flest != null;
-                totalpoeng[flest.getSpelarNummer()] = 10;
-				
-				if (nett){
-					gui.getMeldingarModell().nyMelding(flest.getNamn() +" klarte flest oppdrag, " +flestoppdrag);
-				}
-				for (ISpelar s : spelarar){
-					s.faaMelding(flest.getNamn() +" klarte flest oppdrag, " +flestoppdrag);
-				}
-				
+				finnSpelarSomKlarteFlestOppdrag(totalpoeng);
 			}
 
 			if (nett) {
@@ -299,37 +303,48 @@ public class Hovud implements IHovud {
 
 			
 			for (ISpelar s : spelarar) {
-				totalpoeng[s.getSpelarNummer()]= reknUtPoeng(s);
-				String sp = s.getNamn() +" fekk " +totalpoeng[s.getSpelarNummer()] +" poeng. ";
-				poeng += " " +sp;
-				gui.getMeldingarModell().nyMelding(sp);
-				for (ISpelar t : spelarar){
-					t.faaMelding(sp);
-				}
-				if (totalpoeng[s.getSpelarNummer()]>vinnarpoeng){
-					vinnarpoeng = totalpoeng[s.getSpelarNummer()];
-					vinnar = s;
-				}
-				else if (vinnar != null && totalpoeng[s.getSpelarNummer()]==vinnarpoeng){
-					if (vinnar.getOppdragspoeng() < s.getOppdragspoeng()){
-						vinnar = s;
-					}
-				}
+				ISpelar leiar = reknUtPoengOgFinnVinnar(totalpoeng,s,poeng,vinnarpoeng,vinnar);
+                vinnarpoeng = reknUtPoeng(leiar);
 			}
 			// Legg inn spelutgaave-spesifikk bonus her
-
-            assert vinnar != null;
-            String vinnaren = vinnar.getNamn() +" vann spelet, gratulerer!";
-			poeng += vinnaren;
-			gui.getMeldingarModell().nyMelding(vinnaren);
-			for (ISpelar s : spelarar){
-				s.faaMelding(vinnaren);
-				s.visSpeletErFerdigmelding(poeng);
-			}
-			JOptionPane.showMessageDialog((Component) gui, poeng);
+			avsluttSpeletMedSuksess(vinnar,poeng);
 		}
 	}
+    
+    private void avsluttSpeletMedSuksess(ISpelar vinnar,String poeng) throws RemoteException {
 
+        assert vinnar != null;
+        String vinnaren = vinnar.getNamn() +" vann spelet, gratulerer!";
+        poeng += vinnaren;
+        gui.getMeldingarModell().nyMelding(vinnaren);
+        for (ISpelar s : spelarar){
+            s.faaMelding(vinnaren);
+            s.visSpeletErFerdigmelding(poeng);
+        }
+        JOptionPane.showMessageDialog((Component) gui, poeng);
+    }
+
+    private ISpelar reknUtPoengOgFinnVinnar(int[] totalpoeng, ISpelar s, String poeng,int vinnarpoeng, ISpelar vinnar) throws RemoteException {
+        ISpelar leiarNo = vinnar;
+
+        int spelarensPoeng = reknUtPoeng(s);
+
+        String sp = s.getNamn() +" fekk " +totalpoeng[s.getSpelarNummer()] +" poeng. ";
+        poeng += " " +sp;
+        gui.getMeldingarModell().nyMelding(sp);
+        for (ISpelar t : spelarar){
+            t.faaMelding(sp);
+        }
+        if (spelarensPoeng>vinnarpoeng){
+            leiarNo = s;
+        }
+        else if (vinnar != null && spelarensPoeng==vinnarpoeng){
+            if (vinnar.getOppdragspoeng() < s.getOppdragspoeng()){
+                leiarNo = s;
+            }
+        }
+        return leiarNo;
+    }
 
 	private int reknUtPoeng(ISpelar s) throws RemoteException {
 		int poeng = s.getOppdragspoeng();
