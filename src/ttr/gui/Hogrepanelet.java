@@ -253,7 +253,7 @@ class Hogrepanelet extends JPanel {
 
         private void trekkOppragHandler() {
             try {
-                gui.sendKortMelding(false, false, null);
+                gui.sendKortMelding(false, false, Konstantar.FARGAR[0]);
                 if (hovud.isNett()){
                     gui.trekkOppdrag(hovud.getMinSpelar(),false);
                 }

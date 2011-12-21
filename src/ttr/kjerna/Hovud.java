@@ -28,7 +28,7 @@ public class Hovud implements IHovud {
 */
 
 	private final IBord bord;
-	private static Set<Rute> ruter;
+	private final Set<Rute> ruter;
 	private ArrayList<ISpelar> spelarar;
 	private final IGUI gui;
 
@@ -36,24 +36,29 @@ public class Hovud implements IHovud {
 	private int antalSpelarar;
 
 	// Variablar
-	private ArrayList<IOppdrag> gjenverandeIOppdrag;
 	private ISpelar kvenSinTur;
 	private ArrayList<Rute> alleBygdeRuter;
 	private ISpelar minSpelar;
+    private IKommunikasjonMedSpelarar kommunikasjonMedSpelarar;
+    private IOppdragshandsamar oppdragshandsamar;
 
 	public Hovud(IGUI gui, IBord bord, boolean nett, ISpelUtgaave spel) throws RemoteException {
 		this.gui = gui;
 		this.nett = nett;
 		this.spel = spel;
         this.bord = bord;
+        spelarar = new ArrayList<ISpelar>();
+        ruter = spel.getRuter();
 		LagBrettet(nett);
 	}
 
-	public ArrayList<IOppdrag> getGjenverandeOppdrag(){
-		return gjenverandeIOppdrag;
-	}
 
-	public Set<Rute> getRuter() {
+    @Override
+    public ArrayList<IOppdrag> getGjenverandeOppdrag() {
+        return oppdragshandsamar.getGjenverandeOppdrag()   ;
+    }
+
+    public Set<Rute> getRuter() {
 		return ruter;
 	}
 
@@ -83,44 +88,33 @@ public class Hovud implements IHovud {
 		return gui;
 	}
 
-	public int getAntalGjenverandeOppdrag () {
-		return gjenverandeIOppdrag.size();
-	}
+    @Override
+    public int getAntalGjenverandeOppdrag() {
+        return oppdragshandsamar.getAntalGjenverandeOppdrag();
+    }
 
-	public IOppdrag getOppdrag() {
-		IOppdrag IOppdrag = gjenverandeIOppdrag.get(0);
-		gjenverandeIOppdrag.remove(0);
-		return IOppdrag;
-	}
+    @Override
+    public IOppdrag getOppdrag() {
+        return oppdragshandsamar.getOppdrag();
+    }
 
-	private void stokkOppdrag() {
-		for (int i = 0; i < gjenverandeIOppdrag.size(); i++) {
-			IOppdrag temp = gjenverandeIOppdrag.get(i);
-			int rand = (int) (Math.random() * gjenverandeIOppdrag.size());
-			gjenverandeIOppdrag.set(i, gjenverandeIOppdrag.get(rand));
-			gjenverandeIOppdrag.set(rand, temp);
-		}
-	}
-
-	/**
+    /**
 	 * Startar spelet.
 	 * @throws RemoteException 
 	 */
 	private void LagBrettet(boolean nett) throws RemoteException {
-		spelarar = new ArrayList<ISpelar>();
-		ruter = spel.getRuter();
 		alleBygdeRuter = new ArrayList<Rute>();
 
 		// Legg til oppdrag
-		gjenverandeIOppdrag = spel.getOppdrag();
-		stokkOppdrag();
+        oppdragshandsamar = new Oppdragshandsamar(spel.getOppdrag());
 
 		if (!nett) {
 			mekkSpelarar();
 		}
 		else { 
-			// Nettverksspel. Handterast seinare.
+			// Nettverksspel. Handterast manuelt seinare.
 		}
+        this.kommunikasjonMedSpelarar = new KommunikasjonMedSpelarar(nett,spelarar);
 	}
 
 	/**
@@ -128,22 +122,7 @@ public class Hovud implements IHovud {
 	 * @throws RemoteException
 	 */
 	private void mekkSpelarar() throws RemoteException {
-		// Legg til spelarar
-		while ( (antalSpelarar != 2) && (antalSpelarar != 3)) { // Sett antal spelarar
-			Object[] val = {2,3};
-			antalSpelarar = 2+JOptionPane.showOptionDialog((Component) gui, "Kor mange spelarar skal vera med??", "Antal spelarar?", 0, 3, null,val, 2);
-		}
-
-		//antalSpelarar = 3;
-		spelarar = new ArrayList<ISpelar>();
-		for (int i = 1; i <= antalSpelarar; i++) { // Opprettar spelarar
-			try {
-				spelarar.add(new SpelarImpl(this,JOptionPane.showInputDialog(gui,"Skriv inn namnet på spelar " +i)));
-			}
-			catch (RemoteException ignored) {
-
-			}
-		}
+		kommunikasjonMedSpelarar.mekkSpelarar(this);
 		settSinTur(spelarar.get(0));
 	}
 
@@ -234,129 +213,11 @@ public class Hovud implements IHovud {
 		gui.setSpelarnamn(kvenSinTur.getNamn());
 		kvenSinTur.setEinVald(false);
 
-		sjekkOmFerdig();
+		kommunikasjonMedSpelarar.sjekkOmFerdig(gui.getMeldingarModell(),kvenSinTur,spel.getTittel(),minSpelar,ruter);
 	}
 
-    private void finnSpelarSomKlarteFlestOppdrag(int[] totalpoeng) throws RemoteException{
-        int flestoppdrag = -1;
-        ISpelar flest = null;
-        if (nett){
-            flestoppdrag = minSpelar.getAntalFullfoerteOppdrag();
-            flest = minSpelar;
-        }
-        for (ISpelar s : spelarar){
-            int oppdragspoeng = s.getAntalFullfoerteOppdrag();
 
-            if (oppdragspoeng > flestoppdrag){
-                flestoppdrag = oppdragspoeng;
-                flest = s;
-            }
-        }
 
-        assert flest != null;
-        totalpoeng[flest.getSpelarNummer()] = 10;
-
-        if (nett){
-            gui.getMeldingarModell().nyMelding(flest.getNamn() +" klarte flest oppdrag, " +flestoppdrag);
-        }
-        for (ISpelar s : spelarar){
-            s.faaMelding(flest.getNamn() +" klarte flest oppdrag, " +flestoppdrag);
-        }
-    }
-
-	//TODO: Utrekning av lengst rute / flest oppdrag
-    private void sjekkOmFerdig() throws RemoteException{
-		if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
-			String poeng = "Spelet er ferdig.";
-
-			int[] totalpoeng;			
-			if (!nett){
-				totalpoeng = new int[antalSpelarar];
-			}
-			else {
-				totalpoeng = new int[spelarar.size()+1];
-			}
-
-            ISpelar vinnar = null;
-            int vinnarpoeng = 0;
-
-            if (nett) {gui.getMeldingarModell().nyMelding(poeng);}
-			for (ISpelar s : spelarar){
-				s.faaMelding(poeng);
-			}
-
-			if (spel.getTittel().equals(Nordic.tittel)){
-				finnSpelarSomKlarteFlestOppdrag(totalpoeng);
-			}
-
-			if (nett) {
-				totalpoeng[minSpelar.getSpelarNummer()] = reknUtPoeng(minSpelar);
-				String p = minSpelar.getNamn() + " fekk " + totalpoeng[minSpelar.getSpelarNummer()] + " poeng. ";
-				poeng += " " +p;
-				gui.getMeldingarModell().nyMelding(p);
-				for (ISpelar s : spelarar){
-					s.faaMelding(p);
-				}
-				vinnar = minSpelar;
-				vinnarpoeng = totalpoeng[minSpelar.getSpelarNummer()];
-			}
-
-			
-			for (ISpelar s : spelarar) {
-				ISpelar leiar = reknUtPoengOgFinnVinnar(totalpoeng,s,poeng,vinnarpoeng,vinnar);
-                vinnarpoeng = reknUtPoeng(leiar);
-			}
-			// Legg inn spelutgaave-spesifikk bonus her
-			avsluttSpeletMedSuksess(vinnar,poeng);
-		}
-	}
-    
-    private void avsluttSpeletMedSuksess(ISpelar vinnar,String poeng) throws RemoteException {
-
-        assert vinnar != null;
-        String vinnaren = vinnar.getNamn() +" vann spelet, gratulerer!";
-        poeng += vinnaren;
-        gui.getMeldingarModell().nyMelding(vinnaren);
-        for (ISpelar s : spelarar){
-            s.faaMelding(vinnaren);
-            s.visSpeletErFerdigmelding(poeng);
-        }
-        JOptionPane.showMessageDialog((Component) gui, poeng);
-    }
-
-    private ISpelar reknUtPoengOgFinnVinnar(int[] totalpoeng, ISpelar s, String poeng,int vinnarpoeng, ISpelar vinnar) throws RemoteException {
-        ISpelar leiarNo = vinnar;
-
-        int spelarensPoeng = reknUtPoeng(s);
-
-        String sp = s.getNamn() +" fekk " +totalpoeng[s.getSpelarNummer()] +" poeng. ";
-        poeng += " " +sp;
-        gui.getMeldingarModell().nyMelding(sp);
-        for (ISpelar t : spelarar){
-            t.faaMelding(sp);
-        }
-        if (spelarensPoeng>vinnarpoeng){
-            leiarNo = s;
-        }
-        else if (vinnar != null && spelarensPoeng==vinnarpoeng){
-            if (vinnar.getOppdragspoeng() < s.getOppdragspoeng()){
-                leiarNo = s;
-            }
-        }
-        return leiarNo;
-    }
-
-	private int reknUtPoeng(ISpelar s) throws RemoteException {
-		int poeng = s.getOppdragspoeng();
-		for (int j = 0; j < s.getBygdeRuterStr(); j++) {
-			for (Rute r : ruter) {
-				if (s.getBygdeRuterId(j) == r.getRuteId()) {
-					poeng += r.getVerdi();
-				}
-			}
-		}
-		return poeng;
-	}
 
 	/**
 	 * Finn alle ubygde ruter.
@@ -441,47 +302,47 @@ public class Hovud implements IHovud {
 	 * @throws RemoteException 
 	 */
 	private Farge valdFarge;
-	public void bygg(Rute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
-		ISpelar byggjandeSpelar;
+    
+    private int byggValfriFarge(ISpelar byggjandeSpelar, int krevdJokrar, int kortKrevd) throws RemoteException {
+        ArrayList<Farge> mulegeFargar = new ArrayList<Farge>();
+        int ekstrajokrar = byggjandeSpelar.getKort()[Konstantar.ANTAL_FARGAR-1]-krevdJokrar;
+        System.out.println("ekstrajokrar: " +ekstrajokrar);
+        for (int i = 0; i < Konstantar.ANTAL_FARGAR; i++){
+            if (i != Konstantar.ANTAL_FARGAR-1){
+                if((byggjandeSpelar.getKort()[i] + ekstrajokrar) >= kortKrevd
+                        && ekstrajokrar >= 0){
+                    mulegeFargar.add(Konstantar.FARGAR[i]);
+                }
+            }
+            else{
+                if (ekstrajokrar >= kortKrevd){
+                    mulegeFargar.add(Konstantar.FARGAR[i]);
+                }
+            }
+        }
 
-		if (nett) {
-			byggjandeSpelar = minSpelar;
-		}
-		else {
-			byggjandeSpelar = kvenSinTur;
-		}
+        if (mulegeFargar.size() > 0){
+            int i = -2;
+            while (i<0 || i > mulegeFargar.size()){
+                i = JOptionPane.showOptionDialog((Component) gui, "Vel farge å byggje i", "Vel farge å byggje i", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, mulegeFargar.toArray(), mulegeFargar.get(0));
+
+                if (i==-1){
+                    return -1;
+                }
+            }
+            valdFarge = mulegeFargar.get(i);
+            return Konstantar.finnPosisjonForFarg(valdFarge);
+        }
+        return -1;
+        //System.out.println("vald farge er " +valdFarge);
+    }
+    
+	public void bygg(Rute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
+		ISpelar byggjandeSpelar = nett ? minSpelar : kvenSinTur;
 
 		if (bygd.getFarge() == Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1]){
-			ArrayList<Farge> mulegeFargar = new ArrayList<Farge>();
-			int ekstrajokrar = byggjandeSpelar.getKort()[Konstantar.ANTAL_FARGAR-1]-krevdJokrar;
-			System.out.println("ekstrajokrar: " +ekstrajokrar);
-			for (int i = 0; i < Konstantar.ANTAL_FARGAR; i++){
-				if (i != Konstantar.ANTAL_FARGAR-1){
-					if((byggjandeSpelar.getKort()[i] + ekstrajokrar) >= kortKrevd
-							&& ekstrajokrar >= 0){
-						mulegeFargar.add(Konstantar.FARGAR[i]);
-					}
-				}
-				else{
-					if (ekstrajokrar >= kortKrevd){
-						mulegeFargar.add(Konstantar.FARGAR[i]);
-					}
-				}
-			}
-
-			if (mulegeFargar.size() > 0){
-				int i = -2;
-				while (i<0 || i > mulegeFargar.size()){
-					i = JOptionPane.showOptionDialog((Component) gui, "Vel farge å byggje i", "Vel farge å byggje i", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, mulegeFargar.toArray(), mulegeFargar.get(0));
-
-					if (i==-1){
-						return;
-					}
-				}
-				valdFarge = mulegeFargar.get(i);
-				plass = Konstantar.finnPosisjonForFarg(valdFarge);
-			}
-			//System.out.println("vald farge er " +valdFarge);
+			plass = byggValfriFarge(byggjandeSpelar,krevdJokrar,kortKrevd);
+            if (plass == -1) { return; }
 		}
 		else {
 			valdFarge = bygd.getFarge();
@@ -490,7 +351,7 @@ public class Hovud implements IHovud {
 		int jokrar=0;
 
 		// Vel kor mange jokrar du vil bruke
-		if (byggjandeSpelar.getKort()[Konstantar.ANTAL_FARGAR-1]!=0){
+		if (byggjandeSpelar.getKort()[Konstantar.ANTAL_FARGAR-1] > 0) {
 			do {
 				jokrar = velAntalJokrarDuVilBruke(bygd, byggjandeSpelar,valdFarge);
 			} while(!(byggjandeSpelar.getKort()[Konstantar.ANTAL_FARGAR-1] >= jokrar 
@@ -527,20 +388,11 @@ public class Hovud implements IHovud {
 		bord.getIgjenAvFargekort()[Konstantar.ANTAL_FARGAR-1]+=jokrar;
 		gui.getMeldingarModell().nyMelding(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getDestinasjonar().toArray()[0] + " - " +bygd.getDestinasjonar().toArray()[1] + " i farge " + bygd.getFarge());
 
-		oppdaterAndre(plass,kortKrevd,jokrar,krevdJokrar,byggjandeSpelar.getNamn(),bygd);
+		kommunikasjonMedSpelarar.oppdaterAndreSpelarar(plass, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
 
 		nesteSpelar();
 	}
-    
-    private void oppdaterAndre(int plass, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Rute bygd) throws RemoteException{
-        if (nett) {
-            for (ISpelar s : spelarar) {
-                s.leggIStokken(plass, (kortKrevd-(jokrar-krevdJokrar)));
-                s.leggIStokken(Konstantar.ANTAL_FARGAR-1,jokrar);
-                s.faaMelding(byggjandeNamn + " bygde ruta " +bygd.getDestinasjonar().toArray()[0] + " - " +bygd.getDestinasjonar().toArray()[1] + " i farge " + bygd.getFarge());
-            }
-        }
-    }
+
 
 	public void byggTunnel(Rute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
 		Farge[] treTrekte = new Farge[3];
