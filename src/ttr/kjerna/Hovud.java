@@ -5,10 +5,8 @@ import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
 import ttr.spelar.ISpelar;
-import ttr.spelar.SpelarImpl;
 import ttr.struktur.IOppdrag;
 import ttr.struktur.Rute;
-import ttr.utgaave.nordic.Nordic;
 import ttr.utgaave.ISpelUtgaave;
 
 import javax.swing.*;
@@ -28,27 +26,26 @@ public class Hovud implements IHovud {
 */
 
 	private final IBord bord;
-	private final Set<Rute> ruter;
-	private ArrayList<ISpelar> spelarar;
+	private final ArrayList<ISpelar> spelarar;
 	private final IGUI gui;
 
 	private final boolean nett;
-	private int antalSpelarar;
 
-	// Variablar
+    // Variablar
 	private ISpelar kvenSinTur;
-	private ArrayList<Rute> alleBygdeRuter;
 	private ISpelar minSpelar;
     private IKommunikasjonMedSpelarar kommunikasjonMedSpelarar;
     private IOppdragshandsamar oppdragshandsamar;
+    private IRutehandsamar rutehandsamar;
+    private Farge valdFarge;
 
-	public Hovud(IGUI gui, IBord bord, boolean nett, ISpelUtgaave spel) throws RemoteException {
+
+    public Hovud(IGUI gui, IBord bord, boolean nett, ISpelUtgaave spel) throws RemoteException {
 		this.gui = gui;
 		this.nett = nett;
 		this.spel = spel;
         this.bord = bord;
         spelarar = new ArrayList<ISpelar>();
-        ruter = spel.getRuter();
 		LagBrettet(nett);
 	}
 
@@ -58,14 +55,18 @@ public class Hovud implements IHovud {
         return oppdragshandsamar.getGjenverandeOppdrag()   ;
     }
 
+    @Override
     public Set<Rute> getRuter() {
-		return ruter;
-	}
+        return rutehandsamar.getRuter();
+    }
 
-	public ArrayList<Rute> getAlleBygdeRuter() {
-		return alleBygdeRuter;
-	}
-	public void setMinSpelar(ISpelar spelar){
+    @Override
+    public ArrayList<Rute> getAlleBygdeRuter() {
+        return rutehandsamar.getAlleBygdeRuter();
+    }
+
+
+    public void setMinSpelar(ISpelar spelar){
 		minSpelar = spelar;
 	}
 
@@ -103,18 +104,15 @@ public class Hovud implements IHovud {
 	 * @throws RemoteException 
 	 */
 	private void LagBrettet(boolean nett) throws RemoteException {
-		alleBygdeRuter = new ArrayList<Rute>();
+        rutehandsamar = new Rutehandsamar(spel);
 
 		// Legg til oppdrag
         oppdragshandsamar = new Oppdragshandsamar(spel.getOppdrag());
 
 		if (!nett) {
 			mekkSpelarar();
-		}
-		else { 
-			// Nettverksspel. Handterast manuelt seinare.
-		}
-        this.kommunikasjonMedSpelarar = new KommunikasjonMedSpelarar(nett,spelarar);
+		}         // else er det nettverksspel og handterast seinare
+        kommunikasjonMedSpelarar = new KommunikasjonMedSpelarar(nett,spelarar);
 	}
 
 	/**
@@ -195,13 +193,12 @@ public class Hovud implements IHovud {
 	}
 
 	public void nesteSpelar() throws RemoteException {
-		int sp = 0;
+		int sp = 1;
 		for (int i = 0; i < spelarar.size(); i++) {
 			if (spelarar.get(i) == kvenSinTur) {
-				sp = i;
+				sp +=i;
 			}
 		}
-		sp++;
 
 		if (!nett) {
 			nesteUtanNett(sp);
@@ -213,73 +210,20 @@ public class Hovud implements IHovud {
 		gui.setSpelarnamn(kvenSinTur.getNamn());
 		kvenSinTur.setEinVald(false);
 
-		kommunikasjonMedSpelarar.sjekkOmFerdig(gui.getMeldingarModell(),kvenSinTur,spel.getTittel(),minSpelar,ruter);
+		kommunikasjonMedSpelarar.sjekkOmFerdig(gui.getMeldingarModell(),kvenSinTur,spel.getTittel(),minSpelar,rutehandsamar.getRuter());
 	}
 
+    @Override
+    public Rute[] finnFramRuter() throws RemoteException {
+        return rutehandsamar.finnFramRuter(spelarar);
+    }
 
 
-
-	/**
+    /**
 	 * Finn alle ubygde ruter.
 	 * @return Eit array over alle rutene som ikkje alt er bygd
 	 * @throws RemoteException 
 	 */
-	public Rute[] finnFramRuter() throws RemoteException {
-		Set<Rute> ruter = getRuter();
-        for (ISpelar aSpelarar1 : spelarar) {
-            for (int j = 0; j < aSpelarar1.getBygdeRuterStr(); j++) {
-                int ruteId = aSpelarar1.getBygdeRuterId(j);
-                for (Rute r : ruter) {
-                    if (r.getRuteId() == ruteId && !(alleBygdeRuter.contains(r))) {
-                        alleBygdeRuter.add(r);
-                    }
-                }
-            }
-        }
-
-		int str = ruter.size();
-		Rute[] ruterTemp = new Rute[str];
-		Iterator<Rute> it2 = ruter.iterator();
-		for (int i = 0; i < str; i++) {
-			ruterTemp[i] = it2.next();
-		}
-
-		/*	ArrayList<Rute>	bR = new ArrayList<Rute>();
-        for (ISpelar aSpelarar : spelarar) {
-            for (int j = 0; j < aSpelarar.getBygdeRuter().size(); j++) {
-                bR.add(aSpelarar.getBygdeRuter().get(j));
-            }
-            for (int j = 0; j < aSpelarar.getBygdeRuterStr(); j++) {
-                int ruteId = aSpelarar.getBygdeRuterId(j);
-                for (Rute r : ruter) {
-                    if (r.getRuteId() == ruteId) {
-                        bR.add(r);
-                    }
-                }
-            }
-        }              */
-		 
-		Rute[] ruterArray = new Rute[str-alleBygdeRuter.size()];
-		int c = 0;
-
-		for (int i = 0; i < str; i++) {
-			boolean b = true;
-            for (Rute anAlleBygdeRuter : alleBygdeRuter) {
-                if (ruterTemp[i] == anAlleBygdeRuter) {
-                    b = false;
-                }
-            }
-			if (b) {
-				Rute r = ruterTemp[i];
-				if (c < ruterArray.length) {
-					ruterArray[c] = r;
-					c++;
-				}
-
-			}
-		}
-		return ruterArray;
-	}
 
 	private int velAntalJokrarDuVilBruke(Rute rute, ISpelar s, Farge valdFarge) throws RemoteException{
 		int jokrar = s.getKort()[Konstantar.ANTAL_FARGAR-1];
@@ -301,8 +245,7 @@ public class Hovud implements IHovud {
 	 * @param krevdJokrar - kor mange jokrar som trengs for å byggje ruta.
 	 * @throws RemoteException 
 	 */
-	private Farge valdFarge;
-    
+
     private int byggValfriFarge(ISpelar byggjandeSpelar, int krevdJokrar, int kortKrevd) throws RemoteException {
         ArrayList<Farge> mulegeFargar = new ArrayList<Farge>();
         int ekstrajokrar = byggjandeSpelar.getKort()[Konstantar.ANTAL_FARGAR-1]-krevdJokrar;
@@ -375,7 +318,8 @@ public class Hovud implements IHovud {
 		}
 		byggjandeSpelar.getKort()[plass] -= (kortKrevd-(jokrar-krevdJokrar));
 		byggjandeSpelar.getKort()[Konstantar.ANTAL_FARGAR-1] -= jokrar;
-		alleBygdeRuter.add(bygd);
+		rutehandsamar.nyRute(bygd);
+
 
 		if (nett) {
 			for (ISpelar s : spelarar) {
@@ -384,8 +328,8 @@ public class Hovud implements IHovud {
 			}
 		}
 		gui.getTogAtt()[byggjandeSpelar.getSpelarNummer()+1].setText(String.valueOf(byggjandeSpelar.getGjenverandeTog()));		
-		bord.getIgjenAvFargekort()[plass]+=(kortKrevd-(jokrar-krevdJokrar));
-		bord.getIgjenAvFargekort()[Konstantar.ANTAL_FARGAR-1]+=jokrar;
+		bord.getFargekortaSomErIgjenIBunken()[plass]+=(kortKrevd-(jokrar-krevdJokrar));
+		bord.getFargekortaSomErIgjenIBunken()[Konstantar.ANTAL_FARGAR-1]+=jokrar;
 		gui.getMeldingarModell().nyMelding(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getDestinasjonar().toArray()[0] + " - " +bygd.getDestinasjonar().toArray()[1] + " i farge " + bygd.getFarge());
 
 		kommunikasjonMedSpelarar.oppdaterAndreSpelarar(plass, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);

@@ -16,6 +16,7 @@ class BordHjelpar {
             teljar++;
         }
         teljar--;
+
         return teljar;
     }
 }

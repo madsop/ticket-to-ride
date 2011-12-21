@@ -13,15 +13,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Set;
 
-/**
- * Created by IntelliJ IDEA.
- * User: madsop
- * Date: 21.12.11
- * Time: 22:28
- * To change this template use File | Settings | File Templates.
- */
+
 public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
-    private boolean nett;
+    private final boolean nett;
     private ArrayList<ISpelar> spelarar;
 
     public KommunikasjonMedSpelarar (boolean nett, ArrayList<ISpelar> spelarar) {
@@ -43,19 +37,19 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
      * Sett opp spelet for eit ikkje-nettverks-spel.
      * @throws RemoteException
      */
-    public void mekkSpelarar(IHovud hovud) throws RemoteException {
+    public void mekkSpelarar(IHovud hovud) {
         // Legg til spelarar
         int antalSpelarar = 0;
         while ( (antalSpelarar != 2) && (antalSpelarar != 3)) { // Sett antal spelarar
             Object[] val = {2,3};
-            antalSpelarar = 2+ JOptionPane.showOptionDialog((Component) new JPanel(), "Kor mange spelarar skal vera med??", "Antal spelarar?", 0, 3, null, val, 2);
+            antalSpelarar = 2+ JOptionPane.showOptionDialog(null, "Kor mange spelarar skal vera med??", "Antal spelarar?", 0, 3, null, val, 2);
         }
 
         //antalSpelarar = 3;
         spelarar = new ArrayList<ISpelar>();
         for (int i = 1; i <= antalSpelarar; i++) { // Opprettar spelarar
             try {
-                spelarar.add(new SpelarImpl(hovud,JOptionPane.showInputDialog(new JPanel(),"Skriv inn namnet på spelar " +i)));
+                spelarar.add(new SpelarImpl(hovud,JOptionPane.showInputDialog(null,"Skriv inn namnet på spelar " +i)));
             }
             catch (RemoteException ignored) {
 
@@ -122,7 +116,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
             s.faaMelding(vinnaren);
             s.visSpeletErFerdigmelding(poeng);
         }
-        JOptionPane.showMessageDialog((Component) new JPanel(), poeng);
+        JOptionPane.showMessageDialog(new JPanel(), poeng);
     }
 
 

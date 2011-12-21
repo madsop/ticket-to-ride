@@ -30,8 +30,7 @@ public class GUI extends JPanel implements  IGUI {
 		return hovud;
 	}
 
-    private final BildePanel bp;
-	private Meldingspanel meldingsboks;
+    private Meldingspanel meldingsboks;
     private Hogrepanelet hogre;
 
     // Oppdraga
@@ -62,7 +61,7 @@ public class GUI extends JPanel implements  IGUI {
 
 
 		this.spel = spel;
-		bp = new BildePanel();
+        BildePanel bp = new BildePanel(spel);
 
         int nett = JOptionPane.showConfirmDialog(this, "Vil du spela eit nettverksspel?");
         boolean nettv;
@@ -73,6 +72,7 @@ public class GUI extends JPanel implements  IGUI {
         IBord bord = new Bord(this,nettv);
         hovud = new Hovud(this,bord,nettv,spel);            // TODO
         meldingsboks.setHovud(hovud);
+
 		byggHogrepanel();
 
 		c.ipadx = 0;
@@ -88,25 +88,7 @@ public class GUI extends JPanel implements  IGUI {
 		add(meldingsboks,c);
 
 
-		if (nett == JOptionPane.YES_OPTION) {
-            InitialiserNettverk nettverk = new InitialiserNettverk(this, hostAddress);
-			nettverk.initialiserSpel(); // InitialiserNettverk
-			trekkOppdrag(hovud.getMinSpelar(),true);
-
-			for (ISpelar s : hovud.getSpelarar()){
-				for (IOppdrag o : s.getOppdrag()){
-					s.trekt(o.getOppdragsid());
-				}
-			}
-
-			Main.getFrame().setTitle(Main.getFrame().getTitle() +" - " +hovud.getMinSpelar());
-		}
-		else {
-			for (ISpelar s : hovud.getSpelarar()) {
-				trekkOppdrag(s,true);
-			}
-			// ??
-		}
+		settIGangSpelet(nett,hostAddress);
 
 		frame.setPreferredSize(new Dimension(Konstantar.BREIDDE, Konstantar.HOGDE));
 
@@ -114,6 +96,28 @@ public class GUI extends JPanel implements  IGUI {
 			togAtt[togAtt.length-1].setText("");
 		}*/
 	}
+    
+    private void settIGangSpelet(int nett, String hostAddress) throws RemoteException {
+        if (nett == JOptionPane.YES_OPTION) {
+            InitialiserNettverk nettverk = new InitialiserNettverk(this, hostAddress);
+            nettverk.initialiserSpel(); // InitialiserNettverk
+            trekkOppdrag(hovud.getMinSpelar(),true);
+
+            for (ISpelar s : hovud.getSpelarar()){
+                for (IOppdrag o : s.getOppdrag()){
+                    s.trekt(o.getOppdragsid());
+                }
+            }
+
+            Main.getFrame().setTitle(Main.getFrame().getTitle() +" - " +hovud.getMinSpelar());
+        }
+        else {
+            for (ISpelar s : hovud.getSpelarar()) {
+                trekkOppdrag(s,true);
+            }
+            // ??
+        }
+    }
 
 	/**
 	 * Sett opp panelet på høgre side av skjermen (altså GUI-et)
@@ -139,14 +143,18 @@ public class GUI extends JPanel implements  IGUI {
 	 */
 	public void setSpelarnamn(String spelarnamn) {
 		if (hovud==null){hogre.getSpelarnamn().setText(""); return;}
+
+
 		if (hovud.isNett()){
 			try {
+                String tekst = "Eg er " + hovud.getMinSpelar().getNamn() + ", og det er ";
 				if (hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn())){
-                    hogre.getSpelarnamn().setText("Eg er " + hovud.getMinSpelar().getNamn() + ", og det er min tur.");
+                    tekst += "min tur.";
 				}
 				else{
-                    hogre.getSpelarnamn().setText("Eg er " + hovud.getMinSpelar().getNamn() + ", og det er " + spelarnamn + " sin tur.");
+                    tekst += spelarnamn + " sin tur.";
 				}
+                hogre.getSpelarnamn().setText(tekst);
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
@@ -225,31 +233,6 @@ public class GUI extends JPanel implements  IGUI {
 		jd.setVisible(true);
 
 		return valde;
-	}
-
-    @SuppressWarnings("serial")
-	private class BildePanel extends JPanel {
-		//		ImageIcon a = new ImageIcon("/home/mads/Dropbox/Programmering/Eclipse-workspace/TTR/src/ttr/nordic/nordic_map.jpg");
-		//		Image b = a.getImage();
-        final URL c = spel.getBakgrunnsbildet();
-		final Image b = new ImageIcon(c).getImage();
-
-		@Override
-		public void paintComponent(Graphics g) {
-            double bilderatio = (double) b.getHeight(null) / (double) b.getWidth(null);
-            /*
-         Teiknar bakgrunnsbildet.
-         */
-            int bildehogde = Konstantar.HOGDE;
-            int br = (int) ((bildehogde / bilderatio) * 1.3);
-			try {
-				g.drawImage(b, 0, 25, br, bildehogde, null);
-				bp.setPreferredSize(new Dimension(br +50, bildehogde +50));
-			}
-			catch (NullPointerException npe) {
-				npe.printStackTrace();
-			}	
-		}
 	}
 
 	/**

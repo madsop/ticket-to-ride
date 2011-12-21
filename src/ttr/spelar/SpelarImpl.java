@@ -5,7 +5,6 @@ import ttr.data.Destinasjon;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.struktur.IOppdrag;
-import ttr.struktur.Oppdrag;
 import ttr.struktur.Rute;
 
 import javax.swing.*;
@@ -452,7 +451,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 		}	
 	}
 	public void leggIStokken(int tabellplass, int kormange) throws RemoteException {
-		hovud.getBord().getIgjenAvFargekort()[tabellplass] += kormange;
+		hovud.getBord().getFargekortaSomErIgjenIBunken()[tabellplass] += kormange;
 	}
 	
 	public void visSpeletErFerdigmelding(String melding) throws RemoteException {

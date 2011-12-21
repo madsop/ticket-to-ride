@@ -8,7 +8,7 @@ public class Bord implements IBord {
     private final IGUI gui;
     private Farge[] paaBordet;
     private final BordHjelpar bordHjelpar;
-    private final int[] igjenAvFargekort = {    // TODO lag ein finare struktur for fargar og fargekort generelt
+    private final int[] fargekortSomErIgjenIBunken = {    // TODO lag ein finare struktur for fargar og fargekort generelt
             Konstantar.ANTAL_AV_KVART_FARGEKORT,
             Konstantar.ANTAL_AV_KVART_FARGEKORT,
             Konstantar.ANTAL_AV_KVART_FARGEKORT,
@@ -40,11 +40,11 @@ public class Bord implements IBord {
 		}
 	}
 
-    public void setEinPaaBordet(Farge f, int plass) {
-		paaBordet[plass] = f;
-		int j = Konstantar.finnPosisjonForFarg(f);
-		igjenAvFargekort[j]--;
-		gui.setKortPaaBordet(plass, f);
+    public void setEinPaaBordet(Farge farge, int plass) {
+		paaBordet[plass] = farge;
+		int kortPosisjon = Konstantar.finnPosisjonForFarg(farge);
+		fargekortSomErIgjenIBunken[kortPosisjon]--;
+		gui.setKortPaaBordet(plass, farge);
 	}
 
 
@@ -54,8 +54,8 @@ public class Bord implements IBord {
 		}
 	}
 
-	public int[] getIgjenAvFargekort() {
-		return igjenAvFargekort;
+	public int[] getFargekortaSomErIgjenIBunken() {
+		return fargekortSomErIgjenIBunken;
 	}
 
 
@@ -67,14 +67,14 @@ public class Bord implements IBord {
 	public int getAntalFargekortPåBordet() {
 		int fargekortpåbordet = 0;
 		for (int i = 0; i < Konstantar.ANTAL_FARGAR; i++) {
-			fargekortpåbordet += igjenAvFargekort[i];
+			fargekortpåbordet += fargekortSomErIgjenIBunken[i];
 		}
 		return fargekortpåbordet;
 	}
 
 	public Farge getTilfeldigKortFråBordet(int plass, boolean leggPåBordet) {
         int fargekortpåbordet = getAntalFargekortPåBordet();
-		int teljar = bordHjelpar.tilfeldigFarge(fargekortpåbordet, igjenAvFargekort);
+		int teljar = bordHjelpar.tilfeldigFarge(fargekortpåbordet, fargekortSomErIgjenIBunken);
 		if (teljar >= 0 && teljar <= Konstantar.ANTAL_FARGAR) {
 			if (leggPåBordet) {
 				leggKortPåBordet(plass, teljar);
@@ -96,7 +96,7 @@ public class Bord implements IBord {
     private void leggKortPåBordet(int plass, int teljar) {
 		if (teljar >= 0 && teljar < Konstantar.ANTAL_FARGAR) {	
 			paaBordet[plass] = Konstantar.FARGAR[teljar];
-			igjenAvFargekort[teljar]--;
+			fargekortSomErIgjenIBunken[teljar]--;
 			Farge f = Konstantar.FARGAR[teljar];
 			gui.setKortPaaBordet(plass, f);
 		}

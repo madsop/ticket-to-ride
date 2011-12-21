@@ -5,7 +5,7 @@ import ttr.struktur.IOppdrag;
 import java.util.ArrayList;
 
 public class Oppdragshandsamar implements IOppdragshandsamar {
-    private ArrayList<IOppdrag> gjenverandeIOppdrag;
+    private final ArrayList<IOppdrag> gjenverandeIOppdrag;
 
     public Oppdragshandsamar(ArrayList<IOppdrag> oppdrag){
         gjenverandeIOppdrag = oppdrag;
