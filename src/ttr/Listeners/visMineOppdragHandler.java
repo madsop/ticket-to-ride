@@ -1,4 +1,4 @@
-package ttr.gui.Listeners;
+package ttr.Listeners;
 
 import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
@@ -8,7 +8,7 @@ import ttr.struktur.IOppdrag;
 import javax.swing.*;
 import java.rmi.RemoteException;
 
-public class visMineOppdragHandler {
+class visMineOppdragHandler {
 
     public visMineOppdragHandler(IHovud hovud, IGUI gui) {
         // vis oppdraga mine

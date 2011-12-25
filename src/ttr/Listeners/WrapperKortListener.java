@@ -1,4 +1,4 @@
-package ttr.gui.Listeners;
+package ttr.Listeners;
 
 import ttr.data.Farge;
 import ttr.data.Konstantar;
@@ -13,7 +13,7 @@ import java.rmi.RemoteException;
 
 public class WrapperKortListener implements ActionListener{
     private final JButton kortBunke;
-    private JButton[] kortButtons;
+    private final JButton[] kortButtons;
     private final IHovud hovud;
     private final IGUI gui;
     private final JFrame frame;

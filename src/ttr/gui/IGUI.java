@@ -11,8 +11,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public interface IGUI {
-    public IHovud getHovud();
-
     public MeldingarModell getMeldingarModell();
     public void setSpelarnamn(String spelarnamn);
     public JTextField getSpelarnamn();

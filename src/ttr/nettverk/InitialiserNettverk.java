@@ -21,7 +21,7 @@ public class InitialiserNettverk {
     private final IHovud hovud;
     private int[] paaVertBordet;
 
-	public InitialiserNettverk(IGUI gui, String hostAddress, IHovud hovud) throws RemoteException {
+	public InitialiserNettverk(IGUI gui, String hostAddress, IHovud hovud) {
 		this.hostAddress = hostAddress;
 		this.gui = gui;
         this.hovud = hovud;

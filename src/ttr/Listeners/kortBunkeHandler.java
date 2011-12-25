@@ -1,4 +1,4 @@
-package ttr.gui.Listeners;
+package ttr.Listeners;
 
 import ttr.data.Farge;
 import ttr.gui.IGUI;
@@ -7,7 +7,7 @@ import ttr.kjerna.IHovud;
 import javax.swing.*;
 import java.rmi.RemoteException;
 
-public class kortBunkeHandler {
+class kortBunkeHandler {
     public kortBunkeHandler(IHovud hovud, IGUI gui) {
         Farge f = null;
         try {

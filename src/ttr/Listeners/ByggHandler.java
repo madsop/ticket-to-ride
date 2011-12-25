@@ -1,4 +1,4 @@
-package ttr.gui.Listeners;
+package ttr.Listeners;
 
 import ttr.data.Farge;
 import ttr.data.Konstantar;
@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.rmi.RemoteException;
 
-public class ByggHandler {
+class ByggHandler {
 
     public ByggHandler(IHovud hovud, JFrame frame) {
         Rute[] ruterArray = null;

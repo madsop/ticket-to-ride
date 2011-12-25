@@ -1,4 +1,4 @@
-package ttr.gui.Listeners;
+package ttr.Listeners;
 
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.rmi.RemoteException;
 
-public class visMineKortHandler {
+class visMineKortHandler {
     public visMineKortHandler(IHovud hovud, IGUI gui){
         // vis korta mine
         JPanel korta = new JPanel();

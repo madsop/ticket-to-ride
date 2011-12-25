@@ -1,4 +1,4 @@
-package ttr.gui.Listeners;
+package ttr.Listeners;
 
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
@@ -14,8 +14,12 @@ import java.rmi.RemoteException;
 public class WrapperHogresideListener implements ActionListener{
     private final IGUI gui;
     private final IHovud hovud;
-    private JButton visBygde,visMineKort,visMineOppdrag,trekkOppdrag,bygg;
-    private JFrame frame;
+    private final JButton visBygde;
+    private final JButton visMineKort;
+    private final JButton visMineOppdrag;
+    private final JButton trekkOppdrag;
+    private final JButton bygg;
+    private final JFrame frame;
 
     public WrapperHogresideListener(IGUI gui, IHovud hovud, JButton visBygde,
                                     JButton visMineKort,JButton visMineOppdrag,JButton trekkOppdrag, JButton bygg,

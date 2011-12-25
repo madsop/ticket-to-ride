@@ -1,11 +1,11 @@
-package ttr.gui.Listeners;
+package ttr.Listeners;
 
 import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
 
 import javax.swing.*;
 
-public class visBygdeHandler {
+class visBygdeHandler {
     public visBygdeHandler(IHovud hovud, IGUI gui, JFrame frame) {
         JPanel bygde = new JPanel();
 

@@ -2,16 +2,11 @@ package ttr.gui;
 
 import ttr.data.Farge;
 import ttr.data.Konstantar;
-import ttr.gui.Listeners.*;
+import ttr.Listeners.*;
 import ttr.kjerna.IHovud;
-import ttr.kjerna.Oppdragshandsamar;
-import ttr.spelar.ISpelar;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.rmi.RemoteException;
 
 
 class Hogrepanelet extends JPanel {
@@ -20,15 +15,10 @@ class Hogrepanelet extends JPanel {
     private final IHovud hovud;
     private final IGUI gui;
     private final JFrame frame;
-    private JButton kortBunke;
 
-    private JButton trekkOppdrag, bygg, visBygde, visMineKort, visMineOppdrag;
     private JButton[] kortButtons;
     private JLabel[] togAtt;
 
-    private WrapperKortListener kortListener;
-    private WrapperHogresideListener listener;
-    
     public Hogrepanelet(IHovud hovud, GUI gui, JFrame frame){
         this.hovud = hovud;
         this.gui = gui;
@@ -78,29 +68,29 @@ class Hogrepanelet extends JPanel {
 
         d.gridwidth = 1;
         d.gridy = 1;
-        trekkOppdrag = new JButton("Trekk oppdrag");
+        JButton trekkOppdrag = new JButton("Trekk oppdrag");
         trekkOppdrag.setMinimumSize(Konstantar.KNAPP);
         this.add(trekkOppdrag, d);
 
         d.gridx = 1;
-        bygg = new JButton("Bygg ei togrute");
+        JButton bygg = new JButton("Bygg ei togrute");
         bygg.setMinimumSize(Konstantar.KNAPP);
         this.add(bygg, d);
 
         d.gridy = 2;
         d.gridx = 0;
-        visBygde = new JButton("Vis bygde ruter");
+        JButton visBygde = new JButton("Vis bygde ruter");
         visBygde.setMinimumSize(Konstantar.KNAPP);
         this.add(visBygde, d);
 
         d.gridy = 3;
         d.gridx = 0;
-        visMineOppdrag = new JButton("Vis mine oppdrag");
+        JButton visMineOppdrag = new JButton("Vis mine oppdrag");
         visMineOppdrag.setMinimumSize(Konstantar.KNAPP);
         this.add(visMineOppdrag, d);
 
         d.gridx = 1;
-        visMineKort = new JButton("Vis mine kort");
+        JButton visMineKort = new JButton("Vis mine kort");
         visMineKort.setMinimumSize(Konstantar.KNAPP);
         this.add(visMineKort, d);
 
@@ -132,7 +122,7 @@ class Hogrepanelet extends JPanel {
         this.add(togAtt[3], d);
 
 
-        listener = new WrapperHogresideListener(gui,hovud,visBygde,visMineKort,visMineOppdrag,trekkOppdrag,bygg,frame);
+        WrapperHogresideListener listener = new WrapperHogresideListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
         trekkOppdrag.addActionListener(listener);
         bygg.addActionListener(listener);
         visMineKort.addActionListener(listener);
@@ -147,7 +137,7 @@ class Hogrepanelet extends JPanel {
      * @param plass - kva for ein av plassane på bordet
      * @param farge - i kva farge
      */
-    public void setKortPaaBordet(int plass, Farge farge) {
+    public void teiknOppKortPåBordet(int plass, Farge farge) {
         kortButtons[plass].setForeground(Color.BLACK);
         kortButtons[plass].setBackground(Konstantar.fargeTilColor(farge));
         String ret;
@@ -193,7 +183,7 @@ class Hogrepanelet extends JPanel {
 
         // Fargekorta på bordet
         d.gridy = 7;
-        kortBunke = new JButton("Tilfeldig");
+        JButton kortBunke = new JButton("Tilfeldig");
         kortBunke.setMinimumSize(Konstantar.KORTKNAPP);
         this.add(kortBunke,d);
 
@@ -221,7 +211,7 @@ class Hogrepanelet extends JPanel {
         d.gridx = 1;
         mekkKortButton(tel,d);
 
-        kortListener = new WrapperKortListener(kortBunke,kortButtons,hovud,gui,frame);
+        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, kortButtons, hovud, gui, frame);
         kortBunke.addActionListener(kortListener);
         for (JButton button : kortButtons){
             button.addActionListener(kortListener);

@@ -175,7 +175,7 @@ public class GUI extends JPanel implements  IGUI {
         return hogre.getTogAtt();
     }
     public void setKortPaaBordet(int plass,Farge farge){
-        hogre.setKortPaaBordet(plass,farge);
+        hogre.teiknOppKortPåBordet(plass, farge);
     }
     public JButton[] getKortButtons(){
         return hogre.getKortButtons();
