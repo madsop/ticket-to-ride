@@ -1,11 +1,11 @@
 package ttr.nettverk;
 
-import ttr.gui.IGUI;
-import ttr.spelar.ISpelar;
-import ttr.spelar.SpelarImpl;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.gui.GUI;
+import ttr.gui.IGUI;
+import ttr.spelar.ISpelar;
+import ttr.spelar.SpelarImpl;
 
 import javax.swing.*;
 import java.awt.*;

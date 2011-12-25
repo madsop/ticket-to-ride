@@ -1,13 +1,13 @@
 package ttr.gui;
 
+import ttr.Main;
 import ttr.bord.Bord;
 import ttr.bord.IBord;
-import ttr.kjerna.Hovud;
-import ttr.kjerna.IHovud;
-import ttr.Main;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.data.MeldingarModell;
+import ttr.kjerna.Hovud;
+import ttr.kjerna.IHovud;
 import ttr.kjerna.Oppdragshandsamar;
 import ttr.nettverk.InitialiserNettverk;
 import ttr.spelar.ISpelar;
@@ -101,7 +101,7 @@ public class GUI extends JPanel implements  IGUI {
         if (nett == JOptionPane.YES_OPTION) {
             InitialiserNettverk nettverk = new InitialiserNettverk(this, hostAddress);
             nettverk.initialiserSpel(); // InitialiserNettverk
-            Oppdragshandsamar.trekkOppdrag(this,hovud.getMinSpelar(),true);
+            Oppdragshandsamar.trekkOppdrag(this, hovud.getMinSpelar(), true);
 
             for (ISpelar s : hovud.getSpelarar()){
                 for (IOppdrag o : s.getOppdrag()){
@@ -113,7 +113,7 @@ public class GUI extends JPanel implements  IGUI {
         }
         else {
             for (ISpelar s : hovud.getSpelarar()) {
-                Oppdragshandsamar.trekkOppdrag(this,s,true);
+                Oppdragshandsamar.trekkOppdrag(this, s, true);
             }
             // ??
         }

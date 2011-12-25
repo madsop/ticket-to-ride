@@ -5,7 +5,6 @@ import ttr.spelar.ISpelar;
 import ttr.struktur.Rute;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.Set;
 
 public interface IKommunikasjonMedSpelarar {

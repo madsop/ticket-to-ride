@@ -1,10 +1,10 @@
 package ttr;
 
-import ttr.gui.IGUI;
-import ttr.utgaave.europe.Europe;
 import ttr.gui.GUI;
-import ttr.utgaave.nordic.Nordic;
+import ttr.gui.IGUI;
 import ttr.utgaave.ISpelUtgaave;
+import ttr.utgaave.europe.Europe;
+import ttr.utgaave.nordic.Nordic;
 
 import javax.swing.*;
 import java.awt.*;

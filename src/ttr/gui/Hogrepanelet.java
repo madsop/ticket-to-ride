@@ -1,8 +1,8 @@
 package ttr.gui;
 
-import ttr.kjerna.IHovud;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
+import ttr.kjerna.IHovud;
 import ttr.kjerna.Oppdragshandsamar;
 import ttr.spelar.ISpelar;
 import ttr.struktur.IOppdrag;

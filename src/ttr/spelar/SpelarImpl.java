@@ -1,9 +1,9 @@
 package ttr.spelar;
 
-import ttr.kjerna.IHovud;
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
+import ttr.kjerna.IHovud;
 import ttr.struktur.IOppdrag;
 import ttr.struktur.Rute;
 
@@ -28,8 +28,8 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 
 	private int[] kort;
 	private ArrayList<IOppdrag> oppdrag;
-	private ArrayList<Rute> bygdeRuter; // Delvis unaudsynt pga. bygdRuteMatrise
-	private boolean[][] bygdRuteMatrise;
+	private ArrayList<Rute> bygdeRuter; // Delvis unaudsynt pga. harEgBygdMellomAogB
+	private boolean[][] harEgBygdMellomAogB;
 	
 	private boolean einValdAllereie = false;
 
@@ -77,13 +77,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 		return bygdeRuter.get(j).getRuteId();
 	}
 
-	
-	/**
-	 * Konstruktør. Lagar ein ny spelar og koplar han til eit hovud.
-	 * @param hovud
-	 * @param namn
-	 * @throws RemoteException
-	 */
+
 	public SpelarImpl (IHovud hovud, String namn) throws RemoteException{
 		super();
 		this.hovud = hovud;
@@ -91,27 +85,32 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 		kort = new int[Konstantar.ANTAL_FARGAR];
 		oppdrag = new ArrayList<IOppdrag>();
 		bygdeRuter = new ArrayList<Rute>();
-		bygdRuteMatrise = new boolean[Destinasjon.values().length][Destinasjon.values().length];
+		harEgBygdMellomAogB = new boolean[Destinasjon.values().length][Destinasjon.values().length];
 		initialiserMatrise();
 		
 		for (int i = 0; i < Konstantar.ANTAL_STARTKORT; i++) {
 			kort[i] = 0;
 		}
-		
-		// Gir spelaren fargekort i byrjinga
-		for (int i = 0; i < Konstantar.ANTAL_STARTKORT; i++) {
-			Farge trekt = trekkFargekort();
-			int plass = -1;
-			for (int j = 0; j < Konstantar.FARGAR.length; j++) {
-				if (trekt == Konstantar.FARGAR[j]) {
-					plass = j;
-				}
-			}
-			if (plass >= 0) {
-				kort[plass]++;
-			}
-		}
+
+        faaInitielleFargekort();
 	}
+
+    private void faaInitielleFargekort() throws  RemoteException{
+
+        // Gir spelaren fargekort i byrjinga
+        for (int i = 0; i < Konstantar.ANTAL_STARTKORT; i++) {
+            Farge trekt = trekkFargekort();
+            int plass = -1;
+            for (int j = 0; j < Konstantar.FARGAR.length; j++) {
+                if (trekt == Konstantar.FARGAR[j]) {
+                    plass = j;
+                }
+            }
+            if (plass >= 0) {
+                kort[plass]++;
+            }
+        }
+    }
 	
 
 // --Commented out by Inspection START (12.12.11 15:40):
@@ -159,14 +158,6 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	public int[] getKort() throws RemoteException  {
 		return kort;
 	}
-	
-// --Commented out by Inspection START (12.12.11 15:40):
-//	public ArrayList<Oppdrag> velOppdrag(ArrayList<Oppdrag> oppdrag) throws RemoteException  {
-//		ArrayList<Oppdrag> valde = new ArrayList<Oppdrag>();
-//		Hovud.getGui().velOppdrag(oppdrag);
-//		return valde;
-//	}
-// --Commented out by Inspection STOP (12.12.11 15:40)
 
 	/**
 	 * Oppretter ei #destinasjonar*#destinasjonar med alle verdiar false.
@@ -174,14 +165,11 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	private void initialiserMatrise() {
 		for (int y = 0; y < Destinasjon.values().length; y++) {
 			for (int x = 0; x < Destinasjon.values().length; x++) {
-				bygdRuteMatrise[y][x] = false;
+				harEgBygdMellomAogB[y][x] = false;
 			}
 		}
 	}
-	
-	/**
-	 * @return kva heiter spelaren?
-	 */
+
 	public String getNamn()  throws RemoteException {
 		return namn;
 	}
@@ -197,7 +185,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
             int d = d1.ordinal();
             Destinasjon d2 = (Destinasjon) anOppdrag.getDestinasjonar().toArray()[1];
             int e = d2.ordinal();
-            if (bygdRuteMatrise[d][e] || bygdRuteMatrise[e][d]) {
+            if (harEgBygdMellomAogB[d][e] || harEgBygdMellomAogB[e][d]) {
                 ret += anOppdrag.getVerdi();
             } else {
                 ret -= anOppdrag.getVerdi();
@@ -222,7 +210,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 		int d = d1.ordinal();
 		Destinasjon d2 = (Destinasjon) o.getDestinasjonar().toArray()[1];
 		int e = d2.ordinal();
-        return bygdRuteMatrise[d][e] || bygdRuteMatrise[e][d];
+        return harEgBygdMellomAogB[d][e] || harEgBygdMellomAogB[e][d];
 	}
 	
 	public int getAntalFullfoerteOppdrag() throws RemoteException{
@@ -232,7 +220,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 			int d = d1.ordinal();
 			Destinasjon d2 = (Destinasjon) o.getDestinasjonar().toArray()[1];
 			int e = d2.ordinal();
-			if (bygdRuteMatrise[d][e] || bygdRuteMatrise[e][d]){
+			if (harEgBygdMellomAogB[d][e] || harEgBygdMellomAogB[e][d]){
 				antal++;
 			}
 		}
@@ -297,12 +285,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 		}
 		return trekt;
 	}
-	
-	/**
-	 * Byggjer ei rute
-	 * @param rute - kva for rute?
-	 * @param farge - i kva for farge?
-	 */
+
 	public void bygg(Rute rute) throws RemoteException  {
 		rute.setBygdAv(this);
 		// Fjern kort frå spelaren og legg dei i stokken eller ved sida av?
@@ -312,11 +295,10 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 		// Fyller matrisa med ei rute frå d1 til d2 (og motsett):
 		// Må først iterere over mengda med destinasjonar for å få dei ut
 		Iterator<Destinasjon> mengdeIterator = rute.getDestinasjonar().iterator();
-		// Er det veldig hårate å gå ut ifrå at det alltid finst to destinasjonar og hard-kode det?
 		int destinasjon1 = mengdeIterator.next().ordinal();
 		int destinasjon2 = mengdeIterator.next().ordinal();
-		bygdRuteMatrise[destinasjon1][destinasjon2] = true;
-		bygdRuteMatrise[destinasjon2][destinasjon1] = true;
+		harEgBygdMellomAogB[destinasjon1][destinasjon2] = true;
+		harEgBygdMellomAogB[destinasjon2][destinasjon1] = true;
 		transitivTillukking();
 	}
 
@@ -326,20 +308,17 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	private void transitivTillukking() {
 		// Dette er ein implementasjon av Warshallalgoritma, side 553 i Rosen [DiskMat]
 		// Køyretida er på (u)behagelege 2n³, som er tilnærma likt optimalt
-		int n = bygdRuteMatrise.length;
+		int n = harEgBygdMellomAogB.length;
 		
 		for (int k = 0; k < n; k++) {
 			for (int i = 0; i < n; i++) {
 				for (int j = 0; j < n; j++) {
-					bygdRuteMatrise[i][j] = bygdRuteMatrise[i][j] || (bygdRuteMatrise[i][k] && bygdRuteMatrise[k][j]);
+					harEgBygdMellomAogB[i][j] = harEgBygdMellomAogB[i][j] || (harEgBygdMellomAogB[i][k] && harEgBygdMellomAogB[k][j]);
 				}
 			}
 		}
 	}
-	
-	/**
-	 * Enkel toString. Returnerer berre namn.
-	 */
+
 	@Override
 	public String toString() {
 		return namn;
@@ -350,17 +329,17 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	 * Kokt frå distsys, øving 2.
 	 * @param p	The client that is registering as the adversary
 	 */
-	public void registrerKlient(ISpelar s) throws RemoteException {
+	public void registrerKlient(ISpelar nyMotspelar) throws RemoteException {
 		boolean cont = false;
-		for (ISpelar p : hovud.getSpelarar()) {
-			if (p == s) {
+		for (ISpelar eksisterandeSpelar : hovud.getSpelarar()) {
+			if (nyMotspelar == eksisterandeSpelar) {
 				cont = true;
 			}
 		}
 		if (!cont) {
-			hovud.getSpelarar().add(s);
+			hovud.getSpelarar().add(nyMotspelar);
 		}
-		else{
+		else {
 //			throw new RemoteException("Denne motspelaren er allereie lagt til!");
 		}
 	}
@@ -370,26 +349,27 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	}
 
 	public Farge getTilfeldigKortFråBordet(int i) throws RemoteException {
-		Farge f = hovud.getBord().getTilfeldigKortFråBordet(i, true);
-		if (f == null){
+		Farge fargePåDetTilfeldigeKortet = hovud.getBord().getTilfeldigKortFråBordet(i, true);
+
+		if (fargePåDetTilfeldigeKortet == null){
 			JOptionPane.showMessageDialog((Component) hovud.getGui(), "Det er ikkje noko kort der, ser du vel.");
 			hovud.getGui().getKortButtons()[i].setBackground(Color.GRAY);
 			hovud.getGui().getKortButtons()[i].setText("Tom");
-			
-			int l = -1;
-			for (int j = 0; j < Konstantar.FARGAR.length; j++){
-				if (f == Konstantar.FARGAR[j]){
-					l = j;
+
+			int fargePosisjon = -1;
+			for (Farge farge : Konstantar.FARGAR){
+				if (fargePåDetTilfeldigeKortet == farge){
+					fargePosisjon = farge.ordinal();
 				}
 			}
-			if (l >= 0 && l < Konstantar.FARGAR.length){
-				kort[l]--;
+			if (fargePosisjon >= 0 && fargePosisjon < Konstantar.FARGAR.length){
+				kort[fargePosisjon]--;
 			}
-			
+
 			return null;
 		}
-		hovud.getBord().getPaaBordet()[i] = f;
-		return f;
+		hovud.getBord().getPaaBordet()[i] = fargePåDetTilfeldigeKortet;
+		return fargePåDetTilfeldigeKortet;
 	}
 	
 	public void nybygdRute(int ruteId, ISpelar byggjandeSpelar) throws RemoteException {
@@ -401,12 +381,10 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 		}
 
         assert vald != null;
-        if (vald.getBygdAv() == null) {
-			vald.setBygdAv(byggjandeSpelar);
-			if (!hovud.getAlleBygdeRuter().contains(vald)) {
-				hovud.getAlleBygdeRuter().add(vald);
-			}
-		}
+        vald.setBygdAv(byggjandeSpelar);
+        if (!hovud.getAlleBygdeRuter().contains(vald)) {
+            hovud.getAlleBygdeRuter().add(vald);
+        }
 	}
 	
 	public int[] getPaaBordetInt() throws RemoteException {

@@ -1,7 +1,7 @@
 package ttr.gui;
 
-import ttr.kjerna.IHovud;
 import ttr.data.MeldingarModell;
+import ttr.kjerna.IHovud;
 import ttr.spelar.ISpelar;
 
 import javax.swing.*;

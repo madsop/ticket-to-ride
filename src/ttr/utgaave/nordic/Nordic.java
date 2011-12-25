@@ -1,12 +1,12 @@
 package ttr.utgaave.nordic;
 
+import ttr.data.Destinasjon;
+import ttr.data.Farge;
 import ttr.struktur.IOppdrag;
 import ttr.struktur.Oppdrag;
 import ttr.struktur.Rute;
-import ttr.utgaave.ISpelUtgaave;
 import ttr.utgaave.AbstractSpelUtgaave;
-import ttr.data.Destinasjon;
-import ttr.data.Farge;
+import ttr.utgaave.ISpelUtgaave;
 
 import java.util.ArrayList;
 import java.util.HashSet;

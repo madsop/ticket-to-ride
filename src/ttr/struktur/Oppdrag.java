@@ -2,7 +2,6 @@ package ttr.struktur;
 
 import ttr.data.Destinasjon;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 

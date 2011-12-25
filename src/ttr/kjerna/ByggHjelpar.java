@@ -12,17 +12,10 @@ import java.awt.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-/**
- * Created by IntelliJ IDEA.
- * User: madsop
- * Date: 25.12.11
- * Time: 18:09
- * To change this template use File | Settings | File Templates.
- */
 public class ByggHjelpar implements IByggHjelpar {
-    private IGUI gui;
+    private final IGUI gui;
     private Farge valdFarge;
-    private boolean nett;
+    private final boolean nett;
 
     public ByggHjelpar(IGUI gui, boolean nett) {
         this.gui = gui;

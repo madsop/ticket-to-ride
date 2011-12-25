@@ -8,7 +8,6 @@ import ttr.struktur.Rute;
 import ttr.utgaave.nordic.Nordic;
 
 import javax.swing.*;
-import java.awt.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Set;

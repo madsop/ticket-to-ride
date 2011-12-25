@@ -1,8 +1,8 @@
 package ttr.struktur;
 
-import ttr.spelar.ISpelar;
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
+import ttr.spelar.ISpelar;
 
 import java.rmi.RemoteException;
 import java.util.HashSet;
