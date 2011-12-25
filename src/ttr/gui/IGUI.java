@@ -12,12 +12,11 @@ import java.util.ArrayList;
 
 public interface IGUI {
     public MeldingarModell getMeldingarModell();
-    public void setSpelarnamn(String spelarnamn);
+    public void visKvenDetErSinTur(String spelarnamn, boolean nett, String minSpelar);
     public JTextField getSpelarnamn();
     public JLabel[] getTogAtt();
     public void setKortPaaBordet(int plass,Farge farge);
     public JButton[] getKortButtons();
-    void sendKortMelding(boolean kort, boolean tilfeldig, Farge f) throws RemoteException;
     void nyPaaPlass(ISpelar vert, Farge nyFarge, int i) throws RemoteException;
     ArrayList<IOppdrag> velOppdrag(ArrayList<IOppdrag> oppd);
     void lagRamme(String tittel, JPanel panel);

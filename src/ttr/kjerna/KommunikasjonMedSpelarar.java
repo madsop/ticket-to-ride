@@ -1,5 +1,6 @@
 package ttr.kjerna;
 
+import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.data.MeldingarModell;
 import ttr.spelar.ISpelar;
@@ -169,9 +170,6 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
         return leiarNo;
     }
 
-
-
-
     private int reknUtPoeng(ISpelar s, Set<Rute> ruter) throws RemoteException {
         int poeng = s.getOppdragspoeng();
         for (int j = 0; j < s.getBygdeRuterStr(); j++) {
@@ -184,4 +182,23 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
         return poeng;
     }
 
+    public void sendKortMelding(boolean kort, boolean tilfeldig, Farge f, String handlandespelarsNamn, boolean nett, IHovud hovud) throws RemoteException{
+        String melding = handlandespelarsNamn;
+        melding += kort ? " trakk inn " + f +"." : " trakk oppdrag.";
+
+        if (nett){
+            hovud.getMinSpelar().faaMelding(melding);
+        }
+
+        for (ISpelar s : hovud.getSpelarar()){
+            if (nett || hovud.getKvenSinTur()==s){
+                if (!tilfeldig){
+                    s.faaMelding(melding);
+                }
+                else if(kort && tilfeldig){
+                    s.faaMelding(handlandespelarsNamn +" trakk tilfeldig.");
+                }
+            }
+        }
+    }
 }

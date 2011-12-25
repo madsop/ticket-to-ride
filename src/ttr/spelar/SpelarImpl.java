@@ -16,8 +16,6 @@ import java.util.Iterator;
 
 /**
  * Ein spelar. All nettverkskommunikasjon går via denne, så litt hårate klasse med ein del ad hoc-metodar.
- * @author mads
- *
  */
  public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	private IHovud hovud;
@@ -149,39 +147,16 @@ import java.util.Iterator;
 		}
 		
 		return bord;
-	}	
-	
-	public void setPaaBord(Farge[] f) {
-		hovud.getBord().setPaaBordet(f);
-	}
-	public void setPaaBordet(Farge f, int i) throws RemoteException{
-		// Har no finni fargen f og kva for plass denne har i farge-tabellen. 
-		// Bør no få lagt ut eit kort på bordet i denne fargen.
-		hovud.getBord().setEinPaaBordet(f, i);
-	}
-	
-	public void leggUtFem() {
-		hovud.getBord().leggUtFem();
-	}
-	public ArrayList<ISpelar> getSpelarar() {
-		return hovud.getSpelarar();
-	}	
-	public boolean sjekkJokrar() throws RemoteException{
-		return hovud.getBord().sjekkOmJokrarPaaBordetErOK();
 	}
 
-	public void leggIStokken(int tabellplass, int kormange) throws RemoteException {
-		hovud.getBord().getFargekortaSomErIgjenIBunken()[tabellplass] += kormange;
-	}
 	
 	public void visSpeletErFerdigmelding(String melding) throws RemoteException {
 		JOptionPane.showMessageDialog((Component) hovud.getGui(), melding);
 	}
-	public void faaMelding(String melding) throws RemoteException{
-		hovud.getGui().getMeldingarModell().nyMelding(melding);
-	}
 
     // FASADE
+public ArrayList<ISpelar> getSpelarar() { return hovud.getSpelarar(); }
+    public void faaMelding(String melding) throws RemoteException{ hovud.getGui().getMeldingarModell().nyMelding(melding); }
 
     // Oppdrag
     public int getAntalFullfoerteOppdrag() throws RemoteException { return spelarOppdragshandsamar.getAntalFullfoerteOppdrag(); }
@@ -198,4 +173,17 @@ import java.util.Iterator;
     public void faaKort(Farge farge) throws RemoteException { korthandsamar.faaKort(farge);}
     public Farge getTilfeldigKortFråBordet(int i) throws RemoteException { return korthandsamar.getTilfeldigKortFråBordet(i); }
     public Farge trekkFargekort() throws RemoteException { return korthandsamar.trekkFargekort(); }
+
+    // Bord
+    public void leggUtFem() { hovud.getBord().leggUtFem(); }
+    public void leggIStokken(int tabellplass, int kormange) throws RemoteException {
+        hovud.getBord().getFargekortaSomErIgjenIBunken()[tabellplass] += kormange;
+    }
+    public void setPaaBord(Farge[] f) { hovud.getBord().setPaaBordet(f); }
+    public void setPaaBordet(Farge f, int i) throws RemoteException{
+        // Har no finni fargen f og kva for plass denne har i farge-tabellen.
+        // Bør no få lagt ut eit kort på bordet i denne fargen.
+        hovud.getBord().setEinPaaBordet(f, i);
+    }
+    public boolean sjekkJokrar() throws RemoteException{ return hovud.getBord().sjekkOmJokrarPaaBordetErOK(); }
 }

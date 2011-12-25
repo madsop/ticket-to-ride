@@ -72,17 +72,17 @@ public class WrapperKortListener implements ActionListener{
         }
     }
 
-    private void trekkInnEittKortFråBordet(int i) throws RemoteException {
+    private void trekkInnEittKortFråBordet(int i,ISpelar kvenSinTur) throws RemoteException {
         Farge f = hovud.getBord().getPaaBordet()[i];
-        if (hovud.getKvenSinTur().getValdAllereie()) {
+        if (kvenSinTur.getValdAllereie()) {
             if (f == Farge.valfri) {
                 JOptionPane.showMessageDialog(frame, "Haha. Nice try. Du kan ikkje ta ein joker frå bordet når du allereie har trekt inn eitt kort");
                 return;
             }
             else if (f==null){return;}
             else {
-                hovud.getKvenSinTur().faaKort(f);
-                gui.sendKortMelding(true,false,f);
+                kvenSinTur.faaKort(f);
+                hovud.sendKortMelding(true,false,f);
                 hovud.getBord().getTilfeldigKortFråBordet(i, true);
                 hovud.nesteSpelar();
             }
@@ -90,7 +90,7 @@ public class WrapperKortListener implements ActionListener{
         else {
             if (f==null){return;}
             hovud.getKvenSinTur().faaKort(f);
-            gui.sendKortMelding(true,false,f);
+            hovud.sendKortMelding(true,false,f);
             hovud.getBord().getTilfeldigKortFråBordet(i, true);
             if (f == Farge.valfri) {
                 hovud.nesteSpelar();
@@ -125,7 +125,7 @@ public class WrapperKortListener implements ActionListener{
      * @throws RemoteException
      */
     void kortButton(int i) throws RemoteException {
-        trekkInnEittKortFråBordet(i);
+        trekkInnEittKortFråBordet(i,hovud.getKvenSinTur());
 
         ISpelar vert = orienterAndreSpelarar(i);
 

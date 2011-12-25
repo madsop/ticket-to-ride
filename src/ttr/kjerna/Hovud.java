@@ -1,6 +1,7 @@
 package ttr.kjerna;
 
 import ttr.bord.IBord;
+import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
 import ttr.nettverk.InitialiserNettverk;
@@ -156,7 +157,7 @@ public class Hovud implements IHovud {
 	 */
 	public void settSinTur(ISpelar spelar) throws RemoteException {
 		kvenSinTur = spelar;
-		gui.setSpelarnamn(kvenSinTur.getNamn());
+		gui.visKvenDetErSinTur(kvenSinTur.getNamn(),nett,minSpelar.getNamn());
 	}
 
 	public void nesteSpelar() throws RemoteException {
@@ -165,7 +166,7 @@ public class Hovud implements IHovud {
         if (kvenSinTur.getNamn().equals(minSpelar.getNamn())) {
             gui.getSpelarnamn().setBackground(Color.YELLOW);
         }
-		gui.setSpelarnamn(kvenSinTur.getNamn());
+		gui.visKvenDetErSinTur(kvenSinTur.getNamn(),nett,minSpelar.getNamn());
 		kvenSinTur.setEittKortTrektInn(false);
 
 		kommunikasjonMedSpelarar.sjekkOmFerdig(gui.getMeldingarModell(),kvenSinTur,spel.getTittel(),minSpelar,rutehandsamar.getRuter());
@@ -204,6 +205,10 @@ public class Hovud implements IHovud {
     @Override
     public void byggTunnel(Rute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
         bygghjelpar.byggTunnel(bord, bygd, plass, kortKrevd, krevdJokrar, minSpelar, kvenSinTur);
+    }
+
+    public void sendKortMelding(boolean kort, boolean tilfeldig, Farge f) throws RemoteException {
+        kommunikasjonMedSpelarar.sendKortMelding(kort,tilfeldig,f,kvenSinTur.getNamn(),nett,this);
     }
 
 }

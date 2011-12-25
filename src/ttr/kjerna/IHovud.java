@@ -1,6 +1,7 @@
 package ttr.kjerna;
 
 import ttr.bord.IBord;
+import ttr.data.Farge;
 import ttr.gui.IGUI;
 import ttr.spelar.ISpelar;
 import ttr.struktur.IOppdrag;
@@ -23,6 +24,7 @@ public interface IHovud extends Remote {
     public IBord getBord();
     public boolean isNett();
 
+    public void sendKortMelding(boolean kort, boolean tilfeldig, Farge f) throws RemoteException;
 
     public ISpelar getKvenSinTur();
 

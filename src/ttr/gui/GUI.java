@@ -65,7 +65,7 @@ public class GUI extends JPanel implements  IGUI {
 		add(hogre,c);
 
 		c.gridx = 2;
-        byggMeldingsboks(nettv);
+        meldingsboks = new Meldingspanel(nettv);
 		add(meldingsboks,c);
 
 		frame.setPreferredSize(new Dimension(Konstantar.BREIDDE, Konstantar.HOGDE));
@@ -80,21 +80,11 @@ public class GUI extends JPanel implements  IGUI {
         meldingsboks.setHovud(hovud);
         hogre.addListeners(hovud);
     }
-    
 
-
-	/**
-	 * Sett opp panelet på høgre side av skjermen (altså GUI-et)
-	 */
+	/** Sett opp panelet på høgre side av skjermen (altså GUI-et) */
 	public void byggHogrepanel() {
 		hogre = new Hogrepanelet(this,frame);
         hogre.byggHogrepanelet();
-	}
-
-	private void byggMeldingsboks(boolean nett){
-		meldingsboks = new Meldingspanel(nett);
-        meldingsboks.createModell();
-
 	}
 
     public MeldingarModell getMeldingarModell(){
@@ -103,33 +93,19 @@ public class GUI extends JPanel implements  IGUI {
 
 	/**
 	 * Viser namnet til den spelaren det er sin tur
-	 * @param spelarnamn
+	 * @param sinTurNo
 	 */
-	public void setSpelarnamn(String spelarnamn) {
+	public void visKvenDetErSinTur(String sinTurNo, boolean nett, String minSpelar) {
 		if (hovud==null){hogre.getSpelarnamn().setText(""); return;}
 
-
-		if (hovud.isNett()){
-			try {
-                String tekst = "Eg er " + hovud.getMinSpelar().getNamn() + ", og det er ";
-				if (hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn())){
-                    tekst += "min tur.";
-				}
-				else{
-                    tekst += spelarnamn + " sin tur.";
-				}
-                hogre.getSpelarnamn().setText(tekst);
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-		}
+		if (nett){
+            String tekst = "Eg er " + minSpelar + ", og det er ";
+            tekst += minSpelar.equals(sinTurNo) ? "min tur." : sinTurNo+ " sin tur.";
+            hogre.getSpelarnamn().setText(tekst);
+        }
 		else{
-			try {
-                hogre.getSpelarnamn().setText("Eg er " + hovud.getKvenSinTur().getNamn() + ", og det er min tur.");
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-		}
+            hogre.getSpelarnamn().setText("Eg er " + sinTurNo + ", og det er min tur.");
+        }
 	}
 
     public JTextField getSpelarnamn() {
@@ -217,33 +193,6 @@ public class GUI extends JPanel implements  IGUI {
     public String showInputDialog(String string) {
         return JOptionPane.showInputDialog(this, string);
     }
-
-
-    public void sendKortMelding(boolean kort, boolean tilfeldig, Farge f) throws RemoteException{
-		String melding;
-		if (kort) {
-			melding = hovud.getKvenSinTur().getNamn() +" trakk inn " +f;
-		}
-		else {
-			melding = hovud.getKvenSinTur().getNamn() +" trakk oppdragEinKanVeljeNyeOppdragFrå.";
-		}
-		if (hovud.isNett()){
-			hovud.getMinSpelar().faaMelding(melding);
-		}
-
-		for (ISpelar s : hovud.getSpelarar()){
-			if (hovud.isNett() || hovud.getKvenSinTur()==s){
-				if (!tilfeldig){
-					s.faaMelding(melding);
-				}
-				else if(kort && tilfeldig){
-					s.faaMelding(hovud.getKvenSinTur().getNamn() +" trakk tilfeldig");
-				}
-			}
-		}
-	}
-
-
 
 	public void nyPaaPlass(ISpelar vert, Farge nyFarge, int i) throws RemoteException{
 		if (vert.getNamn().equals(hovud.getMinSpelar().getNamn())){

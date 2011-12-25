@@ -18,27 +18,20 @@ class Meldingspanel extends JPanel implements PropertyChangeListener {
     public Meldingspanel(boolean nett) {
         this.setBackground(Color.WHITE);
         this.nett = nett;
-    }
-    public void setHovud(IHovud hovud){
-        prepareChat(hovud);
-    }
-    
-    public void createModell(){
-        //meldingsboks.setPreferredSize(new Dimension(150,Konstantar.HOGDE));
-    
         meldingarmodell = new MeldingarModell();
         meldingarmodell.addPropertyChangeListener(this);
         //noinspection unchecked,unchecked
         meldingar = new JList(meldingarmodell);
-    
+
         JScrollPane mp = new JScrollPane();
         mp.setPreferredSize(new Dimension(Konstantar.MELDINGSPANELBREIDDE, Konstantar.HOGDE - Konstantar.DIFF));
         mp.getViewport().add(meldingar);
         this.add(mp);
-    
-        this.setPreferredSize(new Dimension(Konstantar.MELDINGSPANEL,Konstantar.HOGDE));
 
-        meldingarmodell.nyMelding("Spelet startar. Velkommen!");
+        this.setPreferredSize(new Dimension(Konstantar.MELDINGSPANEL,Konstantar.HOGDE));
+    }
+    public void setHovud(IHovud hovud){
+        prepareChat(hovud);
     }
 
     void prepareChat(IHovud hovud){

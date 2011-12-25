@@ -3,15 +3,17 @@ package ttr.Listeners;
 import ttr.data.Farge;
 import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
+import ttr.spelar.ISpelar;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
 
 class kortBunkeHandler {
     public kortBunkeHandler(IHovud hovud, IGUI gui) {
+        ISpelar kvenSinTur = hovud.getKvenSinTur();
         Farge f = null;
         try {
-            f = hovud.getKvenSinTur().trekkFargekort();
+            f = kvenSinTur.trekkFargekort();
         } catch (RemoteException e1) {
             e1.printStackTrace();
         }
@@ -19,15 +21,15 @@ class kortBunkeHandler {
         JLabel woho = new JLabel("Du trakk eit kort av farge " +f);
         try {
             if (f==null){return;}
-            hovud.getKvenSinTur().faaKort(f);
-            gui.sendKortMelding(true,true,f);
+            kvenSinTur.faaKort(f);
+            hovud.sendKortMelding(true,true,f);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         p.add(woho);
         //				 lagRamme("Du trakk inn kort", p);
         try {
-            if (hovud.getKvenSinTur().getValdAllereie()) {
+            if (kvenSinTur.getValdAllereie()) {
                 try {
                     hovud.nesteSpelar();
                 } catch (RemoteException e) {
@@ -35,7 +37,7 @@ class kortBunkeHandler {
                 }
             }
             else {
-                hovud.getKvenSinTur().setEittKortTrektInn(true);
+                kvenSinTur.setEittKortTrektInn(true);
             }
         } catch (RemoteException e) {
             e.printStackTrace();
