@@ -59,10 +59,6 @@ public class Rute {
 		return antaljokrar;
 	}
 
-	public ISpelar getBygdAv() {
-		return bygdAv;
-	}
-
 	public void setBygdAv(ISpelar spelar) {
 		bygdAv = spelar;
 	}

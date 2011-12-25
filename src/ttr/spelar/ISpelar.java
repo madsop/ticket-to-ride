@@ -11,18 +11,10 @@ import java.util.ArrayList;
 public interface ISpelar extends Remote{
 	public void registrerKlient(ISpelar s) throws RemoteException;
 	public void bygg(Rute rute) throws RemoteException;
-	public Farge trekkFargekort() throws RemoteException;
-	public IOppdrag trekkOppdragskort() throws RemoteException;
 	public int getGjenverandeTog() throws RemoteException;
 	// --Commented out by Inspection (12.12.11 15:41):public int getRutepoeng() throws RemoteException;
-	public int getOppdragspoeng() throws RemoteException;
 	public String getNamn() throws RemoteException;
-	public int[] getKort() throws RemoteException;
-	public ArrayList<IOppdrag> getOppdrag() throws RemoteException;
 	//public void faaOppdragInt(int i) throws RemoteException;
-	public void faaOppdrag(IOppdrag o) throws RemoteException;
-	public void faaKort(Farge farge) throws RemoteException;
-	public int getAntalOppdrag() throws RemoteException;	
 	public void setEinVald(boolean b) throws RemoteException;
 	// --Commented out by Inspection (12.12.11 15:41):public ArrayList<Rute> getBygdeRuter() throws RemoteException;
 	public boolean getValdAllereie() throws RemoteException;
@@ -33,7 +25,6 @@ public interface ISpelar extends Remote{
 	public int getSpelarteljar() throws RemoteException;
 	public void setSpelarteljar(int teljar) throws RemoteException;
 	public void setTogAtt(int plass, int tog) throws RemoteException;
-	public Farge getTilfeldigKortFråBordet(int i) throws RemoteException;
 	public void nybygdRute(int ruteId, ISpelar byggjandeSpelar) throws RemoteException;
 	public int getBygdeRuterStr() throws RemoteException;
 	public int getBygdeRuterId(int j) throws RemoteException;
@@ -48,6 +39,20 @@ public interface ISpelar extends Remote{
 	// --Commented out by Inspection (12.12.11 15:41):public int trekkOppdragskortInt() throws RemoteException;
 	public void visSpeletErFerdigmelding(String melding) throws RemoteException;
 	public void faaMelding(String melding) throws RemoteException;
+
+
 	public int getAntalFullfoerteOppdrag() throws RemoteException;
-	public boolean erOppdragFerdig(int oppdragsid) throws RemoteException;
+    public int getOppdragspoeng() throws RemoteException;
+    public ArrayList<IOppdrag> getOppdrag() throws RemoteException;
+    public void faaOppdrag(IOppdrag o) throws RemoteException;
+    public int getAntalOppdrag() throws RemoteException;
+
+    public boolean erOppdragFerdig(int oppdragsid) throws RemoteException;
+    public IOppdrag trekkOppdragskort() throws RemoteException;
+
+
+    public void faaKort(Farge farge) throws RemoteException;
+    public int[] getKort() throws RemoteException;
+    public Farge getTilfeldigKortFråBordet(int i) throws RemoteException;
+    public Farge trekkFargekort() throws RemoteException;
 }

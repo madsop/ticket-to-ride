@@ -19,21 +19,19 @@ import java.util.Iterator;
  * @author mads
  *
  */
-public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
+ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	private IHovud hovud;
 
 	private static int spelarteljar = 0;
 	private int spelarNummer;
 	private String namn;
+    private ISpelarOppdragshandsamar spelarOppdragshandsamar;
+    private IKorthandsamar korthandsamar;
+    private ArrayList<Rute> bygdeRuter; // Delvis unaudsynt pga. harEgBygdMellomAogB
 
-	private int[] kort;
-	private ArrayList<IOppdrag> oppdrag;
-	private ArrayList<Rute> bygdeRuter; // Delvis unaudsynt pga. harEgBygdMellomAogB
-	private boolean[][] harEgBygdMellomAogB;
 	
 	private boolean einValdAllereie = false;
 
-	
 	public void setEinVald(boolean b) throws RemoteException {
 		einValdAllereie = b;
 	}
@@ -43,21 +41,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	public boolean getValdAllereie() throws RemoteException {
 		return einValdAllereie;
 	}
-// --Commented out by Inspection START (12.12.11 15:41):
-//	public Hovud getHovud() throws RemoteException{
-//		return hovud;
-//	}
-// --Commented out by Inspection STOP (12.12.11 15:41)
 
-// --Commented out by Inspection START (12.12.11 15:41):
-//	// Ad hoc-metodar
-//	public ArrayList<Rute> getBygdeRuter() throws RemoteException  {
-//		return bygdeRuter;
-//	}
-// --Commented out by Inspection STOP (12.12.11 15:41)
-	public int getAntalOppdrag()  throws RemoteException {
-		return oppdrag.size();
-	}
 	public void setTogAtt(int plass, int tog) throws RemoteException {
 		hovud.getGui().getTogAtt()[plass].setText(String.valueOf(tog));
 	}
@@ -82,167 +66,17 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 		super();
 		this.hovud = hovud;
 		this.namn = namn;
-		kort = new int[Konstantar.ANTAL_FARGAR];
-		oppdrag = new ArrayList<IOppdrag>();
 		bygdeRuter = new ArrayList<Rute>();
-		harEgBygdMellomAogB = new boolean[Destinasjon.values().length][Destinasjon.values().length];
-		initialiserMatrise();
-		
-		for (int i = 0; i < Konstantar.ANTAL_STARTKORT; i++) {
-			kort[i] = 0;
-		}
 
-        faaInitielleFargekort();
-	}
+        korthandsamar = new Korthandsamar(hovud);
+        spelarOppdragshandsamar = new SpelarOppdragshandsamar(hovud);
 
-    private void faaInitielleFargekort() throws  RemoteException{
-
-        // Gir spelaren fargekort i byrjinga
-        for (int i = 0; i < Konstantar.ANTAL_STARTKORT; i++) {
-            Farge trekt = trekkFargekort();
-            int plass = -1;
-            for (int j = 0; j < Konstantar.FARGAR.length; j++) {
-                if (trekt == Konstantar.FARGAR[j]) {
-                    plass = j;
-                }
-            }
-            if (plass >= 0) {
-                kort[plass]++;
-            }
-        }
-    }
-	
-
-// --Commented out by Inspection START (12.12.11 15:40):
-//	public void faaOppdragInt(int oppdragsid)  throws RemoteException {
-//		boolean muleg = true;
-//		for (Oppdrag o : oppdrag){
-//			if (o.getOppdragsid()==oppdragsid){
-//				muleg=false;
-//			}
-//		}
-//
-//		if(muleg){
-//			Oppdrag o = null;
-//			for (Oppdrag opp : hovud.getSpel().getOppdrag()){
-//				if (opp.getOppdragsid()==oppdragsid){
-//					o=opp;
-//				}
-//			}
-//			this.oppdrag.add(o);
-//		}
-//	}
-// --Commented out by Inspection STOP (12.12.11 15:40)
-
-	
-	public void faaOppdrag(IOppdrag o) throws RemoteException{
-		if(!this.oppdrag.contains(o)){
-			this.oppdrag.add(o);
-		}
-	}
-	
-	public void faaKort(Farge farge) throws RemoteException  {
-		int tel = 0;
-		for (int i = 0; i < Konstantar.FARGAR.length; i++) {
-			if (farge == Konstantar.FARGAR[i]) {
-				tel = i;
-			}
-		}
-		kort[tel]++;
-	}
-	
-	public ArrayList<IOppdrag> getOppdrag() throws RemoteException  {
-		return oppdrag;
-	}
-	
-	public int[] getKort() throws RemoteException  {
-		return kort;
-	}
-
-	/**
-	 * Oppretter ei #destinasjonar*#destinasjonar med alle verdiar false.
-	 */
-	private void initialiserMatrise() {
-		for (int y = 0; y < Destinasjon.values().length; y++) {
-			for (int x = 0; x < Destinasjon.values().length; x++) {
-				harEgBygdMellomAogB[y][x] = false;
-			}
-		}
 	}
 
 	public String getNamn()  throws RemoteException {
 		return namn;
 	}
 
-	/**
-	 * Finn ein måte å gjera denne på - dvs sjekke om oppdrag er fullførte eller ikkje.
-	 * @return antal oppdragspoeng spelaren har
-	 */
-	public int getOppdragspoeng() throws RemoteException  {
-		int ret = 0;
-        for (IOppdrag anOppdrag : oppdrag) {
-            Destinasjon d1 = (Destinasjon) anOppdrag.getDestinasjonar().toArray()[0];
-            int d = d1.ordinal();
-            Destinasjon d2 = (Destinasjon) anOppdrag.getDestinasjonar().toArray()[1];
-            int e = d2.ordinal();
-            if (harEgBygdMellomAogB[d][e] || harEgBygdMellomAogB[e][d]) {
-                ret += anOppdrag.getVerdi();
-            } else {
-                ret -= anOppdrag.getVerdi();
-            }
-        }
-		
-		return ret;
-	}
-	
-	public boolean erOppdragFerdig(int oppdragsid) throws RemoteException{
-		IOppdrag o = null;
-		for (IOppdrag opp : oppdrag){
-			if (opp.getOppdragsid() == oppdragsid){
-				o = opp;
-			}
-		}
-		if (o==null){
-			return false;
-		}
-		
-		Destinasjon d1 = (Destinasjon) o.getDestinasjonar().toArray()[0];
-		int d = d1.ordinal();
-		Destinasjon d2 = (Destinasjon) o.getDestinasjonar().toArray()[1];
-		int e = d2.ordinal();
-        return harEgBygdMellomAogB[d][e] || harEgBygdMellomAogB[e][d];
-	}
-	
-	public int getAntalFullfoerteOppdrag() throws RemoteException{
-		int antal = 0;
-		for (IOppdrag o : oppdrag){
-			Destinasjon d1 = (Destinasjon) o.getDestinasjonar().toArray()[0];
-			int d = d1.ordinal();
-			Destinasjon d2 = (Destinasjon) o.getDestinasjonar().toArray()[1];
-			int e = d2.ordinal();
-			if (harEgBygdMellomAogB[d][e] || harEgBygdMellomAogB[e][d]){
-				antal++;
-			}
-		}
-		return antal;
-	}
-	
-// --Commented out by Inspection START (12.12.11 15:41):
-//	/**
-//	 * @return reknar ut kor mange poeng spelaren får på grunn av bygde ruter
-//	 */
-//	public int getRutepoeng() throws RemoteException  {
-//		int ret = 0;
-//        for (Rute aBygdeRuter : bygdeRuter) {
-//            ret += aBygdeRuter.getVerdi();
-//        }
-//		return ret;
-//	}
-// --Commented out by Inspection STOP (12.12.11 15:41)
-
-	/**
-	 * @return kor mange tog har spelaren igjen?
-	 */
 	public int getGjenverandeTog()  throws RemoteException {
 		int brukteTog = 0;
         for (Rute aBygdeRuter : bygdeRuter) {
@@ -250,76 +84,16 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
         }
 		return Konstantar.ANTAL_TOG - brukteTog;
 	}
-	
-	/**
-	 * @return trekk eit oppdrag frå kortbunken
-	 */
-	public IOppdrag trekkOppdragskort() throws RemoteException  {
-		IOppdrag trekt;
-		if (hovud.getAntalGjenverandeOppdrag() > 0) {
-			trekt = hovud.getOppdrag();
-			//System.out.println(trekt.getDestinasjonar().toArray()[1]);
-		}
-		else { 
-			trekt = null; 
-		}
-		return trekt;
-	}
-// --Commented out by Inspection START (12.12.11 15:41):
-//	public int trekkOppdragskortInt() throws RemoteException{
-//		Oppdrag o = trekkOppdragskort();
-//		return o.getOppdragsid();
-//	}
-// --Commented out by Inspection STOP (12.12.11 15:41)
-
-	/**
-	 * @return eit tilfeldig fargekort frå toppen av stokken
-	 */
-	public Farge trekkFargekort() throws RemoteException {
-		Farge trekt;
-		if (hovud.getBord().getAntalFargekortPåBordet() > 0) {
-			trekt = hovud.getBord().getTilfeldigKortFråBordet(0, false);
-		}
-		else {
-			trekt = null;
-		}
-		return trekt;
-	}
 
 	public void bygg(Rute rute) throws RemoteException  {
 		rute.setBygdAv(this);
 		// Fjern kort frå spelaren og legg dei i stokken eller ved sida av?
 		bygdeRuter.add(rute);
-		// Sjekk for fullførde oppdrag?
-		
-		// Fyller matrisa med ei rute frå d1 til d2 (og motsett):
-		// Må først iterere over mengda med destinasjonar for å få dei ut
-		Iterator<Destinasjon> mengdeIterator = rute.getDestinasjonar().iterator();
-		int destinasjon1 = mengdeIterator.next().ordinal();
-		int destinasjon2 = mengdeIterator.next().ordinal();
-		harEgBygdMellomAogB[destinasjon1][destinasjon2] = true;
-		harEgBygdMellomAogB[destinasjon2][destinasjon1] = true;
-		transitivTillukking();
+
+        spelarOppdragshandsamar.bygg(rute);
 	}
 
-	/**
-	 * Bør testes
-	 */
-	private void transitivTillukking() {
-		// Dette er ein implementasjon av Warshallalgoritma, side 553 i Rosen [DiskMat]
-		// Køyretida er på (u)behagelege 2n³, som er tilnærma likt optimalt
-		int n = harEgBygdMellomAogB.length;
-		
-		for (int k = 0; k < n; k++) {
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j < n; j++) {
-					harEgBygdMellomAogB[i][j] = harEgBygdMellomAogB[i][j] || (harEgBygdMellomAogB[i][k] && harEgBygdMellomAogB[k][j]);
-				}
-			}
-		}
-	}
-
-	@Override
+    @Override
 	public String toString() {
 		return namn;
 	}
@@ -346,30 +120,6 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 
 	public void settSinTur(ISpelar s) throws RemoteException {
 		hovud.settSinTur(s);
-	}
-
-	public Farge getTilfeldigKortFråBordet(int i) throws RemoteException {
-		Farge fargePåDetTilfeldigeKortet = hovud.getBord().getTilfeldigKortFråBordet(i, true);
-
-		if (fargePåDetTilfeldigeKortet == null){
-			JOptionPane.showMessageDialog((Component) hovud.getGui(), "Det er ikkje noko kort der, ser du vel.");
-			hovud.getGui().getKortButtons()[i].setBackground(Color.GRAY);
-			hovud.getGui().getKortButtons()[i].setText("Tom");
-
-			int fargePosisjon = -1;
-			for (Farge farge : Konstantar.FARGAR){
-				if (fargePåDetTilfeldigeKortet == farge){
-					fargePosisjon = farge.ordinal();
-				}
-			}
-			if (fargePosisjon >= 0 && fargePosisjon < Konstantar.FARGAR.length){
-				kort[fargePosisjon]--;
-			}
-
-			return null;
-		}
-		hovud.getBord().getPaaBordet()[i] = fargePåDetTilfeldigeKortet;
-		return fargePåDetTilfeldigeKortet;
 	}
 	
 	public void nybygdRute(int ruteId, ISpelar byggjandeSpelar) throws RemoteException {
@@ -419,15 +169,7 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	public boolean sjekkJokrar() throws RemoteException{
 		return hovud.getBord().sjekkOmJokrarPaaBordetErOK();
 	}
-	
-	public void trekt(int oppdragsid) throws RemoteException {
-		// Finn oppdrag
-		for (int i = 0; i < hovud.getAntalGjenverandeOppdrag(); i++){
-			if (hovud.getGjenverandeOppdrag().get(i).getOppdragsid() == oppdragsid){
-				hovud.getGjenverandeOppdrag().remove(i);
-			}
-		}	
-	}
+
 	public void leggIStokken(int tabellplass, int kormange) throws RemoteException {
 		hovud.getBord().getFargekortaSomErIgjenIBunken()[tabellplass] += kormange;
 	}
@@ -438,4 +180,22 @@ public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	public void faaMelding(String melding) throws RemoteException{
 		hovud.getGui().getMeldingarModell().nyMelding(melding);
 	}
+
+    // FASADE
+
+    // Oppdrag
+    public int getAntalFullfoerteOppdrag() throws RemoteException { return spelarOppdragshandsamar.getAntalFullfoerteOppdrag(); }
+    public int getOppdragspoeng() throws RemoteException { return spelarOppdragshandsamar.getOppdragspoeng(); }
+    public ArrayList<IOppdrag> getOppdrag() throws RemoteException { return spelarOppdragshandsamar.getOppdrag(); }
+    public void faaOppdrag(IOppdrag o) throws RemoteException { spelarOppdragshandsamar.faaOppdrag(o); }
+    public int getAntalOppdrag() throws RemoteException { return spelarOppdragshandsamar.getAntalOppdrag(); }
+    public IOppdrag trekkOppdragskort() throws RemoteException { return spelarOppdragshandsamar.trekkOppdragskort(); }
+    public boolean erOppdragFerdig(int oppdragsid) throws RemoteException { return spelarOppdragshandsamar.erOppdragFerdig(oppdragsid); }
+    public void trekt(int oppdragsid) throws RemoteException { spelarOppdragshandsamar.trekt(oppdragsid); }
+    
+    // Kort
+    public int[] getKort() throws RemoteException { return korthandsamar.getKort(); }
+    public void faaKort(Farge farge) throws RemoteException { korthandsamar.faaKort(farge);}
+    public Farge getTilfeldigKortFråBordet(int i) throws RemoteException { return korthandsamar.getTilfeldigKortFråBordet(i); }
+    public Farge trekkFargekort() throws RemoteException { return korthandsamar.trekkFargekort(); }
 }

@@ -7,8 +7,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class TurHandsamar implements ITurhandsamar {
-    private ArrayList<ISpelar> spelarar;
-    private boolean nett;
+    private final ArrayList<ISpelar> spelarar;
+    private final boolean nett;
     
     TurHandsamar(ArrayList<ISpelar> spelarar, boolean nett) {
         this.spelarar = spelarar;
