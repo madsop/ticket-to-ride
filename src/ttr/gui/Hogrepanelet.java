@@ -2,12 +2,10 @@ package ttr.gui;
 
 import ttr.data.Farge;
 import ttr.data.Konstantar;
-import ttr.gui.Listeners.ByggHandler;
+import ttr.gui.Listeners.*;
 import ttr.kjerna.IHovud;
 import ttr.kjerna.Oppdragshandsamar;
 import ttr.spelar.ISpelar;
-import ttr.struktur.IOppdrag;
-import ttr.struktur.Rute;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +26,9 @@ class Hogrepanelet extends JPanel {
     private JButton[] kortButtons;
     private JLabel[] togAtt;
 
-    private gjerNokoListener gNL;
+    private WrapperKortListener kortListener;
+    private WrapperHogresideListener listener;
+    
     public Hogrepanelet(IHovud hovud, GUI gui, JFrame frame){
         this.hovud = hovud;
         this.gui = gui;
@@ -48,7 +48,6 @@ class Hogrepanelet extends JPanel {
     }
 
     public void byggHogrepanelet(){
-        gNL = new gjerNokoListener();
         GridBagLayout hogregbl = new GridBagLayout();
         this.setLayout(hogregbl);
         GridBagConstraints d;
@@ -74,38 +73,35 @@ class Hogrepanelet extends JPanel {
         d.gridx = 0;
         d.gridy = 0;
         this.add(spelarnamn, d);
+        
+        
 
         d.gridwidth = 1;
         d.gridy = 1;
         trekkOppdrag = new JButton("Trekk oppdrag");
         trekkOppdrag.setMinimumSize(Konstantar.KNAPP);
-        trekkOppdrag.addActionListener(gNL);
         this.add(trekkOppdrag, d);
 
         d.gridx = 1;
         bygg = new JButton("Bygg ei togrute");
         bygg.setMinimumSize(Konstantar.KNAPP);
-        bygg.addActionListener(gNL);
         this.add(bygg, d);
 
         d.gridy = 2;
         d.gridx = 0;
         visBygde = new JButton("Vis bygde ruter");
         visBygde.setMinimumSize(Konstantar.KNAPP);
-        visBygde.addActionListener(gNL);
         this.add(visBygde, d);
 
         d.gridy = 3;
         d.gridx = 0;
         visMineOppdrag = new JButton("Vis mine oppdrag");
         visMineOppdrag.setMinimumSize(Konstantar.KNAPP);
-        visMineOppdrag.addActionListener(gNL);
         this.add(visMineOppdrag, d);
 
         d.gridx = 1;
         visMineKort = new JButton("Vis mine kort");
         visMineKort.setMinimumSize(Konstantar.KNAPP);
-        visMineKort.addActionListener(gNL);
         this.add(visMineKort, d);
 
         togAtt = new JLabel[4];
@@ -135,6 +131,14 @@ class Hogrepanelet extends JPanel {
         togAtt[3].setFont(Konstantar.TOGTALFONT);
         this.add(togAtt[3], d);
 
+
+        listener = new WrapperHogresideListener(gui,hovud,visBygde,visMineKort,visMineOppdrag,trekkOppdrag,bygg,frame);
+        trekkOppdrag.addActionListener(listener);
+        bygg.addActionListener(listener);
+        visMineKort.addActionListener(listener);
+        visMineOppdrag.addActionListener(listener);
+        visBygde.addActionListener(listener);
+        
         visFargekorta(d);
     }
 
@@ -183,330 +187,6 @@ class Hogrepanelet extends JPanel {
         kortButtons[plass].setText(ret);
     }
 
-    /**
-     * Lager ein knapp for å trekkje inn kort
-     * @param i plassen på bordet
-     * @throws RemoteException
-     */
-    void kortButton(int i) throws RemoteException {
-        Farge f = hovud.getBord().getPaaBordet()[i];
-        if (hovud.getKvenSinTur().getValdAllereie()) {
-            if (f == Farge.valfri) {
-                JOptionPane.showMessageDialog(frame, "Haha. Nice try. Du kan ikkje ta ein joker frå bordet når du allereie har trekt inn eitt kort");
-                return;
-            }
-            else if (f==null){return;}
-            else {
-                hovud.getKvenSinTur().faaKort(f);
-                gui.sendKortMelding(true,false,f);
-                hovud.getBord().getTilfeldigKortFråBordet(i, true);
-                hovud.nesteSpelar();
-            }
-        }
-        else {
-            if (f==null){return;}
-            hovud.getKvenSinTur().faaKort(f);
-            gui.sendKortMelding(true,false,f);
-            hovud.getBord().getTilfeldigKortFråBordet(i, true);
-            if (f == Farge.valfri) {
-                hovud.nesteSpelar();
-            }
-            hovud.getKvenSinTur().setEinVald(true);
-        }
-        ISpelar vert = null;
-        if (hovud.isNett()){
-            if (hovud.getMinSpelar().getSpelarNummer()==0) {
-                vert = hovud.getMinSpelar();
-            }
-        }
-        for (ISpelar s : hovud.getSpelarar()) {
-            if (!hovud.isNett()){
-                s.getTilfeldigKortFråBordet(i);
-            }
-            else {
-                if (s.getSpelarNummer()==0) {
-                    vert = s;
-                }
-            }
-        }
-        if (hovud.isNett() && vert!=null){
-            Farge nyFarge = vert.getTilfeldigKortFråBordet(i);
-            while (vert.sjekkJokrar()) {
-                vert.leggUtFem();
-                int[] paaSomInt = vert.getPaaBordetInt();
-
-                for (int plass = 0; plass < hovud.getBord().getPaaBordet().length; plass++){
-                    nyFarge = Konstantar.FARGAR[paaSomInt[plass]];
-                    hovud.getMinSpelar().setPaaBordet(nyFarge,plass);
-                    gui.nyPaaPlass(vert, nyFarge, plass);
-                }
-            }
-            gui.nyPaaPlass(vert, nyFarge, i);
-        }
-    }
-
-    /**
-     * Blir kalla av JButton-ane på høgrepanelet. Er eigentleg koplinga mellom GUI og kjerne.
-     * //TODO Bør ut frå heile gui-pakka
-     * @author mads
-     *
-     */
-    private class gjerNokoListener implements ActionListener {
-
-
-        private void trekkOppragHandler() {
-            try {
-                gui.sendKortMelding(false, false, Konstantar.FARGAR[0]);
-                Oppdragshandsamar.trekkOppdrag(gui, hovud.getKvenSinTur(),false);
-                hovud.nesteSpelar();
-            }
-            catch (RemoteException re) {
-                re.printStackTrace();
-            }
-        }
-
-        private void byggHandler() {
-            ByggHandler h = new ByggHandler();
-            h.bygg(hovud,frame);
-        }
-
-        private void visMineKortHandler(){
-            // vis korta mine
-            JPanel korta = new JPanel();
-
-            ISpelar visSine;
-            if (hovud.isNett()) {
-                visSine = hovud.getMinSpelar();
-            }
-            else {
-                visSine = hovud.getKvenSinTur();
-            }
-            String[] kort = new String[Konstantar.ANTAL_FARGAR];
-
-            for (int i = 0; i < Konstantar.ANTAL_FARGAR; i++) {
-                try {
-                    kort[i] = Konstantar.FARGAR[i] +": " +visSine.getKort()[i];
-                } catch (RemoteException e) {
-                    kort[i] = "";
-                    e.printStackTrace();
-                }
-            }
-            JLabel[] oppdr = new JLabel[kort.length];
-
-            try {
-                korta.add(new JLabel(visSine.getNamn()));
-            } catch (RemoteException e1) {
-                e1.printStackTrace();
-            }
-
-            for (int i = 0; i < oppdr.length; i++) {
-                oppdr[i] = new JLabel();
-                oppdr[i].setText(kort[i]);
-                try {
-                    if (visSine.getKort()[i] != 0) {
-                        oppdr[i].setForeground(Konstantar.fargeTilColor(Konstantar.FARGAR[i]));
-                    }
-                    else {
-                        oppdr[i].setForeground(Color.LIGHT_GRAY);
-                    }
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-                korta.add(oppdr[i]);
-            }
-            try {
-                gui.lagRamme("Viser korta til " +visSine.getNamn(), korta);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private void visMineOppdragHandler() {
-            // vis oppdraga mine
-            JPanel oppdraga = new JPanel();
-
-            ISpelar visSine;
-            if (hovud.isNett()) {
-                visSine = hovud.getMinSpelar();
-            }
-            else {
-                visSine = hovud.getKvenSinTur();
-            }
-            String oppdrg = "";
-            try {
-                oppdrg = visSine.getNamn() +": ";
-            } catch (RemoteException e1) {
-                e1.printStackTrace();
-            }
-
-            try {
-                for (int i = 0; i < visSine.getAntalOppdrag(); i++) {
-                    IOppdrag o = visSine.getOppdrag().get(i);
-                    oppdrg += o;
-                    if (visSine.erOppdragFerdig(o.getOppdragsid())){
-                        oppdrg += " (OK)";
-                    }
-                    if (i == visSine.getAntalOppdrag()-1){
-                        oppdrg += ".";
-                    }
-                    else{
-                        oppdrg += ", ";
-                    }
-                }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            JLabel oppdr = new JLabel(oppdrg);
-            oppdraga.add(oppdr);
-            try {
-                gui.lagRamme("Viser oppdraga til " +visSine.getNamn(), oppdraga);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private void visBygdeHandler() {
-            JPanel bygde = new JPanel();
-
-            if (hovud.getAlleBygdeRuter().size()>0) {
-                @SuppressWarnings("unchecked") JList bygd = new JList(hovud.getAlleBygdeRuter().toArray());
-
-                /*	if (hovud.isNett()){
-                   // Finn spel-verten
-                   for (int i = 0; i < bygd.getModel().getSize(); i++){
-                       for (int j = 0; j < hovud.getSpelarar().size()+1; j++)
-                       try {
-                          if (hovud.getAlleBygdeRuter().get(i).getBygdAv().getSpelarNummer()==j){
-                              bygd.set
-                           }
-                      } catch (RemoteException e) {
-                          e.printStackTrace();
-                      }
-                   }
-               }
-                */
-
-                bygde.add(bygd);
-                gui.lagRamme("Desse rutene er bygd",bygde);
-            }
-            else {
-                JOptionPane.showMessageDialog(frame, "Det er ikkje bygd noka rute enno. Bli den første!");
-            }
-        }
-
-        private void kortBunkeHandler() {
-            Farge f = null;
-            try {
-                f = hovud.getKvenSinTur().trekkFargekort();
-            } catch (RemoteException e1) {
-                e1.printStackTrace();
-            }
-            JPanel p = new JPanel();
-            JLabel woho = new JLabel("Du trakk eit kort av farge " +f);
-            try {
-                if (f==null){return;}
-                hovud.getKvenSinTur().faaKort(f);
-                gui.sendKortMelding(true,true,f);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            p.add(woho);
-            //				 lagRamme("Du trakk inn kort", p);
-            try {
-                if (hovud.getKvenSinTur().getValdAllereie()) {
-                    try {
-                        hovud.nesteSpelar();
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else {
-                    hovud.getKvenSinTur().setEinVald(true);
-                }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-        public void actionPerformed(ActionEvent arg0) {
-
-            /*			try {
-                   System.out.println("minSpelar: " +hovud.getMinSpelar().getNamn() +", kvenSinTur: " +hovud.getKvenSinTur().getNamn());
-                   System.out.println(hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn()));
-               } catch (RemoteException e2) {
-                   e2.printStackTrace();
-               }
-                */			try {
-                if (hovud.isNett() && (!hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn())) ) {
-                    if (!(arg0.getSource() == visBygde || arg0.getSource() == visMineKort || arg0.getSource() == visMineOppdrag)) {
-                        JOptionPane.showMessageDialog((Component) hovud.getGui(), "Det er ikkje din tur!");
-                        return;
-                    }
-                }
-            } catch (HeadlessException e2) {
-                e2.printStackTrace();
-            } catch (RemoteException e2) {
-                e2.printStackTrace();
-            }
-
-            if (arg0.getSource() == trekkOppdrag) {
-                trekkOppragHandler();
-            }
-            else if (arg0.getSource() == bygg) {
-                byggHandler();
-            }
-            else if (arg0.getSource() == visMineKort) {
-                visMineKortHandler();
-            }
-
-            else if (arg0.getSource() == visMineOppdrag) {
-                visMineOppdragHandler();
-            }
-
-            else if (arg0.getSource() == visBygde) {
-                visBygdeHandler();
-            }
-
-            else if (arg0.getSource() == kortBunke) {
-                kortBunkeHandler();
-            }
-
-            else if (arg0.getSource() == kortButtons[0]) {
-                try {
-                    kortButton(0);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if (arg0.getSource() == kortButtons[1]) {
-                try {
-                    kortButton(1);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if (arg0.getSource() == kortButtons[2]) {
-                try {
-                    kortButton(2);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if (arg0.getSource() == kortButtons[3]) {
-                try {
-                    kortButton(3);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-            else if (arg0.getSource() == kortButtons[4]) {
-                try {
-                    kortButton(4);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
 
     private void visFargekorta(GridBagConstraints d) {
@@ -515,7 +195,6 @@ class Hogrepanelet extends JPanel {
         d.gridy = 7;
         kortBunke = new JButton("Tilfeldig");
         kortBunke.setMinimumSize(Konstantar.KORTKNAPP);
-        kortBunke.addActionListener(gNL);
         this.add(kortBunke,d);
 
         kortButtons = new JButton[5];
@@ -541,13 +220,19 @@ class Hogrepanelet extends JPanel {
         tel++;
         d.gridx = 1;
         mekkKortButton(tel,d);
+
+        kortListener = new WrapperKortListener(kortBunke,kortButtons,hovud,gui,frame);
+        kortBunke.addActionListener(kortListener);
+        for (JButton button : kortButtons){
+            button.addActionListener(kortListener);
+        }
+
     }
 
     private void mekkKortButton(int tel,GridBagConstraints d){
         kortButtons[tel] = new JButton("kort " +tel);
         kortButtons[tel].setMinimumSize(Konstantar.KORTKNAPP);
         kortButtons[tel].setBackground(Color.BLACK);
-        kortButtons[tel].addActionListener(gNL);
         this.add(kortButtons[tel],d);
     }
 }
