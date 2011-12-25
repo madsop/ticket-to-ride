@@ -10,8 +10,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class Rutehandsamar implements IRutehandsamar {
-    private Set<Rute> ruter;
-    private ArrayList<Rute> alleBygdeRuter;
+    private final Set<Rute> ruter;
+    private final ArrayList<Rute> alleBygdeRuter;
     
     public Rutehandsamar(ISpelUtgaave spel){
         this.ruter = spel.getRuter();

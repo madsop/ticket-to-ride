@@ -24,27 +24,26 @@ import java.util.ArrayList;
 
 public class GUI extends JPanel implements  IGUI {
 
-	// Oppsettet rundt
+    // Faktisk GUI
 	private final JFrame frame;
+    private JButton ok;
+    private ArrayList<JCheckBox> jcb;
+    private JDialog jd;
+
+    // Hovud
 	private IHovud hovud;
 	public IHovud getHovud() {
 		return hovud;
 	}
 
+    // Interne klassar
     private Meldingspanel meldingsboks;
     private Hogrepanelet hogre;
 
-    // Oppdraga
-	private JButton ok;
-	private int oppdragstr;
-
 
 	private final ISpelUtgaave spel;
-
     private ArrayList<IOppdrag> valde;
-	private ArrayList<JCheckBox> jcb;
-	private JDialog jd;
-	private ArrayList<IOppdrag> IOppdrag;
+	private ArrayList<IOppdrag> oppdragEinKanVeljeNyeOppdragFrå;
 
 	/**
 	 * Opprettar eit GUI-objekt
@@ -114,7 +113,7 @@ public class GUI extends JPanel implements  IGUI {
         }
         else {
             for (ISpelar s : hovud.getSpelarar()) {
-                Oppdragshandsamar.trekkOppdrag(this,s, true);
+                Oppdragshandsamar.trekkOppdrag(this,s,true);
             }
             // ??
         }
@@ -188,8 +187,7 @@ public class GUI extends JPanel implements  IGUI {
 	 * @return dei valde oppdraga.
 	 */
     public ArrayList<IOppdrag> velOppdrag(ArrayList<IOppdrag> oppd) {
-		this.IOppdrag = oppd;
-		oppdragstr = IOppdrag.size() - 2;
+		this.oppdragEinKanVeljeNyeOppdragFrå = oppd;
         JPanel vel = new JPanel();
 		GridLayout gl = new GridLayout(0, 2);
 
@@ -199,8 +197,8 @@ public class GUI extends JPanel implements  IGUI {
 		ArrayList<JTextField> jtf = new ArrayList<JTextField>();
 		jcb = new ArrayList<JCheckBox>();
 
-		for (int i = 0; i < IOppdrag.size(); i++) {
-			IOppdrag o = IOppdrag.get(i);
+		for (int i = 0; i < oppdragEinKanVeljeNyeOppdragFrå.size(); i++) {
+			IOppdrag o = oppdragEinKanVeljeNyeOppdragFrå.get(i);
 			Object[] d = o.getDestinasjonar().toArray();
 			jtf.add(new JTextField(d[0] +" - " +d[1] + " (" +o.getVerdi() +")"));
 			jcb.add(new JCheckBox());
@@ -228,7 +226,7 @@ public class GUI extends JPanel implements  IGUI {
 		heile.add(vel);
 		heile.add(jsp);
 
-		jd = new JDialog(frame,"Vel oppdrag",true);
+		jd = new JDialog(frame,"Vel oppdragEinKanVeljeNyeOppdragFrå",true);
 		jd.setContentPane(heile);
 		jd.pack();
 		jd.setVisible(true);
@@ -263,7 +261,7 @@ public class GUI extends JPanel implements  IGUI {
 			melding = hovud.getKvenSinTur().getNamn() +" trakk inn " +f;
 		}
 		else {
-			melding = hovud.getKvenSinTur().getNamn() +" trakk oppdrag."; 
+			melding = hovud.getKvenSinTur().getNamn() +" trakk oppdragEinKanVeljeNyeOppdragFrå.";
 		}
 		if (hovud.isNett()){
 			hovud.getMinSpelar().faaMelding(melding);
@@ -300,9 +298,8 @@ public class GUI extends JPanel implements  IGUI {
 		}
 	}
 
-
 	/**
-	 * Blir kalla når spelaren har vald oppdrag, og (freistar å/) trykker ok.
+	 * Blir kalla når spelaren har vald oppdragEinKanVeljeNyeOppdragFrå, og (freistar å/) trykker ok.
 	 * Nett no veldig ad-hoc-a. Bør for-løkke-styres eller noko.
 	 * @author mads
 	 *
@@ -310,12 +307,12 @@ public class GUI extends JPanel implements  IGUI {
 	private class okListener implements ActionListener {
 		public void gjer(int i, ActionEvent arg0){
 			if (arg0.getSource() == jcb.get(i)) {
-				if (valde.contains(IOppdrag.get(i))){
-					valde.remove(IOppdrag.get(i));
+				if (valde.contains(oppdragEinKanVeljeNyeOppdragFrå.get(i))){
+					valde.remove(oppdragEinKanVeljeNyeOppdragFrå.get(i));
 					jcb.get(i).setSelected(false);
 				}
 				else{
-					valde.add(IOppdrag.get(i));
+					valde.add(oppdragEinKanVeljeNyeOppdragFrå.get(i));
 					jcb.get(i).setSelected(true);
 					ok.setEnabled(true);
 				}
@@ -324,22 +321,23 @@ public class GUI extends JPanel implements  IGUI {
 
 		public void actionPerformed(ActionEvent arg0) {
 			if (arg0.getSource() == ok) {
-				if (valde.size() >= oppdragstr) {
+				if (valde.size() >= oppdragEinKanVeljeNyeOppdragFrå.size()-2) {
 					jd.dispose();
 					return;
 				}
 			}
-			for (int i = 0; i < oppdragstr+2; i++) {
+
+			for (int i = 0; i < oppdragEinKanVeljeNyeOppdragFrå.size(); i++) {
 				gjer(i,arg0);
 			}
 
 			int count = 0;
 			for (int i = 0; i < jcb.size(); i++) {
-				if (valde.contains(IOppdrag.get(i))) {
+				if (valde.contains(oppdragEinKanVeljeNyeOppdragFrå.get(i))) {
 					count++;
 				}
 			}
-			if (count < oppdragstr) {
+			if (count < oppdragEinKanVeljeNyeOppdragFrå.size() - 2) {
 				ok.setEnabled(false);
 			}
 		}

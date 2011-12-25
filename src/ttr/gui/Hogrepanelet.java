@@ -246,6 +246,7 @@ class Hogrepanelet extends JPanel {
 
     /**
      * Blir kalla av JButton-ane på høgrepanelet. Er eigentleg koplinga mellom GUI og kjerne.
+     * //TODO Bør ut frå heile gui-pakka
      * @author mads
      *
      */
