@@ -35,7 +35,7 @@ class kortBunkeHandler {
                 }
             }
             else {
-                hovud.getKvenSinTur().setEinVald(true);
+                hovud.getKvenSinTur().setEittKortTrektInn(true);
             }
         } catch (RemoteException e) {
             e.printStackTrace();

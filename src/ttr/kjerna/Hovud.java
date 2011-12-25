@@ -142,7 +142,7 @@ public class Hovud implements IHovud {
             gui.getSpelarnamn().setBackground(Color.YELLOW);
         }
 		gui.setSpelarnamn(kvenSinTur.getNamn());
-		kvenSinTur.setEinVald(false);
+		kvenSinTur.setEittKortTrektInn(false);
 
 		kommunikasjonMedSpelarar.sjekkOmFerdig(gui.getMeldingarModell(),kvenSinTur,spel.getTittel(),minSpelar,rutehandsamar.getRuter());
 	}

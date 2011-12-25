@@ -65,10 +65,60 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="WrapperHogresideListener.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ttr/Listeners/WrapperHogresideListener.java">
+      <file leaf-file-name="WrapperKortListener.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ttr/Listeners/WrapperKortListener.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="58" column="112" selection-start="2062" selection-end="2062" vertical-scroll-proportion="0.625">
+            <state line="124" column="37" selection-start="3794" selection-end="3794" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#WrapperKortListener#0;class#WrapperKortListener#0" expanded="false" />
+                <element signature="method#actionPerformed#0;class#WrapperKortListener#0" expanded="false" />
+                <element signature="method#trekkInnEittKortFråBordet#0;class#WrapperKortListener#0" expanded="false" />
+                <element signature="method#orienterAndreSpelarar#0;class#WrapperKortListener#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GUI.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ttr/gui/GUI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="33" column="25" selection-start="803" selection-end="803" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ISpelar.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ttr/spelar/ISpelar.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Hogrepanelet.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="215" column="34" selection-start="5930" selection-end="5930" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="method#Hogrepanelet#0;class#Hogrepanelet#0" expanded="false" />
+                <element signature="method#getKortButtons#0;class#Hogrepanelet#0" expanded="false" />
+                <element signature="method#getSpelarnamn#0;class#Hogrepanelet#0" expanded="false" />
+                <element signature="method#getTogAtt#0;class#Hogrepanelet#0" expanded="false" />
+                <element signature="docComment;method#teiknOppKortPåBordet#0;class#Hogrepanelet#0" expanded="false" />
+                <element signature="method#teiknOppKortPåBordet#0;class#Hogrepanelet#0" expanded="false" />
+                <element signature="method#mekkKortButton#0;class#Hogrepanelet#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Bord.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ttr/bord/Bord.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="81" column="48" selection-start="2544" selection-end="2544" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -84,11 +134,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/ttr/struktur/Rute.java" />
-        <option value="$PROJECT_DIR$/src/ttr/gui/GUI.java" />
-        <option value="$PROJECT_DIR$/src/ttr/nettverk/InitialiserNettverk.java" />
-        <option value="$PROJECT_DIR$/src/ttr/spelar/Korthandsamar.java" />
-        <option value="$PROJECT_DIR$/src/ttr/gui/Listeners/KortHandler.java" />
         <option value="$PROJECT_DIR$/src/ttr/gui/Listeners/visMineOppdragHandler.java" />
         <option value="$PROJECT_DIR$/src/ttr/gui/Listeners/ByggHandler.java" />
         <option value="$PROJECT_DIR$/src/ttr/gui/Listeners/visMineKortHandler.java" />
@@ -97,9 +142,14 @@
         <option value="$PROJECT_DIR$/src/ttr/gui/Listeners/WrapperKortListener.java" />
         <option value="$PROJECT_DIR$/src/ttr/gui/Listeners/WrapperHogresideListener.java" />
         <option value="$PROJECT_DIR$/src/ttr/kjerna/Hovud.java" />
-        <option value="$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java" />
         <option value="$PROJECT_DIR$/src/ttr/gui/IGUI.java" />
+        <option value="$PROJECT_DIR$/src/ttr/Listeners/trekkOppdragHandler.java" />
+        <option value="$PROJECT_DIR$/src/ttr/Listeners/TrekkOppdragHandler.java" />
         <option value="$PROJECT_DIR$/src/ttr/Listeners/WrapperHogresideListener.java" />
+        <option value="$PROJECT_DIR$/src/ttr/Listeners/HandlingListener.java" />
+        <option value="$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java" />
+        <option value="$PROJECT_DIR$/src/ttr/Listeners/WrapperKortListener.java" />
+        <option value="$PROJECT_DIR$/src/ttr/spelar/ISpelar.java" />
       </list>
     </option>
   </component>
@@ -401,26 +451,26 @@
     <frame x="-1" y="-5" width="1368" height="774" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="simpleUML" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.9493671" sideWeight="0.76038337" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27635783" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3035144" sideWeight="0.4973939" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="simpleUML" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.9493671" sideWeight="0.76038337" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21221146" sideWeight="0.69648564" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3035144" sideWeight="0.4973939" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21221146" sideWeight="0.7236422" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24121405" sideWeight="0.49440715" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3035144" sideWeight="0.4973939" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27635783" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24161074" sideWeight="0.49440715" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -475,21 +525,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ttr/kjerna/TurHandsamar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="56" selection-start="587" selection-end="587" vertical-scroll-proportion="0.26992288" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="23" selection-start="357" selection-end="357" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/Listeners/visMineOppdragHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="36" selection-start="188" selection-end="188" vertical-scroll-proportion="0.3470437" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ttr/Listeners/ByggHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="83" column="16" selection-start="3008" selection-end="3008" vertical-scroll-proportion="3.200514" />
@@ -529,50 +564,81 @@
         <state line="12" column="30" selection-start="270" selection-end="270" vertical-scroll-proportion="0.103626944" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/spelar/ISpelar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="57" selection-start="2892" selection-end="2945" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ttr/gui/IGUI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="23" selection-start="265" selection-end="265" vertical-scroll-proportion="0.14084508" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/Listeners/TrekkOppdragHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="53" selection-start="259" selection-end="259" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-6-sun/jre/lib/rt.jar!/java/awt/event/ActionListener.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="3" selection-start="277" selection-end="277" vertical-scroll-proportion="0.175">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/Listeners/HandlingListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="9" selection-start="1846" selection-end="1846" vertical-scroll-proportion="0.425">
+          <folding>
+            <element signature="method#HandlingListener#0;class#HandlingListener#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="24" selection-start="968" selection-end="968" vertical-scroll-proportion="0.73333335">
+        <state line="215" column="34" selection-start="5930" selection-end="5930" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="method#Hogrepanelet#0;class#Hogrepanelet#0" expanded="false" />
             <element signature="method#getKortButtons#0;class#Hogrepanelet#0" expanded="false" />
             <element signature="method#getSpelarnamn#0;class#Hogrepanelet#0" expanded="false" />
             <element signature="method#getTogAtt#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="method#byggHogrepanelet#0;class#Hogrepanelet#0" expanded="false" />
             <element signature="docComment;method#teiknOppKortPåBordet#0;class#Hogrepanelet#0" expanded="false" />
             <element signature="method#teiknOppKortPåBordet#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="method#visFargekorta#0;class#Hogrepanelet#0" expanded="false" />
             <element signature="method#mekkKortButton#0;class#Hogrepanelet#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/gui/GUI.java">
+    <entry file="file://$PROJECT_DIR$/src/ttr/bord/Bord.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="179" column="34" selection-start="4832" selection-end="4832" vertical-scroll-proportion="0.034324944">
+        <state line="81" column="48" selection-start="2544" selection-end="2544" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ttr/Listeners/WrapperKortListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="30" selection-start="548" selection-end="548" vertical-scroll-proportion="0.034324944">
+        <state line="124" column="37" selection-start="3794" selection-end="3794" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#WrapperKortListener#0;class#WrapperKortListener#0" expanded="false" />
+            <element signature="method#actionPerformed#0;class#WrapperKortListener#0" expanded="false" />
+            <element signature="method#trekkInnEittKortFråBordet#0;class#WrapperKortListener#0" expanded="false" />
+            <element signature="method#orienterAndreSpelarar#0;class#WrapperKortListener#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/gui/GUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="25" selection-start="803" selection-end="803" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/Listeners/WrapperHogresideListener.java">
+    <entry file="file://$PROJECT_DIR$/src/ttr/spelar/ISpelar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="112" selection-start="2062" selection-end="2062" vertical-scroll-proportion="0.625">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>

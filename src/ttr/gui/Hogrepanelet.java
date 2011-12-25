@@ -122,7 +122,7 @@ class Hogrepanelet extends JPanel {
         this.add(togAtt[3], d);
 
 
-        WrapperHogresideListener listener = new WrapperHogresideListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
+        HandlingListener listener = new HandlingListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
         trekkOppdrag.addActionListener(listener);
         bygg.addActionListener(listener);
         visMineKort.addActionListener(listener);
@@ -211,7 +211,7 @@ class Hogrepanelet extends JPanel {
         d.gridx = 1;
         mekkKortButton(tel,d);
 
-        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, kortButtons, hovud, gui, frame);
+        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, kortButtons, hovud, gui, frame, hovud.isNett());
         kortBunke.addActionListener(kortListener);
         for (JButton button : kortButtons){
             button.addActionListener(kortListener);

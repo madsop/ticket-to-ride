@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
-public class WrapperHogresideListener implements ActionListener{
+public class HandlingListener implements ActionListener{
     private final IGUI gui;
     private final IHovud hovud;
     private final JButton visBygde;
@@ -21,9 +21,9 @@ public class WrapperHogresideListener implements ActionListener{
     private final JButton bygg;
     private final JFrame frame;
 
-    public WrapperHogresideListener(IGUI gui, IHovud hovud, JButton visBygde,
-                                    JButton visMineKort,JButton visMineOppdrag,JButton trekkOppdrag, JButton bygg,
-                                    JFrame frame) {
+    public HandlingListener(IGUI gui, IHovud hovud, JButton visBygde,
+                            JButton visMineKort, JButton visMineOppdrag, JButton trekkOppdrag, JButton bygg,
+                            JFrame frame) {
         this.gui = gui;
         this.hovud = hovud;
         this.visBygde = visBygde;
@@ -32,17 +32,6 @@ public class WrapperHogresideListener implements ActionListener{
         this.trekkOppdrag = trekkOppdrag;
         this.bygg = bygg;
         this.frame = frame;
-    }
-    
-    private void trekkOppragHandler() {
-        try {
-            gui.sendKortMelding(false, false, Konstantar.FARGAR[0]);
-            Oppdragshandsamar.trekkOppdrag(gui, hovud.getKvenSinTur(), false);
-            hovud.nesteSpelar();
-        }
-        catch (RemoteException re) {
-            re.printStackTrace();
-        }
     }
 
 
@@ -61,7 +50,7 @@ public class WrapperHogresideListener implements ActionListener{
         }
 
         if (arg0.getSource() == trekkOppdrag) {
-            trekkOppragHandler();
+            new TrekkOppdragHandler(hovud,gui);
         }
         else if (arg0.getSource() == bygg) {
             new ByggHandler(hovud,frame);

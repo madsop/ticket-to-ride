@@ -17,17 +17,17 @@ public class WrapperKortListener implements ActionListener{
     private final IHovud hovud;
     private final IGUI gui;
     private final JFrame frame;
+    private final boolean nett;
     
-    public WrapperKortListener(JButton kortBunke, JButton[] kortButtons, IHovud hovud, IGUI gui,JFrame frame){
+    public WrapperKortListener(JButton kortBunke, JButton[] kortButtons, IHovud hovud, IGUI gui,JFrame frame, boolean nett){
         this.kortBunke = kortBunke;
         this.kortButtons = kortButtons;
         this.hovud = hovud;
         this.gui = gui;
         this.frame = frame;
+        this.nett = nett;
     }
-    
 
-    @Override
     public void actionPerformed(ActionEvent arg0) {
 
 
@@ -72,12 +72,7 @@ public class WrapperKortListener implements ActionListener{
         }
     }
 
-    /**
-     * Lager ein knapp for å trekkje inn kort
-     * @param i plassen på bordet
-     * @throws RemoteException
-     */
-    void kortButton(int i) throws RemoteException {
+    private void trekkInnEittKortFråBordet(int i) throws RemoteException {
         Farge f = hovud.getBord().getPaaBordet()[i];
         if (hovud.getKvenSinTur().getValdAllereie()) {
             if (f == Farge.valfri) {
@@ -100,16 +95,19 @@ public class WrapperKortListener implements ActionListener{
             if (f == Farge.valfri) {
                 hovud.nesteSpelar();
             }
-            hovud.getKvenSinTur().setEinVald(true);
+            hovud.getKvenSinTur().setEittKortTrektInn(true);
         }
+    }
+
+    private ISpelar orienterAndreSpelarar(int i) throws  RemoteException{
         ISpelar vert = null;
-        if (hovud.isNett()){
+        if (nett){
             if (hovud.getMinSpelar().getSpelarNummer()==0) {
                 vert = hovud.getMinSpelar();
             }
         }
         for (ISpelar s : hovud.getSpelarar()) {
-            if (!hovud.isNett()){
+            if (!nett){
                 s.getTilfeldigKortFråBordet(i);
             }
             else {
@@ -118,7 +116,20 @@ public class WrapperKortListener implements ActionListener{
                 }
             }
         }
-        if (hovud.isNett() && vert!=null){
+        return vert;
+    }
+
+    /**
+     * Lager ein knapp for å trekkje inn kort
+     * @param i plassen på bordet
+     * @throws RemoteException
+     */
+    void kortButton(int i) throws RemoteException {
+        trekkInnEittKortFråBordet(i);
+
+        ISpelar vert = orienterAndreSpelarar(i);
+
+        if (nett && vert!=null){
             Farge nyFarge = vert.getTilfeldigKortFråBordet(i);
             while (vert.sjekkJokrar()) {
                 vert.leggUtFem();

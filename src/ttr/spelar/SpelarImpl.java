@@ -32,7 +32,7 @@ import java.util.Iterator;
 	
 	private boolean einValdAllereie = false;
 
-	public void setEinVald(boolean b) throws RemoteException {
+	public void setEittKortTrektInn(boolean b) throws RemoteException {
 		einValdAllereie = b;
 	}
 	public int getSpelarNummer() throws RemoteException {

@@ -12,13 +12,9 @@ public interface ISpelar extends Remote{
 	public void registrerKlient(ISpelar s) throws RemoteException;
 	public void bygg(Rute rute) throws RemoteException;
 	public int getGjenverandeTog() throws RemoteException;
-	// --Commented out by Inspection (12.12.11 15:41):public int getRutepoeng() throws RemoteException;
 	public String getNamn() throws RemoteException;
-	//public void faaOppdragInt(int i) throws RemoteException;
-	public void setEinVald(boolean b) throws RemoteException;
-	// --Commented out by Inspection (12.12.11 15:41):public ArrayList<Rute> getBygdeRuter() throws RemoteException;
+	public void setEittKortTrektInn(boolean b) throws RemoteException;
 	public boolean getValdAllereie() throws RemoteException;
-	// --Commented out by Inspection (12.12.11 15:41):public Hovud getHovud() throws RemoteException;
 	public void settSinTur(ISpelar s) throws RemoteException;
 	public int getSpelarNummer() throws RemoteException;
 	public void setSpelarNummer(int nummer) throws RemoteException;
@@ -36,7 +32,6 @@ public interface ISpelar extends Remote{
 	public boolean sjekkJokrar() throws RemoteException;
 	public void trekt(int oppdragsid) throws RemoteException;
 	public void leggIStokken(int tabellplass, int kormange) throws RemoteException;
-	// --Commented out by Inspection (12.12.11 15:41):public int trekkOppdragskortInt() throws RemoteException;
 	public void visSpeletErFerdigmelding(String melding) throws RemoteException;
 	public void faaMelding(String melding) throws RemoteException;
 

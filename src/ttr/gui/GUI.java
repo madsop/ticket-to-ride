@@ -32,9 +32,6 @@ public class GUI extends JPanel implements  IGUI {
 
     // Hovud
 	private IHovud hovud;
-	public IHovud getHovud() {
-		return hovud;
-	}
 
     // Interne klassar
     private Meldingspanel meldingsboks;
