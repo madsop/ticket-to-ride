@@ -20,8 +20,7 @@ class Meldingspanel extends JPanel implements PropertyChangeListener {
         this.nett = nett;
     }
     public void setHovud(IHovud hovud){
-        ChatListener cl = (ChatListener) chat.getKeyListeners()[0];
-        cl.setHovud(hovud);
+        prepareChat(hovud);
     }
     
     public void createModell(){
@@ -39,13 +38,12 @@ class Meldingspanel extends JPanel implements PropertyChangeListener {
     
         this.setPreferredSize(new Dimension(Konstantar.MELDINGSPANEL,Konstantar.HOGDE));
 
-        prepareChat();
         meldingarmodell.nyMelding("Spelet startar. Velkommen!");
     }
 
-    void prepareChat(){
+    void prepareChat(IHovud hovud){
         chat = new JTextField(ChatListener.starttekst);
-        chat.addKeyListener(new ChatListener(nett,chat,meldingarmodell));
+        chat.addKeyListener(new ChatListener(nett,chat,meldingarmodell,hovud));
         chat.setPreferredSize(Konstantar.CHATDIM);
         this.add(chat);
     }

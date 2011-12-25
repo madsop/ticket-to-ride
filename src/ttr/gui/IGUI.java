@@ -22,5 +22,7 @@ public interface IGUI {
     ArrayList<IOppdrag> velOppdrag(ArrayList<IOppdrag> oppd);
     void lagRamme(String tittel, JPanel panel);
     public String showInputDialog(String string);                       // TODO: bruk denne og liknande meir
+    public void setHovud(IHovud hovud);
+    public void byggHogrepanel();
 
 }

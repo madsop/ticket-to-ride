@@ -42,35 +42,17 @@ public class GUI extends JPanel implements  IGUI {
     private ArrayList<IOppdrag> valde;
 	private ArrayList<IOppdrag> oppdragEinKanVeljeNyeOppdragFrå;
 
-	/**
-	 * Opprettar eit GUI-objekt
-	 * @param frame - ramma GUI-et lages inni
-	 * @throws RemoteException 
-	 */
-	public GUI(JFrame frame, String hostAddress, ISpelUtgaave spel) throws RemoteException {
+	public GUI(JFrame frame, ISpelUtgaave spel, boolean nettv) throws RemoteException {
+        this.frame = frame;
+        this.spel = spel;
 
-		this.frame = frame;
         GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
 		GridBagConstraints c;
 		c = new GridBagConstraints();
 		c.anchor = GridBagConstraints.WEST;
 
-
-		this.spel = spel;
-        BildePanel bp = new BildePanel(spel);
-
-        int nett = JOptionPane.showConfirmDialog(this, "Vil du spela eit nettverksspel?");
-        boolean nettv;
-
-        nettv = nett == JOptionPane.YES_OPTION;
-
-        byggMeldingsboks(nettv);
-        IBord bord = new Bord(this,nettv);
-        hovud = new Hovud(this,bord,nettv,spel);            // TODO
-        meldingsboks.setHovud(hovud);
-
-		byggHogrepanel();
+		BildePanel bp = new BildePanel(spel);
 
 		c.ipadx = 0;
 		c.ipady = 0;
@@ -79,13 +61,12 @@ public class GUI extends JPanel implements  IGUI {
 		add(bp,c);
 
 		c.gridx = 1;
+        byggHogrepanel();
 		add(hogre,c);
 
 		c.gridx = 2;
+        byggMeldingsboks(nettv);
 		add(meldingsboks,c);
-
-
-		settIGangSpelet(nett,hostAddress);
 
 		frame.setPreferredSize(new Dimension(Konstantar.BREIDDE, Konstantar.HOGDE));
 
@@ -93,34 +74,20 @@ public class GUI extends JPanel implements  IGUI {
 			togAtt[togAtt.length-1].setText("");
 		}*/
 	}
-    
-    private void settIGangSpelet(int nett, String hostAddress) throws RemoteException {
-        if (nett == JOptionPane.YES_OPTION) {
-            InitialiserNettverk nettverk = new InitialiserNettverk(this, hostAddress,hovud);
-            nettverk.initialiserSpel(); // InitialiserNettverk
-            Oppdragshandsamar.trekkOppdrag(this, hovud.getMinSpelar(), true);
 
-            for (ISpelar s : hovud.getSpelarar()){
-                for (IOppdrag o : s.getOppdrag()){
-                    s.trekt(o.getOppdragsid());
-                }
-            }
-
-            Main.getFrame().setTitle(Main.getFrame().getTitle() +" - " +hovud.getMinSpelar());
-        }
-        else {
-            for (ISpelar s : hovud.getSpelarar()) {
-                Oppdragshandsamar.trekkOppdrag(this, s, true);
-            }
-            // ??
-        }
+    public void setHovud(IHovud hovud){
+        this.hovud = hovud;
+        meldingsboks.setHovud(hovud);
+        hogre.addListeners(hovud);
     }
+    
+
 
 	/**
 	 * Sett opp panelet på høgre side av skjermen (altså GUI-et)
 	 */
-	private void byggHogrepanel() {
-		hogre = new Hogrepanelet(hovud,this,frame);
+	public void byggHogrepanel() {
+		hogre = new Hogrepanelet(this,frame);
         hogre.byggHogrepanelet();
 	}
 

@@ -12,15 +12,16 @@ import java.awt.*;
 class Hogrepanelet extends JPanel {
     // Brukargrensesnittet - på høgresida
     private JTextField spelarnamn;
-    private final IHovud hovud;
     private final IGUI gui;
     private final JFrame frame;
 
     private JButton[] kortButtons;
     private JLabel[] togAtt;
+    private HandlingListener listener;
+    private WrapperKortListener kortListener;
+    private JButton trekkOppdrag,bygg,visBygde,visMineOppdrag,visMineKort, kortBunke;
 
-    public Hogrepanelet(IHovud hovud, GUI gui, JFrame frame){
-        this.hovud = hovud;
+    public Hogrepanelet(GUI gui, JFrame frame){
         this.gui = gui;
         this.frame = frame;
     }
@@ -68,29 +69,29 @@ class Hogrepanelet extends JPanel {
 
         d.gridwidth = 1;
         d.gridy = 1;
-        JButton trekkOppdrag = new JButton("Trekk oppdrag");
+        trekkOppdrag = new JButton("Trekk oppdrag");
         trekkOppdrag.setMinimumSize(Konstantar.KNAPP);
         this.add(trekkOppdrag, d);
 
         d.gridx = 1;
-        JButton bygg = new JButton("Bygg ei togrute");
+        bygg = new JButton("Bygg ei togrute");
         bygg.setMinimumSize(Konstantar.KNAPP);
         this.add(bygg, d);
 
         d.gridy = 2;
         d.gridx = 0;
-        JButton visBygde = new JButton("Vis bygde ruter");
+        visBygde = new JButton("Vis bygde ruter");
         visBygde.setMinimumSize(Konstantar.KNAPP);
         this.add(visBygde, d);
 
         d.gridy = 3;
         d.gridx = 0;
-        JButton visMineOppdrag = new JButton("Vis mine oppdrag");
+        visMineOppdrag = new JButton("Vis mine oppdrag");
         visMineOppdrag.setMinimumSize(Konstantar.KNAPP);
         this.add(visMineOppdrag, d);
 
         d.gridx = 1;
-        JButton visMineKort = new JButton("Vis mine kort");
+        visMineKort = new JButton("Vis mine kort");
         visMineKort.setMinimumSize(Konstantar.KNAPP);
         this.add(visMineKort, d);
 
@@ -122,14 +123,26 @@ class Hogrepanelet extends JPanel {
         this.add(togAtt[3], d);
 
 
-        HandlingListener listener = new HandlingListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
+        
+        
+        visFargekorta(d);
+    }
+    
+    public void addListeners(IHovud hovud){
+        listener = new HandlingListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
         trekkOppdrag.addActionListener(listener);
         bygg.addActionListener(listener);
         visMineKort.addActionListener(listener);
         visMineOppdrag.addActionListener(listener);
         visBygde.addActionListener(listener);
-        
-        visFargekorta(d);
+
+
+        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, kortButtons, hovud, gui, frame, hovud.isNett());
+        kortBunke.addActionListener(kortListener);
+        for (JButton button : kortButtons){
+            button.addActionListener(kortListener);
+        }
+
     }
 
     /**
@@ -183,7 +196,7 @@ class Hogrepanelet extends JPanel {
 
         // Fargekorta på bordet
         d.gridy = 7;
-        JButton kortBunke = new JButton("Tilfeldig");
+        kortBunke = new JButton("Tilfeldig");
         kortBunke.setMinimumSize(Konstantar.KORTKNAPP);
         this.add(kortBunke,d);
 
@@ -210,13 +223,6 @@ class Hogrepanelet extends JPanel {
         tel++;
         d.gridx = 1;
         mekkKortButton(tel,d);
-
-        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, kortButtons, hovud, gui, frame, hovud.isNett());
-        kortBunke.addActionListener(kortListener);
-        for (JButton button : kortButtons){
-            button.addActionListener(kortListener);
-        }
-
     }
 
     private void mekkKortButton(int tel,GridBagConstraints d){

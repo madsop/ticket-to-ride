@@ -16,13 +16,10 @@ class ChatListener implements KeyListener {
     private final MeldingarModell meldingarmodell;
     static final String starttekst = "Prat her!";
 
-    public ChatListener(boolean nett, JTextField chat, MeldingarModell meldingarmodell){
+    public ChatListener(boolean nett, JTextField chat, MeldingarModell meldingarmodell, IHovud hovud){
         this.nett = nett;
         this.chat = chat;
         this.meldingarmodell = meldingarmodell;
-    }
-
-    void setHovud(IHovud hovud){
         this.hovud = hovud;
     }
 

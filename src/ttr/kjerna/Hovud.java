@@ -3,6 +3,7 @@ package ttr.kjerna;
 import ttr.bord.IBord;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
+import ttr.nettverk.InitialiserNettverk;
 import ttr.spelar.ISpelar;
 import ttr.struktur.IOppdrag;
 import ttr.struktur.Rute;
@@ -33,13 +34,15 @@ public class Hovud implements IHovud {
     private ITurhandsamar turhandsamar;
     private IByggHjelpar bygghjelpar;
 
-    public Hovud(IGUI gui, IBord bord, boolean nett, ISpelUtgaave spel) throws RemoteException {
+    public Hovud(IGUI gui, IBord bord, boolean nett, ISpelUtgaave spel, String hostAddress) throws RemoteException {
 		this.gui = gui;
 		this.nett = nett;
 		this.spel = spel;
         this.bord = bord;
         spelarar = new ArrayList<ISpelar>();
 		LagBrettet(nett);
+
+        settIGangSpelet(nett,hostAddress);
 	}
     
     /**
@@ -60,6 +63,27 @@ public class Hovud implements IHovud {
         }         // else er det nettverksspel og handterast seinare
         kommunikasjonMedSpelarar = new KommunikasjonMedSpelarar(nett,spelarar);
         turhandsamar = new TurHandsamar(spelarar,nett);
+    }
+
+    private void settIGangSpelet(boolean nett, String hostAddress) throws RemoteException {
+        if (nett) {
+            InitialiserNettverk nettverk = new InitialiserNettverk(gui, hostAddress, this);
+            nettverk.initialiserSpel(); // InitialiserNettverk
+            Oppdragshandsamar.trekkOppdrag(gui, minSpelar, true);
+
+            for (ISpelar s : spelarar){
+                for (IOppdrag o : s.getOppdrag()){
+                    s.trekt(o.getOppdragsid());
+                }
+            }
+
+        }
+        else {
+            for (ISpelar s : spelarar) {
+                Oppdragshandsamar.trekkOppdrag(gui, s, true);
+            }
+            // ??
+        }
     }
 
 
