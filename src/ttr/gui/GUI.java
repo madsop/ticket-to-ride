@@ -99,7 +99,7 @@ public class GUI extends JPanel implements  IGUI {
     
     private void settIGangSpelet(int nett, String hostAddress) throws RemoteException {
         if (nett == JOptionPane.YES_OPTION) {
-            InitialiserNettverk nettverk = new InitialiserNettverk(this, hostAddress);
+            InitialiserNettverk nettverk = new InitialiserNettverk(this, hostAddress,hovud);
             nettverk.initialiserSpel(); // InitialiserNettverk
             Oppdragshandsamar.trekkOppdrag(this, hovud.getMinSpelar(), true);
 
