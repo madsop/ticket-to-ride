@@ -8,6 +8,7 @@ import ttr.Main;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.data.MeldingarModell;
+import ttr.kjerna.Oppdragshandsamar;
 import ttr.nettverk.InitialiserNettverk;
 import ttr.spelar.ISpelar;
 import ttr.struktur.IOppdrag;
@@ -101,7 +102,7 @@ public class GUI extends JPanel implements  IGUI {
         if (nett == JOptionPane.YES_OPTION) {
             InitialiserNettverk nettverk = new InitialiserNettverk(this, hostAddress);
             nettverk.initialiserSpel(); // InitialiserNettverk
-            trekkOppdrag(hovud.getMinSpelar(),true);
+            Oppdragshandsamar.trekkOppdrag(this,hovud.getMinSpelar(),true);
 
             for (ISpelar s : hovud.getSpelarar()){
                 for (IOppdrag o : s.getOppdrag()){
@@ -113,7 +114,7 @@ public class GUI extends JPanel implements  IGUI {
         }
         else {
             for (ISpelar s : hovud.getSpelarar()) {
-                trekkOppdrag(s,true);
+                Oppdragshandsamar.trekkOppdrag(this,s, true);
             }
             // ??
         }
@@ -186,7 +187,7 @@ public class GUI extends JPanel implements  IGUI {
 	 * @param oppdrag
 	 * @return dei valde oppdraga.
 	 */
-    private ArrayList<IOppdrag> velOppdrag(ArrayList<IOppdrag> oppd) {
+    public ArrayList<IOppdrag> velOppdrag(ArrayList<IOppdrag> oppd) {
 		this.IOppdrag = oppd;
 		oppdragstr = IOppdrag.size() - 2;
         JPanel vel = new JPanel();
@@ -297,36 +298,6 @@ public class GUI extends JPanel implements  IGUI {
 				}
 			}
 		}
-	}
-
-	/**
-	 * 
-	 * @param s - kva for spelar som skal få oppdraga
-	 * @param start - er det i byrjinga av spelet? (dvs. fem eller tre oppdrag)
-	 * @param talPaaOppdrag
-	 */
-    public void trekkOppdrag(ISpelar s, boolean start) throws RemoteException{
-		int talPaaOppdrag;
-		if (start){
-			talPaaOppdrag = Konstantar.ANTAL_STARTOPPDRAG;
-		}
-		else {
-			talPaaOppdrag = Konstantar.ANTAL_VELJEOPPDRAG;
-		}
-		ArrayList<IOppdrag> oppdrag = new ArrayList<IOppdrag>();
-		for (int i = 0; i < talPaaOppdrag; i++) {
-				IOppdrag opp = s.trekkOppdragskort();
-				oppdrag.add(opp);
-		}
-		ArrayList<IOppdrag> k = new ArrayList<IOppdrag>();
-		while (k.size() < talPaaOppdrag-2){
-			k = velOppdrag(oppdrag);
-    	}
-		oppdrag = k;
-        for (IOppdrag anOppdrag : oppdrag) {
-                s.faaOppdrag(anOppdrag);
-        }
-
 	}
 
 

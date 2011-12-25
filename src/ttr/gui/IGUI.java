@@ -4,9 +4,11 @@ import ttr.kjerna.IHovud;
 import ttr.data.Farge;
 import ttr.data.MeldingarModell;
 import ttr.spelar.ISpelar;
+import ttr.struktur.IOppdrag;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface IGUI {
     public IHovud getHovud();
@@ -19,7 +21,7 @@ public interface IGUI {
     public JButton[] getKortButtons();
     void sendKortMelding(boolean kort, boolean tilfeldig, Farge f) throws RemoteException;
     void nyPaaPlass(ISpelar vert, Farge nyFarge, int i) throws RemoteException;
-    void trekkOppdrag(ISpelar s, boolean start) throws RemoteException;
+    ArrayList<IOppdrag> velOppdrag(ArrayList<IOppdrag> oppd);
     void lagRamme(String tittel, JPanel panel);
     public String showInputDialog(String string);                       // TODO: bruk denne og liknande meir
 

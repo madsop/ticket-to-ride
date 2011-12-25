@@ -3,6 +3,7 @@ package ttr.gui;
 import ttr.kjerna.IHovud;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
+import ttr.kjerna.Oppdragshandsamar;
 import ttr.spelar.ISpelar;
 import ttr.struktur.IOppdrag;
 import ttr.struktur.Rute;
@@ -255,10 +256,10 @@ class Hogrepanelet extends JPanel {
             try {
                 gui.sendKortMelding(false, false, Konstantar.FARGAR[0]);
                 if (hovud.isNett()){
-                    gui.trekkOppdrag(hovud.getMinSpelar(),false);
+                    Oppdragshandsamar.trekkOppdrag(gui,hovud.getMinSpelar(), false);
                 }
                 else {
-                    gui.trekkOppdrag(hovud.getKvenSinTur(),false);
+                    Oppdragshandsamar.trekkOppdrag(gui, hovud.getKvenSinTur(),false);
                 }
                 hovud.nesteSpelar();
             }
