@@ -109,10 +109,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Hogrepanelet.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Hogrepanelet.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="473" column="41" selection-start="15840" selection-end="15840" vertical-scroll-proportion="0.0">
+            <state line="269" column="32" selection-start="8210" selection-end="8210" vertical-scroll-proportion="0.43882978">
               <folding>
                 <element signature="method#Hogrepanelet#0;class#Hogrepanelet#0" expanded="false" />
                 <element signature="method#getKortButtons#0;class#Hogrepanelet#0" expanded="false" />
@@ -123,11 +123,9 @@
                 <element signature="method#setKortPaaBordet#0;class#Hogrepanelet#0" expanded="false" />
                 <element signature="docComment;method#kortButton#0;class#Hogrepanelet#0" expanded="false" />
                 <element signature="docComment;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
-                <element signature="method#trekkOppragHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
                 <element signature="method#visMineKortHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
                 <element signature="method#visMineOppdragHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
                 <element signature="method#visBygdeHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
-                <element signature="method#actionPerformed#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
                 <element signature="method#visFargekorta#0;class#Hogrepanelet#0" expanded="false" />
                 <element signature="method#mekkKortButton#0;class#Hogrepanelet#0" expanded="false" />
               </folding>
@@ -135,24 +133,34 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Korthandsamar.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ttr/spelar/Korthandsamar.java">
+      <file leaf-file-name="ByggHandler.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ttr/gui/Listeners/ByggHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="101" column="14" selection-start="2993" selection-end="2993" vertical-scroll-proportion="0.0">
+            <state line="20" column="11" selection-start="397" selection-end="397" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="docComment;method#trekkFargekort#0;class#Korthandsamar#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="InitialiserNettverk.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ttr/nettverk/InitialiserNettverk.java">
+      <file leaf-file-name="Hovud.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ttr/kjerna/Hovud.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="1" selection-start="24" selection-end="24" vertical-scroll-proportion="0.07978723">
+            <state line="138" column="42" selection-start="3260" selection-end="3260" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="method#bygg#0;class#Hovud#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GUI.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ttr/gui/GUI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="102" column="86" selection-start="2691" selection-end="2691" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#5306#5318#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -204,12 +212,9 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/ttr/gui/byggjandeInfo.java" />
-        <option value="$PROJECT_DIR$/src/ttr/kjerna/IByggHjelpar.java" />
         <option value="$PROJECT_DIR$/src/ttr/kjerna/ByggHjelpar.java" />
         <option value="$PROJECT_DIR$/src/ttr/kjerna/ITurhandsamar.java" />
         <option value="$PROJECT_DIR$/src/ttr/kjerna/Hovud.java" />
-        <option value="$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java" />
         <option value="$PROJECT_DIR$/src/ttr/spelar/ISpelarOppdragshandsamar.java" />
         <option value="$PROJECT_DIR$/src/ttr/spelar/SpelarOppdragshandsamar.java" />
         <option value="$PROJECT_DIR$/src/ttr/spelar/IKorthandsamar.java" />
@@ -217,9 +222,12 @@
         <option value="$PROJECT_DIR$/src/ttr/spelar/SpelarImpl.java" />
         <option value="$PROJECT_DIR$/src/ttr/kjerna/TurHandsamar.java" />
         <option value="$PROJECT_DIR$/src/ttr/struktur/Rute.java" />
-        <option value="$PROJECT_DIR$/src/ttr/spelar/Korthandsamar.java" />
         <option value="$PROJECT_DIR$/src/ttr/gui/GUI.java" />
+        <option value="$PROJECT_DIR$/src/ttr/gui/IGUI.java" />
         <option value="$PROJECT_DIR$/src/ttr/nettverk/InitialiserNettverk.java" />
+        <option value="$PROJECT_DIR$/src/ttr/spelar/Korthandsamar.java" />
+        <option value="$PROJECT_DIR$/src/ttr/gui/Listeners/ByggHandler.java" />
+        <option value="$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java" />
       </list>
     </option>
   </component>
@@ -447,6 +455,32 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="gui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Listeners" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TTR" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ticket-to-ride" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ttr" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="bord" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -645,42 +679,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar:///usr/lib/jvm/java-6-sun/jre/lib/rt.jar!/java/rmi/RemoteException.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="13" selection-start="146" selection-end="146" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/spelar/ISpelarOppdragshandsamar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="54" selection-start="755" selection-end="755" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/spelar/SpelarOppdragshandsamar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="44" selection-start="479" selection-end="479" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="method#getAntalOppdrag#0;class#SpelarOppdragshandsamar#0" expanded="false" />
-            <element signature="method#faaOppdrag#0;class#SpelarOppdragshandsamar#0" expanded="false" />
-            <element signature="method#getOppdrag#0;class#SpelarOppdragshandsamar#0" expanded="false" />
-            <element signature="docComment;method#getOppdragspoeng#0;class#SpelarOppdragshandsamar#0" expanded="false" />
-            <element signature="method#getOppdragspoeng#0;class#SpelarOppdragshandsamar#0" expanded="false" />
-            <element signature="method#erOppdragFerdig#0;class#SpelarOppdragshandsamar#0" expanded="false" />
-            <element signature="method#getAntalFullfoerteOppdrag#0;class#SpelarOppdragshandsamar#0" expanded="false" />
-            <element signature="docComment;method#initialiserMatrise#0;class#SpelarOppdragshandsamar#0" expanded="false" />
-            <element signature="e#3408#3439#0" expanded="false" />
-            <element signature="docComment;method#transitivTillukking#0;class#SpelarOppdragshandsamar#0" expanded="false" />
-            <element signature="e#4034#4113#0" expanded="false" />
-            <element signature="docComment;method#trekkOppdragskort#0;class#SpelarOppdragshandsamar#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ttr/spelar/IKorthandsamar.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="6" column="0" selection-start="102" selection-end="102" vertical-scroll-proportion="0.0">
@@ -701,34 +699,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="473" column="41" selection-start="15840" selection-end="15840" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="method#Hogrepanelet#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="method#getKortButtons#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="method#getSpelarnamn#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="method#getTogAtt#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="method#byggHogrepanelet#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="docComment;method#setKortPaaBordet#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="method#setKortPaaBordet#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="docComment;method#kortButton#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="docComment;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="method#trekkOppragHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="method#visMineKortHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="method#visMineOppdragHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="method#visBygdeHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="method#actionPerformed#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="method#visFargekorta#0;class#Hogrepanelet#0" expanded="false" />
-            <element signature="method#mekkKortButton#0;class#Hogrepanelet#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ttr/spelar/ISpelar.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="56" column="57" selection-start="2892" selection-end="2945" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/struktur/Rute.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="59" column="5" selection-start="1217" selection-end="1217" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/utgaave/AbstractSpelUtgaave.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="31" selection-start="839" selection-end="839" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/gui/ChatListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="6" selection-start="234" selection-end="234" vertical-scroll-proportion="0.14778325">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/gui/GUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="102" column="86" selection-start="2691" selection-end="2691" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#5306#5318#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/gui/IGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="22" selection-start="264" selection-end="264" vertical-scroll-proportion="0.15424165">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/nettverk/InitialiserNettverk.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="148" column="33" selection-start="5598" selection-end="5598" vertical-scroll-proportion="5.9042554">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ttr/spelar/Korthandsamar.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="101" column="16" selection-start="3009" selection-end="3009" vertical-scroll-proportion="0.92287916">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="docComment;method#trekkFargekort#0;class#Korthandsamar#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -776,17 +806,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ttr/kjerna/TurHandsamar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="19" selection-start="202" selection-end="202" vertical-scroll-proportion="0.0">
+        <state line="22" column="56" selection-start="587" selection-end="587" vertical-scroll-proportion="0.26992288">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/struktur/Rute.java">
+    <entry file="file://$PROJECT_DIR$/src/ttr/kjerna/Hovud.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="5" selection-start="1217" selection-end="1217" vertical-scroll-proportion="0.0">
-          <folding />
+        <state line="138" column="42" selection-start="3260" selection-end="3260" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="method#bygg#0;class#Hovud#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -797,44 +829,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/utgaave/AbstractSpelUtgaave.java">
+    <entry file="file://$PROJECT_DIR$/src/ttr/gui/Listeners/ByggHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="31" selection-start="839" selection-end="839" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/spelar/Korthandsamar.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="101" column="14" selection-start="2993" selection-end="2993" vertical-scroll-proportion="0.0">
+        <state line="20" column="11" selection-start="397" selection-end="397" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="docComment;method#trekkFargekort#0;class#Korthandsamar#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/gui/ChatListener.java">
+    <entry file="file://$PROJECT_DIR$/src/ttr/gui/Hogrepanelet.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="6" selection-start="234" selection-end="234" vertical-scroll-proportion="0.14778325">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/gui/GUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="102" column="86" selection-start="2691" selection-end="2691" vertical-scroll-proportion="0.3882979">
+        <state line="269" column="32" selection-start="8210" selection-end="8210" vertical-scroll-proportion="0.43882978">
           <folding>
-            <element signature="e#5306#5318#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ttr/nettverk/InitialiserNettverk.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="1" selection-start="24" selection-end="24" vertical-scroll-proportion="0.07978723">
-          <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="method#Hogrepanelet#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="method#getKortButtons#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="method#getSpelarnamn#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="method#getTogAtt#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="method#byggHogrepanelet#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="docComment;method#setKortPaaBordet#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="method#setKortPaaBordet#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="docComment;method#kortButton#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="docComment;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="method#visMineKortHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="method#visMineOppdragHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="method#visBygdeHandler#0;class#gjerNokoListener#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="method#visFargekorta#0;class#Hogrepanelet#0" expanded="false" />
+            <element signature="method#mekkKortButton#0;class#Hogrepanelet#0" expanded="false" />
           </folding>
         </state>
       </provider>
