@@ -2,6 +2,7 @@ package ttr.kjerna;
 
 import ttr.bord.IBord;
 import ttr.data.Farge;
+import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
 import ttr.spelar.ISpelar;
@@ -52,7 +53,7 @@ public class ByggHjelpar implements IByggHjelpar {
             if (mulegeFargar.size() > 0){
                 int i = -2;
                 while (i<0 || i > mulegeFargar.size()){
-                    i = JOptionPane.showOptionDialog((Component) gui, "Vel farge å byggje i", "Vel farge å byggje i", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, mulegeFargar.toArray(), mulegeFargar.get(0));
+                    i = JOptionPane.showOptionDialog((Component) gui, Infostrengar.VelFargeÅByggeILabel, Infostrengar.VelFargeÅByggeILabel, JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, mulegeFargar.toArray(), mulegeFargar.get(0));
 
                     if (i==-1){
                         return -1;
@@ -62,7 +63,6 @@ public class ByggHjelpar implements IByggHjelpar {
                 return Konstantar.finnPosisjonForFarg(valdFarge);
             }
             return -1;
-            //System.out.println("vald farge er " +valdFarge);
         }
 
         public byggjandeInfo bygg(Rute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
@@ -93,7 +93,7 @@ public class ByggHjelpar implements IByggHjelpar {
             if (!(jokrar <= byggjandeSpelar.getKort()[Konstantar.ANTAL_FARGAR-1]
                     && (kortKrevd-(jokrar-krevdJokrar) <= byggjandeSpelar.getKort()[plass]))){
                 if (bygd.getFarge() != Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1]){
-                    JOptionPane.showMessageDialog((Component) gui, "Synd, men du har ikkje nok kort til det her. ");
+                    JOptionPane.showMessageDialog((Component) gui, Infostrengar.IkkjeNokKort);
                 }
             }
             for (int i = 0; i < Konstantar.ANTAL_FARGAR; i++){
@@ -114,7 +114,7 @@ public class ByggHjelpar implements IByggHjelpar {
             for (int i = 0; i < treTrekte.length; i++) {
                 treTrekte[i] = bord.getTilfeldigKortFråBordet(0, false);
                 if (treTrekte[i] == null){
-                    JOptionPane.showMessageDialog((Component) gui, "Det er ikkje fleire kort igjen på bordet, du må vente til det kjem kort i bunken før du kan prøve å byggje tunnelen.");
+                    JOptionPane.showMessageDialog((Component) gui, Infostrengar.TomtPåBordet);
                     return null;
                 }
                 if (treTrekte[i] == Farge.valfri || treTrekte[i] == bygd.getFarge()) {
@@ -122,8 +122,7 @@ public class ByggHjelpar implements IByggHjelpar {
                 }
             }
 
-            int byggLell = JOptionPane.showConfirmDialog((Component) gui, "Du prøver å byggje ei rute som er tunnel. " +
-                    "Det krev at du snur tre kort. Det vart " +treTrekte[0] +", "
+            int byggLell = JOptionPane.showConfirmDialog((Component) gui, Infostrengar.TunnelStartTekst +treTrekte[0] +", "
                     +treTrekte[1] +" og " +treTrekte[2]
                     +". Altså må du betale " +ekstra +" ekstra kort. Vil du det?");
             if (byggLell == JOptionPane.OK_OPTION) {
@@ -136,7 +135,7 @@ public class ByggHjelpar implements IByggHjelpar {
         int jokrar = s.getKort()[Konstantar.ANTAL_FARGAR-1];
         int kormange = -1;
         while (kormange < 0 || kormange > jokrar || kormange > rute.getLengde()) {
-            String sendinn = "Kor mange jokrar vil du bruke på å byggje ruta? Du har " +jokrar +" jokrar, " +s.getKort()[Konstantar.finnPosisjonForFarg(valdFarge)] + " av fargen du skal byggje, og ruta er " +rute.getLengde() +" tog lang.";
+            String sendinn = Infostrengar.AntalJokrarStart +jokrar +" jokrar, " +s.getKort()[Konstantar.finnPosisjonForFarg(valdFarge)] + " av fargen du skal byggje, og ruta er " +rute.getLengde() +" tog lang.";
             String km = JOptionPane.showInputDialog(sendinn,0);
             kormange = Integer.parseInt(km);
         }

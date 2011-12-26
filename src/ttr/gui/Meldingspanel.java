@@ -1,5 +1,6 @@
 package ttr.gui;
 
+import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.data.MeldingarModell;
 import ttr.kjerna.IHovud;
@@ -34,7 +35,7 @@ class Meldingspanel extends JPanel implements PropertyChangeListener {
     }
 
     void prepareChat(IHovud hovud){
-        JTextField chat = new JTextField(ChatListener.starttekst);
+        JTextField chat = new JTextField(Infostrengar.starttekst);
         chat.addKeyListener(new ChatListener(nett, chat, meldingarmodell, hovud));
         chat.setPreferredSize(Konstantar.CHATDIM);
         this.add(chat);

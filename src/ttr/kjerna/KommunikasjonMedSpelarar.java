@@ -2,6 +2,7 @@ package ttr.kjerna;
 
 import ttr.bord.IBord;
 import ttr.data.Farge;
+import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.data.MeldingarModell;
 import ttr.spelar.ISpelar;
@@ -43,14 +44,14 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
         int antalSpelarar = 0;
         while ( (antalSpelarar != 2) && (antalSpelarar != 3)) { // Sett antal spelarar
             Object[] val = {2,3};
-            antalSpelarar = 2+ JOptionPane.showOptionDialog(null, "Kor mange spelarar skal vera med??", "Antal spelarar?", 0, 3, null, val, 2);
+            antalSpelarar = 2+ JOptionPane.showOptionDialog(null, Infostrengar.KorMangeMed, Infostrengar.AntalSpelarar, 0, 3, null, val, 2);
         }
 
         //antalSpelarar = 3;
         spelarar = new ArrayList<ISpelar>();
         for (int i = 1; i <= antalSpelarar; i++) { // Opprettar spelarar
             try {
-                spelarar.add(new SpelarImpl(hovud,JOptionPane.showInputDialog(null,"Skriv inn namnet på spelar " +i),bord));
+                spelarar.add(new SpelarImpl(hovud,JOptionPane.showInputDialog(null,Infostrengar.SkrivInnSpelarnamn +i),bord));
             }
             catch (RemoteException ignored) {
 
@@ -62,7 +63,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
     //TODO: Utrekning av lengst rute / flest oppdrag
     public void sjekkOmFerdig(MeldingarModell meldingarModell, ISpelar kvenSinTur, String speltittel, ISpelar minSpelar, Set<Rute> ruter) throws RemoteException{
         if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
-            String poeng = "Spelet er ferdig.";
+            String poeng = Infostrengar.SpeletErFerdig;
 
             int[] totalpoeng;
             if (!nett){

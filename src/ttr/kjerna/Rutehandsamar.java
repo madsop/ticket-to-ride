@@ -52,21 +52,6 @@ public class Rutehandsamar implements IRutehandsamar {
             ruterTemp[i] = it2.next();
         }
 
-        /*	ArrayList<Rute>	bR = new ArrayList<Rute>();
-for (ISpelar aSpelarar : spelarar) {
-for (int j = 0; j < aSpelarar.getBygdeRuter().size(); j++) {
-  bR.add(aSpelarar.getBygdeRuter().get(j));
-}
-for (int j = 0; j < aSpelarar.getBygdeRuterStr(); j++) {
-  int ruteId = aSpelarar.getBygdeRuterId(j);
-  for (Rute r : ruter) {
-      if (r.getRuteId() == ruteId) {
-          bR.add(r);
-      }
-  }
-}
-}              */
-
         Rute[] ruterArray = new Rute[str-alleBygdeRuter.size()];
         int c = 0;
 

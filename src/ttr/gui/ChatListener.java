@@ -1,5 +1,6 @@
 package ttr.gui;
 
+import ttr.data.Infostrengar;
 import ttr.data.MeldingarModell;
 import ttr.kjerna.IHovud;
 import ttr.spelar.ISpelar;
@@ -14,7 +15,6 @@ class ChatListener implements KeyListener {
     private final IHovud hovud;
     private final JTextField chat;
     private final MeldingarModell meldingarmodell;
-    static final String starttekst = "Prat her!";
 
     public ChatListener(boolean nett, JTextField chat, MeldingarModell meldingarmodell, IHovud hovud){
         this.nett = nett;
@@ -57,7 +57,7 @@ class ChatListener implements KeyListener {
             }
             chat.setText("");
         }
-        else if (chat.getText().contains(starttekst)){
+        else if (chat.getText().contains(Infostrengar.starttekst)){
             chat.setText(String.valueOf(arg0.getKeyChar()));
         }
     }

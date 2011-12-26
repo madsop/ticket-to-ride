@@ -10,5 +10,5 @@ public interface IBord {
     public Farge[] getPaaBordet();
     public int getAntalFargekortPåBordet();
     public Farge getTilfeldigKortFråBordet(int plass, boolean leggPåBordet);
-    public boolean sjekkOmJokrarPaaBordetErOK();
+    public boolean sjekkOmAntalJokrarPaaBordetErOK();
 }

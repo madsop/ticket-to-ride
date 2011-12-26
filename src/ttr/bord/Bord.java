@@ -106,7 +106,7 @@ public class Bord implements IBord {
 		}
 	}
 
-	public boolean sjekkOmJokrarPaaBordetErOK() {
+	public boolean sjekkOmAntalJokrarPaaBordetErOK() {
 		int jokrar = 0;
 		for (Farge f : paaBordet) {
 			if (f == Farge.valfri) {

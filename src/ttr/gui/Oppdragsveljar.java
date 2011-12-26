@@ -1,5 +1,6 @@
 package ttr.gui;
 
+import ttr.data.Infostrengar;
 import ttr.struktur.IOppdrag;
 import ttr.utgaave.ISpelUtgaave;
 
@@ -46,7 +47,7 @@ class Oppdragsveljar {
         }
 
         valde = new ArrayList<IOppdrag>();
-        ok = new JButton("OK");
+        ok = new JButton(Infostrengar.OKLabel);
         ok.addActionListener(new okListener());
         vel.add(ok);
         ok.setEnabled(false);
@@ -63,7 +64,7 @@ class Oppdragsveljar {
         heile.add(vel);
         heile.add(jsp);
 
-        jd = new JDialog(frame,"Vel oppdrag",true);
+        jd = new JDialog(frame,Infostrengar.VelOppdragLabel,true);
         jd.setContentPane(heile);
         jd.pack();
         jd.setVisible(true);

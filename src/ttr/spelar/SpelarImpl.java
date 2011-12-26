@@ -171,5 +171,5 @@ import java.util.ArrayList;
         // Bør no få lagt ut eit kort på bordet i denne fargen.
         bord.setEinPaaBordet(f, i);
     }
-    public boolean sjekkJokrar() throws RemoteException{ return bord.sjekkOmJokrarPaaBordetErOK(); }
+    public boolean sjekkJokrar() throws RemoteException{ return bord.sjekkOmAntalJokrarPaaBordetErOK(); }
 }

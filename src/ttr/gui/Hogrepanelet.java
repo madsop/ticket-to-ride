@@ -3,6 +3,7 @@ package ttr.gui;
 import ttr.Listeners.HandlingListener;
 import ttr.Listeners.WrapperKortListener;
 import ttr.data.Farge;
+import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.kjerna.IHovud;
 
@@ -68,29 +69,29 @@ class Hogrepanelet extends JPanel {
 
         d.gridwidth = 1;
         d.gridy = 1;
-        trekkOppdrag = new JButton("Trekk oppdrag");
+        trekkOppdrag = new JButton(Infostrengar.trekkOppdragLabel);
         trekkOppdrag.setMinimumSize(Konstantar.KNAPP);
         this.add(trekkOppdrag, d);
 
         d.gridx = 1;
-        bygg = new JButton("Bygg ei togrute");
+        bygg = new JButton(Infostrengar.byggLabel);
         bygg.setMinimumSize(Konstantar.KNAPP);
         this.add(bygg, d);
 
         d.gridy = 2;
         d.gridx = 0;
-        visBygde = new JButton("Vis bygde ruter");
+        visBygde = new JButton(Infostrengar.bygdeRuterLabel);
         visBygde.setMinimumSize(Konstantar.KNAPP);
         this.add(visBygde, d);
 
         d.gridy = 3;
         d.gridx = 0;
-        visMineOppdrag = new JButton("Vis mine oppdrag");
+        visMineOppdrag = new JButton(Infostrengar.visMineOppdragLabel);
         visMineOppdrag.setMinimumSize(Konstantar.KNAPP);
         this.add(visMineOppdrag, d);
 
         d.gridx = 1;
-        visMineKort = new JButton("Vis mine kort");
+        visMineKort = new JButton(Infostrengar.visMineKortLabel);
         visMineKort.setMinimumSize(Konstantar.KNAPP);
         this.add(visMineKort, d);
 
@@ -98,32 +99,29 @@ class Hogrepanelet extends JPanel {
 
         d.gridy = 4;
         d.gridx = 0;
-        togAtt[0] = new JLabel("Tog att:");
+        togAtt[0] = new JLabel(Infostrengar.TogAttLabel);
         togAtt[0].setFont(Konstantar.TOGTALFONT);
         this.add(togAtt[0], d);
 
         d.gridy = 5;
-        togAtt[1] = new JLabel("40");
+        togAtt[1] = new JLabel(String.valueOf(Konstantar.ANTAL_TOG));
         togAtt[1].setForeground(Color.WHITE);
         togAtt[1].setFont(Konstantar.TOGTALFONT);
         this.add(togAtt[1], d);
 
         d.gridx = 1;
-        togAtt[2] = new JLabel("40");
+        togAtt[2] = new JLabel(String.valueOf(Konstantar.ANTAL_TOG));
         togAtt[2].setForeground(Color.BLACK);
         togAtt[2].setFont(Konstantar.TOGTALFONT);
         this.add(togAtt[2], d);
 
         d.gridy = 6;
         d.gridx = 0;
-        togAtt[3] = new JLabel("40");
+        togAtt[3] = new JLabel(String.valueOf(Konstantar.ANTAL_TOG));
         togAtt[3].setForeground(Color.PINK);
         togAtt[3].setFont(Konstantar.TOGTALFONT);
         this.add(togAtt[3], d);
 
-
-        
-        
         visFargekorta(d);
     }
     
@@ -194,7 +192,7 @@ class Hogrepanelet extends JPanel {
 
         // Fargekorta på bordet
         d.gridy = 7;
-        kortBunke = new JButton("Tilfeldig");
+        kortBunke = new JButton(Infostrengar.TrekkFråBunkenLabel);
         kortBunke.setMinimumSize(Konstantar.KORTKNAPP);
         this.add(kortBunke,d);
 
