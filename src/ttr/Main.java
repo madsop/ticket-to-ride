@@ -45,7 +45,7 @@ public class Main {
         return spela[spel];
     }
     
-    private static IGUI mekkGUI(ISpelUtgaave utgaave, JFrame frame, boolean nett) throws RemoteException{
+    private static IGUI mekkGUI(ISpelUtgaave utgaave, JFrame frame, boolean nett) {
         IGUI gui = new GUI(frame,utgaave,nett);        // TODO: dependency injection
         frame.setTitle(frame.getTitle() + " - " +utgaave.getTittel());
         frame.setContentPane((Container) gui);

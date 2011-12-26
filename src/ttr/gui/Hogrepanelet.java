@@ -17,8 +17,6 @@ class Hogrepanelet extends JPanel {
 
     private JButton[] kortButtons;
     private JLabel[] togAtt;
-    private HandlingListener listener;
-    private WrapperKortListener kortListener;
     private JButton trekkOppdrag,bygg,visBygde,visMineOppdrag,visMineKort, kortBunke;
 
     public Hogrepanelet(GUI gui, JFrame frame){
@@ -129,7 +127,7 @@ class Hogrepanelet extends JPanel {
     }
     
     public void addListeners(IHovud hovud){
-        listener = new HandlingListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
+        HandlingListener listener = new HandlingListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
         trekkOppdrag.addActionListener(listener);
         bygg.addActionListener(listener);
         visMineKort.addActionListener(listener);
@@ -142,7 +140,6 @@ class Hogrepanelet extends JPanel {
         for (JButton button : kortButtons){
             button.addActionListener(kortListener);
         }
-
     }
 
     /**

@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.rmi.RemoteException;
 
 class kortBunkeHandler {
-    public kortBunkeHandler(IHovud hovud, IGUI gui) {
+    public kortBunkeHandler(IHovud hovud) {
         ISpelar kvenSinTur = hovud.getKvenSinTur();
         Farge f = null;
         try {
@@ -27,7 +27,7 @@ class kortBunkeHandler {
             e.printStackTrace();
         }
         p.add(woho);
-        //				 lagRamme("Du trakk inn kort", p);
+
         try {
             if (kvenSinTur.getValdAllereie()) {
                 try {

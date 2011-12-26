@@ -11,7 +11,7 @@ import java.rmi.RemoteException;
 
 class ChatListener implements KeyListener {
     private final boolean nett;
-    private IHovud hovud;
+    private final IHovud hovud;
     private final JTextField chat;
     private final MeldingarModell meldingarmodell;
     static final String starttekst = "Prat her!";

@@ -1,5 +1,6 @@
 package ttr.kjerna;
 
+import ttr.bord.IBord;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.data.MeldingarModell;
@@ -37,7 +38,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
      * Sett opp spelet for eit ikkje-nettverks-spel.
      * @throws RemoteException
      */
-    public void mekkSpelarar(IHovud hovud) {
+    public void mekkSpelarar(IHovud hovud, IBord bord) {
         // Legg til spelarar
         int antalSpelarar = 0;
         while ( (antalSpelarar != 2) && (antalSpelarar != 3)) { // Sett antal spelarar
@@ -49,7 +50,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
         spelarar = new ArrayList<ISpelar>();
         for (int i = 1; i <= antalSpelarar; i++) { // Opprettar spelarar
             try {
-                spelarar.add(new SpelarImpl(hovud,JOptionPane.showInputDialog(null,"Skriv inn namnet på spelar " +i)));
+                spelarar.add(new SpelarImpl(hovud,JOptionPane.showInputDialog(null,"Skriv inn namnet på spelar " +i),bord));
             }
             catch (RemoteException ignored) {
 
@@ -197,6 +198,25 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
                 }
                 else if(kort && tilfeldig){
                     s.faaMelding(handlandespelarsNamn +" trakk tilfeldig.");
+                }
+            }
+        }
+    }
+
+
+
+    public void nyPaaPlass(ISpelar vert, Farge nyFarge, int i, IHovud hovud) throws RemoteException{
+        if (vert.getNamn().equals(hovud.getMinSpelar().getNamn())){
+            for (ISpelar s : hovud.getSpelarar()){
+                // metode for å legge kortet vert nettopp trakk på plass i på bordet hos spelar s
+                s.setPaaBordet(nyFarge,i);
+            }
+        }
+        else {
+            hovud.getMinSpelar().setPaaBordet(nyFarge, i);
+            for (ISpelar s : hovud.getSpelarar()){
+                if (!vert.getNamn().equals(s.getNamn())){
+                    s.setPaaBordet(nyFarge, i);
                 }
             }
         }

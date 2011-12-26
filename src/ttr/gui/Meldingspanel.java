@@ -11,8 +11,7 @@ import java.beans.PropertyChangeListener;
 
 class Meldingspanel extends JPanel implements PropertyChangeListener {
     private MeldingarModell meldingarmodell;
-    private JList meldingar;
-    private JTextField chat;
+    private final JList meldingar;
     private final boolean nett;
 
     public Meldingspanel(boolean nett) {
@@ -35,8 +34,8 @@ class Meldingspanel extends JPanel implements PropertyChangeListener {
     }
 
     void prepareChat(IHovud hovud){
-        chat = new JTextField(ChatListener.starttekst);
-        chat.addKeyListener(new ChatListener(nett,chat,meldingarmodell,hovud));
+        JTextField chat = new JTextField(ChatListener.starttekst);
+        chat.addKeyListener(new ChatListener(nett, chat, meldingarmodell, hovud));
         chat.setPreferredSize(Konstantar.CHATDIM);
         this.add(chat);
     }

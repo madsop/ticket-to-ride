@@ -25,6 +25,7 @@ public interface IHovud extends Remote {
     public boolean isNett();
 
     public void sendKortMelding(boolean kort, boolean tilfeldig, Farge f) throws RemoteException;
+    public void nyPaaPlass(ISpelar vert, Farge nyFarge, int i) throws RemoteException;
 
     public ISpelar getKvenSinTur();
 

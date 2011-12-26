@@ -15,7 +15,6 @@ public class WrapperKortListener implements ActionListener{
     private final JButton kortBunke;
     private final JButton[] kortButtons;
     private final IHovud hovud;
-    private final IGUI gui;
     private final JFrame frame;
     private final boolean nett;
     
@@ -23,7 +22,7 @@ public class WrapperKortListener implements ActionListener{
         this.kortBunke = kortBunke;
         this.kortButtons = kortButtons;
         this.hovud = hovud;
-        this.gui = gui;
+        IGUI gui1 = gui;
         this.frame = frame;
         this.nett = nett;
     }
@@ -32,7 +31,7 @@ public class WrapperKortListener implements ActionListener{
 
 
         if (arg0.getSource() == kortBunke) {
-            new kortBunkeHandler(hovud,gui);
+            new kortBunkeHandler(hovud);
         }
 
         else if (arg0.getSource() == kortButtons[0]) {
@@ -138,10 +137,10 @@ public class WrapperKortListener implements ActionListener{
                 for (int plass = 0; plass < hovud.getBord().getPaaBordet().length; plass++){
                     nyFarge = Konstantar.FARGAR[paaSomInt[plass]];
                     hovud.getMinSpelar().setPaaBordet(nyFarge,plass);
-                    gui.nyPaaPlass(vert, nyFarge, plass);
+                    hovud.nyPaaPlass(vert, nyFarge, plass);
                 }
             }
-            gui.nyPaaPlass(vert, nyFarge, i);
+            hovud.nyPaaPlass(vert, nyFarge, i);
         }
     }
 }

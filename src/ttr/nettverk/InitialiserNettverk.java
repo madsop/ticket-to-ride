@@ -29,7 +29,7 @@ public class InitialiserNettverk {
 	}
 
 	public void initialiserSpel() throws HeadlessException, RemoteException {
-        ISpelar spelar = new SpelarImpl(hovud,gui.showInputDialog("Skriv inn namnet ditt"));
+        ISpelar spelar = new SpelarImpl(hovud,gui.showInputDialog("Skriv inn namnet ditt"),hovud.getBord());
 		hovud.setMinSpelar(spelar);
 
 		Object[] options = {"Nytt spel", "Bli med i spel"};

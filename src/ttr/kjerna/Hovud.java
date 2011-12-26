@@ -142,7 +142,7 @@ public class Hovud implements IHovud {
 	 * @throws RemoteException
 	 */
 	private void mekkSpelarar() throws RemoteException {
-		kommunikasjonMedSpelarar.mekkSpelarar(this);
+		kommunikasjonMedSpelarar.mekkSpelarar(this,bord);
 		settSinTur(spelarar.get(0));
 	}
 
@@ -209,6 +209,11 @@ public class Hovud implements IHovud {
 
     public void sendKortMelding(boolean kort, boolean tilfeldig, Farge f) throws RemoteException {
         kommunikasjonMedSpelarar.sendKortMelding(kort,tilfeldig,f,kvenSinTur.getNamn(),nett,this);
+    }
+
+    @Override
+    public void nyPaaPlass(ISpelar vert, Farge nyFarge, int i) throws RemoteException {
+        kommunikasjonMedSpelarar.nyPaaPlass(vert,nyFarge,i,this);
     }
 
 }

@@ -1,5 +1,6 @@
 package ttr.spelar;
 
+import ttr.bord.IBord;
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
@@ -19,6 +20,7 @@ import java.util.Iterator;
  */
  public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
 	private IHovud hovud;
+    private IBord bord;
 
 	private static int spelarteljar = 0;
 	private int spelarNummer;
@@ -27,9 +29,22 @@ import java.util.Iterator;
     private IKorthandsamar korthandsamar;
     private ArrayList<Rute> bygdeRuter; // Delvis unaudsynt pga. harEgBygdMellomAogB
 
-	
-	private boolean einValdAllereie = false;
+	private boolean einValdAllereie;
 
+
+    public SpelarImpl (IHovud hovud, String namn, IBord bord) throws RemoteException{
+        super();
+        this.hovud = hovud;
+        this.bord = bord;
+        this.namn = namn;
+        einValdAllereie = false;
+        bygdeRuter = new ArrayList<Rute>();
+
+        korthandsamar = new Korthandsamar(hovud);
+        spelarOppdragshandsamar = new SpelarOppdragshandsamar(hovud); 
+
+    }
+    
 	public void setEittKortTrektInn(boolean b) throws RemoteException {
 		einValdAllereie = b;
 	}
@@ -43,37 +58,13 @@ import java.util.Iterator;
 	public void setTogAtt(int plass, int tog) throws RemoteException {
 		hovud.getGui().getTogAtt()[plass].setText(String.valueOf(tog));
 	}
-	public void setSpelarNummer(int nummer) throws RemoteException {
-		spelarNummer = nummer; 
-	}
-	public int getSpelarteljar() throws RemoteException {
-		return spelarteljar;
-	}
-	public void setSpelarteljar(int teljar) throws RemoteException {
-		spelarteljar = teljar;
-	}
-	public int getBygdeRuterStr() throws RemoteException {
-		return bygdeRuter.size();
-	}
-	public int getBygdeRuterId(int j) throws RemoteException {
-		return bygdeRuter.get(j).getRuteId();
-	}
+	public void setSpelarNummer(int nummer) throws RemoteException { spelarNummer = nummer; }
+	public int getSpelarteljar() throws RemoteException { return spelarteljar; }
+	public void setSpelarteljar(int teljar) throws RemoteException { spelarteljar = teljar; }
+	public int getBygdeRuterStr() throws RemoteException { return bygdeRuter.size(); }
+	public int getBygdeRuterId(int j) throws RemoteException { return bygdeRuter.get(j).getRuteId(); }
 
-
-	public SpelarImpl (IHovud hovud, String namn) throws RemoteException{
-		super();
-		this.hovud = hovud;
-		this.namn = namn;
-		bygdeRuter = new ArrayList<Rute>();
-
-        korthandsamar = new Korthandsamar(hovud);
-        spelarOppdragshandsamar = new SpelarOppdragshandsamar(hovud);
-
-	}
-
-	public String getNamn()  throws RemoteException {
-		return namn;
-	}
+	public String getNamn()  throws RemoteException { return namn; }
 
 	public int getGjenverandeTog()  throws RemoteException {
 		int brukteTog = 0;
@@ -92,9 +83,7 @@ import java.util.Iterator;
 	}
 
     @Override
-	public String toString() {
-		return namn;
-	}
+	public String toString() { return namn; }
 	
 	/**
 	 * Registers a player as this player's adversary
@@ -116,9 +105,6 @@ import java.util.Iterator;
 		}
 	}
 
-	public void settSinTur(ISpelar s) throws RemoteException {
-		hovud.settSinTur(s);
-	}
 	
 	public void nybygdRute(int ruteId, ISpelar byggjandeSpelar) throws RemoteException {
 		Rute vald = null;
@@ -154,8 +140,10 @@ import java.util.Iterator;
 		JOptionPane.showMessageDialog((Component) hovud.getGui(), melding);
 	}
 
+
     // FASADE
-public ArrayList<ISpelar> getSpelarar() { return hovud.getSpelarar(); }
+    public void settSinTur(ISpelar s) throws RemoteException { hovud.settSinTur(s); }
+    public ArrayList<ISpelar> getSpelarar() { return hovud.getSpelarar(); }
     public void faaMelding(String melding) throws RemoteException{ hovud.getGui().getMeldingarModell().nyMelding(melding); }
 
     // Oppdrag
@@ -175,15 +163,15 @@ public ArrayList<ISpelar> getSpelarar() { return hovud.getSpelarar(); }
     public Farge trekkFargekort() throws RemoteException { return korthandsamar.trekkFargekort(); }
 
     // Bord
-    public void leggUtFem() { hovud.getBord().leggUtFem(); }
+    public void leggUtFem() { bord.leggUtFem(); }
     public void leggIStokken(int tabellplass, int kormange) throws RemoteException {
-        hovud.getBord().getFargekortaSomErIgjenIBunken()[tabellplass] += kormange;
+        bord.getFargekortaSomErIgjenIBunken()[tabellplass] += kormange;
     }
-    public void setPaaBord(Farge[] f) { hovud.getBord().setPaaBordet(f); }
+    public void setPaaBord(Farge[] f) { bord.setPaaBordet(f); }
     public void setPaaBordet(Farge f, int i) throws RemoteException{
         // Har no finni fargen f og kva for plass denne har i farge-tabellen.
         // Bør no få lagt ut eit kort på bordet i denne fargen.
-        hovud.getBord().setEinPaaBordet(f, i);
+        bord.setEinPaaBordet(f, i);
     }
-    public boolean sjekkJokrar() throws RemoteException{ return hovud.getBord().sjekkOmJokrarPaaBordetErOK(); }
+    public boolean sjekkJokrar() throws RemoteException{ return bord.sjekkOmJokrarPaaBordetErOK(); }
 }

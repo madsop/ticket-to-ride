@@ -44,7 +44,7 @@ public class Bord implements IBord {
 		paaBordet[plass] = farge;
 		int kortPosisjon = Konstantar.finnPosisjonForFarg(farge);
 		fargekortSomErIgjenIBunken[kortPosisjon]--;
-		gui.setKortPaaBordet(plass, farge);
+		gui.teiknOppKortPåBordet(plass, farge);
 	}
 
 
@@ -98,7 +98,7 @@ public class Bord implements IBord {
 			paaBordet[plass] = Konstantar.FARGAR[teljar];
 			fargekortSomErIgjenIBunken[teljar]--;
 			Farge f = Konstantar.FARGAR[teljar];
-			gui.setKortPaaBordet(plass, f);
+			gui.teiknOppKortPåBordet(plass, f);
 		}
 		else {
 			System.err.println("oops");

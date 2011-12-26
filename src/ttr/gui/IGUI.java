@@ -15,13 +15,12 @@ public interface IGUI {
     public void visKvenDetErSinTur(String spelarnamn, boolean nett, String minSpelar);
     public JTextField getSpelarnamn();
     public JLabel[] getTogAtt();
-    public void setKortPaaBordet(int plass,Farge farge);
+    public void teiknOppKortPåBordet(int plass, Farge farge);
     public JButton[] getKortButtons();
-    void nyPaaPlass(ISpelar vert, Farge nyFarge, int i) throws RemoteException;
-    ArrayList<IOppdrag> velOppdrag(ArrayList<IOppdrag> oppd);
     void lagRamme(String tittel, JPanel panel);
     public String showInputDialog(String string);                       // TODO: bruk denne og liknande meir
     public void setHovud(IHovud hovud);
-    public void byggHogrepanel();
+
+    ArrayList<IOppdrag> velOppdrag(ArrayList<IOppdrag> oppd);
 
 }
