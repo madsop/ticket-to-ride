@@ -26,9 +26,10 @@ public class Main {
         boolean nett = (JOptionPane.showConfirmDialog(null, "Vil du spela eit nettverksspel?") == JOptionPane.YES_OPTION);
         IGUI gui = mekkGUI(spel,frame,nett);
         IBord bord = new Bord(gui,nett);
-
-        IHovud hovud = new Hovud(gui, bord, nett, spel, arg);
+        IHovud hovud = new Hovud(gui, bord, nett, spel);
         gui.setHovud(hovud);
+
+        hovud.settIGangSpelet(nett,arg);
 
 	}
     

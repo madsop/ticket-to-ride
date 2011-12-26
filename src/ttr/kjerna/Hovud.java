@@ -15,7 +15,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Set;
 
-
 // Handterer kven sin tur det er, og oppsett i startfasen av spelet
 public class Hovud implements IHovud {
 
@@ -35,15 +34,13 @@ public class Hovud implements IHovud {
     private ITurhandsamar turhandsamar;
     private IByggHjelpar bygghjelpar;
 
-    public Hovud(IGUI gui, IBord bord, boolean nett, ISpelUtgaave spel, String hostAddress) throws RemoteException {
+    public Hovud(IGUI gui, IBord bord, boolean nett, ISpelUtgaave spel) throws RemoteException {
 		this.gui = gui;
 		this.nett = nett;
 		this.spel = spel;
         this.bord = bord;
         spelarar = new ArrayList<ISpelar>();
 		LagBrettet(nett);
-
-        settIGangSpelet(nett,hostAddress);
 	}
     
     /**
@@ -66,7 +63,7 @@ public class Hovud implements IHovud {
         turhandsamar = new TurHandsamar(spelarar,nett);
     }
 
-    private void settIGangSpelet(boolean nett, String hostAddress) throws RemoteException {
+    public void settIGangSpelet(boolean nett, String hostAddress) throws RemoteException {
         if (nett) {
             InitialiserNettverk nettverk = new InitialiserNettverk(gui, hostAddress, this);
             nettverk.initialiserSpel(); // InitialiserNettverk
@@ -181,7 +178,11 @@ public class Hovud implements IHovud {
         byggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd,plass,kortKrevd,krevdJokrar,minSpelar,kvenSinTur);
         ISpelar byggjandeSpelar = byggjandeInfo.byggjandeSpelar;
         int jokrar = byggjandeInfo.jokrar;
-
+        hjelpemetodeBygg(bygd,plass,kortKrevd,krevdJokrar,byggjandeSpelar,jokrar);
+        
+    }
+    
+    private void hjelpemetodeBygg(Rute bygd,int plass,int kortKrevd,int krevdJokrar,ISpelar byggjandeSpelar,int jokrar) throws RemoteException{
         rutehandsamar.nyRute(bygd);
 
 
@@ -199,12 +200,15 @@ public class Hovud implements IHovud {
         kommunikasjonMedSpelarar.oppdaterAndreSpelarar(plass, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
 
         nesteSpelar();
-
+        
     }
 
     @Override
     public void byggTunnel(Rute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
-        bygghjelpar.byggTunnel(bord, bygd, plass, kortKrevd, krevdJokrar, minSpelar, kvenSinTur);
+        byggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(bord, bygd, plass, kortKrevd, krevdJokrar, minSpelar, kvenSinTur);
+        ISpelar byggjandeSpelar = byggjandeInfo.byggjandeSpelar;
+        int jokrar = byggjandeInfo.jokrar;
+        hjelpemetodeBygg(bygd,plass,kortKrevd,krevdJokrar,byggjandeSpelar,jokrar);
     }
 
     public void sendKortMelding(boolean kort, boolean tilfeldig, Farge f) throws RemoteException {

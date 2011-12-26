@@ -8,5 +8,5 @@ import java.rmi.RemoteException;
 
 public interface IByggHjelpar {
     byggjandeInfo bygg(Rute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException;
-    void byggTunnel(IBord bord, Rute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException;
+    byggjandeInfo byggTunnel(IBord bord, Rute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException;
 }

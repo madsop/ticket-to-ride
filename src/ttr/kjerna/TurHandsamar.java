@@ -2,7 +2,6 @@ package ttr.kjerna;
 
 import ttr.spelar.ISpelar;
 
-import java.awt.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 

@@ -72,8 +72,6 @@ public class GUI extends JPanel implements IGUI {
     }
 
 	public void visKvenDetErSinTur(String sinTurNo, boolean nett, String minSpelar) {
-		if (hovud==null){hogre.getSpelarnamn().setText(""); return;}
-
 		if (nett){
             String tekst = "Eg er " + minSpelar + ", og det er ";
             tekst += minSpelar.equals(sinTurNo) ? "min tur." : sinTurNo+ " sin tur.";

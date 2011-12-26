@@ -1,9 +1,7 @@
 package ttr.Listeners;
 
-import ttr.data.Konstantar;
 import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
-import ttr.kjerna.Oppdragshandsamar;
 
 import javax.swing.*;
 import java.awt.*;

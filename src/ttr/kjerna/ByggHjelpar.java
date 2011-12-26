@@ -108,14 +108,14 @@ public class ByggHjelpar implements IByggHjelpar {
         }
 
 
-        public void byggTunnel(IBord bord, Rute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
+        public byggjandeInfo byggTunnel(IBord bord, Rute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
             Farge[] treTrekte = new Farge[3];
             int ekstra = 0;
             for (int i = 0; i < treTrekte.length; i++) {
                 treTrekte[i] = bord.getTilfeldigKortFråBordet(0, false);
                 if (treTrekte[i] == null){
                     JOptionPane.showMessageDialog((Component) gui, "Det er ikkje fleire kort igjen på bordet, du må vente til det kjem kort i bunken før du kan prøve å byggje tunnelen.");
-                    return;
+                    return null;
                 }
                 if (treTrekte[i] == Farge.valfri || treTrekte[i] == bygd.getFarge()) {
                     ekstra++;
@@ -127,8 +127,9 @@ public class ByggHjelpar implements IByggHjelpar {
                     +treTrekte[1] +" og " +treTrekte[2]
                     +". Altså må du betale " +ekstra +" ekstra kort. Vil du det?");
             if (byggLell == JOptionPane.OK_OPTION) {
-                bygg(bygd, plass, kortKrevd+ekstra, krevdJokrar,minSpelar,kvenSinTur);
+                return bygg(bygd, plass, kortKrevd+ekstra, krevdJokrar,minSpelar,kvenSinTur);
             }
+            return null;
         }
 
     private int velAntalJokrarDuVilBruke(Rute rute, ISpelar s, Farge valdFarge) throws RemoteException{

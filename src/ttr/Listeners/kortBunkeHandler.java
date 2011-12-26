@@ -1,7 +1,6 @@
 package ttr.Listeners;
 
 import ttr.data.Farge;
-import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
 import ttr.spelar.ISpelar;
 

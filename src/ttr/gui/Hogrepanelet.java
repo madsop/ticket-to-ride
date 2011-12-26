@@ -1,8 +1,9 @@
 package ttr.gui;
 
+import ttr.Listeners.HandlingListener;
+import ttr.Listeners.WrapperKortListener;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
-import ttr.Listeners.*;
 import ttr.kjerna.IHovud;
 
 import javax.swing.*;

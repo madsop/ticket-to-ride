@@ -1,6 +1,5 @@
 package ttr.spelar;
 
-import ttr.kjerna.IHovud;
 import ttr.struktur.IOppdrag;
 import ttr.struktur.Rute;
 
