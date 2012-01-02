@@ -2,6 +2,8 @@ package ttr.Listeners;
 
 import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
+import ttr.oppdrag.listeners.TrekkOppdragHandler;
+import ttr.oppdrag.listeners.visMineOppdragHandler;
 
 import javax.swing.*;
 import java.awt.*;

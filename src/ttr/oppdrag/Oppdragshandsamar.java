@@ -1,9 +1,8 @@
-package ttr.kjerna;
+package ttr.oppdrag;
 
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
 import ttr.spelar.ISpelar;
-import ttr.struktur.IOppdrag;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;

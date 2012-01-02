@@ -2,9 +2,10 @@ package ttr.utgaave.nordic;
 
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
-import ttr.struktur.IOppdrag;
-import ttr.struktur.Oppdrag;
-import ttr.struktur.Rute;
+import ttr.oppdrag.IOppdrag;
+import ttr.oppdrag.Oppdrag;
+import ttr.rute.IRute;
+import ttr.rute.Rute;
 import ttr.utgaave.AbstractSpelUtgaave;
 import ttr.utgaave.ISpelUtgaave;
 
@@ -21,8 +22,8 @@ public final class Nordic extends AbstractSpelUtgaave implements ISpelUtgaave {
 		super(tittel,bilde);
 	}
 
-	protected Set<Rute> leggTilRuter() {
-		ruter = new HashSet<Rute>();
+	protected Set<IRute> leggTilRuter() {
+		ruter = new HashSet<IRute>();
 		int ruteid = 0;
 		ruter.add(new Rute (ruteid,Destinasjon.Oslo,Destinasjon.Ørebro,2,Farge.gul,false,0));
 		ruteid++;

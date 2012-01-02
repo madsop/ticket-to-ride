@@ -1,4 +1,4 @@
-package ttr.struktur;
+package ttr.rute;
 
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Rute {
+public class Rute implements IRute {
 	private final Set<Destinasjon> destinasjonar;
 	private static final int[] ruteverdiar = {1,2,4,7,10,15,0,0,27};
 	private final int lengde;
@@ -20,7 +20,8 @@ public class Rute {
 
 
 
-	public int getRuteId() {
+	@Override
+    public int getRuteId() {
 		return ruteId;
 	}
 
@@ -35,31 +36,38 @@ public class Rute {
 		this.antaljokrar = antaljokrar;
 	}
 
-	public int getVerdi() {
+	@Override
+    public int getVerdi() {
 		return ruteverdiar[lengde-1];
 	}
 
-	public Set<Destinasjon> getDestinasjonar() {
+	@Override
+    public Set<Destinasjon> getDestinasjonar() {
 		return destinasjonar;
 	}
 
-	public int getLengde() {
+	@Override
+    public int getLengde() {
 		return lengde;
 	}
 
-	public Farge getFarge() {
+	@Override
+    public Farge getFarge() {
 		return farge;
 	}
 
-	public boolean isTunnel() {
+	@Override
+    public boolean isTunnel() {
 		return tunnel;
 	}
 
-	public int getAntaljokrar() {
+	@Override
+    public int getAntaljokrar() {
 		return antaljokrar;
 	}
 
-	public void setBygdAv(ISpelar spelar) {
+	@Override
+    public void setBygdAv(ISpelar spelar) {
 		bygdAv = spelar;
 	}
 

@@ -1,14 +1,13 @@
-package ttr.spelar;
+package ttr.oppdrag;
 
-import ttr.struktur.IOppdrag;
-import ttr.struktur.Rute;
+import ttr.rute.IRute;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public interface ISpelarOppdragshandsamar extends Remote{
-    void bygg(Rute rute) throws RemoteException;
+    void bygg(IRute rute) throws RemoteException;
     IOppdrag trekkOppdragskort() throws RemoteException;
     boolean erOppdragFerdig(int oppdragsid) throws RemoteException;
 

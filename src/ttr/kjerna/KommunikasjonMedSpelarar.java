@@ -5,9 +5,9 @@ import ttr.data.Farge;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.data.MeldingarModell;
+import ttr.rute.IRute;
 import ttr.spelar.ISpelar;
 import ttr.spelar.SpelarImpl;
-import ttr.struktur.Rute;
 import ttr.utgaave.nordic.Nordic;
 
 import javax.swing.*;
@@ -25,7 +25,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
         this.spelarar = spelarar;
     }
     
-    public void oppdaterAndreSpelarar(int plass, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Rute bygd) throws RemoteException {
+    public void oppdaterAndreSpelarar(int plass, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, IRute bygd) throws RemoteException {
         if (nett) {
             for (ISpelar s : spelarar) {
                 s.leggIStokken(plass, (kortKrevd-(jokrar-krevdJokrar)));
@@ -61,7 +61,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 
 
     //TODO: Utrekning av lengst rute / flest oppdrag
-    public void sjekkOmFerdig(MeldingarModell meldingarModell, ISpelar kvenSinTur, String speltittel, ISpelar minSpelar, Set<Rute> ruter) throws RemoteException{
+    public void sjekkOmFerdig(MeldingarModell meldingarModell, ISpelar kvenSinTur, String speltittel, ISpelar minSpelar, Set<IRute> ruter) throws RemoteException{
         if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
             String poeng = Infostrengar.SpeletErFerdig;
 
@@ -150,7 +150,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
     }
 
 
-    private ISpelar reknUtPoengOgFinnVinnar(int[] totalpoeng, ISpelar s, String poeng,int vinnarpoeng, ISpelar vinnar, MeldingarModell meldingarModell, Set<Rute> ruter) throws RemoteException {
+    private ISpelar reknUtPoengOgFinnVinnar(int[] totalpoeng, ISpelar s, String poeng,int vinnarpoeng, ISpelar vinnar, MeldingarModell meldingarModell, Set<IRute> ruter) throws RemoteException {
         ISpelar leiarNo = vinnar;
 
         int spelarensPoeng = reknUtPoeng(s,ruter);
@@ -172,10 +172,10 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
         return leiarNo;
     }
 
-    private int reknUtPoeng(ISpelar s, Set<Rute> ruter) throws RemoteException {
+    private int reknUtPoeng(ISpelar s, Set<IRute> ruter) throws RemoteException {
         int poeng = s.getOppdragspoeng();
         for (int j = 0; j < s.getBygdeRuterStr(); j++) {
-            for (Rute r : ruter) {
+            for (IRute r : ruter) {
                 if (s.getBygdeRuterId(j) == r.getRuteId()) {
                     poeng += r.getVerdi();
                 }

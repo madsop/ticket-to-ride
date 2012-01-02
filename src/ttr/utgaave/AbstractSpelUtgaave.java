@@ -1,7 +1,7 @@
 package ttr.utgaave;
 
-import ttr.struktur.IOppdrag;
-import ttr.struktur.Rute;
+import ttr.oppdrag.IOppdrag;
+import ttr.rute.IRute;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.Set;
 public abstract class AbstractSpelUtgaave {
 	private final String tittel;
 	protected ArrayList<IOppdrag> oppdrag;
-	protected Set<Rute> ruter;
+	protected Set<IRute> ruter;
 	
 	private final URL bakgrunnsbildet;
 
@@ -26,7 +26,7 @@ public abstract class AbstractSpelUtgaave {
         oppdrag = fyllMedOppdrag();
 	}
 
-    protected abstract Set<Rute> leggTilRuter();
+    protected abstract Set<IRute> leggTilRuter();
     protected abstract ArrayList<IOppdrag> fyllMedOppdrag();
 
     @SuppressWarnings("UnusedDeclaration")
@@ -35,7 +35,7 @@ public abstract class AbstractSpelUtgaave {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-	public Set<Rute> getRuter() {
+	public Set<IRute> getRuter() {
 		return ruter;
 	}
 

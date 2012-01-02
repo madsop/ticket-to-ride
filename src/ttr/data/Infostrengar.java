@@ -1,8 +1,14 @@
 package ttr.data;
 
 public class Infostrengar {
-    public static final String starttekst = "Prat her!";
+    public static final String rammetittel = "Ticket to ride";
+    public static final String velUtgåve = "Vel Ticket to ride-utgåve";
+    public static final String velOmNettverkEllerIkkje = "Vil du spela eit nettverksspel?";
     
+    public static final String standardHostForNettverk = "localhost";
+    
+    public static final String starttekst = "Prat her!";
+
     public static final String trekkOppdragLabel = "Trekk oppdrag";
     public static final String byggLabel = "Bygg ei togrute";
     public static final String bygdeRuterLabel = "Vis bygde ruter";

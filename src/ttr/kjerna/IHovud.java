@@ -3,11 +3,10 @@ package ttr.kjerna;
 import ttr.bord.IBord;
 import ttr.data.Farge;
 import ttr.gui.IGUI;
+import ttr.oppdrag.IOppdrag;
+import ttr.rute.IRute;
 import ttr.spelar.ISpelar;
-import ttr.struktur.IOppdrag;
-import ttr.struktur.Rute;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Set;
@@ -15,9 +14,9 @@ import java.util.Set;
 public interface IHovud {
     public ArrayList<IOppdrag> getGjenverandeOppdrag();
 
-    public Set<Rute> getRuter();
+    public Set<IRute> getRuter();
 
-    public ArrayList<Rute> getAlleBygdeRuter();
+    public ArrayList<IRute> getAlleBygdeRuter();
 
     public void setMinSpelar(ISpelar spelar);
 
@@ -41,8 +40,8 @@ public interface IHovud {
     public void settSinTur(ISpelar spelar) throws RemoteException;
     public void nesteSpelar() throws RemoteException;
 
-    public Rute[] finnFramRuter() throws RemoteException;
-    public void bygg(Rute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException;
-    public void byggTunnel(Rute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException;
+    public IRute[] finnFramRuter() throws RemoteException;
+    public void bygg(IRute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException;
+    public void byggTunnel(IRute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException;
 
 }

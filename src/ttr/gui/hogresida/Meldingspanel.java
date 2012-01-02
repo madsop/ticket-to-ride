@@ -1,4 +1,4 @@
-package ttr.gui;
+package ttr.gui.hogresida;
 
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
@@ -10,7 +10,7 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-class Meldingspanel extends JPanel implements PropertyChangeListener {
+public class Meldingspanel extends JPanel implements PropertyChangeListener {
     private MeldingarModell meldingarmodell;
     private final JList meldingar;
     private final boolean nett;

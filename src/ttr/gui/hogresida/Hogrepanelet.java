@@ -1,17 +1,19 @@
-package ttr.gui;
+package ttr.gui.hogresida;
 
 import ttr.Listeners.HandlingListener;
 import ttr.Listeners.WrapperKortListener;
 import ttr.data.Farge;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
+import ttr.gui.GUI;
+import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
 
 import javax.swing.*;
 import java.awt.*;
 
 
-class Hogrepanelet extends JPanel {
+public class Hogrepanelet extends JPanel {
     // Brukargrensesnittet - på høgresida
     private JTextField spelarnamn;
     private final IGUI gui;
@@ -134,7 +136,7 @@ class Hogrepanelet extends JPanel {
         visBygde.addActionListener(listener);
 
 
-        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, kortButtons, hovud, gui, frame, hovud.isNett());
+        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, kortButtons, hovud, frame, hovud.isNett());
         kortBunke.addActionListener(kortListener);
         for (JButton button : kortButtons){
             button.addActionListener(kortListener);

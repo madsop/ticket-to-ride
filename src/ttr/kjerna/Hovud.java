@@ -1,13 +1,20 @@
 package ttr.kjerna;
 
 import ttr.bord.IBord;
+import ttr.bygg.ByggHjelpar;
+import ttr.bygg.IByggHjelpar;
+import ttr.bygg.byggjandeInfo;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
 import ttr.nettverk.InitialiserNettverk;
+import ttr.oppdrag.IOppdrag;
+import ttr.oppdrag.IOppdragshandsamar;
+import ttr.oppdrag.Oppdragshandsamar;
+import ttr.rute.IRute;
+import ttr.rute.IRutehandsamar;
+import ttr.rute.Rutehandsamar;
 import ttr.spelar.ISpelar;
-import ttr.struktur.IOppdrag;
-import ttr.struktur.Rute;
 import ttr.utgaave.ISpelUtgaave;
 
 import java.awt.*;
@@ -91,12 +98,12 @@ public class Hovud implements IHovud {
     }
 
     @Override
-    public Set<Rute> getRuter() {
+    public Set<IRute> getRuter() {
         return rutehandsamar.getRuter();
     }
 
     @Override
-    public ArrayList<Rute> getAlleBygdeRuter() {
+    public ArrayList<IRute> getAlleBygdeRuter() {
         return rutehandsamar.getAlleBygdeRuter();
     }
 
@@ -170,11 +177,11 @@ public class Hovud implements IHovud {
 	}
 
     @Override
-    public Rute[] finnFramRuter() throws RemoteException {
+    public IRute[] finnFramRuter() throws RemoteException {
         return rutehandsamar.finnFramRuter(spelarar);
     }
 
-    public void bygg(Rute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
+    public void bygg(IRute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
         byggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd,plass,kortKrevd,krevdJokrar,minSpelar,kvenSinTur);
         ISpelar byggjandeSpelar = byggjandeInfo.byggjandeSpelar;
         int jokrar = byggjandeInfo.jokrar;
@@ -182,7 +189,7 @@ public class Hovud implements IHovud {
         
     }
     
-    private void hjelpemetodeBygg(Rute bygd,int plass,int kortKrevd,int krevdJokrar,ISpelar byggjandeSpelar,int jokrar) throws RemoteException{
+    private void hjelpemetodeBygg(IRute bygd,int plass,int kortKrevd,int krevdJokrar,ISpelar byggjandeSpelar,int jokrar) throws RemoteException{
         rutehandsamar.nyRute(bygd);
 
 
@@ -204,7 +211,7 @@ public class Hovud implements IHovud {
     }
 
     @Override
-    public void byggTunnel(Rute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
+    public void byggTunnel(IRute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
         byggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(bord, bygd, plass, kortKrevd, krevdJokrar, minSpelar, kvenSinTur);
         ISpelar byggjandeSpelar = byggjandeInfo.byggjandeSpelar;
         int jokrar = byggjandeInfo.jokrar;

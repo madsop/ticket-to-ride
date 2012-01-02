@@ -3,27 +3,29 @@ package ttr.Listeners;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.kjerna.IHovud;
-import ttr.struktur.Rute;
+import ttr.rute.IRute;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import java.awt.HeadlessException;
+
 import java.rmi.RemoteException;
 
 class ByggHandler {
 
     public ByggHandler(IHovud hovud, JFrame frame) {
-        Rute[] ruterArray = null;
+        IRute[] ruterArray = null;
         try {
             ruterArray = hovud.finnFramRuter();
         } catch (RemoteException e1) {
             e1.printStackTrace();
         }
 
-        Rute ubygdeRuter = (Rute) JOptionPane.showInputDialog(frame, "Vel ruta du vil byggje", "Vel rute",
+        IRute ubygdeRuter = (IRute) JOptionPane.showInputDialog(frame, "Vel ruta du vil byggje", "Vel rute",
                 JOptionPane.QUESTION_MESSAGE, null, ruterArray, ruterArray[1]);
 
-        Rute bygd = null;
-        for (Rute aRuterArray : ruterArray) {
+        IRute bygd = null;
+        for (IRute aRuterArray : ruterArray) {
             if (aRuterArray == ubygdeRuter) {
                 bygd = aRuterArray;
             }

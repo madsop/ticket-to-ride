@@ -2,9 +2,10 @@ package ttr.utgaave.europe;
 
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
-import ttr.struktur.IOppdrag;
-import ttr.struktur.Oppdrag;
-import ttr.struktur.Rute;
+import ttr.oppdrag.IOppdrag;
+import ttr.oppdrag.Oppdrag;
+import ttr.rute.IRute;
+import ttr.rute.Rute;
 import ttr.utgaave.AbstractSpelUtgaave;
 import ttr.utgaave.ISpelUtgaave;
 
@@ -20,8 +21,8 @@ public class Europe extends AbstractSpelUtgaave implements ISpelUtgaave {
 		super(tittel,bilde);
 	}
 	
-	protected Set<Rute> leggTilRuter() {
-		ruter = new HashSet<Rute>();
+	protected Set<IRute> leggTilRuter() {
+		ruter = new HashSet<IRute>();
 		int ruteId = 0;
 		ruter.add(new Rute(ruteId,Destinasjon.Brest,Destinasjon.Dieppe,2,Farge.oransje,false,0));
 		//ruteId++;

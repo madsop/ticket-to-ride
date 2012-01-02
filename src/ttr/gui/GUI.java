@@ -3,8 +3,10 @@ package ttr.gui;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.data.MeldingarModell;
+import ttr.gui.hogresida.Hogrepanelet;
+import ttr.gui.hogresida.Meldingspanel;
 import ttr.kjerna.IHovud;
-import ttr.struktur.IOppdrag;
+import ttr.oppdrag.IOppdrag;
 import ttr.utgaave.ISpelUtgaave;
 
 import javax.swing.*;
@@ -15,9 +17,6 @@ public class GUI extends JPanel implements IGUI {
 
     // Faktisk GUI
 	private final JFrame frame;
-
-    // Hovud
-	private IHovud hovud;
 
     // Interne klassar
     private final Meldingspanel meldingsboks;
@@ -56,7 +55,6 @@ public class GUI extends JPanel implements IGUI {
 	}
 
     public void setHovud(IHovud hovud){
-        this.hovud = hovud;
         meldingsboks.setHovud(hovud);
         hogre.addListeners(hovud);
     }

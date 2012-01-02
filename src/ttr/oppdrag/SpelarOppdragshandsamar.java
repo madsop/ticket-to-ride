@@ -1,9 +1,8 @@
-package ttr.spelar;
+package ttr.oppdrag;
 
 import ttr.data.Destinasjon;
 import ttr.kjerna.IHovud;
-import ttr.struktur.IOppdrag;
-import ttr.struktur.Rute;
+import ttr.rute.IRute;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -99,7 +98,7 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
         }
     }
     
-    public void bygg(Rute rute) throws RemoteException{
+    public void bygg(IRute rute) throws RemoteException{
 
         // Sjekk for fullførde oppdrag?
 

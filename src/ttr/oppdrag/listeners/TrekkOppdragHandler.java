@@ -1,13 +1,13 @@
-package ttr.Listeners;
+package ttr.oppdrag.listeners;
 
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
-import ttr.kjerna.Oppdragshandsamar;
+import ttr.oppdrag.Oppdragshandsamar;
 
 import java.rmi.RemoteException;
 
-class TrekkOppdragHandler {
+public class TrekkOppdragHandler {
     public TrekkOppdragHandler(IHovud hovud, IGUI gui) {
         try {
             hovud.sendKortMelding(false, false, Konstantar.FARGAR[0]);

@@ -2,7 +2,6 @@ package ttr.Listeners;
 
 import ttr.data.Farge;
 import ttr.data.Konstantar;
-import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
 import ttr.spelar.ISpelar;
 
@@ -18,11 +17,10 @@ public class WrapperKortListener implements ActionListener{
     private final JFrame frame;
     private final boolean nett;
     
-    public WrapperKortListener(JButton kortBunke, JButton[] kortButtons, IHovud hovud, IGUI gui,JFrame frame, boolean nett){
+    public WrapperKortListener(JButton kortBunke, JButton[] kortButtons, IHovud hovud, JFrame frame, boolean nett){
         this.kortBunke = kortBunke;
         this.kortButtons = kortButtons;
         this.hovud = hovud;
-        IGUI gui1 = gui;
         this.frame = frame;
         this.nett = nett;
     }

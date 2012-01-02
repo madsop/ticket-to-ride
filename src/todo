@@ -2,11 +2,13 @@
  * - Det grafiske (GUI mm)
  * 	- Bygg ved å klikke på skjermen
  * 	- Kva som er bygd visast på skjermen (drawline e.l.)
+
  * - Kunstig intelligens
  * 	- Programmere inn støtte for dataspelar
  * 	- Trekkje oppdrag
  * 	- Byggje, trekkje oppdrag eller trekkje kort?
  * 	- Kva for rute/kort?
+
  * - Lesmeg og dokumentering
  * 
  * Mindre utfordringar:
@@ -29,4 +31,3 @@
  *	- Sortering av ledige (og bygde) ruter
  *	- Forskjellig bakgrunn for forskjellige spelarar på bygde ruter-lista - koss?
  *	- Lagring av meldings-lista?
- 

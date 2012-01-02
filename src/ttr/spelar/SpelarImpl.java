@@ -4,11 +4,14 @@ import ttr.bord.IBord;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.kjerna.IHovud;
-import ttr.struktur.IOppdrag;
-import ttr.struktur.Rute;
+import ttr.oppdrag.IOppdrag;
+import ttr.oppdrag.ISpelarOppdragshandsamar;
+import ttr.oppdrag.SpelarOppdragshandsamar;
+import ttr.rute.IRute;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JOptionPane;
+import java.awt.Component;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -20,12 +23,12 @@ import java.util.ArrayList;
 	private IHovud hovud;
     private IBord bord;
 
-	private static int spelarteljar = 0;
+	private static int spelarteljar = 0;    //TODO bør flyttes vekk. Kanskje til hovud.
 	private int spelarNummer;
 	private String namn;
     private ISpelarOppdragshandsamar spelarOppdragshandsamar;
     private IKorthandsamar korthandsamar;
-    private ArrayList<Rute> bygdeRuter; // Delvis unaudsynt pga. harEgBygdMellomAogB
+    private ArrayList<IRute> bygdeRuter; // Delvis unaudsynt pga. harEgBygdMellomAogB
 
 	private boolean einValdAllereie;
 
@@ -36,10 +39,10 @@ import java.util.ArrayList;
         this.bord = bord;
         this.namn = namn;
         einValdAllereie = false;
-        bygdeRuter = new ArrayList<Rute>();
+        bygdeRuter = new ArrayList<IRute>();
 
         korthandsamar = new Korthandsamar(hovud);
-        spelarOppdragshandsamar = new SpelarOppdragshandsamar(hovud); 
+        spelarOppdragshandsamar = new SpelarOppdragshandsamar(hovud);
 
     }
     
@@ -66,13 +69,13 @@ import java.util.ArrayList;
 
 	public int getGjenverandeTog()  throws RemoteException {
 		int brukteTog = 0;
-        for (Rute aBygdeRuter : bygdeRuter) {
-            brukteTog += aBygdeRuter.getLengde();
+        for (IRute eiBygdRute : bygdeRuter) {
+            brukteTog += eiBygdRute.getLengde();
         }
 		return Konstantar.ANTAL_TOG - brukteTog;
 	}
 
-	public void bygg(Rute rute) throws RemoteException  {
+	public void bygg(IRute rute) throws RemoteException  {
 		rute.setBygdAv(this);
 		// Fjern kort frå spelaren og legg dei i stokken eller ved sida av?
 		bygdeRuter.add(rute);
@@ -105,8 +108,8 @@ import java.util.ArrayList;
 
 	
 	public void nybygdRute(int ruteId, ISpelar byggjandeSpelar) throws RemoteException {
-		Rute vald = null;
-		for (Rute r : hovud.getRuter()) {
+		IRute vald = null;
+		for (IRute r : hovud.getRuter()) {
 			if (r.getRuteId() == ruteId) {
 				vald = r;
 			}

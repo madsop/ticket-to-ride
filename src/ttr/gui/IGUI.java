@@ -3,7 +3,7 @@ package ttr.gui;
 import ttr.data.Farge;
 import ttr.data.MeldingarModell;
 import ttr.kjerna.IHovud;
-import ttr.struktur.IOppdrag;
+import ttr.oppdrag.IOppdrag;
 
 import javax.swing.*;
 import java.util.ArrayList;

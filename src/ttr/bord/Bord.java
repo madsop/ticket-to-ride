@@ -8,7 +8,7 @@ public class Bord implements IBord {
     private final IGUI gui;
     private Farge[] paaBordet;
     private final BordHjelpar bordHjelpar;
-    private final int[] fargekortSomErIgjenIBunken = {    // TODO lag ein finare struktur for fargar og fargekort generelt
+    private final int[] fargekortSomErIgjenIBunken = {    // TODO lag ein finare rute for fargar og fargekort generelt
             Konstantar.ANTAL_AV_KVART_FARGEKORT,
             Konstantar.ANTAL_AV_KVART_FARGEKORT,
             Konstantar.ANTAL_AV_KVART_FARGEKORT,

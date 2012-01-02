@@ -1,6 +1,4 @@
-package ttr.kjerna;
-
-import ttr.struktur.IOppdrag;
+package ttr.oppdrag;
 
 import java.util.ArrayList;
 

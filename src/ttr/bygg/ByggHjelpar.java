@@ -1,12 +1,12 @@
-package ttr.kjerna;
+package ttr.bygg;
 
 import ttr.bord.IBord;
 import ttr.data.Farge;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
+import ttr.rute.IRute;
 import ttr.spelar.ISpelar;
-import ttr.struktur.Rute;
 
 import javax.swing.*;
 import java.awt.*;
@@ -65,7 +65,7 @@ public class ByggHjelpar implements IByggHjelpar {
             return -1;
         }
 
-        public byggjandeInfo bygg(Rute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
+        public byggjandeInfo bygg(IRute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
             ISpelar byggjandeSpelar = nett ? minSpelar : kvenSinTur;
 
             if (bygd.getFarge() == Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1]){
@@ -108,7 +108,7 @@ public class ByggHjelpar implements IByggHjelpar {
         }
 
 
-        public byggjandeInfo byggTunnel(IBord bord, Rute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
+        public byggjandeInfo byggTunnel(IBord bord, IRute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
             Farge[] treTrekte = new Farge[3];
             int ekstra = 0;
             for (int i = 0; i < treTrekte.length; i++) {
@@ -131,7 +131,7 @@ public class ByggHjelpar implements IByggHjelpar {
             return null;
         }
 
-    private int velAntalJokrarDuVilBruke(Rute rute, ISpelar s, Farge valdFarge) throws RemoteException{
+    private int velAntalJokrarDuVilBruke(IRute rute, ISpelar s, Farge valdFarge) throws RemoteException{
         int jokrar = s.getKort()[Konstantar.ANTAL_FARGAR-1];
         int kormange = -1;
         while (kormange < 0 || kormange > jokrar || kormange > rute.getLengde()) {

@@ -1,4 +1,4 @@
-package ttr.gui;
+package ttr.gui.hogresida;
 
 import ttr.data.Infostrengar;
 import ttr.data.MeldingarModell;

@@ -1,7 +1,7 @@
 package ttr.gui;
 
 import ttr.data.Infostrengar;
-import ttr.struktur.IOppdrag;
+import ttr.oppdrag.IOppdrag;
 import ttr.utgaave.ISpelUtgaave;
 
 import javax.swing.*;
