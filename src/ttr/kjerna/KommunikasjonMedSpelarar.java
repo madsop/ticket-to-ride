@@ -1,10 +1,7 @@
 package ttr.kjerna;
 
 import ttr.bord.IBord;
-import ttr.data.Farge;
-import ttr.data.Infostrengar;
-import ttr.data.Konstantar;
-import ttr.data.MeldingarModell;
+import ttr.data.*;
 import ttr.rute.IRute;
 import ttr.spelar.ISpelar;
 import ttr.spelar.SpelarImpl;
@@ -61,7 +58,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 
 
     //TODO: Utrekning av lengst rute / flest oppdrag
-    public void sjekkOmFerdig(MeldingarModell meldingarModell, ISpelar kvenSinTur, String speltittel, ISpelar minSpelar, Set<IRute> ruter) throws RemoteException{
+    public void sjekkOmFerdig(IMeldingarModell meldingarModell, ISpelar kvenSinTur, String speltittel, ISpelar minSpelar, Set<IRute> ruter) throws RemoteException{
         if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
             String poeng = Infostrengar.SpeletErFerdig;
 
@@ -102,7 +99,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
     }
 
 
-    private void avsluttSpeletMedSuksess(ISpelar vinnar,String poeng, MeldingarModell meldingarModell) throws RemoteException {
+    private void avsluttSpeletMedSuksess(ISpelar vinnar,String poeng, IMeldingarModell meldingarModell) throws RemoteException {
 
         assert vinnar != null;
         String vinnaren = vinnar.getNamn() +" vann spelet, gratulerer!";
@@ -116,7 +113,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
     }
 
 
-    private void finnSpelarSomKlarteFlestOppdrag(int[] totalpoeng, ISpelar minSpelar, MeldingarModell meldingarModell) throws RemoteException{
+    private void finnSpelarSomKlarteFlestOppdrag(int[] totalpoeng, ISpelar minSpelar, IMeldingarModell meldingarModell) throws RemoteException{
         int flestoppdrag = -1;
         ISpelar flest = null;
         if (nett){
@@ -144,7 +141,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
     }
 
 
-    private ISpelar reknUtPoengOgFinnVinnar(int[] totalpoeng, ISpelar s, String poeng,int vinnarpoeng, ISpelar vinnar, MeldingarModell meldingarModell, Set<IRute> ruter) throws RemoteException {
+    private ISpelar reknUtPoengOgFinnVinnar(int[] totalpoeng, ISpelar s, String poeng,int vinnarpoeng, ISpelar vinnar, IMeldingarModell meldingarModell, Set<IRute> ruter) throws RemoteException {
         ISpelar leiarNo = vinnar;
 
         int spelarensPoeng = reknUtPoeng(s,ruter);

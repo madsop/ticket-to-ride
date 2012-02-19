@@ -5,7 +5,6 @@ import ttr.Listeners.WrapperKortListener;
 import ttr.data.Farge;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
-import ttr.gui.GUI;
 import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
 
@@ -13,18 +12,17 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class Hogrepanelet extends JPanel {
+public class Hogrepanelet extends JPanel implements IHogrepanelet {
     // Brukargrensesnittet - på høgresida
     private JTextField spelarnamn;
-    private final IGUI gui;
+    private IGUI gui;
     private final JFrame frame;
 
     private JButton[] kortButtons;
     private JLabel[] togAtt;
     private JButton trekkOppdrag,bygg,visBygde,visMineOppdrag,visMineKort, kortBunke;
 
-    public Hogrepanelet(GUI gui, JFrame frame){
-        this.gui = gui;
+    public Hogrepanelet(JFrame frame){
         this.frame = frame;
     }
 
@@ -188,6 +186,10 @@ public class Hogrepanelet extends JPanel {
         kortButtons[plass].setText(ret);
     }
 
+    @Override
+    public void setGUI(IGUI gui) {
+        this.gui = gui;
+    }
 
 
     private void visFargekorta(GridBagConstraints d) {

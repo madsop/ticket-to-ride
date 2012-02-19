@@ -10,41 +10,43 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-class Oppdragsveljar {
-    private ArrayList<IOppdrag> valde;
-    private ArrayList<IOppdrag> oppdragEinKanVeljeNyeOppdragFrå;
-    private JButton ok;
-    private ArrayList<JCheckBox> jcb;
-    private JDialog jd;
+public class Oppdragsveljar implements IOppdragsveljar {
     private final ISpelUtgaave spel;
     private final JFrame frame;
+    private JDialog oppdragsveljarBoksen;
+    private JPanel vel;
+    private ArrayList<IOppdrag> valde;
+    private HashMap<JCheckBox,IOppdrag> oppdragÅVeljeFrå;
+    private JButton ok;
 
     public Oppdragsveljar(ISpelUtgaave spel, JFrame frame){
         this.spel = spel;
         this.frame = frame;
     }
 
-    public ArrayList<IOppdrag> velOppdrag(ArrayList<IOppdrag> oppd) {
-        this.oppdragEinKanVeljeNyeOppdragFrå = oppd;
-        JPanel vel = new JPanel();
-        GridLayout gl = new GridLayout(0, 2);
+    private void setUpAvkrysningsboksar(ArrayList<IOppdrag> innsendteOppdragÅVeljeFrå){
+        for (IOppdrag oppdrag : innsendteOppdragÅVeljeFrå){
+            Object[] d = oppdrag.getDestinasjonar().toArray();
 
+            JCheckBox oppdragsSjekkboks = new JCheckBox();
+            oppdragsSjekkboks.addActionListener(new okListener());
+            oppdragsSjekkboks.setSelected(false);
+            vel.add(new JTextField(d[0] +" - " +d[1] + " (" +oppdrag.getVerdi() +")"));
+            vel.add(oppdragsSjekkboks);
+            oppdragÅVeljeFrå.put(oppdragsSjekkboks,oppdrag);
+        }
+    }
+
+    @Override
+    public ArrayList<IOppdrag> setUpOppdragsveljar(ArrayList<IOppdrag> innsendteOppdragÅVeljeFrå) {
+        oppdragÅVeljeFrå = new HashMap<JCheckBox,IOppdrag>();
+        vel = new JPanel();
+        GridLayout gl = new GridLayout(0, 2);
         vel.setLayout(gl);
 
-        ArrayList<JTextField> jtf = new ArrayList<JTextField>();
-        jcb = new ArrayList<JCheckBox>();
-
-        for (int i = 0; i < oppdragEinKanVeljeNyeOppdragFrå.size(); i++) {
-            IOppdrag o = oppdragEinKanVeljeNyeOppdragFrå.get(i);
-            Object[] d = o.getDestinasjonar().toArray();
-            jtf.add(new JTextField(d[0] +" - " +d[1] + " (" +o.getVerdi() +")"));
-            jcb.add(new JCheckBox());
-            jcb.get(i).addActionListener(new okListener());
-            jcb.get(i).setSelected(false);
-            vel.add(jtf.get(i));
-            vel.add(jcb.get(i));
-        }
+        setUpAvkrysningsboksar(innsendteOppdragÅVeljeFrå);
 
         valde = new ArrayList<IOppdrag>();
         ok = new JButton(Infostrengar.OKLabel);
@@ -64,10 +66,10 @@ class Oppdragsveljar {
         heile.add(jsp);
         heile.setPreferredSize(Konstantar.VINDUSSTORLEIK);
 
-        jd = new JDialog(frame,Infostrengar.VelOppdragLabel,true);
-        jd.setContentPane(heile);
-        jd.pack();
-        jd.setVisible(true);
+        oppdragsveljarBoksen = new JDialog(frame,Infostrengar.VelOppdragLabel,true);
+        oppdragsveljarBoksen.setContentPane(heile);
+        oppdragsveljarBoksen.pack();
+        oppdragsveljarBoksen.setVisible(true);
 
         return valde;
     }
@@ -76,43 +78,33 @@ class Oppdragsveljar {
     /**
      * Blir kalla når spelaren har vald oppdragEinKanVeljeNyeOppdragFrå, og (freistar å/) trykker ok.
      * Nett no veldig ad-hoc-a. Bør for-løkke-styres eller noko.
-     * @author mads
-     *
      */
     private class okListener implements ActionListener {
-        public void gjer(int i, ActionEvent arg0){
-            if (arg0.getSource() == jcb.get(i)) {
-                if (valde.contains(oppdragEinKanVeljeNyeOppdragFrå.get(i))){
-                    valde.remove(oppdragEinKanVeljeNyeOppdragFrå.get(i));
-                    jcb.get(i).setSelected(false);
+        public void gjer(int i, Object clickedItem){
+            if (oppdragÅVeljeFrå.containsKey(clickedItem)){
+                JCheckBox clicked = (JCheckBox)clickedItem;
+                if (valde.contains(oppdragÅVeljeFrå.get(clicked))){
+                    valde.remove(oppdragÅVeljeFrå.get(clicked));
+                    clicked.setSelected(false);
                 }
                 else{
-                    valde.add(oppdragEinKanVeljeNyeOppdragFrå.get(i));
-                    jcb.get(i).setSelected(true);
+                    valde.add(oppdragÅVeljeFrå.get(clicked));
+                    clicked.setSelected(true);
                     ok.setEnabled(true);
                 }
             }
         }
 
         public void actionPerformed(ActionEvent arg0) {
-            if (arg0.getSource() == ok) {
-                if (valde.size() >= oppdragEinKanVeljeNyeOppdragFrå.size()-2) {
-                    jd.dispose();
-                    return;
-                }
+            if (arg0.getSource() == ok && (valde.size() >= oppdragÅVeljeFrå.size()-2)){
+                oppdragsveljarBoksen.dispose();
+                return;
             }
 
-            for (int i = 0; i < oppdragEinKanVeljeNyeOppdragFrå.size(); i++) {
-                gjer(i,arg0);
+            for (int i = 0; i < oppdragÅVeljeFrå.size(); i++) {
+                gjer(i,arg0.getSource());
             }
-
-            int count = 0;
-            for (int i = 0; i < jcb.size(); i++) {
-                if (valde.contains(oppdragEinKanVeljeNyeOppdragFrå.get(i))) {
-                    count++;
-                }
-            }
-            if (count < oppdragEinKanVeljeNyeOppdragFrå.size() - 2) {
+            if (valde.size() < oppdragÅVeljeFrå.size() -2){
                 ok.setEnabled(false);
             }
         }

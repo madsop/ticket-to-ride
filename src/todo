@@ -3,6 +3,7 @@ Bugs:
 - Når ein trekk inn joker og ikkje får lov, blir det framleis lagt ut eit nytt kort på bordet
 - Er det eigentleg mange nok kort med?
 - Skriv ut kor mange jokrar som trengs for å bygge ei rute (viss > 0)
+- Tre jokrar på bordet ved oppstart gir ikkje problem..
 
  * Store utfordringar:
  * - Det grafiske (GUI mm)

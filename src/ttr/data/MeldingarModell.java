@@ -6,7 +6,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 
-public class MeldingarModell extends AbstractListModel{
+public class MeldingarModell extends AbstractListModel implements IMeldingarModell {
 	private final PropertyChangeSupport pcs;
 	private final ArrayList<String> meldingar;
 	public static final String MELDINGAR_PROPERTY = "meldingar";

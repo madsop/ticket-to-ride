@@ -4,8 +4,11 @@ import ttr.bord.Bord;
 import ttr.bord.IBord;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
-import ttr.gui.GUI;
-import ttr.gui.IGUI;
+import ttr.gui.*;
+import ttr.gui.hogresida.Hogrepanelet;
+import ttr.gui.hogresida.IHogrepanelet;
+import ttr.gui.hogresida.IMeldingspanel;
+import ttr.gui.hogresida.Meldingspanel;
 import ttr.kjerna.Hovud;
 import ttr.kjerna.IHovud;
 import ttr.utgaave.ISpelUtgaave;
@@ -49,7 +52,14 @@ public class Main {
     }
     
     private static IGUI mekkGUI(ISpelUtgaave utgaave, JFrame frame, boolean nett) {
-        IGUI gui = new GUI(frame,utgaave,nett);        // TODO: dependency injection
+        IBildePanel bp = new BildePanel(utgaave);
+
+        IOppdragsveljar oppdragsveljar = new Oppdragsveljar(utgaave,frame);
+
+        IMeldingspanel meldingsboks = new Meldingspanel(nett);
+        IHogrepanelet hogre = new Hogrepanelet(frame);
+        IGUI gui = new GUI(bp,oppdragsveljar,meldingsboks, hogre);        // TODO: dependency injection
+        hogre.setGUI(gui);
         frame.setTitle(frame.getTitle() + " - " +utgaave.getTittel());
         frame.setPreferredSize(Konstantar.VINDUSSTORLEIK);
         frame.setContentPane((Container) gui);

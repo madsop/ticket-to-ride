@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
-class BildePanel extends JPanel {
+public class BildePanel extends JPanel implements IBildePanel {
     private final Image bildet;
     
     public BildePanel(ISpelUtgaave spel){

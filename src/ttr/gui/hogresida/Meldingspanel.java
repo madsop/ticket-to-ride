@@ -10,7 +10,7 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class Meldingspanel extends JPanel implements PropertyChangeListener {
+public class Meldingspanel extends JPanel implements PropertyChangeListener, IMeldingspanel {
     private MeldingarModell meldingarmodell;
     private final JList meldingar;
     private final boolean nett;

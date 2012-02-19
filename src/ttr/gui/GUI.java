@@ -1,31 +1,26 @@
 package ttr.gui;
 
 import ttr.data.Farge;
-import ttr.data.Konstantar;
-import ttr.data.MeldingarModell;
-import ttr.gui.hogresida.Hogrepanelet;
-import ttr.gui.hogresida.Meldingspanel;
+import ttr.data.IMeldingarModell;
+import ttr.gui.hogresida.IHogrepanelet;
+import ttr.gui.hogresida.IMeldingspanel;
 import ttr.kjerna.IHovud;
 import ttr.oppdrag.IOppdrag;
-import ttr.utgaave.ISpelUtgaave;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class GUI extends JPanel implements IGUI {
-
-    // Faktisk GUI
-	private final JFrame frame;
-
-    // Interne klassar
-    private final Meldingspanel meldingsboks;
-    private Hogrepanelet hogre;
-    private final Oppdragsveljar oppdragsveljar;
+    private final IMeldingspanel meldingsboks;
+    private IHogrepanelet hogre;
+    private final IOppdragsveljar oppdragsveljar;
 
 
-	public GUI(JFrame frame, ISpelUtgaave spel, boolean nettv) {
-        this.frame = frame;
+    public GUI(IBildePanel bp, IOppdragsveljar oppdragsveljar, IMeldingspanel meldingspanel, IHogrepanelet hogre){
+        this.oppdragsveljar = oppdragsveljar;
+        this.meldingsboks = meldingspanel;
+        this.hogre = hogre;
 
         GridBagLayout gbl = new GridBagLayout();
 		setLayout(gbl);
@@ -33,25 +28,18 @@ public class GUI extends JPanel implements IGUI {
 		c = new GridBagConstraints();
 		c.anchor = GridBagConstraints.WEST;
 
-		BildePanel bp = new BildePanel(spel);
-        
-        oppdragsveljar = new Oppdragsveljar(spel,frame);
-
 		c.ipadx = 0;
 		c.ipady = 0;
 		c.gridx = 0;
 		c.gridy = 0;
-		add(bp,c);
+		add((JPanel) bp,c);
 
 		c.gridx = 1;
-        byggHogrepanel();
-		add(hogre,c);
+        hogre.byggHogrepanelet();
+		add((JPanel) hogre,c);
 
 		c.gridx = 2;
-        meldingsboks = new Meldingspanel(nettv);
-		add(meldingsboks,c);
-
-		frame.setPreferredSize(new Dimension(Konstantar.BREIDDE, Konstantar.HOGDE));
+		add((JPanel) meldingsboks,c);
 	}
 
     public void setHovud(IHovud hovud){
@@ -59,13 +47,7 @@ public class GUI extends JPanel implements IGUI {
         hogre.addListeners(hovud);
     }
 
-	/** Sett opp panelet på høgre side av skjermen (altså GUI-et) */
-    void byggHogrepanel() {
-		hogre = new Hogrepanelet(this,frame);
-        hogre.byggHogrepanelet();
-	}
-
-    public MeldingarModell getMeldingarModell(){
+    public IMeldingarModell getMeldingarModell(){
         return meldingsboks.getMeldingarModell();
     }
 
@@ -103,6 +85,6 @@ public class GUI extends JPanel implements IGUI {
 
     public String showInputDialog(String string) { return JOptionPane.showInputDialog(this, string); }
 
-    public ArrayList<IOppdrag> velOppdrag(ArrayList<IOppdrag> oppdrag) { return oppdragsveljar.velOppdrag(oppdrag); }
+    public ArrayList<IOppdrag> velOppdrag(ArrayList<IOppdrag> oppdrag) { return oppdragsveljar.setUpOppdragsveljar(oppdrag); }
 
 }

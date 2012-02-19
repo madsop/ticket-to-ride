@@ -1,7 +1,7 @@
 package ttr.gui;
 
 import ttr.data.Farge;
-import ttr.data.MeldingarModell;
+import ttr.data.IMeldingarModell;
 import ttr.kjerna.IHovud;
 import ttr.oppdrag.IOppdrag;
 
@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public interface IGUI {
-    public MeldingarModell getMeldingarModell();
+    public IMeldingarModell getMeldingarModell();
     public void visKvenDetErSinTur(String spelarnamn, boolean nett, String minSpelar);
     public JTextField getSpelarnamn();
     public JLabel[] getTogAtt();
