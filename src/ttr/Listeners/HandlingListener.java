@@ -14,11 +14,7 @@ import java.rmi.RemoteException;
 public class HandlingListener implements ActionListener{
     private final IGUI gui;
     private final IHovud hovud;
-    private final JButton visBygde;
-    private final JButton visMineKort;
-    private final JButton visMineOppdrag;
-    private final JButton trekkOppdrag;
-    private final JButton bygg;
+    private final JButton visBygde,visMineKort,visMineOppdrag,trekkOppdrag,bygg;
     private final JFrame frame;
 
     public HandlingListener(IGUI gui, IHovud hovud, JButton visBygde,
@@ -43,28 +39,25 @@ public class HandlingListener implements ActionListener{
                     return;
                 }
             }
-        } catch (HeadlessException e2) {
+
+            if (arg0.getSource() == trekkOppdrag) {
+                new TrekkOppdragHandler(hovud,gui);
+            }
+            else if (arg0.getSource() == bygg) {
+                new ByggHandler(hovud,frame);
+            }
+            else if (arg0.getSource() == visMineKort) {
+                new visMineKortHandler(hovud,gui);
+            }
+            else if (arg0.getSource() == visMineOppdrag) {
+                new visMineOppdragHandler(hovud,gui);
+            }
+            else if (arg0.getSource() == visBygde) {
+                new visBygdeHandler(hovud,gui,frame);
+            }
+        }
+        catch (RemoteException e2) {
             e2.printStackTrace();
-        } catch (RemoteException e2) {
-            e2.printStackTrace();
-        }
-
-        if (arg0.getSource() == trekkOppdrag) {
-            new TrekkOppdragHandler(hovud,gui);
-        }
-        else if (arg0.getSource() == bygg) {
-            new ByggHandler(hovud,frame);
-        }
-        else if (arg0.getSource() == visMineKort) {
-            new visMineKortHandler(hovud,gui);
-        }
-
-        else if (arg0.getSource() == visMineOppdrag) {
-            new visMineOppdragHandler(hovud,gui);
-        }
-
-        else if (arg0.getSource() == visBygde) {
-            new visBygdeHandler(hovud,gui,frame);
         }
     }
 }

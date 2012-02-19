@@ -13,13 +13,8 @@ import java.rmi.RemoteException;
 
 class ByggHandler {
 
-    public ByggHandler(IHovud hovud, JFrame frame) {
-        IRute[] ruterArray = null;
-        try {
-            ruterArray = hovud.finnFramRuter();
-        } catch (RemoteException e1) {
-            e1.printStackTrace();
-        }
+    public ByggHandler(IHovud hovud, JFrame frame) throws RemoteException {
+        IRute[] ruterArray = hovud.finnFramRuter();
 
         IRute ubygdeRuter = (IRute) JOptionPane.showInputDialog(frame, "Vel ruta du vil byggje", "Vel rute",
                 JOptionPane.QUESTION_MESSAGE, null, ruterArray, ruterArray[1]);
@@ -32,12 +27,7 @@ class ByggHandler {
         }
 
         if (bygd!=null) {
-            int[] spelarensKort = null;
-            try {
-                spelarensKort = hovud.getKvenSinTur().getKort();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+            int[] spelarensKort = hovud.getKvenSinTur().getKort();
             int kortKrevd = bygd.getLengde()-bygd.getAntaljokrar();
             Farge ruteFarge = bygd.getFarge();
             int krevdJokrar = bygd.getAntaljokrar();
@@ -47,20 +37,10 @@ class ByggHandler {
             int harjokrar = spelarensKort[spelarensKort.length-1];
             if (bygd.getFarge() == Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1]){
                 if (bygd.isTunnel()) {
-                    try {
                         hovud.byggTunnel(bygd, plass, kortKrevd, krevdJokrar);
-                    }
-                    catch (RemoteException re){
-                        re.printStackTrace();
-                    }
                 }
                 else {
-                    try {
                         hovud.bygg(bygd, plass, kortKrevd, krevdJokrar);
-                    }
-                    catch (RemoteException re){
-                        re.printStackTrace();
-                    }
                 }
             }
             else if (krevdJokrar <= harjokrar && (kortKrevd <= ( (harjokrar-krevdJokrar) + spelarensKort[plass]) ) ){
@@ -77,8 +57,6 @@ class ByggHandler {
                         JOptionPane.showMessageDialog(frame, "Du har ikkje nok tog att til å byggje denne ruta.");
                     }
                 } catch (HeadlessException e) {
-                    e.printStackTrace();
-                } catch (RemoteException e) {
                     e.printStackTrace();
                 }
             }

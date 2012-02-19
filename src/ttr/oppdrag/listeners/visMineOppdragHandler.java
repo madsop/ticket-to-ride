@@ -10,8 +10,7 @@ import java.rmi.RemoteException;
 
 public class visMineOppdragHandler {
 
-    public visMineOppdragHandler(IHovud hovud, IGUI gui) {
-        // vis oppdraga mine
+    public visMineOppdragHandler(IHovud hovud, IGUI gui) throws RemoteException {
         JPanel oppdraga = new JPanel();
 
         ISpelar visSine;
@@ -21,14 +20,8 @@ public class visMineOppdragHandler {
         else {
             visSine = hovud.getKvenSinTur();
         }
-        String oppdrg = "";
-        try {
-            oppdrg = visSine.getNamn() +": ";
-        } catch (RemoteException e1) {
-            e1.printStackTrace();
-        }
+        String oppdrg = visSine.getNamn() +": ";
 
-        try {
             for (int i = 0; i < visSine.getAntalOppdrag(); i++) {
                 IOppdrag o = visSine.getOppdrag().get(i);
                 oppdrg += o;
@@ -42,15 +35,8 @@ public class visMineOppdragHandler {
                     oppdrg += ", ";
                 }
             }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
         JLabel oppdr = new JLabel(oppdrg);
         oppdraga.add(oppdr);
-        try {
-            gui.lagRamme("Viser oppdraga til " +visSine.getNamn(), oppdraga);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+        gui.lagRamme("Viser oppdraga til " +visSine.getNamn(), oppdraga);
     }
 }

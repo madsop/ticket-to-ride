@@ -10,7 +10,7 @@ import java.awt.*;
 import java.rmi.RemoteException;
 
 class visMineKortHandler {
-    public visMineKortHandler(IHovud hovud, IGUI gui){
+    public visMineKortHandler(IHovud hovud, IGUI gui) throws RemoteException{
         // vis korta mine
         JPanel korta = new JPanel();
 
@@ -24,41 +24,24 @@ class visMineKortHandler {
         String[] kort = new String[Konstantar.ANTAL_FARGAR];
 
         for (int i = 0; i < Konstantar.ANTAL_FARGAR; i++) {
-            try {
                 kort[i] = Konstantar.FARGAR[i] +": " +visSine.getKort()[i];
-            } catch (RemoteException e) {
-                kort[i] = "";
-                e.printStackTrace();
-            }
         }
         JLabel[] oppdr = new JLabel[kort.length];
 
-        try {
-            korta.add(new JLabel(visSine.getNamn()));
-        } catch (RemoteException e1) {
-            e1.printStackTrace();
-        }
+        korta.add(new JLabel(visSine.getNamn()));
 
         for (int i = 0; i < oppdr.length; i++) {
             oppdr[i] = new JLabel();
             oppdr[i].setText(kort[i]);
-            try {
                 if (visSine.getKort()[i] != 0) {
                     oppdr[i].setForeground(Konstantar.fargeTilColor(Konstantar.FARGAR[i]));
                 }
                 else {
                     oppdr[i].setForeground(Color.LIGHT_GRAY);
                 }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+
             korta.add(oppdr[i]);
         }
-        try {
             gui.lagRamme("Viser korta til " +visSine.getNamn(), korta);
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
     }
-
-}

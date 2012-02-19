@@ -65,13 +65,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
         if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
             String poeng = Infostrengar.SpeletErFerdig;
 
-            int[] totalpoeng;
-            if (!nett){
-                totalpoeng = new int[spelarar.size()];
-            }
-            else {
-                totalpoeng = new int[spelarar.size()+1];
-            }
+            int[] totalpoeng = new int[spelarar.size() + (nett ? 1 : 0)];
 
             ISpelar vinnar = null;
             int vinnarpoeng = 0;
@@ -102,7 +96,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
                 ISpelar leiar = reknUtPoengOgFinnVinnar(totalpoeng,s,poeng,vinnarpoeng,vinnar,meldingarModell,ruter );
                 vinnarpoeng = reknUtPoeng(leiar,ruter);
             }
-            // Legg inn spelutgaave-spesifikk bonus her
+            //TODO Legg inn spelutgaave-spesifikk bonus her
             avsluttSpeletMedSuksess(vinnar,poeng,meldingarModell);
         }
     }

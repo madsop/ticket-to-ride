@@ -8,14 +8,9 @@ import ttr.oppdrag.Oppdragshandsamar;
 import java.rmi.RemoteException;
 
 public class TrekkOppdragHandler {
-    public TrekkOppdragHandler(IHovud hovud, IGUI gui) {
-        try {
+    public TrekkOppdragHandler(IHovud hovud, IGUI gui) throws RemoteException {
             hovud.sendKortMelding(false, false, Konstantar.FARGAR[0]);
             Oppdragshandsamar.trekkOppdrag(gui, hovud.getKvenSinTur(), false);
             hovud.nesteSpelar();
-        }
-        catch (RemoteException re) {
-            re.printStackTrace();
-        }
     }
 }
