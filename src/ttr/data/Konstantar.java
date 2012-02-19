@@ -22,6 +22,7 @@ public class Konstantar {
 	public static final int DIFF = 50;
 	public static final int MELDINGSPANELBREIDDE = 200;
 	public static final int MELDINGSPANEL = MELDINGSPANELBREIDDE+20;
+    public static final Dimension VINDUSSTORLEIK = new Dimension(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
 	public static final int hogrebreidde = BREIDDE/3;
 	public static final Dimension KNAPP = new Dimension(150,40);
 	public static final Dimension KORTKNAPP = new Dimension(70,90);

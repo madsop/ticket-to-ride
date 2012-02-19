@@ -1,3 +1,9 @@
+Bugs:
+- NÅr det er tomt på ein plass kan ein framleis trekke inn kort
+- Når ein trekk inn joker og ikkje får lov, blir det framleis lagt ut eit nytt kort på bordet
+- Er det eigentleg mange nok kort med?
+- Skriv ut kor mange jokrar som trengs for å bygge ei rute (viss > 0)
+
  * Store utfordringar:
  * - Det grafiske (GUI mm)
  * 	- Bygg ved å klikke på skjermen

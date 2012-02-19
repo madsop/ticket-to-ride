@@ -1,6 +1,7 @@
 package ttr.gui;
 
 import ttr.data.Infostrengar;
+import ttr.data.Konstantar;
 import ttr.oppdrag.IOppdrag;
 import ttr.utgaave.ISpelUtgaave;
 
@@ -8,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
 import java.util.ArrayList;
 
 class Oppdragsveljar {
@@ -52,17 +52,17 @@ class Oppdragsveljar {
         vel.add(ok);
         ok.setEnabled(false);
 
-        URL c = spel.getBakgrunnsbildet();
-        ImageIcon b = new ImageIcon(c);
+        ImageIcon kartet = new ImageIcon(spel.getBakgrunnsbildet());
 
-        JLabel a = new JLabel(b);
+        JLabel kartImplementasjonen = new JLabel(kartet);
         JScrollPane jsp = new JScrollPane();
-        jsp.setPreferredSize(new Dimension(b.getIconWidth()+50,b.getIconHeight()-200));
-        jsp.getViewport().add(a);
+        jsp.setPreferredSize(new Dimension(kartet.getIconWidth()+50, Konstantar.VINDUSSTORLEIK.height*14/15)); // 14/15 er hack for å få vist heile bildet
+        jsp.getViewport().add(kartImplementasjonen);
 
         JPanel heile = new JPanel();
         heile.add(vel);
         heile.add(jsp);
+        heile.setPreferredSize(Konstantar.VINDUSSTORLEIK);
 
         jd = new JDialog(frame,Infostrengar.VelOppdragLabel,true);
         jd.setContentPane(heile);

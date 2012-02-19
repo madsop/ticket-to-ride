@@ -18,7 +18,7 @@ class BildePanel extends JPanel {
         @Override
         public void paintComponent(Graphics g) {
             double bilderatio = (double) bildet.getHeight(null) / (double) bildet.getWidth(null);
-            int bildehogde = Konstantar.HOGDE;
+            int bildehogde = Konstantar.VINDUSSTORLEIK.height * 6/7;
             int br = (int) ((bildehogde / bilderatio) * 1.3);
             try {
                 g.drawImage(bildet, 0, 25, br, bildehogde, null);

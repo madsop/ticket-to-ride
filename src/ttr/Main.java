@@ -3,6 +3,7 @@ package ttr;
 import ttr.bord.Bord;
 import ttr.bord.IBord;
 import ttr.data.Infostrengar;
+import ttr.data.Konstantar;
 import ttr.gui.GUI;
 import ttr.gui.IGUI;
 import ttr.kjerna.Hovud;
@@ -50,6 +51,7 @@ public class Main {
     private static IGUI mekkGUI(ISpelUtgaave utgaave, JFrame frame, boolean nett) {
         IGUI gui = new GUI(frame,utgaave,nett);        // TODO: dependency injection
         frame.setTitle(frame.getTitle() + " - " +utgaave.getTittel());
+        frame.setPreferredSize(Konstantar.VINDUSSTORLEIK);
         frame.setContentPane((Container) gui);
         frame.pack();
         frame.setLocationRelativeTo(null);
