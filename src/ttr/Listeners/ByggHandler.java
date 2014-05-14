@@ -17,15 +17,10 @@ class ByggHandler {
     public ByggHandler(IHovud hovud, JFrame frame) throws RemoteException {
         Set<IRute> ruterArray = hovud.finnFramRuter();
 
-        IRute ubygdeRuter = (IRute) JOptionPane.showInputDialog(frame, "Vel ruta du vil byggje", "Vel rute",
+        IRute routeWantedToBuild = (IRute) JOptionPane.showInputDialog(frame, "Vel ruta du vil byggje", "Vel rute",
                 JOptionPane.QUESTION_MESSAGE, null, ruterArray.toArray(), ruterArray.iterator().next());
 
-        IRute bygd = null;
-        for (IRute aRuterArray : ruterArray) {
-            if (aRuterArray == ubygdeRuter) {
-                bygd = aRuterArray;
-            }
-        }
+        IRute bygd = ft(ruterArray, routeWantedToBuild);
 
         if (bygd!=null) {
             int[] spelarensKort = hovud.getKvenSinTur().getKort();
@@ -66,4 +61,13 @@ class ByggHandler {
             }
         }
     }
+
+	private IRute ft(Set<IRute> ruterArray, IRute routeWantedToBuild) {
+		for (IRute route : ruterArray) {
+            if (route == routeWantedToBuild) {
+                return route;
+            }
+        }
+		return null;
+	}
 }

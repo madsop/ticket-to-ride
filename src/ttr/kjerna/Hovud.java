@@ -70,7 +70,7 @@ public class Hovud implements IHovud {
     }
 
     @Override
-    public ArrayList<IRute> getAlleBygdeRuter() {
+    public Set<IRute> getAlleBygdeRuter() {
         return rutehandsamar.getAlleBygdeRuter();
     }
 

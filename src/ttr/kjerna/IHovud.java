@@ -16,7 +16,7 @@ public interface IHovud {
 
     public Set<IRute> getRuter();
 
-    public ArrayList<IRute> getAlleBygdeRuter();
+    public Set<IRute> getAlleBygdeRuter();
 
     public void setMinSpelar(ISpelar spelar);
 

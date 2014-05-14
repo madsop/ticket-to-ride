@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public interface IRutehandsamar {
-    ArrayList<IRute> getAlleBygdeRuter();
+    Set<IRute> getAlleBygdeRuter();
 
     Set<IRute> finnFramRuter(ArrayList<ISpelar> spelarar) throws RemoteException;
     public Set<IRute> getRuter();
