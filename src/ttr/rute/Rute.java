@@ -1,4 +1,3 @@
-
 package ttr.rute;
 
 import ttr.data.Destinasjon;
@@ -19,13 +18,6 @@ public class Rute implements IRute {
 	private ISpelar bygdAv;
 	private final int ruteId;
 
-
-
-	@Override
-    public int getRuteId() {
-		return ruteId;
-	}
-
 	public Rute(int ruteId, Destinasjon d1, Destinasjon d2, int lengde, Farge farge, boolean tunnel, int antaljokrar) {
 		this.ruteId = ruteId;
 		destinasjonar = new HashSet<>();
@@ -37,42 +29,38 @@ public class Rute implements IRute {
 		this.antaljokrar = antaljokrar;
 	}
 
-	@Override
-    public int getVerdi() {
+	public int getRuteId() {
+		return ruteId;
+	}
+
+	public int getVerdi() {
 		return ruteverdiar[lengde-1];
 	}
 
-	@Override
-    public Set<Destinasjon> getDestinasjonar() {
+	public Set<Destinasjon> getDestinasjonar() {
 		return destinasjonar;
 	}
 
-	@Override
     public int getLengde() {
 		return lengde;
 	}
 
-	@Override
     public Farge getFarge() {
 		return farge;
 	}
 
-	@Override
     public boolean isTunnel() {
 		return tunnel;
 	}
 
-	@Override
     public int getAntaljokrar() {
 		return antaljokrar;
 	}
 
-	@Override
     public void setBygdAv(ISpelar spelar) {
 		bygdAv = spelar;
 	}
 
-	@Override
 	@SuppressWarnings("finally")
 	public String toString() {
 		String builtByString = null;

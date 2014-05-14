@@ -160,7 +160,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 
     private int reknUtPoeng(ISpelar s, Set<IRute> ruter) throws RemoteException {
         int poeng = s.getOppdragspoeng();
-        for (int j = 0; j < s.getBygdeRuterStr(); j++) {
+        for (int j = 0; j < s.getBygdeRuterSize(); j++) {
             for (IRute r : ruter) {
                 if (s.getBygdeRuterId(j) == r.getRuteId()) {
                     poeng += r.getVerdi();

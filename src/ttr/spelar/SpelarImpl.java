@@ -62,7 +62,7 @@ import java.util.ArrayList;
 	public void setSpelarNummer(int nummer) throws RemoteException { spelarNummer = nummer; }
 	public int getSpelarteljar() throws RemoteException { return spelarteljar; }
 	public void setSpelarteljar(int teljar) throws RemoteException { spelarteljar = teljar; }
-	public int getBygdeRuterStr() throws RemoteException { return bygdeRuter.size(); }
+	public int getBygdeRuterSize() throws RemoteException { return bygdeRuter.size(); }
 	public int getBygdeRuterId(int j) throws RemoteException { return bygdeRuter.get(j).getRuteId(); }
 
 	public String getNamn()  throws RemoteException { return namn; }

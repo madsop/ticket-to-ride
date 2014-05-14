@@ -22,7 +22,7 @@ public interface ISpelar extends Remote{
 	public void setSpelarteljar(int teljar) throws RemoteException;
 	public void setTogAtt(int plass, int tog) throws RemoteException;
 	public void nybygdRute(int ruteId, ISpelar byggjandeSpelar) throws RemoteException;
-	public int getBygdeRuterStr() throws RemoteException;
+	public int getBygdeRuterSize() throws RemoteException;
 	public int getBygdeRuterId(int j) throws RemoteException;
 	public int[] getPaaBordetInt() throws RemoteException;
 	public void setPaaBord(Farge[] f) throws RemoteException;

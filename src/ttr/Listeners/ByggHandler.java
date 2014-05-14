@@ -7,17 +7,18 @@ import ttr.rute.IRute;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import java.awt.HeadlessException;
 
+import java.awt.HeadlessException;
 import java.rmi.RemoteException;
+import java.util.Set;
 
 class ByggHandler {
 
     public ByggHandler(IHovud hovud, JFrame frame) throws RemoteException {
-        IRute[] ruterArray = hovud.finnFramRuter();
+        Set<IRute> ruterArray = hovud.finnFramRuter();
 
         IRute ubygdeRuter = (IRute) JOptionPane.showInputDialog(frame, "Vel ruta du vil byggje", "Vel rute",
-                JOptionPane.QUESTION_MESSAGE, null, ruterArray, ruterArray[1]);
+                JOptionPane.QUESTION_MESSAGE, null, ruterArray.toArray(), ruterArray.iterator().next());
 
         IRute bygd = null;
         for (IRute aRuterArray : ruterArray) {

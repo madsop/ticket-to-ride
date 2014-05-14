@@ -135,7 +135,7 @@ public class Hovud implements IHovud {
 	}
 
     @Override
-    public IRute[] finnFramRuter() throws RemoteException {
+    public Set<IRute> finnFramRuter() throws RemoteException {
         return rutehandsamar.finnFramRuter(spelarar);
     }
 
