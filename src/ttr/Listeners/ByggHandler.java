@@ -3,7 +3,7 @@ package ttr.Listeners;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.kjerna.IHovud;
-import ttr.rute.IRute;
+import ttr.rute.IRoute;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -15,15 +15,15 @@ import java.util.Set;
 class ByggHandler {
 
 	public ByggHandler(IHovud hovud, JFrame frame) throws RemoteException {
-		Set<IRute> notYetBuiltRoutes = hovud.findRoutesNotYetBuilt();
+		Set<IRoute> notYetBuiltRoutes = hovud.findRoutesNotYetBuilt();
 
-		IRute routeWantedToBuild = letUserChooseRouteToBuild(frame, notYetBuiltRoutes);
+		IRoute routeWantedToBuild = letUserChooseRouteToBuild(frame, notYetBuiltRoutes);
 		if (routeWantedToBuild == null) { return; }
 
 		int[] playersCards = hovud.getKvenSinTur().getKort();
-		int normalCardsDemanded = routeWantedToBuild.getLengde()-routeWantedToBuild.getAntaljokrar();
-		Farge routeColour = routeWantedToBuild.getFarge();
-		int numberOfDemandedJokers = routeWantedToBuild.getAntaljokrar();
+		int normalCardsDemanded = routeWantedToBuild.getLength()-routeWantedToBuild.getNumberOfRequiredJokers();
+		Farge routeColour = routeWantedToBuild.getColour();
+		int numberOfDemandedJokers = routeWantedToBuild.getNumberOfRequiredJokers();
 
 		int position = Konstantar.finnPosisjonForFarg(routeColour);
 
@@ -41,11 +41,11 @@ class ByggHandler {
 
 	}
 
-	private boolean isGreyRoute(IRute routeWantedToBuild) {
-		return routeWantedToBuild.getFarge() == Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1];
+	private boolean isGreyRoute(IRoute routeWantedToBuild) {
+		return routeWantedToBuild.getColour() == Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1];
 	}
 
-	private void tryToBuildRoute(IHovud hovud, JFrame frame, IRute routeWantedToBuild, int kortKrevd, int numberOfDemandedJokers, int position) throws RemoteException {
+	private void tryToBuildRoute(IHovud hovud, JFrame frame, IRoute routeWantedToBuild, int kortKrevd, int numberOfDemandedJokers, int position) throws RemoteException {
 		try {
 			if (hovud.getKvenSinTur().getGjenverandeTog() >= kortKrevd+numberOfDemandedJokers) {
 				buildRoute(hovud, routeWantedToBuild, kortKrevd, numberOfDemandedJokers, position);
@@ -58,7 +58,7 @@ class ByggHandler {
 		}
 	}
 
-	private void buildRoute(IHovud hovud, IRute routeWantedToBuild, int kortKrevd, int krevdJokrar, int plass) throws RemoteException {
+	private void buildRoute(IHovud hovud, IRoute routeWantedToBuild, int kortKrevd, int krevdJokrar, int plass) throws RemoteException {
 		if (routeWantedToBuild.isTunnel()) {
 			hovud.byggTunnel(routeWantedToBuild, plass, kortKrevd, krevdJokrar);
 		}
@@ -71,8 +71,8 @@ class ByggHandler {
 		return krevdJokrar <= harjokrar && (kortKrevd <= ( (harjokrar-krevdJokrar) + spelarensKort[plass]) );
 	}
 
-	private IRute letUserChooseRouteToBuild(JFrame frame, Set<IRute> ruterArray) {
-		return (IRute) JOptionPane.showInputDialog(frame, "Vel ruta du vil byggje", "Vel rute",
+	private IRoute letUserChooseRouteToBuild(JFrame frame, Set<IRoute> ruterArray) {
+		return (IRoute) JOptionPane.showInputDialog(frame, "Vel ruta du vil byggje", "Vel rute",
 				JOptionPane.QUESTION_MESSAGE, null, ruterArray.toArray(), ruterArray.iterator().next());
 	}
 }

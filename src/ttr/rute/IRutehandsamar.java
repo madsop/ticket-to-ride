@@ -7,10 +7,10 @@ import java.util.Collection;
 import java.util.Set;
 
 public interface IRutehandsamar {
-    Set<IRute> getAlleBygdeRuter();
+    Set<IRoute> getAlleBygdeRuter();
 
-    Set<IRute> findRoutesNotYetBuilt(Collection<ISpelar> spelarar) throws RemoteException;
-    public Set<IRute> getRuter();
-    void nyRute(IRute rute);
+    Set<IRoute> findRoutesNotYetBuilt(Collection<ISpelar> spelarar) throws RemoteException;
+    public Set<IRoute> getRuter();
+    void nyRute(IRoute rute);
 
 }

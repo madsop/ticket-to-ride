@@ -2,7 +2,7 @@ package ttr.spelar;
 
 import ttr.data.Farge;
 import ttr.oppdrag.IOppdrag;
-import ttr.rute.IRute;
+import ttr.rute.IRoute;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -11,7 +11,7 @@ import java.util.Set;
 
 public interface ISpelar extends Remote{
 	public void registrerKlient(ISpelar s) throws RemoteException;
-	public void bygg(IRute rute) throws RemoteException;
+	public void bygg(IRoute rute) throws RemoteException;
 	public int getGjenverandeTog() throws RemoteException;
 	public String getNamn() throws RemoteException;
 	public void setEittKortTrektInn(boolean b) throws RemoteException;

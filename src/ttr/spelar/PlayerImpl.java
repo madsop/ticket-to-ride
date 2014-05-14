@@ -13,7 +13,7 @@ import ttr.data.Konstantar;
 import ttr.kjerna.IHovud;
 import ttr.oppdrag.ISpelarOppdragshandsamar;
 import ttr.oppdrag.SpelarOppdragshandsamar;
-import ttr.rute.IRute;
+import ttr.rute.IRoute;
 
 public abstract class PlayerImpl extends UnicastRemoteObject {
 	private static final long serialVersionUID = -6844537139622798129L;
@@ -24,7 +24,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	private static int spelarteljar = 0;    //TODO bør flyttes vekk. Kanskje til hovud.
 	private int spelarNummer;
 	private String namn;
-	protected ArrayList<IRute> bygdeRuter; // Delvis unaudsynt pga. harEgBygdMellomAogB
+	protected ArrayList<IRoute> bygdeRuter; // Delvis unaudsynt pga. harEgBygdMellomAogB
 
 	private boolean einValdAllereie;
 
@@ -42,8 +42,8 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	
 	public abstract ISpelar getThisAsISpelar();
 
-	public void bygg(IRute rute) throws RemoteException  {
-		rute.setBygdAv(getThisAsISpelar());
+	public void bygg(IRoute rute) throws RemoteException  {
+		rute.setBuiltBy(getThisAsISpelar());
 		// Fjern kort frå spelaren og legg dei i stokken eller ved sida av?
 		bygdeRuter.add(rute);
         spelarOppdragshandsamar.bygg(rute);
@@ -66,12 +66,12 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	public int getSpelarteljar() { return spelarteljar; }
 	public void setSpelarteljar(int teljar) { spelarteljar = teljar; }
 	public int getBygdeRuterSize() { return bygdeRuter.size(); }
-	public int getBygdeRuterId(int j) { return bygdeRuter.get(j).getRuteId(); }
+	public int getBygdeRuterId(int j) { return bygdeRuter.get(j).getRouteId(); }
 
 	public String getNamn() { return namn; }
 
 	public int getGjenverandeTog() {
-		int brukteTog = bygdeRuter.stream().mapToInt(x -> x.getLengde()).sum();
+		int brukteTog = bygdeRuter.stream().mapToInt(x -> x.getLength()).sum();
 		return Konstantar.ANTAL_TOG - brukteTog;
 	}
 
@@ -81,13 +81,13 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 
 
 	public void nybygdRute(int ruteId, ISpelar byggjandeSpelar) {
-		IRute vald = getRoute(ruteId).get();
-		vald.setBygdAv(byggjandeSpelar);
+		IRoute vald = getRoute(ruteId).get();
+		vald.setBuiltBy(byggjandeSpelar);
 		hovud.getAlleBygdeRuter().add(vald);
 	}
 
-	private Optional<IRute> getRoute(int ruteId) {
-		return hovud.getRuter().stream().filter(f -> f.getRuteId()==ruteId).findAny();
+	private Optional<IRoute> getRoute(int ruteId) {
+		return hovud.getRuter().stream().filter(f -> f.getRouteId()==ruteId).findAny();
 	}
 
 	public int[] getPaaBordetInt() {

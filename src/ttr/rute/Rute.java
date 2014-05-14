@@ -6,7 +6,7 @@ import ttr.spelar.ISpelar;
 
 import java.rmi.RemoteException;
 
-public class Rute implements IRute {
+public class Rute implements IRoute {
 	private static final int[] ruteverdiar = {1,2,4,7,10,15,0,0,27};
 	private final int lengde;
 	private final Farge farge;
@@ -36,19 +36,19 @@ public class Rute implements IRute {
 		return end;
 	}
 
-	public int getRuteId() {
+	public int getRouteId() {
 		return ruteId;
 	}
 
-	public int getVerdi() {
+	public int getValue() {
 		return ruteverdiar[lengde-1];
 	}
 
-    public int getLengde() {
+    public int getLength() {
 		return lengde;
 	}
 
-    public Farge getFarge() {
+    public Farge getColour() {
 		return farge;
 	}
 
@@ -56,11 +56,11 @@ public class Rute implements IRute {
 		return tunnel;
 	}
 
-    public int getAntaljokrar() {
+    public int getNumberOfRequiredJokers() {
 		return antaljokrar;
 	}
 
-    public void setBygdAv(ISpelar spelar) {
+    public void setBuiltBy(ISpelar spelar) {
 		bygdAv = spelar;
 	}
 

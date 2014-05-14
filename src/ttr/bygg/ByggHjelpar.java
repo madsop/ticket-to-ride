@@ -5,7 +5,7 @@ import ttr.data.Farge;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
-import ttr.rute.IRute;
+import ttr.rute.IRoute;
 import ttr.spelar.ISpelar;
 
 import javax.swing.*;
@@ -56,15 +56,15 @@ public class ByggHjelpar implements IByggHjelpar {
 				(ekstrajokrar >= numberOfDemandedNormalCards);
 	}
 
-	public ByggjandeInfo bygg(IRute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
+	public ByggjandeInfo bygg(IRoute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
 		ISpelar byggjandeSpelar = nett ? minSpelar : kvenSinTur;
 
-		if (bygd.getFarge() == Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1]){
+		if (bygd.getColour() == Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1]){
 			plass = byggValfriFarge(byggjandeSpelar,krevdJokrar,kortKrevd); //TODO fix denne - bruk final på plass
 			if (plass == -1) { return null; }
 		}
 		else {
-			valdFarge = bygd.getFarge();
+			valdFarge = bygd.getColour();
 		}
 
 		int jokers = chooseNumberOfJokersToUser(bygd, plass, kortKrevd,	krevdJokrar, byggjandeSpelar);
@@ -78,7 +78,7 @@ public class ByggHjelpar implements IByggHjelpar {
 		return new ByggjandeInfo(byggjandeSpelar,jokers);
 	}
 
-	private void checkIfThePlayerHasEnoughCards(IRute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar byggjandeSpelar, int jokers)	throws RemoteException {
+	private void checkIfThePlayerHasEnoughCards(IRoute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar byggjandeSpelar, int jokers)	throws RemoteException {
 		if (jokers > byggjandeSpelar.getKort()[Konstantar.ANTAL_FARGAR-1] || playerDoesNotHaveEnoughCardsInChosenColour(plass, kortKrevd, krevdJokrar, byggjandeSpelar, jokers)){
 			if (routeIsNotJokerColoured(bygd)){
 				JOptionPane.showMessageDialog((Component) gui, Infostrengar.IkkjeNokKort);
@@ -95,11 +95,11 @@ public class ByggHjelpar implements IByggHjelpar {
 		return plass;
 	}
 
-	private boolean routeIsNotJokerColoured(IRute bygd) {
-		return bygd.getFarge() != Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1];
+	private boolean routeIsNotJokerColoured(IRoute bygd) {
+		return bygd.getColour() != Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1];
 	}
 
-	private int chooseNumberOfJokersToUser(IRute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar byggjandeSpelar) throws RemoteException {
+	private int chooseNumberOfJokersToUser(IRoute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar byggjandeSpelar) throws RemoteException {
 		int jokers = 0;
 		if (byggjandeSpelar.getKort()[Konstantar.ANTAL_FARGAR-1] > 0) {
 			do {
@@ -129,7 +129,7 @@ public class ByggHjelpar implements IByggHjelpar {
 	}
 
 
-	public ByggjandeInfo byggTunnel(IBord bord, IRute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
+	public ByggjandeInfo byggTunnel(IBord bord, IRoute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
 		Farge[] treTrekte = new Farge[3];
 		int ekstra = 0;
 		for (int i = 0; i < treTrekte.length; i++) {
@@ -138,7 +138,7 @@ public class ByggHjelpar implements IByggHjelpar {
 				JOptionPane.showMessageDialog((Component) gui, Infostrengar.TomtPåBordet);
 				return null;
 			}
-			if (treTrekte[i] == Farge.valfri || treTrekte[i] == bygd.getFarge()) {
+			if (treTrekte[i] == Farge.valfri || treTrekte[i] == bygd.getColour()) {
 				ekstra++;
 			}
 		}
@@ -155,12 +155,12 @@ public class ByggHjelpar implements IByggHjelpar {
 				+treTrekte[1] +" og " +treTrekte[2]	+". Altså må du betale " +ekstra +" ekstra kort. Vil du det?");
 	}
 
-	private int velAntalJokrarDuVilBruke(IRute route, ISpelar player, Farge chosenColour) throws RemoteException {
+	private int velAntalJokrarDuVilBruke(IRoute route, ISpelar player, Farge chosenColour) throws RemoteException {
 		int playersNumberOfJokers = player.getKort()[Konstantar.ANTAL_FARGAR-1];
 		int howMany = -1;
-		while (howMany < 0 || howMany > playersNumberOfJokers || howMany > route.getLengde()) {
+		while (howMany < 0 || howMany > playersNumberOfJokers || howMany > route.getLength()) {
 			String sendinn = Infostrengar.AntalJokrarStart +playersNumberOfJokers +" jokrar, " +player.getKort()[Konstantar.finnPosisjonForFarg(chosenColour)] 
-					+ " av fargen du skal byggje, og ruta er " +route.getLengde() +" tog lang.";
+					+ " av fargen du skal byggje, og ruta er " +route.getLength() +" tog lang.";
 			String usersInput = JOptionPane.showInputDialog(sendinn,0);
 			howMany = Integer.parseInt(usersInput);
 		}

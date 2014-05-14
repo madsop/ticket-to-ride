@@ -2,7 +2,7 @@ package ttr.kjerna;
 
 import ttr.bord.IBord;
 import ttr.data.*;
-import ttr.rute.IRute;
+import ttr.rute.IRoute;
 import ttr.spelar.ISpelar;
 import ttr.spelar.PlayerNetworkClass;
 import ttr.utgaave.nordic.Nordic;
@@ -25,12 +25,12 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 		this.players = spelarar;
 	}
 
-	public void oppdaterAndreSpelarar(int plass, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, IRute bygd) throws RemoteException {
+	public void oppdaterAndreSpelarar(int plass, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, IRoute bygd) throws RemoteException {
 		if (nett) {
 			for (ISpelar s : players) {
 				s.leggIStokken(plass, (kortKrevd-(jokrar-krevdJokrar)));
 				s.leggIStokken(Konstantar.ANTAL_FARGAR-1,jokrar);
-				s.faaMelding(byggjandeNamn + " bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getFarge());
+				s.faaMelding(byggjandeNamn + " bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
 			}
 		}
 	}
@@ -58,7 +58,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 		}
 	}
 
-	public void sjekkOmFerdig(IMeldingarModell meldingarModell, ISpelar kvenSinTur, String speltittel, ISpelar minSpelar, Set<IRute> ruter) throws RemoteException{
+	public void sjekkOmFerdig(IMeldingarModell meldingarModell, ISpelar kvenSinTur, String speltittel, ISpelar minSpelar, Set<IRoute> ruter) throws RemoteException{
 		if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
 			String pointsString = Infostrengar.SpeletErFerdig;
 
@@ -149,7 +149,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 		JOptionPane.showMessageDialog(new JPanel(), poeng);
 	}
 
-	private ISpelar reknUtPoengOgFinnVinnar(int[] totalpoeng, ISpelar s, int vinnarpoeng, ISpelar vinnar, IMeldingarModell meldingarModell, Set<IRute> ruter) throws RemoteException {
+	private ISpelar reknUtPoengOgFinnVinnar(int[] totalpoeng, ISpelar s, int vinnarpoeng, ISpelar vinnar, IMeldingarModell meldingarModell, Set<IRoute> ruter) throws RemoteException {
 		ISpelar leiarNo = vinnar;
 
 		int spelarensPoeng = reknUtPoeng(s,ruter);
@@ -170,12 +170,12 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 		return leiarNo;
 	}
 
-	private int reknUtPoeng(ISpelar s, Set<IRute> ruter) throws RemoteException {
+	private int reknUtPoeng(ISpelar s, Set<IRoute> ruter) throws RemoteException {
 		int poeng = s.getOppdragspoeng();
 		for (int j = 0; j < s.getBygdeRuterSize(); j++) {
-			for (IRute r : ruter) {
-				if (s.getBygdeRuterId(j) == r.getRuteId()) {
-					poeng += r.getVerdi();
+			for (IRoute r : ruter) {
+				if (s.getBygdeRuterId(j) == r.getRouteId()) {
+					poeng += r.getValue();
 				}
 			}
 		}
