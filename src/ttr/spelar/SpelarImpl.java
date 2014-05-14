@@ -2,77 +2,27 @@ package ttr.spelar;
 
 import ttr.bord.IBord;
 import ttr.data.Farge;
-import ttr.data.Konstantar;
 import ttr.kjerna.IHovud;
 import ttr.oppdrag.IOppdrag;
 import ttr.oppdrag.ISpelarOppdragshandsamar;
 import ttr.oppdrag.SpelarOppdragshandsamar;
 import ttr.rute.IRute;
 
-import javax.swing.JOptionPane;
-import java.awt.Component;
-
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 /**
  * Ein spelar. All nettverkskommunikasjon går via denne, så litt hårate klasse med ein del ad hoc-metodar.
  */
- public class SpelarImpl extends UnicastRemoteObject implements ISpelar {
-	private IHovud hovud;
-    private IBord bord;
-
-	private static int spelarteljar = 0;    //TODO bør flyttes vekk. Kanskje til hovud.
-	private int spelarNummer;
-	private String namn;
-    private ISpelarOppdragshandsamar spelarOppdragshandsamar;
+ public class SpelarImpl extends PlayerImpl implements ISpelar  {
+	private static final long serialVersionUID = -3600106049579247030L;
     private IKorthandsamar korthandsamar;
-    private ArrayList<IRute> bygdeRuter; // Delvis unaudsynt pga. harEgBygdMellomAogB
-
-	private boolean einValdAllereie;
-
-
-    public SpelarImpl (IHovud hovud, String namn, IBord bord) throws RemoteException{
-        super();
-        this.hovud = hovud;
-        this.bord = bord;
-        this.namn = namn;
-        einValdAllereie = false;
-        bygdeRuter = new ArrayList<IRute>();
-
+    private ISpelarOppdragshandsamar spelarOppdragshandsamar;
+    
+	public SpelarImpl(IHovud hovud, String namn, IBord bord) throws RemoteException {
+		super(hovud, namn, bord);
         korthandsamar = new Korthandsamar(hovud);
         spelarOppdragshandsamar = new SpelarOppdragshandsamar(hovud);
-
-    }
-    
-	public void setEittKortTrektInn(boolean b) throws RemoteException {
-		einValdAllereie = b;
-	}
-	public int getSpelarNummer() throws RemoteException {
-		return spelarNummer;
-	}
-	public boolean getValdAllereie() throws RemoteException {
-		return einValdAllereie;
-	}
-
-	public void setTogAtt(int plass, int tog) throws RemoteException {
-		hovud.getGui().getTogAtt()[plass].setText(String.valueOf(tog));
-	}
-	public void setSpelarNummer(int nummer) throws RemoteException { spelarNummer = nummer; }
-	public int getSpelarteljar() throws RemoteException { return spelarteljar; }
-	public void setSpelarteljar(int teljar) throws RemoteException { spelarteljar = teljar; }
-	public int getBygdeRuterSize() throws RemoteException { return bygdeRuter.size(); }
-	public int getBygdeRuterId(int j) throws RemoteException { return bygdeRuter.get(j).getRuteId(); }
-
-	public String getNamn()  throws RemoteException { return namn; }
-
-	public int getGjenverandeTog()  throws RemoteException {
-		int brukteTog = 0;
-        for (IRute eiBygdRute : bygdeRuter) {
-            brukteTog += eiBygdRute.getLengde();
-        }
-		return Konstantar.ANTAL_TOG - brukteTog;
 	}
 
 	public void bygg(IRute rute) throws RemoteException  {
@@ -82,16 +32,12 @@ import java.util.ArrayList;
 
         spelarOppdragshandsamar.bygg(rute);
 	}
-
-    @Override
-	public String toString() { return namn; }
-	
 	/**
 	 * Registers a player as this player's adversary
 	 * Kokt frå distsys, øving 2.
 	 * @param p	The client that is registering as the adversary
 	 */
-	public void registrerKlient(ISpelar nyMotspelar) throws RemoteException {
+	public void registrerKlient(ISpelar nyMotspelar) {
 		boolean cont = false;
 		for (ISpelar eksisterandeSpelar : hovud.getSpelarar()) {
 			if (nyMotspelar == eksisterandeSpelar) {
@@ -102,47 +48,11 @@ import java.util.ArrayList;
 			hovud.getSpelarar().add(nyMotspelar);
 		}
 		else {
-//			throw new RemoteException("Denne motspelaren er allereie lagt til!");
+			//			throw new RemoteException("Denne motspelaren er allereie lagt til!");
 		}
 	}
-
 	
-	public void nybygdRute(int ruteId, ISpelar byggjandeSpelar) throws RemoteException {
-		IRute vald = null;
-		for (IRute r : hovud.getRuter()) {
-			if (r.getRuteId() == ruteId) {
-				vald = r;
-			}
-		}
-
-        assert vald != null;
-        vald.setBygdAv(byggjandeSpelar);
-        if (!hovud.getAlleBygdeRuter().contains(vald)) {
-            hovud.getAlleBygdeRuter().add(vald);
-        }
-	}
-	
-	public int[] getPaaBordetInt() throws RemoteException {
-		int[] bord = new int[Konstantar.ANTAL_KORT_PÅ_BORDET];
-		
-		for (int i = 0; i < hovud.getBord().getPaaBordet().length; i++) {
-			for (int f = 0; f < Konstantar.FARGAR.length; f++) {
-				if (hovud.getBord().getPaaBordet()[i] == Konstantar.FARGAR[f]) {
-					bord[i] = f;
-				}
-			}
-		}
-		
-		return bord;
-	}
-
-	
-	public void visSpeletErFerdigmelding(String melding) throws RemoteException {
-		JOptionPane.showMessageDialog((Component) hovud.getGui(), melding);
-	}
-
-
-    // FASADE
+	// FASADE
     public void settSinTur(ISpelar s) throws RemoteException { hovud.settSinTur(s); }
     public ArrayList<ISpelar> getSpelarar() { return hovud.getSpelarar(); }
     public void faaMelding(String melding) throws RemoteException{ hovud.getGui().getMeldingarModell().nyMelding(melding); }

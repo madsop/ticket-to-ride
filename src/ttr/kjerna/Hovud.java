@@ -178,7 +178,7 @@ public class Hovud implements IHovud {
 
 
         if (!nett) {
-            mekkSpelarar();
+            createPlayersForLocalGame();
         }         // else er det nettverksspel og handterast seinare
         kommunikasjonMedSpelarar = new KommunikasjonMedSpelarar(nett,players);
         turhandsamar = new TurHandsamar(players,nett);
@@ -211,8 +211,8 @@ public class Hovud implements IHovud {
 	 * Sett opp spelet for eit ikkje-nettverks-spel.
 	 * @throws RemoteException
 	 */
-	private void mekkSpelarar() throws RemoteException {
-		kommunikasjonMedSpelarar.mekkSpelarar(this,bord);
+	private void createPlayersForLocalGame() throws RemoteException {
+		kommunikasjonMedSpelarar.createPlayersForLocalGame(this,bord);
 		settSinTur(players.get(0));
 	}
 	  

@@ -8,204 +8,223 @@ import ttr.spelar.SpelarImpl;
 import ttr.utgaave.nordic.Nordic;
 
 import javax.swing.*;
+
+import java.awt.HeadlessException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Set;
 
 
 public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
-    private final boolean nett;
-    private ArrayList<ISpelar> spelarar;
+	private final boolean nett;
+	private ArrayList<ISpelar> players;
 
-    public KommunikasjonMedSpelarar (boolean nett, ArrayList<ISpelar> spelarar) {
-        this.nett = nett;
-        this.spelarar = spelarar;
-    }
-    
-    public void oppdaterAndreSpelarar(int plass, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, IRute bygd) throws RemoteException {
-        if (nett) {
-            for (ISpelar s : spelarar) {
-                s.leggIStokken(plass, (kortKrevd-(jokrar-krevdJokrar)));
-                s.leggIStokken(Konstantar.ANTAL_FARGAR-1,jokrar);
-                s.faaMelding(byggjandeNamn + " bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getFarge());
-            }
-        }
-    }
+	public KommunikasjonMedSpelarar (boolean nett, ArrayList<ISpelar> spelarar) {
+		this.nett = nett;
+		this.players = spelarar;
+	}
 
-    /**
-     * Sett opp spelet for eit ikkje-nettverks-spel.
-     * @throws RemoteException
-     */
-    public void mekkSpelarar(IHovud hovud, IBord bord) {
-        // Legg til spelarar
-        int antalSpelarar = 0;
-        while ( (antalSpelarar != 2) && (antalSpelarar != 3)) { // Sett antal spelarar
-            Object[] val = {2,3};
-            antalSpelarar = 2+ JOptionPane.showOptionDialog(null, Infostrengar.KorMangeMed, Infostrengar.AntalSpelarar, 0, 3, null, val, 2);
-        }
+	public void oppdaterAndreSpelarar(int plass, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, IRute bygd) throws RemoteException {
+		if (nett) {
+			for (ISpelar s : players) {
+				s.leggIStokken(plass, (kortKrevd-(jokrar-krevdJokrar)));
+				s.leggIStokken(Konstantar.ANTAL_FARGAR-1,jokrar);
+				s.faaMelding(byggjandeNamn + " bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getFarge());
+			}
+		}
+	}
 
-        //antalSpelarar = 3;
-        spelarar = new ArrayList<>();
-        for (int i = 1; i <= antalSpelarar; i++) { // Opprettar spelarar
-            try {
-                spelarar.add(new SpelarImpl(hovud,JOptionPane.showInputDialog(null,Infostrengar.SkrivInnSpelarnamn +i),bord));
-            } catch (RemoteException ignored) { }
-        }
-    }
+	public void createPlayersForLocalGame(IHovud hovud, IBord bord) {
+		int antalSpelarar = addPlayers();
+		try {
+			createPlayers(hovud, bord, antalSpelarar);
+		} catch (RemoteException ignored) { }
+	}
 
+	private int addPlayers() {
+		int numberOfPlayers = 0;
+		Object[] legalNumberOfPlayers = {2,3};
+		while ((numberOfPlayers != 2) && (numberOfPlayers != 3)) {
+			numberOfPlayers = 2+ JOptionPane.showOptionDialog(null, Infostrengar.KorMangeMed, Infostrengar.AntalSpelarar, 0, 3, null, legalNumberOfPlayers, 2);
+		}
+		return numberOfPlayers;
+	}
 
-    //TODO: Utrekning av lengst rute / flest oppdrag
-    public void sjekkOmFerdig(IMeldingarModell meldingarModell, ISpelar kvenSinTur, String speltittel, ISpelar minSpelar, Set<IRute> ruter) throws RemoteException{
-        if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
-            String poeng = Infostrengar.SpeletErFerdig;
+	private void createPlayers(IHovud hovud, IBord bord, int antalSpelarar) throws HeadlessException, RemoteException {
+		players = new ArrayList<>();
+		for (int i = 1; i <= antalSpelarar; i++) {
+			players.add(new SpelarImpl(hovud,JOptionPane.showInputDialog(null,Infostrengar.SkrivInnSpelarnamn +i),bord));
+		}
+	}
 
-            int[] totalpoeng = new int[spelarar.size() + (nett ? 1 : 0)];
+	public void sjekkOmFerdig(IMeldingarModell meldingarModell, ISpelar kvenSinTur, String speltittel, ISpelar minSpelar, Set<IRute> ruter) throws RemoteException{
+		if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
+			String pointsString = Infostrengar.SpeletErFerdig;
 
-            ISpelar vinnar = null;
-            int vinnarpoeng = 0;
+			int[] totalpoeng = new int[players.size() + (nett ? 1 : 0)];
 
-            if (nett) {meldingarModell.nyMelding(poeng);}
-            for (ISpelar s : spelarar){
-                s.faaMelding(poeng);
-            }
+			ISpelar vinnar = null;
+			int vinnarpoeng = 0;
 
-            if (speltittel.equals(Nordic.tittel)){
-                finnSpelarSomKlarteFlestOppdrag(totalpoeng,minSpelar,meldingarModell);
-            }
+			if (nett) {meldingarModell.nyMelding(pointsString);}
+			for (ISpelar player : players){
+				player.faaMelding(pointsString);
+			}
 
-            if (nett) {
-                totalpoeng[minSpelar.getSpelarNummer()] = reknUtPoeng(minSpelar,ruter);
-                String p = minSpelar.getNamn() + " fekk " + totalpoeng[minSpelar.getSpelarNummer()] + " poeng. ";
-                poeng += " " +p;
-                meldingarModell.nyMelding(p);
-                for (ISpelar s : spelarar){
-                    s.faaMelding(p);
-                }
-                vinnar = minSpelar;
-                vinnarpoeng = totalpoeng[minSpelar.getSpelarNummer()];
-            }
+			addGameSpecificBonus(meldingarModell, speltittel, minSpelar, totalpoeng);
 
+			if (nett) {
+				totalpoeng[minSpelar.getSpelarNummer()] = reknUtPoeng(minSpelar,ruter);
+				pointsString += informTheOthersAboutMyPoints(meldingarModell, minSpelar, totalpoeng);
+				vinnar = minSpelar;
+				vinnarpoeng = totalpoeng[minSpelar.getSpelarNummer()];
+			}
 
-            for (ISpelar s : spelarar) {
-                ISpelar leiar = reknUtPoengOgFinnVinnar(totalpoeng,s,vinnarpoeng,vinnar,meldingarModell,ruter );
-                vinnarpoeng = reknUtPoeng(leiar,ruter);
-            }
-            //TODO Legg inn spelutgaave-spesifikk bonus her
-            avsluttSpeletMedSuksess(vinnar,poeng,meldingarModell);
-        }
-    }
+			for (ISpelar player : players) {
+				ISpelar leiar = reknUtPoengOgFinnVinnar(totalpoeng,player,vinnarpoeng,vinnar,meldingarModell,ruter );
+				vinnarpoeng = reknUtPoeng(leiar,ruter);
+			}
+			avsluttSpeletMedSuksess(vinnar,pointsString,meldingarModell);
+		}
+	}
 
+	//TODO Legg inn spelutgaave-spesifikk bonus her - lengst rute for Europe
+	private void addGameSpecificBonus(IMeldingarModell meldingarModell,	String speltittel, ISpelar minSpelar, int[] totalpoeng)	throws RemoteException {
+		if (speltittel.equals(Nordic.tittel)){
+			finnSpelarSomKlarteFlestOppdrag(totalpoeng,minSpelar,meldingarModell);
+		}
+	}
 
-    private void avsluttSpeletMedSuksess(ISpelar vinnar,String poeng2, IMeldingarModell meldingarModell) throws RemoteException {
-    	String poeng = poeng2;
-        String vinnaren = vinnar.getNamn() +" vann spelet, gratulerer!";
-        poeng += vinnaren;
-        meldingarModell.nyMelding(vinnaren);
-        for (ISpelar s : spelarar){
-            s.faaMelding(vinnaren);
-            s.visSpeletErFerdigmelding(poeng);
-        }
-        JOptionPane.showMessageDialog(new JPanel(), poeng);
-    }
+	private void finnSpelarSomKlarteFlestOppdrag(int[] totalpoeng, ISpelar minSpelar, IMeldingarModell meldingarModell) throws RemoteException {
+		ISpelar playerWithMostMissionsAccomplished = getPlayerWithMostMissionsAccomplished(minSpelar);
+		int bestNumberOfMissionsAccomplished = playerWithMostMissionsAccomplished.getAntalFullfoerteOppdrag();
+		totalpoeng[playerWithMostMissionsAccomplished.getSpelarNummer()] = 10;
 
+		if (nett){
+			meldingarModell.nyMelding(playerWithMostMissionsAccomplished.getNamn() + " klarte flest oppdrag, " + bestNumberOfMissionsAccomplished);
+		}
+		for (ISpelar s : players){
+			s.faaMelding(playerWithMostMissionsAccomplished.getNamn() +" klarte flest oppdrag, " +bestNumberOfMissionsAccomplished);
+		}
+	}
 
-    private void finnSpelarSomKlarteFlestOppdrag(int[] totalpoeng, ISpelar minSpelar, IMeldingarModell meldingarModell) throws RemoteException{
-        int flestoppdrag = -1;
-        ISpelar flest = null;
-        if (nett){
-            flestoppdrag = minSpelar.getAntalFullfoerteOppdrag();
-            flest = minSpelar;
-        }
-        for (ISpelar s : spelarar){
-            int oppdragspoeng = s.getAntalFullfoerteOppdrag();
+	private ISpelar getPlayerWithMostMissionsAccomplished(ISpelar minSpelar) throws RemoteException {
+		ISpelar flest = null;
+		int flestoppdrag = -1;
+		if (nett){
+			flestoppdrag = minSpelar.getAntalFullfoerteOppdrag();
+			flest = minSpelar;
+		}
+		for (ISpelar player : players){
+			int oppdragspoeng = player.getAntalFullfoerteOppdrag();
 
-            if (oppdragspoeng > flestoppdrag){
-                flestoppdrag = oppdragspoeng;
-                flest = s;
-            }
-        }
+			if (oppdragspoeng > flestoppdrag){
+				flestoppdrag = oppdragspoeng;
+				flest = player;
+			}
+		}
+		return flest;
+	}
 
-        assert flest != null;
-        totalpoeng[flest.getSpelarNummer()] = 10;
-
-        if (nett){
-            meldingarModell.nyMelding(flest.getNamn() + " klarte flest oppdrag, " + flestoppdrag);
-        }
-        for (ISpelar s : spelarar){
-            s.faaMelding(flest.getNamn() +" klarte flest oppdrag, " +flestoppdrag);
-        }
-    }
+	private String informTheOthersAboutMyPoints(IMeldingarModell messagesModel, ISpelar myPlayer, int[] totalpoeng) throws RemoteException {
+		String pointsStringForMyPlayer = myPlayer.getNamn() + " fekk " + totalpoeng[myPlayer.getSpelarNummer()] + " poeng. ";
+		messagesModel.nyMelding(pointsStringForMyPlayer);
+		for (ISpelar player : players){
+			player.faaMelding(pointsStringForMyPlayer);
+		}
+		return " " + pointsStringForMyPlayer;
+	}
 
 
-    private ISpelar reknUtPoengOgFinnVinnar(int[] totalpoeng, ISpelar s, int vinnarpoeng, ISpelar vinnar, IMeldingarModell meldingarModell, Set<IRute> ruter) throws RemoteException {
-        ISpelar leiarNo = vinnar;
+	private void avsluttSpeletMedSuksess(ISpelar vinnar,String pointsString, IMeldingarModell meldingarModell) throws RemoteException {
+		String poeng = pointsString;
+		String vinnaren = vinnar.getNamn() +" vann spelet, gratulerer!";
+		poeng += vinnaren;
+		meldingarModell.nyMelding(vinnaren);
+		for (ISpelar player : players){
+			player.faaMelding(vinnaren);
+			player.visSpeletErFerdigmelding(poeng);
+		}
+		JOptionPane.showMessageDialog(new JPanel(), poeng);
+	}
 
-        int spelarensPoeng = reknUtPoeng(s,ruter);
+	private ISpelar reknUtPoengOgFinnVinnar(int[] totalpoeng, ISpelar s, int vinnarpoeng, ISpelar vinnar, IMeldingarModell meldingarModell, Set<IRute> ruter) throws RemoteException {
+		ISpelar leiarNo = vinnar;
 
-        String sp = s.getNamn() +" fekk " +totalpoeng[s.getSpelarNummer()] +" poeng. ";
-        meldingarModell.nyMelding(sp);
-        for (ISpelar t : spelarar){
-            t.faaMelding(sp);
-        }
-        if (spelarensPoeng>vinnarpoeng){
-            leiarNo = s;
-        }
-        else if (vinnar != null && spelarensPoeng==vinnarpoeng){
-            if (vinnar.getOppdragspoeng() < s.getOppdragspoeng()){
-                leiarNo = s;
-            }
-        }
-        return leiarNo;
-    }
+		int spelarensPoeng = reknUtPoeng(s,ruter);
 
-    private int reknUtPoeng(ISpelar s, Set<IRute> ruter) throws RemoteException {
-        int poeng = s.getOppdragspoeng();
-        for (int j = 0; j < s.getBygdeRuterSize(); j++) {
-            for (IRute r : ruter) {
-                if (s.getBygdeRuterId(j) == r.getRuteId()) {
-                    poeng += r.getVerdi();
-                }
-            }
-        }
-        return poeng;
-    }
+		String sp = s.getNamn() +" fekk " +totalpoeng[s.getSpelarNummer()] +" poeng. ";
+		meldingarModell.nyMelding(sp);
+		for (ISpelar t : players){
+			t.faaMelding(sp);
+		}
+		if (spelarensPoeng>vinnarpoeng){
+			leiarNo = s;
+		}
+		else if (vinnar != null && spelarensPoeng==vinnarpoeng){
+			if (vinnar.getOppdragspoeng() < s.getOppdragspoeng()){
+				leiarNo = s;
+			}
+		}
+		return leiarNo;
+	}
 
-    public void sendKortMelding(boolean kort, boolean tilfeldig, Farge f, String handlandespelarsNamn, boolean nett, IHovud hovud) throws RemoteException{
-        String melding = handlandespelarsNamn;
-        melding += kort ? " trakk inn " + f +"." : " trakk oppdrag.";
+	private int reknUtPoeng(ISpelar s, Set<IRute> ruter) throws RemoteException {
+		int poeng = s.getOppdragspoeng();
+		for (int j = 0; j < s.getBygdeRuterSize(); j++) {
+			for (IRute r : ruter) {
+				if (s.getBygdeRuterId(j) == r.getRuteId()) {
+					poeng += r.getVerdi();
+				}
+			}
+		}
+		return poeng;
+	}
 
-        if (nett){
-            hovud.getMinSpelar().faaMelding(melding);
-        }
+	public void sendKortMelding(boolean card, boolean random, Farge colour, String handlandespelarsNamn, boolean nett, IHovud hovud) throws RemoteException{
+		String melding = handlandespelarsNamn;
+		melding += card ? " trakk inn " + colour +"." : " trakk oppdrag.";
 
-        for (ISpelar s : hovud.getSpelarar()){
-            if (nett || hovud.getKvenSinTur()==s){
-                if (!tilfeldig){
-                    s.faaMelding(melding);
-                }
-                else if(kort && tilfeldig){
-                    s.faaMelding(handlandespelarsNamn +" trakk tilfeldig.");
-                }
-            }
-        }
-    }
+		if (nett){
+			hovud.getMinSpelar().faaMelding(melding);
+		}
+
+		for (ISpelar s : hovud.getSpelarar()){
+			if (nett || hovud.getKvenSinTur()==s){
+				sendMessageToPlayer(card, random, handlandespelarsNamn, melding, s);
+			}
+		}
+	}
+
+	private void sendMessageToPlayer(boolean card, boolean random, String handlandespelarsNamn, String melding, ISpelar player) throws RemoteException {
+		if (!random){
+			player.faaMelding(melding);
+		}
+		else if(card && random){
+			player.faaMelding(handlandespelarsNamn +" trakk tilfeldig.");
+		}
+	}
 
 
 
-    public void nyPaaPlass(ISpelar vert, Farge nyFarge, int i, IHovud hovud) throws RemoteException{
-        if (vert.getNamn().equals(hovud.getMinSpelar().getNamn())){
-            for (ISpelar s : hovud.getSpelarar()){
-                // metode for å legge kortet vert nettopp trakk på plass i på bordet hos spelar s
-                s.setPaaBordet(nyFarge,i);
-            }
-        }
-        else {
-            hovud.getMinSpelar().setPaaBordet(nyFarge, i);
-            for (ISpelar s : hovud.getSpelarar()){
-                if (!vert.getNamn().equals(s.getNamn())){
-                    s.setPaaBordet(nyFarge, i);
-                }
-            }
-        }
-    }
+	public void nyPaaPlass(ISpelar host, Farge nyFarge, int i, IHovud hovud) throws RemoteException{
+		if (iAmHost(host, hovud)){
+			for (ISpelar s : hovud.getSpelarar()){
+				// metode for å legge kortet host nettopp trakk på plass i på bordet hos spelar s
+				s.setPaaBordet(nyFarge,i);
+			}
+		}
+		else {
+			hovud.getMinSpelar().setPaaBordet(nyFarge, i);
+			for (ISpelar s : hovud.getSpelarar()){
+				if (!host.getNamn().equals(s.getNamn())){
+					s.setPaaBordet(nyFarge, i);
+				}
+			}
+		}
+	}
+
+	private boolean iAmHost(ISpelar vert, IHovud hovud) throws RemoteException {
+		return vert.getNamn().equals(hovud.getMinSpelar().getNamn());
+	}
 }

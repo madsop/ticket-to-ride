@@ -3,7 +3,7 @@ package ttr.utgaave.europe;
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
 import ttr.oppdrag.IOppdrag;
-import ttr.oppdrag.Oppdrag;
+import ttr.oppdrag.Mission;
 import ttr.rute.IRute;
 import ttr.rute.Rute;
 import ttr.utgaave.AbstractSpelUtgaave;
@@ -32,7 +32,7 @@ public class Europe extends AbstractSpelUtgaave implements ISpelUtgaave {
 	protected ArrayList<IOppdrag> fyllMedOppdrag() {
 		oppdrag = new ArrayList<IOppdrag>();
 		int oppdragsid = 0;
-		oppdrag.add(new Oppdrag(oppdragsid,Destinasjon.Brest,Destinasjon.Petrograd,21));
+		oppdrag.add(new Mission(oppdragsid,Destinasjon.Brest,Destinasjon.Petrograd,21));
 		//oppdragsid++;
 		return oppdrag;
 	}
