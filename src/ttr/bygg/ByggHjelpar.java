@@ -45,9 +45,7 @@ public class ByggHjelpar implements IByggHjelpar {
 			colourPosition = JOptionPane.showOptionDialog((Component) gui, Infostrengar.VelFargeÅByggeILabel, Infostrengar.VelFargeÅByggeILabel, 
 					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, mulegeFargar.toArray(), mulegeFargar.get(0));
 
-			if (colourPosition==-1){
-				return -1;
-			}
+			if (colourPosition==-1){ return -1;	}
 		}
 		return Konstantar.finnPosisjonForFarg(mulegeFargar.get(colourPosition));
 	}
@@ -62,7 +60,7 @@ public class ByggHjelpar implements IByggHjelpar {
 		ISpelar byggjandeSpelar = nett ? minSpelar : kvenSinTur;
 
 		if (bygd.getFarge() == Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1]){
-			plass = byggValfriFarge(byggjandeSpelar,krevdJokrar,kortKrevd);
+			plass = byggValfriFarge(byggjandeSpelar,krevdJokrar,kortKrevd); //TODO fix denne - bruk final på plass
 			if (plass == -1) { return null; }
 		}
 		else {
@@ -73,22 +71,31 @@ public class ByggHjelpar implements IByggHjelpar {
 
 		byggjandeSpelar.bygg(bygd);
 
-		//Sjekk om spelaren har nok kort.
-		if (!(jokers <= byggjandeSpelar.getKort()[Konstantar.ANTAL_FARGAR-1]
-				&& !playerDoesNotHaveEnoughCardsInChosenColour(plass, kortKrevd, krevdJokrar, byggjandeSpelar, jokers))){
-			if (bygd.getFarge() != Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1]){
+		checkIfThePlayerHasEnoughCards(bygd, plass, kortKrevd, krevdJokrar,	byggjandeSpelar, jokers);
+		plass = updatePlass(plass);
+		updatePlayersCards(plass, kortKrevd, krevdJokrar, byggjandeSpelar, jokers);
+
+		return new byggjandeInfo(byggjandeSpelar,jokers);
+	}
+
+	private void checkIfThePlayerHasEnoughCards(IRute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar byggjandeSpelar, int jokers)	throws RemoteException {
+		if (jokers > byggjandeSpelar.getKort()[Konstantar.ANTAL_FARGAR-1] || playerDoesNotHaveEnoughCardsInChosenColour(plass, kortKrevd, krevdJokrar, byggjandeSpelar, jokers)){
+			if (routeIsNotJokerColoured(bygd)){
 				JOptionPane.showMessageDialog((Component) gui, Infostrengar.IkkjeNokKort);
 			}
 		}
+	}
+
+	private int updatePlass(int plass) {
 		for (int i = 0; i < Konstantar.ANTAL_FARGAR; i++){
 			if(Konstantar.FARGAR[i]==valdFarge){
-				plass = i;
+				return i;
 			}
 		}
-		byggjandeSpelar.getKort()[plass] -= (kortKrevd-(jokers-krevdJokrar));
-		byggjandeSpelar.getKort()[Konstantar.ANTAL_FARGAR-1] -= jokers;
-
-		return new byggjandeInfo(byggjandeSpelar,jokers);
+		return plass;
+	}
+	private boolean routeIsNotJokerColoured(IRute bygd) {
+		return bygd.getFarge() != Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1];
 	}
 
 	private int chooseNumberOfJokersToUser(IRute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar byggjandeSpelar) throws RemoteException {
@@ -114,6 +121,12 @@ public class ByggHjelpar implements IByggHjelpar {
 	private boolean playerDoesNotHaveEnoughCardsInChosenColour(int plass, int kortKrevd, int krevdJokrar, ISpelar byggjandeSpelar, int chosenNumberOfJokers) throws RemoteException {
 		return byggjandeSpelar.getKort()[plass] < kortKrevd - (chosenNumberOfJokers-krevdJokrar);
 	}
+
+	private void updatePlayersCards(int plass, int kortKrevd, int krevdJokrar, ISpelar byggjandeSpelar, int jokers) throws RemoteException {
+		byggjandeSpelar.getKort()[plass] -= (kortKrevd-(jokers-krevdJokrar));
+		byggjandeSpelar.getKort()[Konstantar.ANTAL_FARGAR-1] -= jokers;
+	}
+
 
 	public byggjandeInfo byggTunnel(IBord bord, IRute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
 		Farge[] treTrekte = new Farge[3];
