@@ -40,7 +40,7 @@ public interface IHovud {
     public void settSinTur(ISpelar spelar) throws RemoteException;
     public void nesteSpelar() throws RemoteException;
 
-    public Set<IRute> finnFramRuter() throws RemoteException;
+    public Set<IRute> findRoutesNotYetBuilt() throws RemoteException;
     public void bygg(IRute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException;
     public void byggTunnel(IRute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException;
 

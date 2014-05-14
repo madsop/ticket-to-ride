@@ -25,14 +25,12 @@ public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar
     }
 
     private void faaInitielleFargekort() throws  RemoteException{
-
-        // Gir spelaren fargekort i byrjinga
-        for (int i = 0; i < Konstantar.ANTAL_STARTKORT; i++) {
+        for (int startkortPosisjon = 0; startkortPosisjon < Konstantar.ANTAL_STARTKORT; startkortPosisjon++) {
             Farge trekt = trekkFargekort();
             int plass = -1;
-            for (int j = 0; j < Konstantar.FARGAR.length; j++) {
-                if (trekt == Konstantar.FARGAR[j]) {
-                    plass = j;
+            for (int colourPosition = 0; colourPosition < Konstantar.FARGAR.length; colourPosition++) {
+                if (trekt == Konstantar.FARGAR[colourPosition]) {
+                    plass = colourPosition;
                 }
             }
             if (plass >= 0) {
@@ -46,19 +44,16 @@ public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar
         Farge fargePåDetTilfeldigeKortet = hovud.getBord().getTilfeldigKortFråBordet(i, true);
 
         if (fargePåDetTilfeldigeKortet == null){
-            JOptionPane.showMessageDialog((Component) hovud.getGui(), "Det er ikkje noko kort der, ser du vel.");
-            hovud.getGui().getKortButtons()[i].setBackground(Color.GRAY);
-            hovud.getGui().getKortButtons()[i].setText("Tom");
+            guiSetUp(i);
 
-            int fargePosisjon = -1;
+            int colourPosition = -1;
             for (Farge farge : Konstantar.FARGAR){
                 if (fargePåDetTilfeldigeKortet == farge){
-                    //noinspection ConstantConditions
-                    fargePosisjon = farge.ordinal();
+                    colourPosition = farge.ordinal();
                 }
             }
-            if (fargePosisjon >= 0 && fargePosisjon < Konstantar.FARGAR.length){
-                kort[fargePosisjon]--;
+            if (colourPosition >= 0 && colourPosition < Konstantar.FARGAR.length){ //todo bør ikkje denne vera >0 ?
+                kort[colourPosition]--;
             }
 
             return null;
@@ -67,19 +62,23 @@ public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar
         return fargePåDetTilfeldigeKortet;
     }
 
+	private void guiSetUp(int i) {
+		JOptionPane.showMessageDialog((Component) hovud.getGui(), "Det er ikkje noko kort der, ser du vel.");
+		hovud.getGui().getKortButtons()[i].setBackground(Color.GRAY);
+		hovud.getGui().getKortButtons()[i].setText("Tom");
+	}
+
 
     @Override
     public void faaKort(Farge farge) throws RemoteException  {
-        int tel = 0;
+        int counter = 0;
         for (int i = 0; i < Konstantar.FARGAR.length; i++) {
             if (farge == Konstantar.FARGAR[i]) {
-                tel = i;
+                counter = i;
             }
-        }
-        kort[tel]++;
+        }        
+        kort[counter]++;
     }
-
-
 
     @Override
     public int[] getKort() throws RemoteException  {
@@ -89,13 +88,9 @@ public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar
     /** @return eit tilfeldig fargekort frå toppen av stokken */
     @Override
     public Farge trekkFargekort() throws RemoteException {
-        Farge trekt;
         if (hovud.getBord().getAntalFargekortPåBordet() > 0) {
-            trekt = hovud.getBord().getTilfeldigKortFråBordet(0, false);
+            return hovud.getBord().getTilfeldigKortFråBordet(0, false);
         }
-        else {
-            trekt = null;
-        }
-        return trekt;
+        return null;
     }
 }

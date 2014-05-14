@@ -9,7 +9,7 @@ import java.util.Set;
 public interface IRutehandsamar {
     Set<IRute> getAlleBygdeRuter();
 
-    Set<IRute> finnFramRuter(ArrayList<ISpelar> spelarar) throws RemoteException;
+    Set<IRute> findRoutesNotYetBuilt(ArrayList<ISpelar> spelarar) throws RemoteException;
     public Set<IRute> getRuter();
     void nyRute(IRute rute);
 

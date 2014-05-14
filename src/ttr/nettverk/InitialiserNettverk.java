@@ -28,7 +28,7 @@ public class InitialiserNettverk {
         paaVertBordet =new int[Konstantar.ANTAL_KORT_PÅ_BORDET];
 	}
 
-	public void initialiserSpel() throws HeadlessException, RemoteException {
+	public void initialiseNetworkGame() throws HeadlessException, RemoteException {
         ISpelar spelar = new SpelarImpl(hovud,gui.showInputDialog("Skriv inn namnet ditt"),hovud.getBord());
 		hovud.setMinSpelar(spelar);
 
@@ -72,7 +72,7 @@ public class InitialiserNettverk {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog((Component) gui, "Kunne ikkje starta spelet. Det er sikkert porten som er opptatt.");
 			e.printStackTrace();
-			initialiserSpel(); // Vi prøver om att.
+			initialiseNetworkGame(); // Vi prøver om att.
 		}
 	}
     
@@ -147,7 +147,7 @@ public class InitialiserNettverk {
 		catch (Exception e) {
 			JOptionPane.showMessageDialog((Component) gui, "Klarte dessverre ikkje å bli med i spelet.");
 			e.printStackTrace();
-			initialiserSpel(); // We try again
+			initialiseNetworkGame(); // We try again
 		}
 	}
 }

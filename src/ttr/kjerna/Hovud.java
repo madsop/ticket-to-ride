@@ -27,7 +27,7 @@ public class Hovud implements IHovud {
 
 	private final ISpelUtgaave spel;
 	private final IBord bord;
-	private final ArrayList<ISpelar> spelarar;
+	private final ArrayList<ISpelar> players;
 	private final IGUI gui;
 
 	private final boolean nett;
@@ -45,7 +45,7 @@ public class Hovud implements IHovud {
 		this.nett = nett;
 		this.spel = spel;
         this.bord = bord;
-        spelarar = new ArrayList<>();
+        players = new ArrayList<>();
 		LagBrettet(nett);
 	}
 
@@ -91,7 +91,7 @@ public class Hovud implements IHovud {
 		return kvenSinTur;
 	}
 	public ArrayList<ISpelar> getSpelarar() {
-		return spelarar;
+		return players;
 	}
 
 	public IGUI getGui() {
@@ -123,7 +123,7 @@ public class Hovud implements IHovud {
 	}
 
 	public void nesteSpelar() throws RemoteException {
-        kvenSinTur = turhandsamar.nesteSpelar(kvenSinTur,minSpelar);
+        kvenSinTur = turhandsamar.nextPlayer(kvenSinTur,minSpelar);
 
         if (kvenSinTur.getNamn().equals(minSpelar.getNamn())) {
             gui.getSpelarnamn().setBackground(Color.YELLOW);
@@ -135,8 +135,8 @@ public class Hovud implements IHovud {
 	}
 
     @Override
-    public Set<IRute> finnFramRuter() throws RemoteException {
-        return rutehandsamar.finnFramRuter(spelarar);
+    public Set<IRute> findRoutesNotYetBuilt() throws RemoteException {
+        return rutehandsamar.findRoutesNotYetBuilt(players);
     }
 
     public void bygg(IRute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
@@ -180,24 +180,28 @@ public class Hovud implements IHovud {
         if (!nett) {
             mekkSpelarar();
         }         // else er det nettverksspel og handterast seinare
-        kommunikasjonMedSpelarar = new KommunikasjonMedSpelarar(nett,spelarar);
-        turhandsamar = new TurHandsamar(spelarar,nett);
+        kommunikasjonMedSpelarar = new KommunikasjonMedSpelarar(nett,players);
+        turhandsamar = new TurHandsamar(players,nett);
     }
 
 	private void startNetworkGame(String hostAddress) throws RemoteException {
 		InitialiserNettverk nettverk = new InitialiserNettverk(gui, hostAddress, this);
-		nettverk.initialiserSpel(); // InitialiserNettverk
+		nettverk.initialiseNetworkGame();
 		Oppdragshandsamar.trekkOppdrag(gui, minSpelar, true);
 
-		for (ISpelar s : spelarar){
-		    for (IOppdrag o : s.getOppdrag()){
-		        s.trekt(o.getOppdragsid());
+		givePlayersMissions();
+	}
+
+	private void givePlayersMissions() throws RemoteException {
+		for (ISpelar player : players){
+		    for (IOppdrag mission : player.getOppdrag()){
+		        player.trekt(mission.getOppdragsid());
 		    }
 		}
 	}
 
 	private void startLocalGame() throws RemoteException {
-		for (ISpelar s : spelarar) {
+		for (ISpelar s : players) {
 		    Oppdragshandsamar.trekkOppdrag(gui, s, true);
 		}
 		// ??
@@ -209,7 +213,7 @@ public class Hovud implements IHovud {
 	 */
 	private void mekkSpelarar() throws RemoteException {
 		kommunikasjonMedSpelarar.mekkSpelarar(this,bord);
-		settSinTur(spelarar.get(0));
+		settSinTur(players.get(0));
 	}
 	  
     private void hjelpemetodeBygg(IRute bygd,int plass,int kortKrevd,int krevdJokrar,ISpelar byggjandeSpelar,int jokrar) throws RemoteException{
@@ -228,7 +232,7 @@ public class Hovud implements IHovud {
 
 	private void setUpForNetworkGame(IRute builtRoute, ISpelar buildingPlayer) throws RemoteException {
 		if (nett) {
-            for (ISpelar s : spelarar) {
+            for (ISpelar s : players) {
                 s.nybygdRute(builtRoute.getRuteId(),buildingPlayer);
                 s.setTogAtt(buildingPlayer.getSpelarNummer()+1, buildingPlayer.getGjenverandeTog());
             }

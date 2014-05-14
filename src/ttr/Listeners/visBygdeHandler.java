@@ -2,7 +2,6 @@ package ttr.Listeners;
 
 import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
-
 import javax.swing.*;
 
 class visBygdeHandler {
@@ -10,7 +9,7 @@ class visBygdeHandler {
         JPanel bygde = new JPanel();
 
         if (hovud.getAlleBygdeRuter().size()>0) {
-            @SuppressWarnings("unchecked") JList bygd = new JList(hovud.getAlleBygdeRuter().toArray());
+            JList<Object> bygd = new JList<>(hovud.getAlleBygdeRuter().toArray());
 
             /*	if (hovud.isNett()){
                // Finn spel-verten

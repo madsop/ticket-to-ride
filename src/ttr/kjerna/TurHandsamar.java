@@ -6,47 +6,44 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class TurHandsamar implements ITurhandsamar {
-    private final ArrayList<ISpelar> spelarar;
+    private final ArrayList<ISpelar> players;
     private final boolean nett;
     
     TurHandsamar(ArrayList<ISpelar> spelarar, boolean nett) {
-        this.spelarar = spelarar;
+        this.players = spelarar;
         this.nett = nett;
     }
 
-    public ISpelar nesteSpelar(ISpelar kvenSinTur, ISpelar minSpelar) throws RemoteException{
-        int sp = 1;
-        for (int i = 0; i < spelarar.size(); i++) {
-            if (spelarar.get(i) == kvenSinTur) {
+    public ISpelar nextPlayer(ISpelar kvenSinTur, ISpelar minSpelar) throws RemoteException{
+        int sp = findIdOfNextPlayer(kvenSinTur);
+
+        return nett ? nesteMedNett(kvenSinTur, minSpelar) : nextPlayerUtanNett(sp);
+    }
+
+	private int findIdOfNextPlayer(ISpelar kvenSinTur) {
+		int sp = 1;
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i) == kvenSinTur) {
                 sp +=i;
             }
         }
-
-        return nett ? nesteMedNett(kvenSinTur, minSpelar) : nesteUtanNett(sp);
-    }
+		return sp;
+	}
 
     private ISpelar nesteMedNett(final ISpelar kvenSinTur, final ISpelar minSpelar) throws RemoteException {
         int no = kvenSinTur.getSpelarNummer();
         ISpelar host = findHost(minSpelar);
-        int neste = findNextNumber(no, host.getSpelarteljar());
-        ISpelar sinTur = findOutWhoseTurnItIs(minSpelar, neste);
+        int next = findNextNumber(no, host.getSpelarteljar());
+        ISpelar sinTur = findPlayerByPlayerNumber(minSpelar, next);
         
-        for (ISpelar s : spelarar) {
+        for (ISpelar s : players) {
             s.settSinTur(sinTur);
         }
         return sinTur;
     }
     
-	private ISpelar findHost(final ISpelar minSpelar) throws RemoteException {
-		if (minSpelar.getSpelarNummer() == 0) {
-            return minSpelar;
-        }
-		for (ISpelar s : spelarar) {
-		    if (s.getSpelarNummer() == 0) {
-		        return s;
-		    }
-		}
-		return null;
+	private ISpelar findHost(final ISpelar myPlayer) throws RemoteException {
+		return findPlayerByPlayerNumber(myPlayer, 0);
 	}
 
 	private int findNextNumber(final int no, int playerCount) {
@@ -56,23 +53,20 @@ public class TurHandsamar implements ITurhandsamar {
         return 0;
 	}
 
-	private ISpelar findOutWhoseTurnItIs(final ISpelar myPlayer, int next) throws RemoteException {
-		if (myPlayer.getSpelarNummer() == next) {
+	private ISpelar findPlayerByPlayerNumber(final ISpelar myPlayer, int playerNumber) throws RemoteException {
+		if (myPlayer.getSpelarNummer() == playerNumber) {
             return myPlayer;
         }
-		for (ISpelar s : spelarar) {
-		    if (s.getSpelarNummer() == next) {
-		       return s;
+		for (ISpelar player : players) {
+		    if (player.getSpelarNummer() == playerNumber) {
+		       return player;
 		    }
 		}
 		return null;
 	}
 
-    /** Spelaren er ferdig med sin tur, no er det neste spelar
-     * @throws java.rmi.RemoteException
-     */
-    private ISpelar nesteUtanNett(int sp){
-    	int id = spelarar.size() == sp ? 0 : sp;
-		return spelarar.get(id);
+    private ISpelar nextPlayerUtanNett(int sp){
+    	int id = players.size() == sp ? 0 : sp;
+		return players.get(id);
     }
 }

@@ -26,10 +26,10 @@ public class Main {
 		if (args.length < 1) { arg = Infostrengar.standardHostForNettverk; } // If there are no arguments passed, we choose localhost as default.
 		else { arg = args[0]; }
         
-        ISpelUtgaave spel = velSpel(frame);
+        ISpelUtgaave spel = chooseGameVersion(frame);
 
         boolean nett = (JOptionPane.showConfirmDialog(null, Infostrengar.velOmNettverkEllerIkkje) == JOptionPane.YES_OPTION);
-        IGUI gui = mekkGUI(spel,frame,nett);
+        IGUI gui = setUpGUI(spel,frame,nett);
         IBord bord = new BordImpl(gui,nett);
         IHovud hovud = new Hovud(gui, bord, nett, spel);
         gui.setHovud(hovud);
@@ -38,35 +38,39 @@ public class Main {
 
 	}
     
-    private static ISpelUtgaave velSpel(JFrame frame){
-        ISpelUtgaave[] spela = new ISpelUtgaave[2];
-        spela[0] = new Nordic();
-        spela[1] = new Europe();
-        int spel = JOptionPane.showOptionDialog(frame, Infostrengar.velUtgåve, Infostrengar.velUtgåve,
-                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, spela, spela[0]);
-        if (!(spel >= 0 && spel < spela.length)){
+    private static ISpelUtgaave chooseGameVersion(JFrame frame){
+        ISpelUtgaave[] gameVersions = new ISpelUtgaave[2];
+        gameVersions[0] = new Nordic();
+        gameVersions[1] = new Europe();
+        int chosenGameID = JOptionPane.showOptionDialog(frame, Infostrengar.velUtgåve, Infostrengar.velUtgåve,
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, gameVersions, gameVersions[0]);
+        if (chosenGameID < 0 || chosenGameID >= gameVersions.length){
             System.exit(0);
         }
 
-        return spela[spel];
+        return gameVersions[chosenGameID];
     }
     
-    private static IGUI mekkGUI(ISpelUtgaave utgaave, JFrame frame, boolean nett) {
+    private static IGUI setUpGUI(ISpelUtgaave utgaave, JFrame frame, boolean nett) {
         IBildePanel bp = new BildePanel(utgaave);
 
         IOppdragsveljar oppdragsveljar = new Oppdragsveljar(utgaave,frame);
 
-        IMeldingspanel meldingsboks = new Meldingspanel(nett);
-        IHogrepanelet hogre = new Hogrepanelet(frame);
-        IGUI gui = new GUI(bp,oppdragsveljar,meldingsboks, hogre);        // TODO: dependency injection
-        hogre.setGUI(gui);	
-        frame.setTitle(frame.getTitle() + " - " +utgaave);
+        IMeldingspanel messagepanel = new Meldingspanel(nett);
+        IHogrepanelet rightpanel = new Hogrepanelet(frame);
+        IGUI gui = new GUI(bp,oppdragsveljar,messagepanel, rightpanel);        // TODO: dependency injection
+        rightpanel.setGUI(gui);	
+        setUpJFrame(utgaave, frame, gui);
+        return gui;
+    }
+
+	private static void setUpJFrame(ISpelUtgaave utgaave, JFrame frame, IGUI gui) {
+		frame.setTitle(frame.getTitle() + " - " +utgaave);
         frame.setPreferredSize(Konstantar.VINDUSSTORLEIK);
         frame.setContentPane((Container) gui);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        return gui;
-    }
+	}
 }

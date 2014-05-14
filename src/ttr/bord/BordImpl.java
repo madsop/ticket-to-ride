@@ -6,8 +6,8 @@ import ttr.gui.IGUI;
 
 public class BordImpl implements IBord {
     private final IGUI gui;
-    private Farge[] paaBordet;
-    private final int[] fargekortSomErIgjenIBunken = {    // TODO lag ein finare rute for fargar og fargekort generelt
+    private Farge[] cardsOpenOnTable;
+    private final int[] colourCardsLeftInDeck = {    // TODO lag ein finare rute for fargar og fargekort generelt
             Konstantar.ANTAL_AV_KVART_FARGEKORT,
             Konstantar.ANTAL_AV_KVART_FARGEKORT,
             Konstantar.ANTAL_AV_KVART_FARGEKORT,
@@ -21,7 +21,7 @@ public class BordImpl implements IBord {
 
     public BordImpl(IGUI gui, boolean nett) {
         this.gui = gui;
-        paaBordet = new Farge[Konstantar.ANTAL_KORT_PÅ_BORDET];
+        cardsOpenOnTable = new Farge[Konstantar.ANTAL_KORT_PÅ_BORDET];
 
         // Legg ut dei fem korta på bordet
         if (!nett){       // TODO: Få generalisert bort denne if-en
@@ -30,7 +30,7 @@ public class BordImpl implements IBord {
     }
 
 	public void setPaaBordet(Farge[] paaBordet) {
-		this.paaBordet = paaBordet;
+		this.cardsOpenOnTable = paaBordet;
 
 		for (int i = 0; i < paaBordet.length; i++){
 			int fargenr = Konstantar.finnPosisjonForFarg(paaBordet[i]);
@@ -39,12 +39,11 @@ public class BordImpl implements IBord {
 	}
 
     public void setEinPaaBordet(Farge farge, int plass) {
-		paaBordet[plass] = farge;
+		cardsOpenOnTable[plass] = farge;
 		int kortPosisjon = Konstantar.finnPosisjonForFarg(farge);
-		fargekortSomErIgjenIBunken[kortPosisjon]--;
+		colourCardsLeftInDeck[kortPosisjon]--;
 		gui.teiknOppKortPåBordet(plass, farge);
 	}
-
 
 	public void leggUtFem() {
 		for (int i = 0; i < Konstantar.ANTAL_KORT_PÅ_BORDET; i++) { // Legg ut fem kort på bordet
@@ -53,26 +52,24 @@ public class BordImpl implements IBord {
 	}
 
 	public int[] getFargekortaSomErIgjenIBunken() {
-		return fargekortSomErIgjenIBunken;
+		return colourCardsLeftInDeck;
 	}
-
 
 	public Farge[] getPaaBordet() {
-		return paaBordet;
+		return cardsOpenOnTable;
 	}
-
 
 	public int getAntalFargekortPåBordet() {
 		int fargekortpåbordet = 0;
 		for (int i = 0; i < Konstantar.ANTAL_FARGAR; i++) {
-			fargekortpåbordet += fargekortSomErIgjenIBunken[i];
+			fargekortpåbordet += colourCardsLeftInDeck[i];
 		}
 		return fargekortpåbordet;
 	}
 
 	public Farge getTilfeldigKortFråBordet(int plass, boolean leggPåBordet) {
         int fargekortpåbordet = getAntalFargekortPåBordet();
-		int teljar = tilfeldigFarge(fargekortpåbordet, fargekortSomErIgjenIBunken);
+		int teljar = tilfeldigFarge(fargekortpåbordet, colourCardsLeftInDeck);
 		if (teljar >= 0 && teljar <= Konstantar.ANTAL_FARGAR) {
 			if (leggPåBordet) {
 				leggKortPåBordet(plass, teljar);
@@ -91,8 +88,8 @@ public class BordImpl implements IBord {
 	 */
     private void leggKortPåBordet(int plass, int teljar) {
 		if (teljar >= 0 && teljar < Konstantar.ANTAL_FARGAR) {	
-			paaBordet[plass] = Konstantar.FARGAR[teljar];
-			fargekortSomErIgjenIBunken[teljar]--;
+			cardsOpenOnTable[plass] = Konstantar.FARGAR[teljar];
+			colourCardsLeftInDeck[teljar]--;
 			Farge f = Konstantar.FARGAR[teljar];
 			gui.teiknOppKortPåBordet(plass, f);
 		}
@@ -104,7 +101,7 @@ public class BordImpl implements IBord {
 
 	public boolean sjekkOmAntalJokrarPaaBordetErOK() {
 		int jokrar = 0;
-		for (Farge f : paaBordet) {
+		for (Farge f : cardsOpenOnTable) {
 			if (f == Farge.valfri) {
 				jokrar++;
 			}
@@ -112,19 +109,19 @@ public class BordImpl implements IBord {
         return jokrar > Konstantar.MAKS_JOKRAR_PAA_BORDET;
     }
 
-    private int tilfeldigFarge(int colourCardsLeftOnTable, int[] igjenAvFargekort){
+    private int tilfeldigFarge(int colourCardsLeftOnTable, int[] cardsLeftOnTable){ //TODO: den siste her bør vel erstattes av ein map el
         int randomlyChosenCardInDeck = (int) (Math.random() * colourCardsLeftOnTable);
 
         int counter = 0;
         int temporaryValue = 0;
         while (shouldIncrease(colourCardsLeftOnTable, randomlyChosenCardInDeck, counter, temporaryValue)) {
-            temporaryValue += igjenAvFargekort[counter];
+            temporaryValue += cardsLeftOnTable[counter];
             counter++;
         }
         return counter-1;
     }
 
-	private boolean shouldIncrease(int fargekortpåbordet, int randomlyChosenCardInDeck, int teljar, int midlertidigverdi) {
-		return (midlertidigverdi < randomlyChosenCardInDeck) && (teljar < Konstantar.ANTAL_FARGAR) && (midlertidigverdi <= fargekortpåbordet);
+	private boolean shouldIncrease(int colourCardsLeftOnTable, int indexOfRandomlyChosenCardInDeck, int colorCounter, int temporaryValue) {
+		return (temporaryValue < indexOfRandomlyChosenCardInDeck) && (colorCounter < Konstantar.ANTAL_FARGAR) && (temporaryValue <= colourCardsLeftOnTable);
 	}
 }

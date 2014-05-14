@@ -10,33 +10,45 @@ import java.rmi.RemoteException;
 
 public class visMineOppdragHandler {
 
-    public visMineOppdragHandler(IHovud hovud, IGUI gui) throws RemoteException {
-        JPanel oppdraga = new JPanel();
+	public visMineOppdragHandler(IHovud hovud, IGUI gui) throws RemoteException {
+		JPanel missionJPanel = new JPanel();
 
-        ISpelar visSine;
-        if (hovud.isNett()) {
-            visSine = hovud.getMinSpelar();
-        }
-        else {
-            visSine = hovud.getKvenSinTur();
-        }
-        String oppdrg = visSine.getNamn() +": ";
+		ISpelar player = getPlayer(hovud);
+		String missionString = player.getNamn() +": ";
 
-            for (int i = 0; i < visSine.getAntalOppdrag(); i++) {
-                IOppdrag o = visSine.getOppdrag().get(i);
-                oppdrg += o;
-                if (visSine.erOppdragFerdig(o.getOppdragsid())){
-                    oppdrg += " (OK)";
-                }
-                if (i == visSine.getAntalOppdrag()-1){
-                    oppdrg += ".";
-                }
-                else{
-                    oppdrg += ", ";
-                }
-            }
-        JLabel oppdr = new JLabel(oppdrg);
-        oppdraga.add(oppdr);
-        gui.lagRamme("Viser oppdraga til " +visSine.getNamn(), oppdraga);
-    }
+		for (int i = 0; i < player.getAntalOppdrag(); i++) {
+			IOppdrag mission = player.getOppdrag().get(i);
+			missionString += prepareMissionString(player, i, mission);
+		}
+		
+		showToPlayer(gui, missionJPanel, player, missionString);
+	}
+
+	private ISpelar getPlayer(IHovud hovud) {
+		if (hovud.isNett()) {
+			return hovud.getMinSpelar();
+		}
+		return hovud.getKvenSinTur();
+	}
+
+	private String prepareMissionString(ISpelar player,int i, IOppdrag mission) throws RemoteException {
+		String oppdragsString = mission.toString();
+		if (player.erOppdragFerdig(mission.getOppdragsid())){
+			oppdragsString += " (OK)";
+		}
+		if (i == player.getAntalOppdrag()-1){
+			oppdragsString += ".";
+		}
+		else{
+			oppdragsString += ", ";
+		}
+		return oppdragsString;
+	}
+
+	private void showToPlayer(IGUI gui, JPanel missionJPanel, ISpelar player,
+			String missionString) throws RemoteException {
+		JLabel missionJLabel = new JLabel(missionString);
+		missionJPanel.add(missionJLabel);
+		gui.lagRamme("Viser oppdraga til " +player.getNamn(), missionJPanel);
+	}
 }

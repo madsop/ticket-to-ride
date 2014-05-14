@@ -31,7 +31,7 @@ public class Rutehandsamar implements IRutehandsamar {
 		allBuiltRoutes.add(rute);
 	}
 
-	public Set<IRute> finnFramRuter(ArrayList<ISpelar> spelarar) throws RemoteException {
+	public Set<IRute> findRoutesNotYetBuilt(ArrayList<ISpelar> spelarar) throws RemoteException {
 		findAllBuiltRoutes(spelarar);
 		return findNotYetBuiltRoutes();
 	}
