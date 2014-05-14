@@ -39,58 +39,54 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
      * @return antal oppdragspoeng spelaren har
      */
     public int getOppdragspoeng() throws RemoteException  {
-        int ret = 0;
-        for (IOppdrag anOppdrag : oppdrag) {
-            Destinasjon d1 = anOppdrag.getStart();
-            int d = d1.ordinal();
-            Destinasjon d2 = anOppdrag.getEnd();
-            int e = d2.ordinal();
-            if (harEgBygdMellomAogB[d][e] || harEgBygdMellomAogB[e][d]) {
-                ret += anOppdrag.getVerdi();
+        int totalMissionValue = 0;
+        for (IOppdrag mission : oppdrag) {
+            int start = mission.getStart().ordinal();
+            int end = mission.getEnd().ordinal();
+            if (harEgBygdMellomAogB[start][end] || harEgBygdMellomAogB[end][start]) {
+                totalMissionValue += mission.getVerdi();
             } else {
-                ret -= anOppdrag.getVerdi();
+                totalMissionValue -= mission.getVerdi();
             }
         }
 
-        return ret;
+        return totalMissionValue;
     }
     public boolean erOppdragFerdig(int oppdragsid) throws RemoteException{
-        IOppdrag o = null;
+        IOppdrag mission = null;
         for (IOppdrag opp : oppdrag){
             if (opp.getOppdragsid() == oppdragsid){
-                o = opp;
+                mission = opp;
             }
         }
-        if (o==null){
+        if (mission==null){
             return false;
         }
 
-        Destinasjon d1 = (Destinasjon) o.getDestinasjonar().toArray()[0];
-        int d = d1.ordinal();
-        Destinasjon d2 = (Destinasjon) o.getDestinasjonar().toArray()[1];
-        int e = d2.ordinal();
-        return harEgBygdMellomAogB[d][e] || harEgBygdMellomAogB[e][d];
+        return haveIBuiltThisMission(mission);
     }
 
+	private boolean haveIBuiltThisMission(IOppdrag mission) {
+		int start = mission.getStart().ordinal();
+        int end = mission.getEnd().ordinal();
+        return harEgBygdMellomAogB[start][end] || harEgBygdMellomAogB[end][start];
+	}
+
     public int getAntalFullfoerteOppdrag() throws RemoteException{
-        int antal = 0;
-        for (IOppdrag o : oppdrag){
-            Destinasjon d1 = (Destinasjon) o.getDestinasjonar().toArray()[0];
-            int d = d1.ordinal();
-            Destinasjon d2 = (Destinasjon) o.getDestinasjonar().toArray()[1];
-            int e = d2.ordinal();
-            if (harEgBygdMellomAogB[d][e] || harEgBygdMellomAogB[e][d]){
-                antal++;
+        int numberOfFulfilledMissions = 0;
+        for (IOppdrag mission : oppdrag){
+            if (haveIBuiltThisMission(mission)) {
+                numberOfFulfilledMissions++;
             }
         }
-        return antal;
+        return numberOfFulfilledMissions;
     }
 
 
     /**
      * Oppretter ei #destinasjonar*#destinasjonar med alle verdiar false.
      */
-    private void initialiserMatrise() throws RemoteException{
+    private void initialiserMatrise() {
         for (int y = 0; y < Destinasjon.values().length; y++) {
             for (int x = 0; x < Destinasjon.values().length; x++) {
                 harEgBygdMellomAogB[y][x] = false;
@@ -135,12 +131,11 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
      * @return trekk eit oppdrag frå kortbunken
      */
     public IOppdrag trekkOppdragskort() throws RemoteException  {
-        IOppdrag trekt = null;
         if (hovud.getAntalGjenverandeOppdrag() > 0) {
-            trekt = hovud.getOppdrag();
+            return hovud.getOppdrag();
             //System.out.println(trekt.getDestinasjonar().toArray()[1]);
         }
-        return trekt;
+        return null;
     }
 
     public void trekt(int oppdragsid) throws RemoteException {

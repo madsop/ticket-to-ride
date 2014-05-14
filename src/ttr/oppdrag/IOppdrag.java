@@ -8,7 +8,6 @@ import java.util.Set;
 public interface IOppdrag extends Serializable {
     int getOppdragsid();
 
-    Set<Destinasjon> getDestinasjonar();
     Destinasjon getStart();
     Destinasjon getEnd();
 

@@ -112,18 +112,19 @@ public class BordImpl implements IBord {
         return jokrar > Konstantar.MAKS_JOKRAR_PAA_BORDET;
     }
 
-    private int tilfeldigFarge(int fargekortpåbordet, int[] igjenAvFargekort){
-        int valtkort = (int) (Math.random() * fargekortpåbordet);
+    private int tilfeldigFarge(int colourCardsLeftOnTable, int[] igjenAvFargekort){
+        int randomlyChosenCardInDeck = (int) (Math.random() * colourCardsLeftOnTable);
 
-        int teljar = 0;
-        int midlertidigverdi = 0;
-        while ((midlertidigverdi < valtkort)
-                && (teljar < Konstantar.ANTAL_FARGAR)
-                && (midlertidigverdi <= fargekortpåbordet)) {
-            midlertidigverdi += igjenAvFargekort[teljar];
-            teljar++;
+        int counter = 0;
+        int temporaryValue = 0;
+        while (shouldIncrease(colourCardsLeftOnTable, randomlyChosenCardInDeck, counter, temporaryValue)) {
+            temporaryValue += igjenAvFargekort[counter];
+            counter++;
         }
-        teljar--;
-        return teljar;
+        return counter-1;
     }
+
+	private boolean shouldIncrease(int fargekortpåbordet, int randomlyChosenCardInDeck, int teljar, int midlertidigverdi) {
+		return (midlertidigverdi < randomlyChosenCardInDeck) && (teljar < Konstantar.ANTAL_FARGAR) && (midlertidigverdi <= fargekortpåbordet);
+	}
 }

@@ -13,66 +13,80 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Oppdragsveljar implements IOppdragsveljar {
-    private final ISpelUtgaave spel;
+    private final ISpelUtgaave gameVersion;
     private final JFrame frame;
-    private JDialog oppdragsveljarBoksen;
-    private JPanel vel;
-    private ArrayList<IOppdrag> valde;
-    private HashMap<JCheckBox,IOppdrag> oppdragÅVeljeFrå;
+    private JDialog missionChooserDialog;
+    private JPanel choosePanel;
+    private ArrayList<IOppdrag> chosenMissions; //todo: dette er ikkje gui-stuff
+    private HashMap<JCheckBox,IOppdrag> missionsToChooooseFrom;
     private JButton ok;
 
     public Oppdragsveljar(ISpelUtgaave spel, JFrame frame){
-        this.spel = spel;
+        this.gameVersion = spel;
         this.frame = frame;
-    }
-
-    private void setUpAvkrysningsboksar(ArrayList<IOppdrag> innsendteOppdragÅVeljeFrå){
-        for (IOppdrag oppdrag : innsendteOppdragÅVeljeFrå){
-            Object[] d = oppdrag.getDestinasjonar().toArray();
-
-            JCheckBox oppdragsSjekkboks = new JCheckBox();
-            oppdragsSjekkboks.addActionListener(new okListener());
-            oppdragsSjekkboks.setSelected(false);
-            vel.add(new JTextField(d[0] +" - " +d[1] + " (" +oppdrag.getVerdi() +")"));
-            vel.add(oppdragsSjekkboks);
-            oppdragÅVeljeFrå.put(oppdragsSjekkboks,oppdrag);
-        }
     }
 
     @Override
     public ArrayList<IOppdrag> setUpOppdragsveljar(ArrayList<IOppdrag> innsendteOppdragÅVeljeFrå) {
-        oppdragÅVeljeFrå = new HashMap<>();
-        vel = new JPanel();
+        missionsToChooooseFrom = new HashMap<>();
+        choosePanel = new JPanel();
         GridLayout gl = new GridLayout(0, 2);
-        vel.setLayout(gl);
+        choosePanel.setLayout(gl);
 
-        setUpAvkrysningsboksar(innsendteOppdragÅVeljeFrå);
+        setUpCheckBoxes(innsendteOppdragÅVeljeFrå);
+        setUpOKButton();
 
-        valde = new ArrayList<>();
-        ok = new JButton(Infostrengar.OKLabel);
-        ok.addActionListener(new okListener());
-        vel.add(ok);
-        ok.setEnabled(false);
+        chosenMissions = new ArrayList<>();
 
-        ImageIcon kartet = new ImageIcon(spel.getBakgrunnsbildet());
+        ImageIcon kartet = new ImageIcon(gameVersion.getBakgrunnsbildet());
 
         JLabel kartImplementasjonen = new JLabel(kartet);
-        JScrollPane jsp = new JScrollPane();
+        JScrollPane jsp = setUpScrollPane(kartet, kartImplementasjonen);
+        fixMissionChooserGUIBox(jsp);
+
+        return chosenMissions;
+    }
+
+	private void setUpOKButton() {
+		ok = new JButton(Infostrengar.OKLabel);
+        ok.addActionListener(new okListener());
+        choosePanel.add(ok);
+        ok.setEnabled(false);
+	}
+
+    private void setUpCheckBoxes(ArrayList<IOppdrag> missionsToChooseFrom){
+        for (IOppdrag mission : missionsToChooseFrom){
+            JCheckBox missionCheckBox = new JCheckBox();
+            missionCheckBox.addActionListener(new okListener());
+            missionCheckBox.setSelected(false);
+            choosePanel.add(new JTextField(mission.toString()));
+            choosePanel.add(missionCheckBox);
+            missionsToChooooseFrom.put(missionCheckBox,mission);
+        }
+    }
+
+	private JScrollPane setUpScrollPane(ImageIcon kartet, JLabel kartImplementasjonen) {
+		JScrollPane jsp = new JScrollPane();
         jsp.setPreferredSize(new Dimension(kartet.getIconWidth()+50, Konstantar.VINDUSSTORLEIK.height*14/15)); // 14/15 er hack for å få vist heile bildet
         jsp.getViewport().add(kartImplementasjonen);
+		return jsp;
+	}
 
-        JPanel heile = new JPanel();
-        heile.add(vel);
+	private void fixMissionChooserGUIBox(JScrollPane jsp) {
+		JPanel heile = fixJPanel(jsp);
+		missionChooserDialog = new JDialog(frame,Infostrengar.VelOppdragLabel,true);
+        missionChooserDialog.setContentPane(heile);
+        missionChooserDialog.pack();
+        missionChooserDialog.setVisible(true);
+	}
+
+	private JPanel fixJPanel(JScrollPane jsp) {
+		JPanel heile = new JPanel();
+        heile.add(choosePanel);
         heile.add(jsp);
         heile.setPreferredSize(Konstantar.VINDUSSTORLEIK);
-
-        oppdragsveljarBoksen = new JDialog(frame,Infostrengar.VelOppdragLabel,true);
-        oppdragsveljarBoksen.setContentPane(heile);
-        oppdragsveljarBoksen.pack();
-        oppdragsveljarBoksen.setVisible(true);
-
-        return valde;
-    }
+		return heile;
+	}
 
 
     /**
@@ -80,31 +94,39 @@ public class Oppdragsveljar implements IOppdragsveljar {
      * Nett no veldig ad-hoc-a. Bør for-løkke-styres eller noko.
      */
     private class okListener implements ActionListener {
-        public void gjer(Object clickedItem){
-            if (oppdragÅVeljeFrå.containsKey(clickedItem)){
+        public void perform(Object clickedItem){
+            if (missionsToChooooseFrom.containsKey(clickedItem)){
                 JCheckBox clicked = (JCheckBox)clickedItem;
-                if (valde.contains(oppdragÅVeljeFrå.get(clicked))){
-                    valde.remove(oppdragÅVeljeFrå.get(clicked));
-                    clicked.setSelected(false);
+                if (chosenMissions.contains(missionsToChooooseFrom.get(clicked))){
+                    uncheck(clicked);
                 }
                 else{
-                    valde.add(oppdragÅVeljeFrå.get(clicked));
-                    clicked.setSelected(true);
-                    ok.setEnabled(true);
+                    check(clicked);
                 }
             }
         }
 
+		private void uncheck(JCheckBox clicked) {
+			chosenMissions.remove(missionsToChooooseFrom.get(clicked));
+			clicked.setSelected(false);
+		}
+
+		private void check(JCheckBox clicked) {
+			chosenMissions.add(missionsToChooooseFrom.get(clicked));
+			clicked.setSelected(true);
+			ok.setEnabled(true);
+		}
+
         public void actionPerformed(ActionEvent arg0) {
-            if (arg0.getSource() == ok && (valde.size() >= oppdragÅVeljeFrå.size()-2)){
-                oppdragsveljarBoksen.dispose();
+            if (arg0.getSource() == ok && (chosenMissions.size() >= missionsToChooooseFrom.size()-2)){
+                missionChooserDialog.dispose();
                 return;
             }
 
-            for (int i = 0; i < oppdragÅVeljeFrå.size(); i++) {
-                gjer(arg0.getSource());
+            for (int i = 0; i < missionsToChooooseFrom.size(); i++) {
+                perform(arg0.getSource());
             }
-            if (valde.size() < oppdragÅVeljeFrå.size() -2){
+            if (chosenMissions.size() < missionsToChooooseFrom.size() -2){
                 ok.setEnabled(false);
             }
         }
