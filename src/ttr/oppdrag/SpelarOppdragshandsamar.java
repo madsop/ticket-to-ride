@@ -7,7 +7,6 @@ import ttr.rute.IRute;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpelarOppdragshandsamar{
 	private static final long serialVersionUID = 5194460142995578869L;
@@ -72,12 +71,10 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
 
 	public void bygg(IRute rute) throws RemoteException{
 		// Sjekk for fullførde oppdrag?
-
 				// Fyller matrisa med ei rute frå d1 til d2 (og motsett):
 					// Må først iterere over mengda med destinasjonar for å få dei ut
-		Iterator<Destinasjon> mengdeIterator = rute.getDestinasjonar().iterator();
-		int destinasjon1 = mengdeIterator.next().ordinal();
-		int destinasjon2 = mengdeIterator.next().ordinal();
+		int destinasjon1 = rute.getStart().ordinal();
+		int destinasjon2 = rute.getEnd().ordinal();
 		harEgBygdMellomAogB[destinasjon1][destinasjon2] = true;
 		harEgBygdMellomAogB[destinasjon2][destinasjon1] = true;
 		transitivTillukking();

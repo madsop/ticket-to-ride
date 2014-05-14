@@ -3,7 +3,7 @@ package ttr.kjerna;
 import ttr.bord.IBord;
 import ttr.bygg.ByggHjelpar;
 import ttr.bygg.IByggHjelpar;
-import ttr.bygg.byggjandeInfo;
+import ttr.bygg.ByggjandeInfo;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
@@ -140,7 +140,7 @@ public class Hovud implements IHovud {
     }
 
     public void bygg(IRute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
-        byggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd,plass,kortKrevd,krevdJokrar,minSpelar,kvenSinTur);
+        ByggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd,plass,kortKrevd,krevdJokrar,minSpelar,kvenSinTur);
         ISpelar byggjandeSpelar = byggjandeInfo.byggjandeSpelar;
         int jokrar = byggjandeInfo.jokrar;
         hjelpemetodeBygg(bygd,plass,kortKrevd,krevdJokrar,byggjandeSpelar,jokrar);
@@ -148,7 +148,7 @@ public class Hovud implements IHovud {
     }
      @Override
     public void byggTunnel(IRute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
-        byggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(bord, bygd, plass, kortKrevd, krevdJokrar, minSpelar, kvenSinTur);
+        ByggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(bord, bygd, plass, kortKrevd, krevdJokrar, minSpelar, kvenSinTur);
         ISpelar byggjandeSpelar = byggjandeInfo.byggjandeSpelar;
         int jokrar = byggjandeInfo.jokrar;
         hjelpemetodeBygg(bygd,plass,kortKrevd,krevdJokrar,byggjandeSpelar,jokrar);
@@ -222,7 +222,7 @@ public class Hovud implements IHovud {
         setUpForNetworkGame(bygd, byggjandeSpelar);
         gui.getTogAtt()[byggjandeSpelar.getSpelarNummer()+1].setText(String.valueOf(byggjandeSpelar.getGjenverandeTog()));
         updateDeckOnTable(plass, kortKrevd, krevdJokrar, jokrar);
-        gui.getMeldingarModell().nyMelding(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getDestinasjonar().toArray()[0] + " - " +bygd.getDestinasjonar().toArray()[1] + " i farge " + bygd.getFarge());
+        gui.getMeldingarModell().nyMelding(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getFarge());
 
         kommunikasjonMedSpelarar.oppdaterAndreSpelarar(plass, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
 

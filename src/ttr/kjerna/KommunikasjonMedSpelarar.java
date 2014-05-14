@@ -27,7 +27,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
             for (ISpelar s : spelarar) {
                 s.leggIStokken(plass, (kortKrevd-(jokrar-krevdJokrar)));
                 s.leggIStokken(Konstantar.ANTAL_FARGAR-1,jokrar);
-                s.faaMelding(byggjandeNamn + " bygde ruta " +bygd.getDestinasjonar().toArray()[0] + " - " +bygd.getDestinasjonar().toArray()[1] + " i farge " + bygd.getFarge());
+                s.faaMelding(byggjandeNamn + " bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getFarge());
             }
         }
     }

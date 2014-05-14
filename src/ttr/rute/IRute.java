@@ -11,7 +11,8 @@ public interface IRute {
 
     int getVerdi();
 
-    Set<Destinasjon> getDestinasjonar();
+    Destinasjon getStart();
+    Destinasjon getEnd();
 
     int getLengde();
 
@@ -22,8 +23,4 @@ public interface IRute {
     int getAntaljokrar();
 
     void setBygdAv(ISpelar spelar);
-
-    @Override
-    @SuppressWarnings("finally")
-    String toString();
 }

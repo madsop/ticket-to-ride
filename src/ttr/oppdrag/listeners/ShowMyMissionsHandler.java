@@ -8,9 +8,9 @@ import ttr.spelar.ISpelar;
 import javax.swing.*;
 import java.rmi.RemoteException;
 
-public class visMineOppdragHandler {
+public class ShowMyMissionsHandler {
 
-	public visMineOppdragHandler(IHovud hovud, IGUI gui) throws RemoteException {
+	public ShowMyMissionsHandler(IHovud hovud, IGUI gui) throws RemoteException {
 		JPanel missionJPanel = new JPanel();
 
 		ISpelar player = getPlayer(hovud);
@@ -32,21 +32,20 @@ public class visMineOppdragHandler {
 	}
 
 	private String prepareMissionString(ISpelar player,int i, IOppdrag mission) throws RemoteException {
-		String oppdragsString = mission.toString();
+		String missionString = mission.toString();
 		if (player.erOppdragFerdig(mission.getOppdragsid())){
-			oppdragsString += " (OK)";
+			missionString += " (OK)";
 		}
 		if (i == player.getAntalOppdrag()-1){
-			oppdragsString += ".";
+			missionString += ".";
 		}
 		else{
-			oppdragsString += ", ";
+			missionString += ", ";
 		}
-		return oppdragsString;
+		return missionString;
 	}
 
-	private void showToPlayer(IGUI gui, JPanel missionJPanel, ISpelar player,
-			String missionString) throws RemoteException {
+	private void showToPlayer(IGUI gui, JPanel missionJPanel, ISpelar player, String missionString) throws RemoteException {
 		JLabel missionJLabel = new JLabel(missionString);
 		missionJPanel.add(missionJLabel);
 		gui.lagRamme("Viser oppdraga til " +player.getNamn(), missionJPanel);

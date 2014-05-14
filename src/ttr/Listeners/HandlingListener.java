@@ -3,7 +3,7 @@ package ttr.Listeners;
 import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
 import ttr.oppdrag.listeners.TrekkOppdragHandler;
-import ttr.oppdrag.listeners.visMineOppdragHandler;
+import ttr.oppdrag.listeners.ShowMyMissionsHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +50,7 @@ public class HandlingListener implements ActionListener{
                 new visMineKortHandler(hovud,gui);
             }
             else if (arg0.getSource() == visMineOppdrag) {
-                new visMineOppdragHandler(hovud,gui);
+                new ShowMyMissionsHandler(hovud,gui);
             }
             else if (arg0.getSource() == visBygde) {
                 new visBygdeHandler(hovud,gui,frame);

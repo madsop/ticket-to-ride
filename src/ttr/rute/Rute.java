@@ -5,11 +5,8 @@ import ttr.data.Farge;
 import ttr.spelar.ISpelar;
 
 import java.rmi.RemoteException;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Rute implements IRute {
-	private final Set<Destinasjon> destinasjonar;
 	private static final int[] ruteverdiar = {1,2,4,7,10,15,0,0,27};
 	private final int lengde;
 	private final Farge farge;
@@ -17,16 +14,26 @@ public class Rute implements IRute {
 	private final int antaljokrar;
 	private ISpelar bygdAv;
 	private final int ruteId;
+	private final Destinasjon start;
+	private final Destinasjon end;
 
-	public Rute(int ruteId, Destinasjon d1, Destinasjon d2, int lengde, Farge farge, boolean tunnel, int antaljokrar) {
+	public Rute(int ruteId, Destinasjon start, Destinasjon end, int lengde, Farge farge, boolean tunnel, int antaljokrar) {
 		this.ruteId = ruteId;
-		destinasjonar = new HashSet<>();
-		destinasjonar.add(d1);
-		destinasjonar.add(d2);
+		this.start = start;
+		this.end = end;
+		
 		this.lengde = lengde;
 		this.farge = farge;
 		this.tunnel = tunnel;
 		this.antaljokrar = antaljokrar;
+	}
+
+	public Destinasjon getStart() {
+		return start;
+	}
+
+	public Destinasjon getEnd() {
+		return end;
 	}
 
 	public int getRuteId() {
@@ -35,10 +42,6 @@ public class Rute implements IRute {
 
 	public int getVerdi() {
 		return ruteverdiar[lengde-1];
-	}
-
-	public Set<Destinasjon> getDestinasjonar() {
-		return destinasjonar;
 	}
 
     public int getLengde() {
@@ -74,9 +77,9 @@ public class Rute implements IRute {
 		}
 		finally {
             //noinspection ReturnInsideFinallyBlock,ReturnInsideFinallyBlock
-            return destinasjonar.toArray()[0] +" - " +destinasjonar.toArray()[1] +", lengde " +lengde +", av farge " +farge
-			+", tunnel? " +tunnel +", og " +antaljokrar +" jokrar krevs for å byggje denne. Ruta er bygd av "
-			+builtByString +", og er verdt " +ruteverdiar[lengde-1] +" poeng.";
+            return start + " - " + end + ", lengde " + lengde + ", av farge " + farge
+			+ ", tunnel? " + tunnel + ", og " +antaljokrar +" jokrar krevs for å byggje denne. Ruta er bygd av "
+			+ builtByString + ", og er verdt " + ruteverdiar[lengde-1] + " poeng.";
 		}
 	}
 }

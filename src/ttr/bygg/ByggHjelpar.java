@@ -28,7 +28,7 @@ public class ByggHjelpar implements IByggHjelpar {
 		int ekstrajokrar = player.getKort()[Konstantar.ANTAL_FARGAR-1]-numberOfDemandedJokers;
 		System.out.println("ekstrajokrar: " +ekstrajokrar);
 		for (int i = 0; i < Konstantar.ANTAL_FARGAR; i++){
-			if ( canBuildThisRouteInThisColour(player, numberOfDemandedNormalCards,	ekstrajokrar, i)){
+			if (canBuildThisRouteInThisColour(player, numberOfDemandedNormalCards,	ekstrajokrar, i)){
 				mulegeFargar.add(Konstantar.FARGAR[i]);
 			}
 		}
@@ -56,7 +56,7 @@ public class ByggHjelpar implements IByggHjelpar {
 				(ekstrajokrar >= numberOfDemandedNormalCards);
 	}
 
-	public byggjandeInfo bygg(IRute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
+	public ByggjandeInfo bygg(IRute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
 		ISpelar byggjandeSpelar = nett ? minSpelar : kvenSinTur;
 
 		if (bygd.getFarge() == Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1]){
@@ -75,7 +75,7 @@ public class ByggHjelpar implements IByggHjelpar {
 		plass = updatePlass(plass);
 		updatePlayersCards(plass, kortKrevd, krevdJokrar, byggjandeSpelar, jokers);
 
-		return new byggjandeInfo(byggjandeSpelar,jokers);
+		return new ByggjandeInfo(byggjandeSpelar,jokers);
 	}
 
 	private void checkIfThePlayerHasEnoughCards(IRute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar byggjandeSpelar, int jokers)	throws RemoteException {
@@ -94,6 +94,7 @@ public class ByggHjelpar implements IByggHjelpar {
 		}
 		return plass;
 	}
+
 	private boolean routeIsNotJokerColoured(IRute bygd) {
 		return bygd.getFarge() != Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1];
 	}
@@ -128,7 +129,7 @@ public class ByggHjelpar implements IByggHjelpar {
 	}
 
 
-	public byggjandeInfo byggTunnel(IBord bord, IRute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
+	public ByggjandeInfo byggTunnel(IBord bord, IRute bygd, int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
 		Farge[] treTrekte = new Farge[3];
 		int ekstra = 0;
 		for (int i = 0; i < treTrekte.length; i++) {
@@ -142,26 +143,27 @@ public class ByggHjelpar implements IByggHjelpar {
 			}
 		}
 
-		int byggLell = askUserToBuildAnyway(treTrekte, ekstra);
+		int byggLell = askUserIfBuildAnyway(treTrekte, ekstra);
 		if (byggLell == JOptionPane.OK_OPTION) {
-			return bygg(bygd, plass, kortKrevd+ekstra, krevdJokrar,minSpelar,kvenSinTur);
+			return bygg(bygd, plass, kortKrevd+ekstra, krevdJokrar, minSpelar,kvenSinTur);
 		}
 		return null;
 	}
 
-	private int askUserToBuildAnyway(Farge[] treTrekte, int ekstra) {
+	private int askUserIfBuildAnyway(Farge[] treTrekte, int ekstra) {
 		return JOptionPane.showConfirmDialog((Component) gui, Infostrengar.TunnelStartTekst +treTrekte[0] +", "
 				+treTrekte[1] +" og " +treTrekte[2]	+". Altså må du betale " +ekstra +" ekstra kort. Vil du det?");
 	}
 
-	private int velAntalJokrarDuVilBruke(IRute rute, ISpelar s, Farge valdFarge) throws RemoteException{
-		int jokrar = s.getKort()[Konstantar.ANTAL_FARGAR-1];
-		int kormange = -1;
-		while (kormange < 0 || kormange > jokrar || kormange > rute.getLengde()) {
-			String sendinn = Infostrengar.AntalJokrarStart +jokrar +" jokrar, " +s.getKort()[Konstantar.finnPosisjonForFarg(valdFarge)] + " av fargen du skal byggje, og ruta er " +rute.getLengde() +" tog lang.";
-			String km = JOptionPane.showInputDialog(sendinn,0);
-			kormange = Integer.parseInt(km);
+	private int velAntalJokrarDuVilBruke(IRute route, ISpelar player, Farge chosenColour) throws RemoteException {
+		int playersNumberOfJokers = player.getKort()[Konstantar.ANTAL_FARGAR-1];
+		int howMany = -1;
+		while (howMany < 0 || howMany > playersNumberOfJokers || howMany > route.getLengde()) {
+			String sendinn = Infostrengar.AntalJokrarStart +playersNumberOfJokers +" jokrar, " +player.getKort()[Konstantar.finnPosisjonForFarg(chosenColour)] 
+					+ " av fargen du skal byggje, og ruta er " +route.getLengde() +" tog lang.";
+			String usersInput = JOptionPane.showInputDialog(sendinn,0);
+			howMany = Integer.parseInt(usersInput);
 		}
-		return kormange;
+		return howMany;
 	}
 }
