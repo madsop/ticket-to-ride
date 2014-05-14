@@ -4,7 +4,7 @@ import ttr.spelar.ISpelar;
 import ttr.utgaave.ISpelUtgaave;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -31,14 +31,14 @@ public class Rutehandsamar implements IRutehandsamar {
 		allBuiltRoutes.add(rute);
 	}
 
-	public Set<IRute> findRoutesNotYetBuilt(ArrayList<ISpelar> spelarar) throws RemoteException {
+	public Set<IRute> findRoutesNotYetBuilt(Collection<ISpelar> spelarar) throws RemoteException {
 		findAllBuiltRoutes(spelarar);
 		return findNotYetBuiltRoutes();
 	}
 
 	//TODO Lagringa av kven som har bygd kva rute generelt bør kunne gjerast mykje enklare..
-	private void findAllBuiltRoutes(ArrayList<ISpelar> spelarar) throws RemoteException {
-		for (ISpelar player : spelarar) {
+	private void findAllBuiltRoutes(Collection<ISpelar> players) throws RemoteException {
+		for (ISpelar player : players) {
 			findRoutesBuiltByThisPlayer(player);
 		}
 	}

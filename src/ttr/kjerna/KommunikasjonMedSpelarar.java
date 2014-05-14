@@ -4,7 +4,7 @@ import ttr.bord.IBord;
 import ttr.data.*;
 import ttr.rute.IRute;
 import ttr.spelar.ISpelar;
-import ttr.spelar.SpelarImpl;
+import ttr.spelar.PlayerNetworkClass;
 import ttr.utgaave.nordic.Nordic;
 
 import javax.swing.*;
@@ -12,14 +12,15 @@ import javax.swing.*;
 import java.awt.HeadlessException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
 
 public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 	private final boolean nett;
-	private ArrayList<ISpelar> players;
+	private Collection<ISpelar> players;
 
-	public KommunikasjonMedSpelarar (boolean nett, ArrayList<ISpelar> spelarar) {
+	public KommunikasjonMedSpelarar (boolean nett, Collection<ISpelar> spelarar) {
 		this.nett = nett;
 		this.players = spelarar;
 	}
@@ -53,7 +54,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 	private void createPlayers(IHovud hovud, IBord bord, int antalSpelarar) throws HeadlessException, RemoteException {
 		players = new ArrayList<>();
 		for (int i = 1; i <= antalSpelarar; i++) {
-			players.add(new SpelarImpl(hovud,JOptionPane.showInputDialog(null,Infostrengar.SkrivInnSpelarnamn +i),bord));
+			players.add(new PlayerNetworkClass(hovud,JOptionPane.showInputDialog(null,Infostrengar.SkrivInnSpelarnamn +i),bord));
 		}
 	}
 

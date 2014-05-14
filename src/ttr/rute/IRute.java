@@ -3,8 +3,7 @@ package ttr.rute;
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
 import ttr.spelar.ISpelar;
-
-import java.util.Set;
+import ttr.spelar.PlayerImpl;
 
 public interface IRute {
     int getRuteId();

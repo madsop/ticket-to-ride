@@ -5,7 +5,7 @@ import ttr.data.Konstantar;
 import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
 import ttr.spelar.ISpelar;
-import ttr.spelar.SpelarImpl;
+import ttr.spelar.PlayerNetworkClass;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +29,7 @@ public class InitialiserNettverk {
 	}
 
 	public void initialiseNetworkGame() throws HeadlessException, RemoteException {
-        ISpelar spelar = new SpelarImpl(hovud,gui.showInputDialog("Skriv inn namnet ditt"),hovud.getBord());
+        ISpelar spelar = new PlayerNetworkClass(hovud,gui.showInputDialog("Skriv inn namnet ditt"),hovud.getBord());
 		hovud.setMinSpelar(spelar);
 
 		Object[] options = {"Nytt spel", "Bli med i spel"};

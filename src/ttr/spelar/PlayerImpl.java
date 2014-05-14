@@ -11,12 +11,15 @@ import javax.swing.JOptionPane;
 import ttr.bord.IBord;
 import ttr.data.Konstantar;
 import ttr.kjerna.IHovud;
+import ttr.oppdrag.ISpelarOppdragshandsamar;
+import ttr.oppdrag.SpelarOppdragshandsamar;
 import ttr.rute.IRute;
 
-public class PlayerImpl extends UnicastRemoteObject {
+public abstract class PlayerImpl extends UnicastRemoteObject {
 	private static final long serialVersionUID = -6844537139622798129L;
 	protected IHovud hovud;
 	protected IBord bord;
+    protected ISpelarOppdragshandsamar spelarOppdragshandsamar;
 
 	private static int spelarteljar = 0;    //TODO bør flyttes vekk. Kanskje til hovud.
 	private int spelarNummer;
@@ -26,6 +29,7 @@ public class PlayerImpl extends UnicastRemoteObject {
 	private boolean einValdAllereie;
 
 
+	
 	public PlayerImpl (IHovud hovud, String namn, IBord bord) throws RemoteException{
 		super();
 		this.hovud = hovud;
@@ -33,6 +37,16 @@ public class PlayerImpl extends UnicastRemoteObject {
 		this.namn = namn;
 		einValdAllereie = false;
 		bygdeRuter = new ArrayList<>();
+        spelarOppdragshandsamar = new SpelarOppdragshandsamar(hovud);
+	}
+	
+	public abstract ISpelar getThisAsISpelar();
+
+	public void bygg(IRute rute) throws RemoteException  {
+		rute.setBygdAv(getThisAsISpelar());
+		// Fjern kort frå spelaren og legg dei i stokken eller ved sida av?
+		bygdeRuter.add(rute);
+        spelarOppdragshandsamar.bygg(rute);
 	}
 
 	public void setEittKortTrektInn(boolean b) {

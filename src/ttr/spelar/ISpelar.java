@@ -7,6 +7,7 @@ import ttr.rute.IRute;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Set;
 
 public interface ISpelar extends Remote{
 	public void registrerKlient(ISpelar s) throws RemoteException;

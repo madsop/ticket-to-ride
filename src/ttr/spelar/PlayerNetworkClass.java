@@ -4,34 +4,21 @@ import ttr.bord.IBord;
 import ttr.data.Farge;
 import ttr.kjerna.IHovud;
 import ttr.oppdrag.IOppdrag;
-import ttr.oppdrag.ISpelarOppdragshandsamar;
-import ttr.oppdrag.SpelarOppdragshandsamar;
-import ttr.rute.IRute;
-
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /**
  * Ein spelar. All nettverkskommunikasjon går via denne, så litt hårate klasse med ein del ad hoc-metodar.
  */
- public class SpelarImpl extends PlayerImpl implements ISpelar  {
+ public class PlayerNetworkClass extends PlayerImpl implements ISpelar  {
 	private static final long serialVersionUID = -3600106049579247030L;
     private IKorthandsamar korthandsamar;
-    private ISpelarOppdragshandsamar spelarOppdragshandsamar;
     
-	public SpelarImpl(IHovud hovud, String namn, IBord bord) throws RemoteException {
+	public PlayerNetworkClass(IHovud hovud, String namn, IBord bord) throws RemoteException {
 		super(hovud, namn, bord);
         korthandsamar = new Korthandsamar(hovud);
-        spelarOppdragshandsamar = new SpelarOppdragshandsamar(hovud);
 	}
-
-	public void bygg(IRute rute) throws RemoteException  {
-		rute.setBygdAv(this);
-		// Fjern kort frå spelaren og legg dei i stokken eller ved sida av?
-		bygdeRuter.add(rute);
-
-        spelarOppdragshandsamar.bygg(rute);
-	}
+	
 	/**
 	 * Registers a player as this player's adversary
 	 * Kokt frå distsys, øving 2.
@@ -85,4 +72,8 @@ import java.util.ArrayList;
         bord.setEinPaaBordet(f, i);
     }
     public boolean sjekkJokrar() throws RemoteException{ return bord.sjekkOmAntalJokrarPaaBordetErOK(); }
+
+	public ISpelar getThisAsISpelar() {
+		return this;
+	}
 }

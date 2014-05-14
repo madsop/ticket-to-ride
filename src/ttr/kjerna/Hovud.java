@@ -134,7 +134,6 @@ public class Hovud implements IHovud {
 		kommunikasjonMedSpelarar.sjekkOmFerdig(gui.getMeldingarModell(),kvenSinTur,spel.toString(),minSpelar,rutehandsamar.getRuter());
 	}
 
-    @Override
     public Set<IRute> findRoutesNotYetBuilt() throws RemoteException {
         return rutehandsamar.findRoutesNotYetBuilt(players);
     }

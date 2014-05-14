@@ -6,53 +6,51 @@ import ttr.data.MeldingarModell;
 import ttr.kjerna.IHovud;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class Meldingspanel extends JPanel implements PropertyChangeListener, IMeldingspanel {
-    private MeldingarModell meldingarmodell;
-    private final JList meldingar;
+	private static final long serialVersionUID = -2415687333214663696L;
+	
+	private MeldingarModell messagemodel;
+    private final JList<MeldingarModell> messages;
     private final boolean nett;
 
     public Meldingspanel(boolean nett) {
         this.setBackground(Color.WHITE);
         this.nett = nett;
-        meldingarmodell = new MeldingarModell();
-        meldingarmodell.addPropertyChangeListener(this);
-        //noinspection unchecked,unchecked
-        meldingar = new JList(meldingarmodell);
+        messagemodel = new MeldingarModell();
+        messagemodel.addPropertyChangeListener(this);
+        messages = new JList<>(messagemodel);
 
         JScrollPane mp = new JScrollPane();
         mp.setPreferredSize(new Dimension(Konstantar.MELDINGSPANELBREIDDE, Konstantar.HOGDE - Konstantar.DIFF));
-        mp.getViewport().add(meldingar);
+        mp.getViewport().add(messages);
         this.add(mp);
 
         this.setPreferredSize(new Dimension(Konstantar.MELDINGSPANEL,Konstantar.HOGDE));
     }
-    public void setHovud(IHovud hovud){
-        prepareChat(hovud);
-    }
-
-    void prepareChat(IHovud hovud){
+    
+    public void prepareChat(IHovud hovud){
         JTextField chat = new JTextField(Infostrengar.starttekst);
-        chat.addKeyListener(new ChatListener(nett, chat, meldingarmodell, hovud));
+        chat.addKeyListener(new ChatListener(nett, chat, messagemodel, hovud));
         chat.setPreferredSize(Konstantar.CHATDIM);
         this.add(chat);
     }
 
     public MeldingarModell getMeldingarModell(){
-        return meldingarmodell;
+        return messagemodel;
     }
 
     public void propertyChange(PropertyChangeEvent arg0) {
         if (arg0.getPropertyName().equals(MeldingarModell.MELDINGAR_PROPERTY)){
-            meldingarmodell = new MeldingarModell(meldingarmodell.getMeldingar());
-            meldingarmodell.addPropertyChangeListener(this);
-            //noinspection unchecked
-            meldingar.setModel(meldingarmodell);
-            meldingar.setSelectedIndex(meldingarmodell.getSize()-1);
-            meldingar.ensureIndexIsVisible(meldingar.getSelectedIndex());
+            messagemodel = new MeldingarModell(messagemodel.getMeldingar()); //TODO dette må da eigentleg vera overkill
+            messagemodel.addPropertyChangeListener(this);
+            messages.setModel(messagemodel);
+            messages.setSelectedIndex(messagemodel.getSize()-1);
+            messages.ensureIndexIsVisible(messages.getSelectedIndex());
         }
     }
 }

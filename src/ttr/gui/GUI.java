@@ -12,7 +12,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class GUI extends JPanel implements IGUI {
-    private final IMeldingspanel meldingsboks;
+	private static final long serialVersionUID = -1540067881602979318L;
+	private final IMeldingspanel meldingsboks;
     private IHogrepanelet hogre;
     private final IOppdragsveljar oppdragsveljar;
 
@@ -43,7 +44,7 @@ public class GUI extends JPanel implements IGUI {
 	}
 
     public void setHovud(IHovud hovud){
-        meldingsboks.setHovud(hovud);
+        meldingsboks.prepareChat(hovud);
         hogre.addListeners(hovud);
     }
 
