@@ -14,60 +14,6 @@ public class TurHandsamar implements ITurhandsamar {
         this.nett = nett;
     }
 
-
-    /** Spelaren er ferdig med sin tur, no er det neste spelar
-     * @throws java.rmi.RemoteException
-     */
-    private ISpelar nesteUtanNett(int sp){
-        if (sp == spelarar.size()) {
-            return spelarar.get(0);
-        }
-        else {
-            return spelarar.get(sp);
-        }
-    }
-
-    private ISpelar nesteMedNett(ISpelar kvenSinTur, ISpelar minSpelar) throws RemoteException {
-        int no = kvenSinTur.getSpelarNummer();
-        ISpelar host = null;
-        if (minSpelar.getSpelarNummer() == 0) {
-            host = minSpelar;
-        }
-        else {
-            for (ISpelar s : spelarar) {
-                if (s.getSpelarNummer() == 0) {
-                    host = s;
-                }
-            }
-        }
-
-        int neste;
-        assert host != null;
-        if (no+1 < host.getSpelarteljar()) {
-            neste = no+1;
-        }
-        else {
-            neste = 0;
-        }
-
-        if (minSpelar.getSpelarNummer() == neste) {
-            kvenSinTur = minSpelar;
-        }
-        else {
-            for (ISpelar s : spelarar) {
-                if (s.getSpelarNummer() == neste) {
-                    kvenSinTur = s;
-                }
-            }
-        }
-
-        for (ISpelar s : spelarar) {
-            s.settSinTur(kvenSinTur);
-        }
-
-        return kvenSinTur;
-    }
-
     public ISpelar nesteSpelar(ISpelar kvenSinTur, ISpelar minSpelar) throws RemoteException{
         int sp = 1;
         for (int i = 0; i < spelarar.size(); i++) {
@@ -77,5 +23,56 @@ public class TurHandsamar implements ITurhandsamar {
         }
 
         return nett ? nesteMedNett(kvenSinTur, minSpelar) : nesteUtanNett(sp);
+    }
+
+    private ISpelar nesteMedNett(final ISpelar kvenSinTur, final ISpelar minSpelar) throws RemoteException {
+        int no = kvenSinTur.getSpelarNummer();
+        ISpelar host = findHost(minSpelar);
+        int neste = findNextNumber(no, host.getSpelarteljar());
+        ISpelar sinTur = findOutWhoseTurnItIs(minSpelar, neste);
+        
+        for (ISpelar s : spelarar) {
+            s.settSinTur(sinTur);
+        }
+        return sinTur;
+    }
+    
+	private ISpelar findHost(final ISpelar minSpelar) throws RemoteException {
+		if (minSpelar.getSpelarNummer() == 0) {
+            return minSpelar;
+        }
+		for (ISpelar s : spelarar) {
+		    if (s.getSpelarNummer() == 0) {
+		        return s;
+		    }
+		}
+		return null;
+	}
+
+	private int findNextNumber(final int no, int playerCount) {
+		if (no+1 < playerCount) {
+            return no+1;
+        }
+        return 0;
+	}
+
+	private ISpelar findOutWhoseTurnItIs(final ISpelar myPlayer, int next) throws RemoteException {
+		if (myPlayer.getSpelarNummer() == next) {
+            return myPlayer;
+        }
+		for (ISpelar s : spelarar) {
+		    if (s.getSpelarNummer() == next) {
+		       return s;
+		    }
+		}
+		return null;
+	}
+
+    /** Spelaren er ferdig med sin tur, no er det neste spelar
+     * @throws java.rmi.RemoteException
+     */
+    private ISpelar nesteUtanNett(int sp){
+    	int id = spelarar.size() == sp ? 0 : sp;
+		return spelarar.get(id);
     }
 }

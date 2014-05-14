@@ -21,7 +21,7 @@ public class MeldingarModell extends AbstractListModel implements IMeldingarMode
 	}
 	public MeldingarModell() {
 		pcs = new PropertyChangeSupport(this);
-		meldingar = new ArrayList<String>();
+		meldingar = new ArrayList<>();
 	}
 	
 	public void nyMelding(String melding){

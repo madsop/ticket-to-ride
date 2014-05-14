@@ -41,14 +41,14 @@ public class Oppdragsveljar implements IOppdragsveljar {
 
     @Override
     public ArrayList<IOppdrag> setUpOppdragsveljar(ArrayList<IOppdrag> innsendteOppdragÅVeljeFrå) {
-        oppdragÅVeljeFrå = new HashMap<JCheckBox,IOppdrag>();
+        oppdragÅVeljeFrå = new HashMap<>();
         vel = new JPanel();
         GridLayout gl = new GridLayout(0, 2);
         vel.setLayout(gl);
 
         setUpAvkrysningsboksar(innsendteOppdragÅVeljeFrå);
 
-        valde = new ArrayList<IOppdrag>();
+        valde = new ArrayList<>();
         ok = new JButton(Infostrengar.OKLabel);
         ok.addActionListener(new okListener());
         vel.add(ok);
@@ -80,7 +80,7 @@ public class Oppdragsveljar implements IOppdragsveljar {
      * Nett no veldig ad-hoc-a. Bør for-løkke-styres eller noko.
      */
     private class okListener implements ActionListener {
-        public void gjer(int i, Object clickedItem){
+        public void gjer(Object clickedItem){
             if (oppdragÅVeljeFrå.containsKey(clickedItem)){
                 JCheckBox clicked = (JCheckBox)clickedItem;
                 if (valde.contains(oppdragÅVeljeFrå.get(clicked))){
@@ -102,7 +102,7 @@ public class Oppdragsveljar implements IOppdragsveljar {
             }
 
             for (int i = 0; i < oppdragÅVeljeFrå.size(); i++) {
-                gjer(i,arg0.getSource());
+                gjer(arg0.getSource());
             }
             if (valde.size() < oppdragÅVeljeFrå.size() -2){
                 ok.setEnabled(false);

@@ -8,58 +8,62 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class Oppdragshandsamar implements IOppdragshandsamar {
-    private final ArrayList<IOppdrag> gjenverandeIOppdrag;
+    private final ArrayList<IOppdrag> remainingMissions;
 
-    public Oppdragshandsamar(ArrayList<IOppdrag> oppdrag){
-        gjenverandeIOppdrag = oppdrag;
-        stokkOppdrag();;
+    public Oppdragshandsamar(ArrayList<IOppdrag> missions){
+        remainingMissions = missions;
+        reshuffleMissions();
     }
 
     @Override
-    public ArrayList<IOppdrag> getGjenverandeOppdrag(){
-        return gjenverandeIOppdrag;
+    public ArrayList<IOppdrag> getRemainingMissions(){
+        return remainingMissions;
     }
 
     @Override
-    public int getAntalGjenverandeOppdrag() {
-        return gjenverandeIOppdrag.size();
+    public int getNumberOfRemainingMissions() {
+        return remainingMissions.size();
     }
 
     @Override
-    public IOppdrag getOppdrag() {
-        IOppdrag IOppdrag = gjenverandeIOppdrag.get(0);
-        gjenverandeIOppdrag.remove(0);
+    public IOppdrag getMissionAndRemoveItFromDeck() {
+        IOppdrag IOppdrag = remainingMissions.get(0);
+        remainingMissions.remove(0);
         return IOppdrag;
     }
 
-    private void stokkOppdrag() {
-        for (int i = 0; i < gjenverandeIOppdrag.size(); i++) {
-            IOppdrag temp = gjenverandeIOppdrag.get(i);
-            int rand = (int) (Math.random() * gjenverandeIOppdrag.size());
-            gjenverandeIOppdrag.set(i, gjenverandeIOppdrag.get(rand));
-            gjenverandeIOppdrag.set(rand, temp);
+    private void reshuffleMissions() {
+        for (int i = 0; i < remainingMissions.size(); i++) {
+            IOppdrag temp = remainingMissions.get(i);
+            int rand = (int) (Math.random() * remainingMissions.size());
+            remainingMissions.set(i, remainingMissions.get(rand));
+            remainingMissions.set(rand, temp);
         }
     }
 
-    public static void trekkOppdrag(IGUI gui, ISpelar s, boolean start) throws RemoteException {
-        int talPaaOppdrag = start ? Konstantar.ANTAL_STARTOPPDRAG : Konstantar.ANTAL_VELJEOPPDRAG;
+    public static void trekkOppdrag(IGUI gui, ISpelar player, boolean start) throws RemoteException {
+        int numberOfMissionsToPickFrom = start ? Konstantar.ANTAL_STARTOPPDRAG : Konstantar.ANTAL_VELJEOPPDRAG;
 
-        ArrayList<IOppdrag> oppdrag = new ArrayList<IOppdrag>();
+        ArrayList<IOppdrag> missions = chooseMissions(gui, numberOfMissionsToPickFrom, getMissionsToChooseFrom(player, numberOfMissionsToPickFrom));
 
-        for (int i = 0; i < talPaaOppdrag; i++) {
-            IOppdrag opp = s.trekkOppdragskort();
-            oppdrag.add(opp);
+        for (IOppdrag mission : missions) {
+            player.faaOppdrag(mission);
         }
-
-        ArrayList<IOppdrag> k = new ArrayList<IOppdrag>();
-        while (k.size() < talPaaOppdrag-2){
-            k = gui.velOppdrag(oppdrag);
-        }
-
-        oppdrag = k;
-        for (IOppdrag anOppdrag : oppdrag) {
-            s.faaOppdrag(anOppdrag);
-        }
-
     }
+
+	private static ArrayList<IOppdrag> getMissionsToChooseFrom(ISpelar player, int numberOfMissionsToPickFrom) throws RemoteException {
+		ArrayList<IOppdrag> missions = new ArrayList<>();
+        for (int i = 0; i < numberOfMissionsToPickFrom; i++) {
+            missions.add(player.trekkOppdragskort());
+        }
+		return missions;
+	}
+
+	private static ArrayList<IOppdrag> chooseMissions(IGUI gui, int numberOfMissionsToPickFrom, ArrayList<IOppdrag> missions) {
+		ArrayList<IOppdrag> chosenMissions = new ArrayList<>();
+        while (chosenMissions.size() < numberOfMissionsToPickFrom-2){
+            chosenMissions = gui.velOppdrag(missions);
+        }
+		return chosenMissions;
+	}
 }

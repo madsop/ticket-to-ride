@@ -45,14 +45,11 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
         }
 
         //antalSpelarar = 3;
-        spelarar = new ArrayList<ISpelar>();
+        spelarar = new ArrayList<>();
         for (int i = 1; i <= antalSpelarar; i++) { // Opprettar spelarar
             try {
                 spelarar.add(new SpelarImpl(hovud,JOptionPane.showInputDialog(null,Infostrengar.SkrivInnSpelarnamn +i),bord));
-            }
-            catch (RemoteException ignored) {
-
-            }
+            } catch (RemoteException ignored) { }
         }
     }
 
@@ -90,7 +87,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 
 
             for (ISpelar s : spelarar) {
-                ISpelar leiar = reknUtPoengOgFinnVinnar(totalpoeng,s,poeng,vinnarpoeng,vinnar,meldingarModell,ruter );
+                ISpelar leiar = reknUtPoengOgFinnVinnar(totalpoeng,s,vinnarpoeng,vinnar,meldingarModell,ruter );
                 vinnarpoeng = reknUtPoeng(leiar,ruter);
             }
             //TODO Legg inn spelutgaave-spesifikk bonus her
@@ -99,9 +96,8 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
     }
 
 
-    private void avsluttSpeletMedSuksess(ISpelar vinnar,String poeng, IMeldingarModell meldingarModell) throws RemoteException {
-
-        assert vinnar != null;
+    private void avsluttSpeletMedSuksess(ISpelar vinnar,String poeng2, IMeldingarModell meldingarModell) throws RemoteException {
+    	String poeng = poeng2;
         String vinnaren = vinnar.getNamn() +" vann spelet, gratulerer!";
         poeng += vinnaren;
         meldingarModell.nyMelding(vinnaren);
@@ -141,13 +137,12 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
     }
 
 
-    private ISpelar reknUtPoengOgFinnVinnar(int[] totalpoeng, ISpelar s, String poeng,int vinnarpoeng, ISpelar vinnar, IMeldingarModell meldingarModell, Set<IRute> ruter) throws RemoteException {
+    private ISpelar reknUtPoengOgFinnVinnar(int[] totalpoeng, ISpelar s, int vinnarpoeng, ISpelar vinnar, IMeldingarModell meldingarModell, Set<IRute> ruter) throws RemoteException {
         ISpelar leiarNo = vinnar;
 
         int spelarensPoeng = reknUtPoeng(s,ruter);
 
         String sp = s.getNamn() +" fekk " +totalpoeng[s.getSpelarNummer()] +" poeng. ";
-        poeng += " " +sp;
         meldingarModell.nyMelding(sp);
         for (ISpelar t : spelarar){
             t.faaMelding(sp);

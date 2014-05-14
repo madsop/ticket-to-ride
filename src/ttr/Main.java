@@ -1,6 +1,6 @@
 package ttr;
 
-import ttr.bord.Bord;
+import ttr.bord.BordImpl;
 import ttr.bord.IBord;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
@@ -30,7 +30,7 @@ public class Main {
 
         boolean nett = (JOptionPane.showConfirmDialog(null, Infostrengar.velOmNettverkEllerIkkje) == JOptionPane.YES_OPTION);
         IGUI gui = mekkGUI(spel,frame,nett);
-        IBord bord = new Bord(gui,nett);
+        IBord bord = new BordImpl(gui,nett);
         IHovud hovud = new Hovud(gui, bord, nett, spel);
         gui.setHovud(hovud);
 
@@ -59,8 +59,8 @@ public class Main {
         IMeldingspanel meldingsboks = new Meldingspanel(nett);
         IHogrepanelet hogre = new Hogrepanelet(frame);
         IGUI gui = new GUI(bp,oppdragsveljar,meldingsboks, hogre);        // TODO: dependency injection
-        hogre.setGUI(gui);
-        frame.setTitle(frame.getTitle() + " - " +utgaave.getTittel());
+        hogre.setGUI(gui);	
+        frame.setTitle(frame.getTitle() + " - " +utgaave);
         frame.setPreferredSize(Konstantar.VINDUSSTORLEIK);
         frame.setContentPane((Container) gui);
         frame.pack();

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public interface ISpelUtgaave {
-	public String getTittel();
 //	public int getAntalStarttog(); ??      //TODO
 //	public int getAntalStartoppdrag(); ???       //TODO
 	public Set<IRute> getRuter();

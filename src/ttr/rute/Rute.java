@@ -1,3 +1,4 @@
+
 package ttr.rute;
 
 import ttr.data.Destinasjon;
@@ -27,7 +28,7 @@ public class Rute implements IRute {
 
 	public Rute(int ruteId, Destinasjon d1, Destinasjon d2, int lengde, Farge farge, boolean tunnel, int antaljokrar) {
 		this.ruteId = ruteId;
-		destinasjonar = new HashSet<Destinasjon>();
+		destinasjonar = new HashSet<>();
 		destinasjonar.add(d1);
 		destinasjonar.add(d2);
 		this.lengde = lengde;
@@ -74,10 +75,10 @@ public class Rute implements IRute {
 	@Override
 	@SuppressWarnings("finally")
 	public String toString() {
-		String bygdaf = null;
+		String builtByString = null;
 		try {
 			if (bygdAv != null) {
-				bygdaf = bygdAv.getNamn();
+				builtByString = bygdAv.getNamn();
 			}
 		}
 		catch (RemoteException e) {
@@ -87,7 +88,7 @@ public class Rute implements IRute {
             //noinspection ReturnInsideFinallyBlock,ReturnInsideFinallyBlock
             return destinasjonar.toArray()[0] +" - " +destinasjonar.toArray()[1] +", lengde " +lengde +", av farge " +farge
 			+", tunnel? " +tunnel +", og " +antaljokrar +" jokrar krevs for å byggje denne. Ruta er bygd av "
-			+bygdaf +", og er verdt " +ruteverdiar[lengde-1] +" poeng.";
+			+builtByString +", og er verdt " +ruteverdiar[lengde-1] +" poeng.";
 		}
 	}
 }

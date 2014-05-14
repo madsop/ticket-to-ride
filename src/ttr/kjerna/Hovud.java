@@ -32,7 +32,6 @@ public class Hovud implements IHovud {
 
 	private final boolean nett;
 
-    // Variablar
 	private ISpelar kvenSinTur;
 	private ISpelar minSpelar;
     private IKommunikasjonMedSpelarar kommunikasjonMedSpelarar;
@@ -46,55 +45,23 @@ public class Hovud implements IHovud {
 		this.nett = nett;
 		this.spel = spel;
         this.bord = bord;
-        spelarar = new ArrayList<ISpelar>();
+        spelarar = new ArrayList<>();
 		LagBrettet(nett);
 	}
-    
-    /**
-     * Startar spelet.
-     * @throws RemoteException
-     */
-    private void LagBrettet(boolean nett) throws RemoteException {
-        rutehandsamar = new Rutehandsamar(spel);
-
-        // Legg til oppdrag
-        oppdragshandsamar = new Oppdragshandsamar(spel.getOppdrag());
-
-        bygghjelpar = new ByggHjelpar(gui,nett);
-
-
-        if (!nett) {
-            mekkSpelarar();
-        }         // else er det nettverksspel og handterast seinare
-        kommunikasjonMedSpelarar = new KommunikasjonMedSpelarar(nett,spelarar);
-        turhandsamar = new TurHandsamar(spelarar,nett);
-    }
 
     public void settIGangSpelet(boolean nett, String hostAddress) throws RemoteException {
         if (nett) {
-            InitialiserNettverk nettverk = new InitialiserNettverk(gui, hostAddress, this);
-            nettverk.initialiserSpel(); // InitialiserNettverk
-            Oppdragshandsamar.trekkOppdrag(gui, minSpelar, true);
-
-            for (ISpelar s : spelarar){
-                for (IOppdrag o : s.getOppdrag()){
-                    s.trekt(o.getOppdragsid());
-                }
-            }
-
+            startNetworkGame(hostAddress);
         }
         else {
-            for (ISpelar s : spelarar) {
-                Oppdragshandsamar.trekkOppdrag(gui, s, true);
-            }
-            // ??
+            startLocalGame();
         }
     }
-
+   
 
     @Override
     public ArrayList<IOppdrag> getGjenverandeOppdrag() {
-        return oppdragshandsamar.getGjenverandeOppdrag()   ;
+        return oppdragshandsamar.getRemainingMissions()   ;
     }
 
     @Override
@@ -133,22 +100,13 @@ public class Hovud implements IHovud {
 
     @Override
     public int getAntalGjenverandeOppdrag() {
-        return oppdragshandsamar.getAntalGjenverandeOppdrag();
+        return oppdragshandsamar.getNumberOfRemainingMissions();
     }
 
     @Override
     public IOppdrag getOppdrag() {
-        return oppdragshandsamar.getOppdrag();
+        return oppdragshandsamar.getMissionAndRemoveItFromDeck();
     }
-
-	/**
-	 * Sett opp spelet for eit ikkje-nettverks-spel.
-	 * @throws RemoteException
-	 */
-	private void mekkSpelarar() throws RemoteException {
-		kommunikasjonMedSpelarar.mekkSpelarar(this,bord);
-		settSinTur(spelarar.get(0));
-	}
 
 	public ISpelar getMinSpelar() {
 		return minSpelar;
@@ -173,7 +131,7 @@ public class Hovud implements IHovud {
 		gui.visKvenDetErSinTur(kvenSinTur.getNamn(),nett,minSpelar.getNamn());
 		kvenSinTur.setEittKortTrektInn(false);
 
-		kommunikasjonMedSpelarar.sjekkOmFerdig(gui.getMeldingarModell(),kvenSinTur,spel.getTittel(),minSpelar,rutehandsamar.getRuter());
+		kommunikasjonMedSpelarar.sjekkOmFerdig(gui.getMeldingarModell(),kvenSinTur,spel.toString(),minSpelar,rutehandsamar.getRuter());
 	}
 
     @Override
@@ -188,29 +146,7 @@ public class Hovud implements IHovud {
         hjelpemetodeBygg(bygd,plass,kortKrevd,krevdJokrar,byggjandeSpelar,jokrar);
         
     }
-    
-    private void hjelpemetodeBygg(IRute bygd,int plass,int kortKrevd,int krevdJokrar,ISpelar byggjandeSpelar,int jokrar) throws RemoteException{
-        rutehandsamar.nyRute(bygd);
-
-
-        if (nett) {
-            for (ISpelar s : spelarar) {
-                s.nybygdRute(bygd.getRuteId(),byggjandeSpelar);
-                s.setTogAtt(byggjandeSpelar.getSpelarNummer()+1, byggjandeSpelar.getGjenverandeTog());
-            }
-        }
-        gui.getTogAtt()[byggjandeSpelar.getSpelarNummer()+1].setText(String.valueOf(byggjandeSpelar.getGjenverandeTog()));
-        bord.getFargekortaSomErIgjenIBunken()[plass]+=(kortKrevd-(jokrar-krevdJokrar));
-        bord.getFargekortaSomErIgjenIBunken()[Konstantar.ANTAL_FARGAR-1]+=jokrar;
-        gui.getMeldingarModell().nyMelding(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getDestinasjonar().toArray()[0] + " - " +bygd.getDestinasjonar().toArray()[1] + " i farge " + bygd.getFarge());
-
-        kommunikasjonMedSpelarar.oppdaterAndreSpelarar(plass, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
-
-        nesteSpelar();
-        
-    }
-
-    @Override
+     @Override
     public void byggTunnel(IRute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
         byggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(bord, bygd, plass, kortKrevd, krevdJokrar, minSpelar, kvenSinTur);
         ISpelar byggjandeSpelar = byggjandeInfo.byggjandeSpelar;
@@ -227,4 +163,82 @@ public class Hovud implements IHovud {
         kommunikasjonMedSpelarar.nyPaaPlass(vert,nyFarge,i,this);
     }
 
+    
+    /**
+     * Startar spelet.
+     * @throws RemoteException
+     */
+    private void LagBrettet(boolean nett) throws RemoteException {
+        rutehandsamar = new Rutehandsamar(spel);
+
+        // Legg til oppdrag
+        oppdragshandsamar = new Oppdragshandsamar(spel.getOppdrag());
+
+        bygghjelpar = new ByggHjelpar(gui,nett);
+
+
+        if (!nett) {
+            mekkSpelarar();
+        }         // else er det nettverksspel og handterast seinare
+        kommunikasjonMedSpelarar = new KommunikasjonMedSpelarar(nett,spelarar);
+        turhandsamar = new TurHandsamar(spelarar,nett);
+    }
+
+	private void startNetworkGame(String hostAddress) throws RemoteException {
+		InitialiserNettverk nettverk = new InitialiserNettverk(gui, hostAddress, this);
+		nettverk.initialiserSpel(); // InitialiserNettverk
+		Oppdragshandsamar.trekkOppdrag(gui, minSpelar, true);
+
+		for (ISpelar s : spelarar){
+		    for (IOppdrag o : s.getOppdrag()){
+		        s.trekt(o.getOppdragsid());
+		    }
+		}
+	}
+
+	private void startLocalGame() throws RemoteException {
+		for (ISpelar s : spelarar) {
+		    Oppdragshandsamar.trekkOppdrag(gui, s, true);
+		}
+		// ??
+	}
+
+	/**
+	 * Sett opp spelet for eit ikkje-nettverks-spel.
+	 * @throws RemoteException
+	 */
+	private void mekkSpelarar() throws RemoteException {
+		kommunikasjonMedSpelarar.mekkSpelarar(this,bord);
+		settSinTur(spelarar.get(0));
+	}
+	  
+    private void hjelpemetodeBygg(IRute bygd,int plass,int kortKrevd,int krevdJokrar,ISpelar byggjandeSpelar,int jokrar) throws RemoteException{
+        rutehandsamar.nyRute(bygd);
+
+        setUpForNetworkGame(bygd, byggjandeSpelar);
+        gui.getTogAtt()[byggjandeSpelar.getSpelarNummer()+1].setText(String.valueOf(byggjandeSpelar.getGjenverandeTog()));
+        updateDeckOnTable(plass, kortKrevd, krevdJokrar, jokrar);
+        gui.getMeldingarModell().nyMelding(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getDestinasjonar().toArray()[0] + " - " +bygd.getDestinasjonar().toArray()[1] + " i farge " + bygd.getFarge());
+
+        kommunikasjonMedSpelarar.oppdaterAndreSpelarar(plass, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
+
+        nesteSpelar();
+        
+    }
+
+	private void setUpForNetworkGame(IRute builtRoute, ISpelar buildingPlayer) throws RemoteException {
+		if (nett) {
+            for (ISpelar s : spelarar) {
+                s.nybygdRute(builtRoute.getRuteId(),buildingPlayer);
+                s.setTogAtt(buildingPlayer.getSpelarNummer()+1, buildingPlayer.getGjenverandeTog());
+            }
+        }
+	}
+
+	private void updateDeckOnTable(int plass, int kortKrevd, int krevdJokrar, int jokrar) {
+		bord.getFargekortaSomErIgjenIBunken()[plass]+=(kortKrevd-(jokrar-krevdJokrar));
+        bord.getFargekortaSomErIgjenIBunken()[Konstantar.ANTAL_FARGAR-1]+=jokrar;
+	}
+
+ 
 }

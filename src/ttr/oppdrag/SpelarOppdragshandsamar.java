@@ -16,7 +16,7 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
 
     public SpelarOppdragshandsamar(IHovud hovud) throws RemoteException {
         super();
-        oppdrag = new ArrayList<IOppdrag>();
+        oppdrag = new ArrayList<>();
         this.hovud = hovud;
         harEgBygdMellomAogB = new boolean[Destinasjon.values().length][Destinasjon.values().length];
         initialiserMatrise();
@@ -41,9 +41,9 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
     public int getOppdragspoeng() throws RemoteException  {
         int ret = 0;
         for (IOppdrag anOppdrag : oppdrag) {
-            Destinasjon d1 = (Destinasjon) anOppdrag.getDestinasjonar().toArray()[0];
+            Destinasjon d1 = anOppdrag.getStart();
             int d = d1.ordinal();
-            Destinasjon d2 = (Destinasjon) anOppdrag.getDestinasjonar().toArray()[1];
+            Destinasjon d2 = anOppdrag.getEnd();
             int e = d2.ordinal();
             if (harEgBygdMellomAogB[d][e] || harEgBygdMellomAogB[e][d]) {
                 ret += anOppdrag.getVerdi();
@@ -135,13 +135,10 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
      * @return trekk eit oppdrag frå kortbunken
      */
     public IOppdrag trekkOppdragskort() throws RemoteException  {
-        IOppdrag trekt;
+        IOppdrag trekt = null;
         if (hovud.getAntalGjenverandeOppdrag() > 0) {
             trekt = hovud.getOppdrag();
             //System.out.println(trekt.getDestinasjonar().toArray()[1]);
-        }
-        else {
-            trekt = null;
         }
         return trekt;
     }

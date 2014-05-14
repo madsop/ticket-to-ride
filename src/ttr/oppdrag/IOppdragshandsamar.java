@@ -3,9 +3,9 @@ package ttr.oppdrag;
 import java.util.ArrayList;
 
 public interface IOppdragshandsamar {
-    ArrayList<IOppdrag> getGjenverandeOppdrag();
+    ArrayList<IOppdrag> getRemainingMissions();
 
-    int getAntalGjenverandeOppdrag();
+    int getNumberOfRemainingMissions();
 
-    IOppdrag getOppdrag();
+    IOppdrag getMissionAndRemoveItFromDeck();
 }
