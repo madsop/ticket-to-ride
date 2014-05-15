@@ -20,7 +20,7 @@ class kortBunkeHandler {
         JLabel woho = new JLabel("Du trakk eit kort av farge " +f);
         try {
             if (f==null){return;}
-            kvenSinTur.faaKort(f);
+            kvenSinTur.receiveCard(f);
             hovud.sendKortMelding(true,true,f);
         } catch (RemoteException e) {
             e.printStackTrace();

@@ -6,9 +6,9 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface IKorthandsamar extends Remote {
-    Farge getTilfeldigKortFråBordet(int i) throws RemoteException;
+    Farge getRandomCardFromTheDeck(int i) throws RemoteException;
 
-    void faaKort(Farge farge) throws RemoteException;
+    void receiveCard(Farge farge) throws RemoteException;
 
     int[] getKort() throws RemoteException;
 

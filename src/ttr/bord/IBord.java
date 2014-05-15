@@ -9,6 +9,6 @@ public interface IBord {
     public int[] getFargekortaSomErIgjenIBunken();
     public Farge[] getPaaBordet();
     public int getAntalFargekortPåBordet();
-    public Farge getTilfeldigKortFråBordet(int plass, boolean leggPåBordet);
+    public Farge getRandomCardFromTheDeck(int plass, boolean leggPåBordet);
     public boolean sjekkOmAntalJokrarPaaBordetErOK();
 }

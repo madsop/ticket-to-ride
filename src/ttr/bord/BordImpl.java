@@ -47,7 +47,7 @@ public class BordImpl implements IBord {
 
 	public void leggUtFem() {
 		for (int i = 0; i < Konstantar.ANTAL_KORT_PÅ_BORDET; i++) { // Legg ut fem kort på bordet
-			getTilfeldigKortFråBordet(i,true);			
+			getRandomCardFromTheDeck(i,true);			
 		}
 	}
 
@@ -67,14 +67,14 @@ public class BordImpl implements IBord {
 		return fargekortpåbordet;
 	}
 
-	public Farge getTilfeldigKortFråBordet(int plass, boolean leggPåBordet) {
-        int fargekortpåbordet = getAntalFargekortPåBordet();
-		int teljar = tilfeldigFarge(fargekortpåbordet, colourCardsLeftInDeck);
-		if (teljar >= 0 && teljar <= Konstantar.ANTAL_FARGAR) {
+	public Farge getRandomCardFromTheDeck(int plass, boolean leggPåBordet) {
+        int numberOfColouredCardsOnTheTable = getAntalFargekortPåBordet();
+		int randomColour = tilfeldigFarge(numberOfColouredCardsOnTheTable, colourCardsLeftInDeck);
+		if (randomColour >= 0 && randomColour <= Konstantar.ANTAL_FARGAR) {
 			if (leggPåBordet) {
-				leggKortPåBordet(plass, teljar);
+				leggKortPåBordet(plass, randomColour);
 			}
-			return Konstantar.FARGAR[teljar];
+			return Konstantar.FARGAR[randomColour];
 		}
 		//TODO: stokk();
 		System.out.println("stokk!");

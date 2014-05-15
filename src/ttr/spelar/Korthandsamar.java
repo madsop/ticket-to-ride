@@ -10,21 +10,18 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar {
-    private IHovud hovud;
-    private int[] kort;
+	private static final long serialVersionUID = 3899317463384337994L;
+	private IHovud hovud;
+    private int[] cards;
 
     Korthandsamar(IHovud hovud) throws RemoteException {
         super();
         this.hovud = hovud;
-        kort = new int[Konstantar.ANTAL_FARGAR];
-
-        for (int i = 0; i < Konstantar.ANTAL_STARTKORT; i++) {
-            kort[i] = 0;
-        }
         faaInitielleFargekort();
     }
 
-    private void faaInitielleFargekort() throws  RemoteException{
+    private void faaInitielleFargekort() {
+    	initialiseCards();
         for (int startkortPosisjon = 0; startkortPosisjon < Konstantar.ANTAL_STARTKORT; startkortPosisjon++) {
             Farge trekt = trekkFargekort();
             int plass = -1;
@@ -34,62 +31,72 @@ public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar
                 }
             }
             if (plass >= 0) {
-                kort[plass]++;
+                cards[plass]++;
             }
         }
     }
+    
+	private void initialiseCards() {
+		cards = new int[Konstantar.ANTAL_FARGAR];
 
-    @Override
-    public Farge getTilfeldigKortFråBordet(int i) throws RemoteException {
-        Farge fargePåDetTilfeldigeKortet = hovud.getBord().getTilfeldigKortFråBordet(i, true);
+        for (int i = 0; i < Konstantar.ANTAL_STARTKORT; i++) {
+            cards[i] = 0;
+        }
+	}
 
-        if (fargePåDetTilfeldigeKortet == null){
-            guiSetUp(i);
+    public Farge getRandomCardFromTheDeck(int positionOnTable) {
+        Farge colourOfTheRandomCard = hovud.getBord().getRandomCardFromTheDeck(positionOnTable, true);
 
-            int colourPosition = -1;
-            for (Farge farge : Konstantar.FARGAR){
-                if (fargePåDetTilfeldigeKortet == farge){
-                    colourPosition = farge.ordinal();
-                }
-            }
-            if (colourPosition >= 0 && colourPosition < Konstantar.FARGAR.length){ //todo bør ikkje denne vera >0 ?
-                kort[colourPosition]--;
-            }
-
+        if (colourOfTheRandomCard == null){
+//            tryingToPickNullCard(positionOnTable, colourOfTheRandomCard);
+        	displayGraphicallyThatThereIsNoCardHere(positionOnTable);
             return null;
         }
-        hovud.getBord().getPaaBordet()[i] = fargePåDetTilfeldigeKortet;
-        return fargePåDetTilfeldigeKortet;
+
+        hovud.getBord().getPaaBordet()[positionOnTable] = colourOfTheRandomCard;
+        return colourOfTheRandomCard;
     }
 
-	private void guiSetUp(int i) {
+//	private void tryingToPickNullCard(int positionOnTable, Farge colourOfTheRandomCard) {
+
+//		int colourPosition = -1; TODO fjern heile denne når eg byrjar å bli trygg på refaktoriseringa
+//		for (Farge farge : Konstantar.FARGAR){
+//		    if (colourOfTheRandomCard == farge){
+//		        colourPosition = farge.ordinal(); 
+//		        System.out.println("THIS can friggin never happen");
+//		    }
+//		}
+//		if (colourPosition >= 0 && colourPosition < Konstantar.FARGAR.length){ //todo bør ikkje denne vera >0 ?
+//		    kort[colourPosition]--;
+//		}
+//	}
+
+	private void displayGraphicallyThatThereIsNoCardHere(int positionOnTable) {
 		JOptionPane.showMessageDialog((Component) hovud.getGui(), "Det er ikkje noko kort der, ser du vel.");
-		hovud.getGui().getKortButtons()[i].setBackground(Color.GRAY);
-		hovud.getGui().getKortButtons()[i].setText("Tom");
+		hovud.getGui().getKortButtons()[positionOnTable].setBackground(Color.GRAY);
+		hovud.getGui().getKortButtons()[positionOnTable].setText("Tom");
 	}
 
 
-    @Override
-    public void faaKort(Farge farge) throws RemoteException  {
-        int counter = 0;
+    public void receiveCard(Farge colour) {
+        int position = 0;
         for (int i = 0; i < Konstantar.FARGAR.length; i++) {
-            if (farge == Konstantar.FARGAR[i]) {
-                counter = i;
+            if (colour == Konstantar.FARGAR[i]) {
+                position = i;
             }
         }        
-        kort[counter]++;
+        cards[position]++;
     }
 
-    @Override
-    public int[] getKort() throws RemoteException  {
-        return kort;
+    public int[] getKort() {
+        return cards;
     }
 
     /** @return eit tilfeldig fargekort frå toppen av stokken */
     @Override
-    public Farge trekkFargekort() throws RemoteException {
+    public Farge trekkFargekort() {
         if (hovud.getBord().getAntalFargekortPåBordet() > 0) {
-            return hovud.getBord().getTilfeldigKortFråBordet(0, false);
+            return hovud.getBord().getRandomCardFromTheDeck(0, false);
         }
         return null;
     }

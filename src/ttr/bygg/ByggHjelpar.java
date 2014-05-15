@@ -133,7 +133,7 @@ public class ByggHjelpar implements IByggHjelpar {
 		Farge[] treTrekte = new Farge[3];
 		int ekstra = 0;
 		for (int i = 0; i < treTrekte.length; i++) {
-			treTrekte[i] = bord.getTilfeldigKortFråBordet(0, false);
+			treTrekte[i] = bord.getRandomCardFromTheDeck(0, false);
 			if (treTrekte[i] == null){
 				JOptionPane.showMessageDialog((Component) gui, Infostrengar.TomtPåBordet);
 				return null;

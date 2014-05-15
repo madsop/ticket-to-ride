@@ -56,8 +56,8 @@ import java.util.ArrayList;
     
     // Kort
     public int[] getKort() throws RemoteException { return korthandsamar.getKort(); }
-    public void faaKort(Farge farge) throws RemoteException { korthandsamar.faaKort(farge);}
-    public Farge getTilfeldigKortFråBordet(int i) throws RemoteException { return korthandsamar.getTilfeldigKortFråBordet(i); }
+    public void receiveCard(Farge farge) throws RemoteException { korthandsamar.receiveCard(farge);}
+    public Farge getTilfeldigKortFråBordet(int i) throws RemoteException { return korthandsamar.getRandomCardFromTheDeck(i); }
     public Farge trekkFargekort() throws RemoteException { return korthandsamar.trekkFargekort(); }
 
     // Bord
