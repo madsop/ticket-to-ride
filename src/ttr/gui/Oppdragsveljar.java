@@ -2,7 +2,7 @@ package ttr.gui;
 
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
-import ttr.oppdrag.IOppdrag;
+import ttr.oppdrag.Mission;
 import ttr.utgaave.ISpelUtgaave;
 
 import javax.swing.*;
@@ -17,8 +17,8 @@ public class Oppdragsveljar implements IOppdragsveljar {
     private final JFrame frame;
     private JDialog missionChooserDialog;
     private JPanel choosePanel;
-    private ArrayList<IOppdrag> chosenMissions; //todo: dette er ikkje gui-stuff
-    private HashMap<JCheckBox,IOppdrag> missionsToChooooseFrom;
+    private ArrayList<Mission> chosenMissions; //todo: dette er ikkje gui-stuff
+    private HashMap<JCheckBox,Mission> missionsToChooooseFrom;
     private JButton ok;
 
     public Oppdragsveljar(ISpelUtgaave spel, JFrame frame){
@@ -27,7 +27,7 @@ public class Oppdragsveljar implements IOppdragsveljar {
     }
 
     @Override
-    public ArrayList<IOppdrag> setUpOppdragsveljar(ArrayList<IOppdrag> innsendteOppdragÅVeljeFrå) {
+    public ArrayList<Mission> setUpOppdragsveljar(ArrayList<Mission> innsendteOppdragÅVeljeFrå) {
         missionsToChooooseFrom = new HashMap<>();
         choosePanel = new JPanel();
         GridLayout gl = new GridLayout(0, 2);
@@ -54,8 +54,8 @@ public class Oppdragsveljar implements IOppdragsveljar {
         ok.setEnabled(false);
 	}
 
-    private void setUpCheckBoxes(ArrayList<IOppdrag> missionsToChooseFrom){
-        for (IOppdrag mission : missionsToChooseFrom){
+    private void setUpCheckBoxes(ArrayList<Mission> missionsToChooseFrom){
+        for (Mission mission : missionsToChooseFrom){
             JCheckBox missionCheckBox = new JCheckBox();
             missionCheckBox.addActionListener(new okListener());
             missionCheckBox.setSelected(false);

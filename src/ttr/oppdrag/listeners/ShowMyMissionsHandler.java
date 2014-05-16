@@ -2,7 +2,7 @@ package ttr.oppdrag.listeners;
 
 import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
-import ttr.oppdrag.IOppdrag;
+import ttr.oppdrag.Mission;
 import ttr.spelar.ISpelar;
 
 import javax.swing.*;
@@ -17,7 +17,7 @@ public class ShowMyMissionsHandler {
 		String missionString = player.getNamn() +": ";
 
 		for (int i = 0; i < player.getAntalOppdrag(); i++) {
-			IOppdrag mission = player.getOppdrag().get(i);
+			Mission mission = player.getOppdrag().get(i);
 			missionString += prepareMissionString(player, i, mission);
 		}
 		
@@ -31,9 +31,9 @@ public class ShowMyMissionsHandler {
 		return hovud.getKvenSinTur();
 	}
 
-	private String prepareMissionString(ISpelar player,int i, IOppdrag mission) throws RemoteException {
+	private String prepareMissionString(ISpelar player,int i, Mission mission) throws RemoteException {
 		String missionString = mission.toString();
-		if (player.erOppdragFerdig(mission.getOppdragsid())){
+		if (player.erOppdragFerdig(mission.getMissionId())){
 			missionString += " (OK)";
 		}
 		if (i == player.getAntalOppdrag()-1){

@@ -3,7 +3,7 @@ package ttr.gui;
 import ttr.data.Farge;
 import ttr.data.IMeldingarModell;
 import ttr.kjerna.IHovud;
-import ttr.oppdrag.IOppdrag;
+import ttr.oppdrag.Mission;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -19,6 +19,6 @@ public interface IGUI {
     public String showInputDialog(String string);                       // TODO: bruk denne og liknande meir
     public void setHovud(IHovud hovud);
 
-    ArrayList<IOppdrag> velOppdrag(ArrayList<IOppdrag> oppd);
+    ArrayList<Mission> velOppdrag(ArrayList<Mission> oppd);
 
 }

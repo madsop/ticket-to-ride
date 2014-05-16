@@ -3,7 +3,7 @@ package ttr.spelar;
 import ttr.bord.IBord;
 import ttr.data.Farge;
 import ttr.kjerna.IHovud;
-import ttr.oppdrag.IOppdrag;
+import ttr.oppdrag.Mission;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -47,10 +47,10 @@ import java.util.ArrayList;
     // Oppdrag
     public int getAntalFullfoerteOppdrag() throws RemoteException { return spelarOppdragshandsamar.getAntalFullfoerteOppdrag(); }
     public int getOppdragspoeng() throws RemoteException { return spelarOppdragshandsamar.getOppdragspoeng(); }
-    public ArrayList<IOppdrag> getOppdrag() throws RemoteException { return spelarOppdragshandsamar.getOppdrag(); }
-    public void faaOppdrag(IOppdrag o) throws RemoteException { spelarOppdragshandsamar.faaOppdrag(o); }
+    public ArrayList<Mission> getOppdrag() throws RemoteException { return spelarOppdragshandsamar.getOppdrag(); }
+    public void faaOppdrag(Mission o) throws RemoteException { spelarOppdragshandsamar.faaOppdrag(o); }
     public int getAntalOppdrag() throws RemoteException { return spelarOppdragshandsamar.getAntalOppdrag(); }
-    public IOppdrag trekkOppdragskort() throws RemoteException { return spelarOppdragshandsamar.trekkOppdragskort(); }
+    public Mission trekkOppdragskort() throws RemoteException { return spelarOppdragshandsamar.trekkOppdragskort(); }
     public boolean erOppdragFerdig(int oppdragsid) throws RemoteException { return spelarOppdragshandsamar.erOppdragFerdig(oppdragsid); }
     public void trekt(int oppdragsid) throws RemoteException { spelarOppdragshandsamar.trekt(oppdragsid); }
     

@@ -2,8 +2,8 @@ package ttr.utgaave.europe;
 
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
-import ttr.oppdrag.IOppdrag;
 import ttr.oppdrag.Mission;
+import ttr.oppdrag.MissionImpl;
 import ttr.rute.IRoute;
 import ttr.rute.Route;
 import ttr.utgaave.AbstractSpelUtgaave;
@@ -29,10 +29,10 @@ public class Europe extends AbstractSpelUtgaave implements ISpelUtgaave {
 		return ruter;
 	}
 	
-	protected ArrayList<IOppdrag> fyllMedOppdrag() {
-		oppdrag = new ArrayList<IOppdrag>();
+	protected ArrayList<Mission> fyllMedOppdrag() {
+		oppdrag = new ArrayList<Mission>();
 		int oppdragsid = 0;
-		oppdrag.add(new Mission(oppdragsid,Destinasjon.Brest,Destinasjon.Petrograd,21));
+		oppdrag.add(new MissionImpl(oppdragsid,Destinasjon.Brest,Destinasjon.Petrograd,21));
 		//oppdragsid++;
 		return oppdrag;
 	}

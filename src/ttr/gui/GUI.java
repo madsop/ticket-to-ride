@@ -5,7 +5,7 @@ import ttr.data.IMeldingarModell;
 import ttr.gui.hogresida.IHogrepanelet;
 import ttr.gui.hogresida.IMeldingspanel;
 import ttr.kjerna.IHovud;
-import ttr.oppdrag.IOppdrag;
+import ttr.oppdrag.Mission;
 
 import javax.swing.*;
 import java.awt.*;
@@ -86,6 +86,6 @@ public class GUI extends JPanel implements IGUI {
 
     public String showInputDialog(String string) { return JOptionPane.showInputDialog(this, string); }
 
-    public ArrayList<IOppdrag> velOppdrag(ArrayList<IOppdrag> oppdrag) { return oppdragsveljar.setUpOppdragsveljar(oppdrag); }
+    public ArrayList<Mission> velOppdrag(ArrayList<Mission> oppdrag) { return oppdragsveljar.setUpOppdragsveljar(oppdrag); }
 
 }

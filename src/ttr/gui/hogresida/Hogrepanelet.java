@@ -1,6 +1,6 @@
 package ttr.gui.hogresida;
 
-import ttr.Listeners.HandlingListener;
+import ttr.Listeners.DelegationListener;
 import ttr.Listeners.WrapperKortListener;
 import ttr.data.Farge;
 import ttr.data.Infostrengar;
@@ -126,7 +126,7 @@ public class Hogrepanelet extends JPanel implements IHogrepanelet {
     }
     
     public void addListeners(IHovud hovud){
-        HandlingListener listener = new HandlingListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
+        DelegationListener listener = new DelegationListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
         trekkOppdrag.addActionListener(listener);
         bygg.addActionListener(listener);
         visMineKort.addActionListener(listener);

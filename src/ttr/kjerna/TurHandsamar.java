@@ -15,19 +15,12 @@ public class TurHandsamar implements ITurhandsamar {
     }
 
     public ISpelar nextPlayer(ISpelar kvenSinTur, ISpelar minSpelar) throws RemoteException{
-        int sp = findIdOfNextPlayer(kvenSinTur);
-
-        return nett ? nesteMedNett(kvenSinTur, minSpelar) : nextPlayerUtanNett(sp);
+        int idOfNextPlayer = findIdOfNextPlayer(kvenSinTur);
+        return nett ? nesteMedNett(kvenSinTur, minSpelar) : nextPlayerUtanNett(idOfNextPlayer);
     }
 
 	private int findIdOfNextPlayer(ISpelar kvenSinTur) {
-		int sp = 1;
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i) == kvenSinTur) {
-                sp +=i;
-            }
-        }
-		return sp;
+		return players.indexOf(kvenSinTur) + 1;
 	}
 
     private ISpelar nesteMedNett(final ISpelar kvenSinTur, final ISpelar minSpelar) throws RemoteException {
@@ -36,8 +29,8 @@ public class TurHandsamar implements ITurhandsamar {
         int next = findNextNumber(no, host.getSpelarteljar());
         ISpelar sinTur = findPlayerByPlayerNumber(minSpelar, next);
         
-        for (ISpelar s : players) {
-            s.settSinTur(sinTur);
+        for (ISpelar player : players) {
+            player.settSinTur(sinTur);
         }
         return sinTur;
     }
@@ -62,11 +55,12 @@ public class TurHandsamar implements ITurhandsamar {
 		       return player;
 		    }
 		}
+//		return players.stream().filter(x -> x.getSpelarNummer() == playerNumber).findAny().get(); //TODO after decoupling
 		return null;
 	}
 
-    private ISpelar nextPlayerUtanNett(int sp){
-    	int id = players.size() == sp ? 0 : sp;
+    private ISpelar nextPlayerUtanNett(int idOfNextPlayer){
+    	int id = players.size() == idOfNextPlayer ? 0 : idOfNextPlayer;
 		return players.get(id);
     }
 }

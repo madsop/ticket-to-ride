@@ -1,7 +1,7 @@
 package ttr.spelar;
 
 import ttr.data.Farge;
-import ttr.oppdrag.IOppdrag;
+import ttr.oppdrag.Mission;
 import ttr.rute.IRoute;
 
 import java.rmi.Remote;
@@ -39,12 +39,12 @@ public interface ISpelar extends Remote{
 
 	public int getAntalFullfoerteOppdrag() throws RemoteException;
     public int getOppdragspoeng() throws RemoteException;
-    public ArrayList<IOppdrag> getOppdrag() throws RemoteException;
-    public void faaOppdrag(IOppdrag o) throws RemoteException;
+    public ArrayList<Mission> getOppdrag() throws RemoteException;
+    public void faaOppdrag(Mission o) throws RemoteException;
     public int getAntalOppdrag() throws RemoteException;
 
     public boolean erOppdragFerdig(int oppdragsid) throws RemoteException;
-    public IOppdrag trekkOppdragskort() throws RemoteException;
+    public Mission trekkOppdragskort() throws RemoteException;
 
 
     public void receiveCard(Farge farge) throws RemoteException;

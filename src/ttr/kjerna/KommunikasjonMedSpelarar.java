@@ -12,15 +12,14 @@ import javax.swing.*;
 import java.awt.HeadlessException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Set;
 
 
 public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 	private final boolean nett;
-	private Collection<ISpelar> players;
+	private ArrayList<ISpelar> players;
 
-	public KommunikasjonMedSpelarar (boolean nett, Collection<ISpelar> spelarar) {
+	public KommunikasjonMedSpelarar (boolean nett, ArrayList<ISpelar> spelarar) {
 		this.nett = nett;
 		this.players = spelarar;
 	}
@@ -35,11 +34,12 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 		}
 	}
 
-	public void createPlayersForLocalGame(IHovud hovud, IBord bord) {
+	public ArrayList<ISpelar> createPlayersForLocalGame(IHovud hovud, IBord bord) {
 		int antalSpelarar = addPlayers();
 		try {
-			createPlayers(hovud, bord, antalSpelarar);
+			return createPlayers(hovud, bord, antalSpelarar);
 		} catch (RemoteException ignored) { }
+		return new ArrayList<>();
 	}
 
 	private int addPlayers() {
@@ -51,11 +51,12 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 		return numberOfPlayers;
 	}
 
-	private void createPlayers(IHovud hovud, IBord bord, int antalSpelarar) throws HeadlessException, RemoteException {
+	private ArrayList<ISpelar> createPlayers(IHovud hovud, IBord bord, int antalSpelarar) throws HeadlessException, RemoteException {
 		players = new ArrayList<>();
 		for (int i = 1; i <= antalSpelarar; i++) {
 			players.add(new PlayerNetworkClass(hovud,JOptionPane.showInputDialog(null,Infostrengar.SkrivInnSpelarnamn +i),bord));
 		}
+		return players;
 	}
 
 	public void sjekkOmFerdig(IMeldingarModell meldingarModell, ISpelar kvenSinTur, String speltittel, ISpelar minSpelar, Set<IRoute> ruter) throws RemoteException{

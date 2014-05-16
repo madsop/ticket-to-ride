@@ -3,7 +3,7 @@ package ttr.kjerna;
 import ttr.bord.IBord;
 import ttr.data.Farge;
 import ttr.gui.IGUI;
-import ttr.oppdrag.IOppdrag;
+import ttr.oppdrag.Mission;
 import ttr.rute.IRoute;
 import ttr.spelar.ISpelar;
 
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public interface IHovud {
-    public ArrayList<IOppdrag> getGjenverandeOppdrag();
+    public ArrayList<Mission> getGjenverandeOppdrag();
 
     public Set<IRoute> getRuter();
 
@@ -34,7 +34,7 @@ public interface IHovud {
     public IGUI getGui();
 
     public int getAntalGjenverandeOppdrag ();
-    public IOppdrag getOppdrag();
+    public Mission getOppdrag();
 
     public ISpelar getMinSpelar();
     public void settSinTur(ISpelar spelar) throws RemoteException;

@@ -8,7 +8,7 @@ import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
 import ttr.nettverk.InitialiserNettverk;
-import ttr.oppdrag.IOppdrag;
+import ttr.oppdrag.Mission;
 import ttr.oppdrag.IOppdragshandsamar;
 import ttr.oppdrag.Oppdragshandsamar;
 import ttr.rute.IRoute;
@@ -27,7 +27,7 @@ public class Hovud implements IHovud {
 
 	private final ISpelUtgaave spel;
 	private final IBord bord;
-	private final ArrayList<ISpelar> players;
+	private ArrayList<ISpelar> players;
 	private final IGUI gui;
 
 	private final boolean nett;
@@ -58,7 +58,7 @@ public class Hovud implements IHovud {
 		}
 	}
 
-	public ArrayList<IOppdrag> getGjenverandeOppdrag() {
+	public ArrayList<Mission> getGjenverandeOppdrag() {
 		return oppdragshandsamar.getRemainingMissions()   ;
 	}
 
@@ -96,7 +96,7 @@ public class Hovud implements IHovud {
 		return oppdragshandsamar.getNumberOfRemainingMissions();
 	}
 
-	public IOppdrag getOppdrag() {
+	public Mission getOppdrag() {
 		return oppdragshandsamar.getMissionAndRemoveItFromDeck();
 	}
 
@@ -106,7 +106,7 @@ public class Hovud implements IHovud {
 
 	public void settSinTur(ISpelar spelar) throws RemoteException {
 		kvenSinTur = spelar;
-		gui.visKvenDetErSinTur(kvenSinTur.getNamn(),nett,minSpelar.getNamn());
+		gui.visKvenDetErSinTur(kvenSinTur.getNamn(),nett,minSpelar.getNamn()); //todo minspelar er null init...
 	}
 
 	public void nesteSpelar() throws RemoteException {
@@ -159,10 +159,11 @@ public class Hovud implements IHovud {
 
 		bygghjelpar = new ByggHjelpar(gui,nett);
 
+		kommunikasjonMedSpelarar = new KommunikasjonMedSpelarar(nett,players); // TODO dependency injection?
+
 		if (!nett) {
 			createPlayersAndSetUpForLocalGame();
 		}         // else er det nettverksspel og handterast seinare
-		kommunikasjonMedSpelarar = new KommunikasjonMedSpelarar(nett,players); // TODO dependency injection?
 		turhandsamar = new TurHandsamar(players,nett);
 	 }
 
@@ -176,8 +177,8 @@ public class Hovud implements IHovud {
 
 	 private void givePlayersMissions() throws RemoteException {
 		 for (ISpelar player : players){
-			 for (IOppdrag mission : player.getOppdrag()){
-				 player.trekt(mission.getOppdragsid());
+			 for (Mission mission : player.getOppdrag()){
+				 player.trekt(mission.getMissionId());
 			 }
 		 }
 	 }
@@ -190,7 +191,8 @@ public class Hovud implements IHovud {
 	 }
 
 	 private void createPlayersAndSetUpForLocalGame() throws RemoteException {
-		 kommunikasjonMedSpelarar.createPlayersForLocalGame(this,bord);
+		 players = kommunikasjonMedSpelarar.createPlayersForLocalGame(this,bord); //todo playes må komme inn i arraylista her på eit vis
+		 if (minSpelar == null) { setMinSpelar(players.get(0)); }
 		 settSinTur(players.get(0));
 	 }
 

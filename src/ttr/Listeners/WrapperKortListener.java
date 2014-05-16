@@ -27,7 +27,11 @@ public class WrapperKortListener implements ActionListener{
 
 	public void actionPerformed(ActionEvent arg0) {
 		if (arg0.getSource() == kortBunke) {
-			new kortBunkeHandler(hovud);
+			try {
+				new CardDeckHandler(hovud);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
 		}
 		else if (arg0.getSource() == kortButtons[0]) {
 			createButtonForRetrievingCardFromTable(0);

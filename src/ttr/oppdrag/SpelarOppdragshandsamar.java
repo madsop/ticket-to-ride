@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpelarOppdragshandsamar{
 	private static final long serialVersionUID = 5194460142995578869L;
-	private ArrayList<IOppdrag> missions;
+	private ArrayList<Mission> missions;
 	private IHovud hovud;
 	private boolean[][] harEgBygdMellomAogB;
 
@@ -26,12 +26,12 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
 		return missions.size();
 	}
 
-	public void faaOppdrag(IOppdrag o) throws RemoteException{
+	public void faaOppdrag(Mission o) throws RemoteException{
 		if(!this.missions.contains(o)){
 			this.missions.add(o);
 		}
 	}
-	public ArrayList<IOppdrag> getOppdrag() throws RemoteException  {
+	public ArrayList<Mission> getOppdrag() throws RemoteException  {
 		return missions;
 	}
 	/**
@@ -40,18 +40,18 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
 	 */
 	public int getOppdragspoeng() throws RemoteException  {
 		int totalMissionValue = 0;
-		for (IOppdrag mission : missions) {
+		for (Mission mission : missions) {
 			if (haveIBuiltThisMission(mission)) {
-				totalMissionValue += mission.getVerdi();
+				totalMissionValue += mission.getValue();
 			} else {
-				totalMissionValue -= mission.getVerdi();
+				totalMissionValue -= mission.getValue();
 			}
 		}
 
 		return totalMissionValue;
 	}
 	public boolean erOppdragFerdig(int oppdragsid) throws RemoteException{
-		IOppdrag mission = findMissionById(oppdragsid);
+		Mission mission = findMissionById(oppdragsid);
 		if (mission==null){
 			return false;
 		}
@@ -60,7 +60,7 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
 
 	public int getAntalFullfoerteOppdrag() throws RemoteException{
 		int numberOfFulfilledMissions = 0;
-		for (IOppdrag mission : missions){
+		for (Mission mission : missions){
 			if (haveIBuiltThisMission(mission)) {
 				numberOfFulfilledMissions++;
 			}
@@ -84,7 +84,7 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
 	/**
 	 * @return trekk eit oppdrag frå kortbunken
 	 */
-	public IOppdrag trekkOppdragskort() throws RemoteException  {
+	public Mission trekkOppdragskort() throws RemoteException  {
 		if (hovud.getAntalGjenverandeOppdrag() > 0) {
 			return hovud.getOppdrag();
 			//System.out.println(trekt.getDestinasjonar().toArray()[1]);
@@ -95,22 +95,17 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
 	public void trekt(int oppdragsid) throws RemoteException {
 		// Finn oppdrag
 		for (int i = 0; i < hovud.getAntalGjenverandeOppdrag(); i++){
-			if (hovud.getGjenverandeOppdrag().get(i).getOppdragsid() == oppdragsid){
+			if (hovud.getGjenverandeOppdrag().get(i).getMissionId() == oppdragsid){
 				hovud.getGjenverandeOppdrag().remove(i);
 			}
 		}
 	}
 
-	private IOppdrag findMissionById(int oppdragsid) {
-		for (IOppdrag mission : missions){
-			if (mission.getOppdragsid() == oppdragsid){
-				return mission;
-			}
-		}
-		return null;
+	private Mission findMissionById(int oppdragsid) {
+		return missions.stream().filter(mission -> mission.getMissionId() == oppdragsid).findAny().get();
 	}
 
-	private boolean haveIBuiltThisMission(IOppdrag mission) {
+	private boolean haveIBuiltThisMission(Mission mission) {
 		int start = mission.getStart().ordinal();
 		int end = mission.getEnd().ordinal();
 		return harEgBygdMellomAogB[start][end] || harEgBygdMellomAogB[end][start];

@@ -11,13 +11,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
-public class HandlingListener implements ActionListener{
+public class DelegationListener implements ActionListener{
     private final IGUI gui;
     private final IHovud hovud;
     private final JButton visBygde,visMineKort,visMineOppdrag,trekkOppdrag,bygg;
     private final JFrame frame;
 
-    public HandlingListener(IGUI gui, IHovud hovud, JButton visBygde,
+    public DelegationListener(IGUI gui, IHovud hovud, JButton visBygde,
                             JButton visMineKort, JButton visMineOppdrag, JButton trekkOppdrag, JButton bygg,
                             JFrame frame) {
         this.gui = gui;

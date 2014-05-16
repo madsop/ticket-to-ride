@@ -1,6 +1,6 @@
 package ttr.utgaave;
 
-import ttr.oppdrag.IOppdrag;
+import ttr.oppdrag.Mission;
 import ttr.rute.IRoute;
 
 import java.net.URL;
@@ -11,7 +11,7 @@ public interface ISpelUtgaave {
 //	public int getAntalStarttog(); ??      //TODO
 //	public int getAntalStartoppdrag(); ???       //TODO
 	public Set<IRoute> getRuter();
-	public ArrayList<IOppdrag> getOppdrag();
+	public ArrayList<Mission> getOppdrag();
 	public String toString();
 	public URL getBakgrunnsbildet();
 }
