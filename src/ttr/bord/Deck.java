@@ -73,8 +73,7 @@ public class Deck {
     
     Farge getCardInRandomColour() { //TODO denne gir out of bounds om tom for kort?
     	int fargeID = getIDOfCardInRandomColour();
-    	Farge farge = Konstantar.FARGAR[fargeID];
-    	return farge;
+    	return Konstantar.FARGAR[fargeID];
     }
 
 	private boolean shouldIncrease(int colourCardsLeftOnTable, int indexOfRandomlyChosenCardInDeck, int colorCounter, int temporaryValue) {

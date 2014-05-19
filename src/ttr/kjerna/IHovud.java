@@ -4,7 +4,7 @@ import ttr.bord.IBord;
 import ttr.data.Farge;
 import ttr.gui.IGUI;
 import ttr.oppdrag.Mission;
-import ttr.rute.IRoute;
+import ttr.rute.Route;
 import ttr.spelar.ISpelar;
 
 import java.rmi.RemoteException;
@@ -14,9 +14,9 @@ import java.util.Set;
 public interface IHovud {
     public ArrayList<Mission> getGjenverandeOppdrag();
 
-    public Set<IRoute> getRuter();
+    public Set<Route> getRuter();
 
-    public Set<IRoute> getAlleBygdeRuter();
+    public Set<Route> getAlleBygdeRuter();
 
     public void setMinSpelar(ISpelar spelar);
 
@@ -40,8 +40,8 @@ public interface IHovud {
     public void settSinTur(ISpelar spelar) throws RemoteException;
     public void nesteSpelar() throws RemoteException;
 
-    public Set<IRoute> findRoutesNotYetBuilt() throws RemoteException;
-    public void bygg(IRoute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException;
-    public void byggTunnel(IRoute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException;
+    public Set<Route> findRoutesNotYetBuilt() throws RemoteException;
+    public void bygg(Route bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException;
+    public void byggTunnel(Route bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException;
 
 }

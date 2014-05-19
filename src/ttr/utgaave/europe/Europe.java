@@ -4,8 +4,8 @@ import ttr.data.Destinasjon;
 import ttr.data.Farge;
 import ttr.oppdrag.Mission;
 import ttr.oppdrag.MissionImpl;
-import ttr.rute.IRoute;
 import ttr.rute.Route;
+import ttr.rute.RouteImpl;
 import ttr.utgaave.AbstractSpelUtgaave;
 import ttr.utgaave.ISpelUtgaave;
 
@@ -21,10 +21,10 @@ public class Europe extends AbstractSpelUtgaave implements ISpelUtgaave {
 		super(tittel,bilde);
 	}
 	
-	protected Set<IRoute> leggTilRuter() {
-		ruter = new HashSet<IRoute>();
+	protected Set<Route> leggTilRuter() {
+		ruter = new HashSet<Route>();
 		int ruteId = 0;
-		ruter.add(new Route(ruteId,Destinasjon.Brest,Destinasjon.Dieppe,2,Farge.oransje,false,0));
+		ruter.add(new RouteImpl(ruteId,Destinasjon.Brest,Destinasjon.Dieppe,2,Farge.oransje,false,0));
 		//ruteId++;
 		return ruter;
 	}

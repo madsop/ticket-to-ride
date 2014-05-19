@@ -2,15 +2,15 @@ package ttr.spelar;
 
 import ttr.data.Farge;
 import ttr.oppdrag.Mission;
-import ttr.rute.IRoute;
+import ttr.rute.Route;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public interface ISpelar extends Remote{
+public interface ISpelar extends Remote {
 	public void registrerKlient(ISpelar s) throws RemoteException;
-	public void bygg(IRoute rute) throws RemoteException;
+	public void bygg(Route rute) throws RemoteException;
 	public int getGjenverandeTog() throws RemoteException;
 	public String getNamn() throws RemoteException;
 	public void setEittKortTrektInn(boolean b) throws RemoteException;
@@ -39,7 +39,7 @@ public interface ISpelar extends Remote{
 	public int getAntalFullfoerteOppdrag() throws RemoteException;
     public int getOppdragspoeng() throws RemoteException;
     public ArrayList<Mission> getOppdrag() throws RemoteException;
-    public void faaOppdrag(Mission o) throws RemoteException;
+    public void receiveMission(Mission o) throws RemoteException;
     public int getAntalOppdrag() throws RemoteException;
 
     public boolean isMissionAccomplished(int oppdragsid) throws RemoteException;
@@ -47,7 +47,10 @@ public interface ISpelar extends Remote{
 
 
     public void receiveCard(Farge farge) throws RemoteException;
-    public int[] getKort() throws RemoteException;
     public Farge getTilfeldigKortFråBordet(int positionOnTable) throws RemoteException;
     public Farge trekkFargekort() throws RemoteException;
+	public int getNumberOfCardsLeftInColour(int i) throws RemoteException;
+	public int getNumberOfRemainingJokers() throws RemoteException;
+	public void decrementCardsAt(Farge colour, int number)  throws RemoteException;
+	public void decrementJokers(int number)  throws RemoteException;
 }

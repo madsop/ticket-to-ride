@@ -2,7 +2,7 @@ package ttr.oppdrag;
 
 import ttr.data.Destinasjon;
 import ttr.kjerna.IHovud;
-import ttr.rute.IRoute;
+import ttr.rute.Route;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -56,7 +56,7 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
 		return (int) missions.stream().filter(x -> haveIBuiltThisMission(x)).count();
 	}
 
-	public void bygg(IRoute rute) throws RemoteException{
+	public void bygg(Route rute) throws RemoteException{
 		// Sjekk for fullførde oppdrag?
 				// Fyller matrisa med ei rute frå d1 til d2 (og motsett):
 					// Må først iterere over mengda med destinasjonar for å få dei ut

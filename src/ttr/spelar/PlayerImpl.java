@@ -13,7 +13,7 @@ import ttr.data.Konstantar;
 import ttr.kjerna.IHovud;
 import ttr.oppdrag.ISpelarOppdragshandsamar;
 import ttr.oppdrag.SpelarOppdragshandsamar;
-import ttr.rute.IRoute;
+import ttr.rute.Route;
 
 public abstract class PlayerImpl extends UnicastRemoteObject {
 	private static final long serialVersionUID = -6844537139622798129L;
@@ -24,7 +24,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	private static int spelarteljar = 0;    //TODO bør flyttes vekk. Kanskje til hovud.
 	private int spelarNummer;
 	private String namn;
-	protected ArrayList<IRoute> bygdeRuter; // Delvis unaudsynt pga. harEgBygdMellomAogB
+	protected ArrayList<Route> bygdeRuter; // Delvis unaudsynt pga. harEgBygdMellomAogB
 
 	private boolean einValdAllereie;
 
@@ -42,7 +42,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	
 	public abstract ISpelar getThisAsISpelar();
 
-	public void bygg(IRoute rute) throws RemoteException  {
+	public void bygg(Route rute) throws RemoteException  {
 		rute.setBuiltBy(getThisAsISpelar());
 		// Fjern kort frå spelaren og legg dei i stokken eller ved sida av?
 		bygdeRuter.add(rute);
@@ -81,12 +81,12 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 
 
 	public void nybygdRute(int ruteId, ISpelar byggjandeSpelar) {
-		IRoute vald = getRoute(ruteId).get();
+		Route vald = getRoute(ruteId).get();
 		vald.setBuiltBy(byggjandeSpelar);
 		hovud.getAlleBygdeRuter().add(vald);
 	}
 
-	private Optional<IRoute> getRoute(int ruteId) {
+	private Optional<Route> getRoute(int ruteId) {
 		return hovud.getRuter().stream().filter(f -> f.getRouteId()==ruteId).findAny();
 	}
 

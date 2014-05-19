@@ -48,17 +48,22 @@ import java.util.ArrayList;
     public int getAntalFullfoerteOppdrag() throws RemoteException { return spelarOppdragshandsamar.getAntalFullfoerteOppdrag(); }
     public int getOppdragspoeng() throws RemoteException { return spelarOppdragshandsamar.getOppdragspoeng(); }
     public ArrayList<Mission> getOppdrag() throws RemoteException { return spelarOppdragshandsamar.getOppdrag(); }
-    public void faaOppdrag(Mission o) throws RemoteException { spelarOppdragshandsamar.retrieveMission(o); }
+    public void receiveMission(Mission o) throws RemoteException { spelarOppdragshandsamar.retrieveMission(o); }
     public int getAntalOppdrag() throws RemoteException { return spelarOppdragshandsamar.getAntalOppdrag(); }
     public Mission trekkOppdragskort() throws RemoteException { return spelarOppdragshandsamar.trekkOppdragskort(); }
     public boolean isMissionAccomplished(int oppdragsid) throws RemoteException { return spelarOppdragshandsamar.isMissionAccomplished(oppdragsid); }
     public void removeChosenMissionFromDeck(int oppdragsid) throws RemoteException { spelarOppdragshandsamar.removeChosenMissionFromDeck(oppdragsid); }
     
     // Kort
-    public int[] getKort() throws RemoteException { return korthandsamar.getKort(); }
     public void receiveCard(Farge farge) throws RemoteException { korthandsamar.receiveCard(farge);}
     public Farge getTilfeldigKortFråBordet(int i) throws RemoteException { return korthandsamar.getRandomCardFromTheDeck(i); }
     public Farge trekkFargekort() throws RemoteException { return korthandsamar.trekkFargekort(); }
+
+	public int getNumberOfCardsLeftInColour(int i) throws RemoteException { return korthandsamar.getNumberOfCardsLeftInColour(i); }
+	public int getNumberOfRemainingJokers() throws RemoteException { return korthandsamar.getNumberOfRemainingJokers(); }
+
+	public void decrementCardsAt(Farge colour, int number) throws RemoteException { korthandsamar.decrementCardsAt(colour, number); }
+	public void decrementJokers(int number) throws RemoteException { korthandsamar.decrementJokers(number); }
 
     // Bord
     public void leggUtFem() { bord.layFiveCardsOutOnTable(); }

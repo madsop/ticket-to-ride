@@ -1,13 +1,13 @@
 package ttr.oppdrag;
 
-import ttr.rute.IRoute;
+import ttr.rute.Route;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public interface ISpelarOppdragshandsamar extends Remote{
-    void bygg(IRoute rute) throws RemoteException;
+    void bygg(Route rute) throws RemoteException;
     Mission trekkOppdragskort() throws RemoteException;
     boolean isMissionAccomplished(int oppdragsid) throws RemoteException;
 

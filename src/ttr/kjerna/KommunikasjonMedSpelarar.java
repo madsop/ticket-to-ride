@@ -2,7 +2,7 @@ package ttr.kjerna;
 
 import ttr.bord.IBord;
 import ttr.data.*;
-import ttr.rute.IRoute;
+import ttr.rute.Route;
 import ttr.spelar.ISpelar;
 import ttr.spelar.PlayerNetworkClass;
 import ttr.utgaave.nordic.Nordic;
@@ -25,7 +25,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 		this.players = spelarar;
 	}
 
-	public void oppdaterAndreSpelarar(int plass, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, IRoute bygd) throws RemoteException {
+	public void oppdaterAndreSpelarar(int plass, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException {
 		if (nett) {
 			for (ISpelar s : players) {
 				s.leggIStokken(plass, (kortKrevd-(jokrar-krevdJokrar)));
@@ -60,7 +60,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 		return players;
 	}
 
-	public void sjekkOmFerdig(IMeldingarModell meldingarModell, ISpelar kvenSinTur, String speltittel, ISpelar minSpelar, Set<IRoute> ruter) throws RemoteException{
+	public void sjekkOmFerdig(IMeldingarModell meldingarModell, ISpelar kvenSinTur, String speltittel, ISpelar minSpelar, Set<Route> ruter) throws RemoteException{
 		if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
 			orientPlayersThatTheGameIsOver(meldingarModell);
 
@@ -140,17 +140,17 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 		JOptionPane.showMessageDialog(new JPanel(), poeng);
 	}
 
-	private ISpelar reknUtPoengOgFinnVinnar(int[] totalpoeng, ISpelar player, int vinnarpoeng, ISpelar currentLeader, IMeldingarModell meldingarModell, Set<IRoute> ruter) throws RemoteException {
+	private ISpelar reknUtPoengOgFinnVinnar(int[] totalpoeng, ISpelar player, int vinnarpoeng, ISpelar currentLeader, IMeldingarModell meldingarModell, Set<Route> ruter) throws RemoteException {
 		ISpelar leiarNo = currentLeader;
 		int thisPlayersPoints = reknUtPoeng(player,ruter);
 		orientOthersAboutThisPlayersTotalPoints(totalpoeng, player,	meldingarModell);
 		return checkIfThisPlayerLeads(player, vinnarpoeng, currentLeader, leiarNo, thisPlayersPoints);
 	}
 
-	private int reknUtPoeng(ISpelar player, Set<IRoute> ruter) throws RemoteException {
+	private int reknUtPoeng(ISpelar player, Set<Route> ruter) throws RemoteException {
 		int poeng = player.getOppdragspoeng();
 		for (int j = 0; j < player.getBygdeRuterSize(); j++) {
-			for (IRoute route : ruter) {
+			for (Route route : ruter) {
 				if (player.getBygdeRuterId(j) == route.getRouteId()) {
 					poeng += route.getValue();
 				}

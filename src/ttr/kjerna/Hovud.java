@@ -8,11 +8,11 @@ import ttr.data.Farge;
 import ttr.gui.IGUI;
 import ttr.nettverk.InitialiserNettverk;
 import ttr.oppdrag.Mission;
-import ttr.oppdrag.IOppdragshandsamar;
+import ttr.oppdrag.MissionHandler;
 import ttr.oppdrag.MissionHandlerImpl;
-import ttr.rute.IRoute;
-import ttr.rute.IRutehandsamar;
-import ttr.rute.Rutehandsamar;
+import ttr.rute.Route;
+import ttr.rute.RouteHandler;
+import ttr.rute.RouteHandlerImpl;
 import ttr.spelar.ISpelar;
 import ttr.utgaave.ISpelUtgaave;
 
@@ -34,8 +34,8 @@ public class Hovud implements IHovud {
 	private ISpelar kvenSinTur;
 	private ISpelar minSpelar;
 	private IKommunikasjonMedSpelarar kommunikasjonMedSpelarar;
-	private IOppdragshandsamar oppdragshandsamar;
-	private IRutehandsamar rutehandsamar;
+	private MissionHandler oppdragshandsamar;
+	private RouteHandler rutehandsamar;
 	private ITurhandsamar turhandsamar;
 	private IByggHjelpar bygghjelpar;
 
@@ -61,12 +61,12 @@ public class Hovud implements IHovud {
 		return oppdragshandsamar.getRemainingMissions()   ;
 	}
 
-	public Set<IRoute> getRuter() {
-		return rutehandsamar.getRuter();
+	public Set<Route> getRuter() {
+		return rutehandsamar.getRoutes();
 	}
 
-	public Set<IRoute> getAlleBygdeRuter() {
-		return rutehandsamar.getAlleBygdeRuter();
+	public Set<Route> getAlleBygdeRuter() {
+		return rutehandsamar.getBuiltRoutes();
 	}
 
 	public void setMinSpelar(ISpelar spelar){
@@ -115,7 +115,7 @@ public class Hovud implements IHovud {
 		gui.visKvenDetErSinTur(kvenSinTur.getNamn(),nett,minSpelar.getNamn());
 		kvenSinTur.setEittKortTrektInn(false);
 
-		kommunikasjonMedSpelarar.sjekkOmFerdig(gui.getMeldingarModell(),kvenSinTur,spel.toString(),minSpelar,rutehandsamar.getRuter());
+		kommunikasjonMedSpelarar.sjekkOmFerdig(gui.getMeldingarModell(),kvenSinTur,spel.toString(),minSpelar,rutehandsamar.getRoutes());
 	}
 
 	private void markIfItIsMyTurn() throws RemoteException {
@@ -124,18 +124,18 @@ public class Hovud implements IHovud {
 		}
 	}
 
-	public Set<IRoute> findRoutesNotYetBuilt() throws RemoteException {
+	public Set<Route> findRoutesNotYetBuilt() throws RemoteException {
 		return rutehandsamar.findRoutesNotYetBuilt(players);
 	}
 
-	public void bygg(IRoute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
+	public void bygg(Route bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
 		ByggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd,plass,kortKrevd,krevdJokrar,minSpelar,kvenSinTur);
 		ISpelar byggjandeSpelar = byggjandeInfo.byggjandeSpelar;
 		int jokrar = byggjandeInfo.jokrar;
 		hjelpemetodeBygg(bygd,plass,kortKrevd,krevdJokrar,byggjandeSpelar,jokrar);
 	}
 
-	public void byggTunnel(IRoute bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
+	public void byggTunnel(Route bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
 		ByggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(bord, bygd, plass, kortKrevd, krevdJokrar, minSpelar, kvenSinTur);
 		ISpelar byggjandeSpelar = byggjandeInfo.byggjandeSpelar;
 		int jokrar = byggjandeInfo.jokrar;
@@ -151,7 +151,7 @@ public class Hovud implements IHovud {
 	}
 
 	private void LagBrettet(boolean nett) throws RemoteException {
-		rutehandsamar = new Rutehandsamar(spel);
+		rutehandsamar = new RouteHandlerImpl(spel);
 
 		// Legg til oppdrag
 		oppdragshandsamar = new MissionHandlerImpl(spel.getOppdrag());
@@ -195,8 +195,8 @@ public class Hovud implements IHovud {
 		 settSinTur(players.get(0));
 	 }
 
-	 private void hjelpemetodeBygg(IRoute bygd,int plass,int kortKrevd,int krevdJokrar,ISpelar byggjandeSpelar,int jokrar) throws RemoteException{
-		 rutehandsamar.nyRute(bygd);
+	 private void hjelpemetodeBygg(Route bygd,int plass,int kortKrevd,int krevdJokrar,ISpelar byggjandeSpelar,int jokrar) throws RemoteException{
+		 rutehandsamar.newRoute(bygd);
 
 		 messageUsersInNetworkGame(bygd, byggjandeSpelar);
 		 gui.getTogAtt()[byggjandeSpelar.getSpelarNummer()+1].setText(String.valueOf(byggjandeSpelar.getGjenverandeTog()));
@@ -209,7 +209,7 @@ public class Hovud implements IHovud {
 
 	 }
 
-	 private void messageUsersInNetworkGame(IRoute builtRoute, ISpelar buildingPlayer) throws RemoteException {
+	 private void messageUsersInNetworkGame(Route builtRoute, ISpelar buildingPlayer) throws RemoteException {
 		 if (nett) {
 			 for (ISpelar player : players) {
 				 player.nybygdRute(builtRoute.getRouteId(),buildingPlayer);

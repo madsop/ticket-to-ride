@@ -2,7 +2,7 @@ package ttr.oppdrag;
 
 import java.util.ArrayList;
 
-public interface IOppdragshandsamar {
+public interface MissionHandler {
     ArrayList<Mission> getRemainingMissions();
 
     int getNumberOfRemainingMissions();
