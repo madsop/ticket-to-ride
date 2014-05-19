@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 public class ByggHjelpar implements IByggHjelpar {
 	private final IGUI gui;
-	private Farge valdFarge; // TODO denne må vekk
 	private final boolean nett;
 
 	public ByggHjelpar(IGUI gui, boolean nett) {
@@ -23,56 +22,56 @@ public class ByggHjelpar implements IByggHjelpar {
 		this.nett = nett;
 	}
 
-	private int byggValfriFarge(ISpelar player, int numberOfDemandedJokers, int numberOfDemandedNormalCards) throws RemoteException {
+	public ByggjandeInfo bygg(Route routeToBuild, Farge colour, int kortKrevd, int krevdJokrar, ISpelar myPlayer, ISpelar kvenSinTur) throws RemoteException {
+		ISpelar buildingPlayer = nett ? myPlayer : kvenSinTur;
+		Farge colourToBuildIn = findColourToBuildIn(routeToBuild, kortKrevd, krevdJokrar, buildingPlayer);
+		if (colourToBuildIn == null) { return null; }
+		
+		int jokers = chooseNumberOfJokersToUser(routeToBuild, colourToBuildIn, kortKrevd,	krevdJokrar, buildingPlayer);
+		checkIfThePlayerHasEnoughCards(routeToBuild, colourToBuildIn, kortKrevd, krevdJokrar,	buildingPlayer, jokers);
+		buildingPlayer.bygg(routeToBuild);
+		updatePlayersCards(colourToBuildIn, kortKrevd, krevdJokrar, buildingPlayer, jokers);
+
+		return new ByggjandeInfo(buildingPlayer,jokers);
+	}
+
+	private Farge findColourToBuildIn(Route routeToBuild, int kortKrevd, int krevdJokrar, ISpelar buildingPlayer) throws RemoteException {
+		if (routeToBuild.getColour() == Farge.valfri){
+			return byggValfriFarge(buildingPlayer,krevdJokrar,kortKrevd); //TODO fix denne - bruk final på position
+		}
+		return routeToBuild.getColour();
+	}
+
+	private Farge byggValfriFarge(ISpelar player, int numberOfDemandedJokers, int numberOfDemandedNormalCards) throws RemoteException {
 		ArrayList<Farge> mulegeFargar = new ArrayList<>();
 		int ekstrajokrar = player.getNumberOfRemainingJokers()-numberOfDemandedJokers;
 		System.out.println("ekstrajokrar: " +ekstrajokrar);
-		for (int i = 0; i < Konstantar.ANTAL_FARGAR; i++){
-			if (canBuildThisRouteInThisColour(player, numberOfDemandedNormalCards,	ekstrajokrar, Konstantar.FARGAR[i])){
-				mulegeFargar.add(Konstantar.FARGAR[i]);
+		for (Farge colour : Konstantar.FARGAR) {
+			if (canBuildThisRouteInThisColour(player, numberOfDemandedNormalCards,	ekstrajokrar, colour)){
+				mulegeFargar.add(colour);
 			}
 		}
 
 		if (mulegeFargar.size() > 0){
 			return chooseColourToBuildIn(mulegeFargar);
 		}
-		return -1;
+		return null;
 	}
 
-	private int chooseColourToBuildIn(ArrayList<Farge> mulegeFargar) {
+	private Farge chooseColourToBuildIn(ArrayList<Farge> mulegeFargar) {
 		int colourPosition = mulegeFargar.size() + 1;
 		while (colourPosition<0 || colourPosition > mulegeFargar.size()){
 			colourPosition = JOptionPane.showOptionDialog((Component) gui, Infostrengar.VelFargeÅByggeILabel, Infostrengar.VelFargeÅByggeILabel, 
 					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, mulegeFargar.toArray(), mulegeFargar.get(0));
-
-			if (colourPosition==-1){ return -1;	}
+			if (colourPosition==-1){ return null; }
 		}
-		return Konstantar.finnPosisjonForFarge(mulegeFargar.get(colourPosition));
+		return mulegeFargar.get(colourPosition);
 	}
 
 	private boolean canBuildThisRouteInThisColour(ISpelar player, int numberOfDemandedNormalCards, int ekstrajokrar, Farge colour) throws RemoteException {
 		return ((colour != Farge.valfri) && (player.getNumberOfCardsLeftInColour(colour) + ekstrajokrar) >= numberOfDemandedNormalCards && ekstrajokrar >= 0) 
 				||
 				(ekstrajokrar >= numberOfDemandedNormalCards);
-	}
-
-	public ByggjandeInfo bygg(Route routeToBuild, Farge colour, int kortKrevd, int krevdJokrar, ISpelar myPlayer, ISpelar kvenSinTur) throws RemoteException {
-		ISpelar buildingPlayer = nett ? myPlayer : kvenSinTur;
-		int position = Konstantar.finnPosisjonForFarge(colour);
-		if (routeToBuild.getColour() == Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1]){
-			position = byggValfriFarge(buildingPlayer,krevdJokrar,kortKrevd); //TODO fix denne - bruk final på position
-			if (position == -1) { return null; }
-		}
-		else {
-			valdFarge = routeToBuild.getColour();
-		}
-
-		int jokers = chooseNumberOfJokersToUser(routeToBuild, Konstantar.FARGAR[position], kortKrevd,	krevdJokrar, buildingPlayer);
-		checkIfThePlayerHasEnoughCards(routeToBuild, Konstantar.FARGAR[position], kortKrevd, krevdJokrar,	buildingPlayer, jokers);
-		buildingPlayer.bygg(routeToBuild);
-		updatePlayersCards(Konstantar.FARGAR[position], kortKrevd, krevdJokrar, buildingPlayer, jokers);
-
-		return new ByggjandeInfo(buildingPlayer,jokers, position);
 	}
 
 	 //TODO denne metoden må jo returnere og ev. sørge for å stoppe bygginga
@@ -92,7 +91,7 @@ public class ByggHjelpar implements IByggHjelpar {
 		int jokers = 0;
 		if (byggjandeSpelar.getNumberOfRemainingJokers() > 0) {
 			do {
-				jokers = velAntalJokrarDuVilBruke(bygd, byggjandeSpelar,valdFarge);
+				jokers = velAntalJokrarDuVilBruke(bygd, byggjandeSpelar, colour);
 			} while(numberOfChosenJokersNotOK(colour, kortKrevd, krevdJokrar, byggjandeSpelar, jokers));
 		}
 		return jokers;
