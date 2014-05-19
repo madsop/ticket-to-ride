@@ -10,5 +10,5 @@ public interface IBord {
     public Farge[] getPaaBordet();
     public int getAntalFargekortPåBordet();
     public Farge getRandomCardFromTheDeck(int plass, boolean leggPåBordet);
-    public boolean sjekkOmAntalJokrarPaaBordetErOK();
+    public boolean areThereTooManyJokersOnTable();
 }

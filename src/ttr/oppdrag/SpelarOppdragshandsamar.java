@@ -26,18 +26,15 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
 		return missions.size();
 	}
 
-	public void faaOppdrag(Mission o) throws RemoteException{
-		if(!this.missions.contains(o)){
-			this.missions.add(o);
+	public void retrieveMission(Mission mission) throws RemoteException{
+		if(!this.missions.contains(mission)){
+			this.missions.add(mission);
 		}
 	}
 	public ArrayList<Mission> getOppdrag() throws RemoteException  {
 		return missions;
 	}
-	/**
-	 * Finn ein måte å gjera denne på - dvs sjekke om oppdrag er fullførte eller ikkje.
-	 * @return antal oppdragspoeng spelaren har
-	 */
+	
 	public int getOppdragspoeng() throws RemoteException  {
 		int totalMissionValue = 0;
 		for (Mission mission : missions) {
@@ -47,27 +44,17 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
 				totalMissionValue -= mission.getValue();
 			}
 		}
-
 		return totalMissionValue;
 	}
-	public boolean erOppdragFerdig(int oppdragsid) throws RemoteException{
+	
+	public boolean isMissionAccomplished(int oppdragsid) throws RemoteException{
 		Mission mission = findMissionById(oppdragsid);
-		if (mission==null){
-			return false;
-		}
 		return haveIBuiltThisMission(mission);
 	}
 
 	public int getAntalFullfoerteOppdrag() throws RemoteException{
-		int numberOfFulfilledMissions = 0;
-		for (Mission mission : missions){
-			if (haveIBuiltThisMission(mission)) {
-				numberOfFulfilledMissions++;
-			}
-		}
-		return numberOfFulfilledMissions;
+		return (int) missions.stream().filter(x -> haveIBuiltThisMission(x)).count();
 	}
-
 
 	public void bygg(IRoute rute) throws RemoteException{
 		// Sjekk for fullførde oppdrag?
@@ -92,13 +79,8 @@ public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpe
 		return null;
 	}
 
-	public void trekt(int oppdragsid) throws RemoteException {
-		// Finn oppdrag
-		for (int i = 0; i < hovud.getAntalGjenverandeOppdrag(); i++){
-			if (hovud.getGjenverandeOppdrag().get(i).getMissionId() == oppdragsid){
-				hovud.getGjenverandeOppdrag().remove(i);
-			}
-		}
+	public void removeChosenMissionFromDeck(int oppdragsid) throws RemoteException {
+		hovud.getGjenverandeOppdrag().removeIf(x -> (x.getMissionId() == oppdragsid));
 	}
 
 	private Mission findMissionById(int oppdragsid) {

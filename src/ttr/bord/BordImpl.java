@@ -99,7 +99,7 @@ public class BordImpl implements IBord {
 		}
 	}
 
-	public boolean sjekkOmAntalJokrarPaaBordetErOK() {
+	public boolean areThereTooManyJokersOnTable() {
 		int jokrar = 0;
 		for (Farge f : cardsOpenOnTable) {
 			if (f == Farge.valfri) {

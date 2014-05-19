@@ -48,11 +48,11 @@ import java.util.ArrayList;
     public int getAntalFullfoerteOppdrag() throws RemoteException { return spelarOppdragshandsamar.getAntalFullfoerteOppdrag(); }
     public int getOppdragspoeng() throws RemoteException { return spelarOppdragshandsamar.getOppdragspoeng(); }
     public ArrayList<Mission> getOppdrag() throws RemoteException { return spelarOppdragshandsamar.getOppdrag(); }
-    public void faaOppdrag(Mission o) throws RemoteException { spelarOppdragshandsamar.faaOppdrag(o); }
+    public void faaOppdrag(Mission o) throws RemoteException { spelarOppdragshandsamar.retrieveMission(o); }
     public int getAntalOppdrag() throws RemoteException { return spelarOppdragshandsamar.getAntalOppdrag(); }
     public Mission trekkOppdragskort() throws RemoteException { return spelarOppdragshandsamar.trekkOppdragskort(); }
-    public boolean erOppdragFerdig(int oppdragsid) throws RemoteException { return spelarOppdragshandsamar.erOppdragFerdig(oppdragsid); }
-    public void trekt(int oppdragsid) throws RemoteException { spelarOppdragshandsamar.trekt(oppdragsid); }
+    public boolean isMissionAccomplished(int oppdragsid) throws RemoteException { return spelarOppdragshandsamar.isMissionAccomplished(oppdragsid); }
+    public void removeChosenMissionFromDeck(int oppdragsid) throws RemoteException { spelarOppdragshandsamar.removeChosenMissionFromDeck(oppdragsid); }
     
     // Kort
     public int[] getKort() throws RemoteException { return korthandsamar.getKort(); }
@@ -66,12 +66,12 @@ import java.util.ArrayList;
         bord.getFargekortaSomErIgjenIBunken()[tabellplass] += kormange;
     }
     public void setPaaBord(Farge[] f) { bord.setPaaBordet(f); }
-    public void setPaaBordet(Farge f, int i) throws RemoteException{
+    public void putCardOnTable(Farge f, int i) throws RemoteException{
         // Har no finni fargen f og kva for plass denne har i farge-tabellen.
         // Bør no få lagt ut eit kort på bordet i denne fargen.
         bord.setEinPaaBordet(f, i);
     }
-    public boolean sjekkJokrar() throws RemoteException{ return bord.sjekkOmAntalJokrarPaaBordetErOK(); }
+    public boolean areThereTooManyJokersOnTable() throws RemoteException{ return bord.areThereTooManyJokersOnTable(); }
 
 	public ISpelar getThisAsISpelar() {
 		return this;

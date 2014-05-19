@@ -1,12 +1,14 @@
 package ttr.data;
 
 import javax.swing.*;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 
-public class MeldingarModell extends AbstractListModel implements IMeldingarModell {
+public class MeldingarModell extends AbstractListModel<String> implements IMeldingarModell {
+	private static final long serialVersionUID = -6448830036131823839L;
 	private final PropertyChangeSupport pcs;
 	private final ArrayList<String> meldingar;
 	public static final String MELDINGAR_PROPERTY = "meldingar";
@@ -20,8 +22,7 @@ public class MeldingarModell extends AbstractListModel implements IMeldingarMode
 		this.meldingar = meldingar;
 	}
 	public MeldingarModell() {
-		pcs = new PropertyChangeSupport(this);
-		meldingar = new ArrayList<>();
+		this(new ArrayList<>());
 	}
 	
 	public void nyMelding(String melding){
@@ -32,7 +33,8 @@ public class MeldingarModell extends AbstractListModel implements IMeldingarMode
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener(listener);
 	}
-	public Object getElementAt(int index) {
+	
+	public String getElementAt(int index) {
 		return meldingar.get(index);
 	}
 	

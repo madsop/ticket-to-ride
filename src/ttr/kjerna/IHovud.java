@@ -25,7 +25,7 @@ public interface IHovud {
 
     public void settIGangSpelet(boolean nett, String hostAddress) throws RemoteException;
     public void sendKortMelding(boolean kort, boolean tilfeldig, Farge f) throws RemoteException;
-    public void nyPaaPlass(ISpelar vert, Farge nyFarge, int i) throws RemoteException;
+    public void newCardPlacedOnTableInNetworkGame(ISpelar vert, Farge nyFarge, int i) throws RemoteException;
 
     public ISpelar getKvenSinTur();
 

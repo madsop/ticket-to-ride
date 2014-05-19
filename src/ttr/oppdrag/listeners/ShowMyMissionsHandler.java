@@ -33,7 +33,7 @@ public class ShowMyMissionsHandler {
 
 	private String prepareMissionString(ISpelar player,int i, Mission mission) throws RemoteException {
 		String missionString = mission.toString();
-		if (player.erOppdragFerdig(mission.getMissionId())){
+		if (player.isMissionAccomplished(mission.getMissionId())){
 			missionString += " (OK)";
 		}
 		if (i == player.getAntalOppdrag()-1){

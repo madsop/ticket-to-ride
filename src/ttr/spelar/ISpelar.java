@@ -28,10 +28,10 @@ public interface ISpelar extends Remote{
 	public int[] getPaaBordetInt() throws RemoteException;
 	public void setPaaBord(Farge[] f) throws RemoteException;
 	public ArrayList<ISpelar> getSpelarar() throws RemoteException;
-	public void setPaaBordet(Farge f, int plass) throws RemoteException;
+	public void putCardOnTable(Farge f, int plass) throws RemoteException;
 	public void leggUtFem() throws RemoteException;
-	public boolean sjekkJokrar() throws RemoteException;
-	public void trekt(int oppdragsid) throws RemoteException;
+	public boolean areThereTooManyJokersOnTable() throws RemoteException;
+	public void removeChosenMissionFromDeck(int oppdragsid) throws RemoteException;
 	public void leggIStokken(int tabellplass, int kormange) throws RemoteException;
 	public void visSpeletErFerdigmelding(String melding) throws RemoteException;
 	public void faaMelding(String melding) throws RemoteException;
@@ -43,7 +43,7 @@ public interface ISpelar extends Remote{
     public void faaOppdrag(Mission o) throws RemoteException;
     public int getAntalOppdrag() throws RemoteException;
 
-    public boolean erOppdragFerdig(int oppdragsid) throws RemoteException;
+    public boolean isMissionAccomplished(int oppdragsid) throws RemoteException;
     public Mission trekkOppdragskort() throws RemoteException;
 
 

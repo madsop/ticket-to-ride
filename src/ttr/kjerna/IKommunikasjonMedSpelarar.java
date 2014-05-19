@@ -13,7 +13,7 @@ import java.util.Set;
 public interface IKommunikasjonMedSpelarar {
     public void oppdaterAndreSpelarar(int plass, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, IRoute bygd) throws RemoteException;
     ArrayList<ISpelar> createPlayersForLocalGame(IHovud hovud, IBord bord);
-    void nyPaaPlass(ISpelar vert, Farge nyFarge, int i, IHovud hovud) throws RemoteException;
+    void newCardPlacedOnTableInNetworkGame(ISpelar vert, Farge nyFarge, int i, IHovud hovud) throws RemoteException;
     void sjekkOmFerdig(IMeldingarModell meldingarModell, ISpelar kvenSinTur, String speltittel, ISpelar minSpelar, Set<IRoute> ruter) throws RemoteException;
-    void sendKortMelding(boolean kort, boolean tilfeldig, Farge f, String handlandespelarsNamn, boolean nett, IHovud hovud) throws RemoteException;
+    void sendMessageAboutCard(boolean kort, boolean tilfeldig, Farge f, String handlandespelarsNamn, boolean nett, IHovud hovud) throws RemoteException;
 }

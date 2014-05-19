@@ -54,7 +54,7 @@ public class Oppdragsveljar implements IOppdragsveljar {
         ok.setEnabled(false);
 	}
 
-    private void setUpCheckBoxes(ArrayList<Mission> missionsToChooseFrom){
+    private void setUpCheckBoxes(ArrayList<Mission> missionsToChooseFrom){ //TODO legg inn handtering for når oppdragsbunken er tom
         for (Mission mission : missionsToChooseFrom){
             JCheckBox missionCheckBox = new JCheckBox();
             missionCheckBox.addActionListener(new okListener());

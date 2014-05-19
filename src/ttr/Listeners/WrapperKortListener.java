@@ -56,24 +56,30 @@ public class WrapperKortListener implements ActionListener{
 
 			ISpelar host = orienterAndreSpelarar(positionOnTable);
 
-			if (nett && host!=null){
+			if (nett && host != null){
 				Farge newColour = host.getTilfeldigKortFråBordet(positionOnTable);
-				while (host.sjekkJokrar()) {
-					host.leggUtFem();
-					int[] cardsOnTableAsIntegers = host.getPaaBordetInt();
-
-					for (int plass = 0; plass < hovud.getBord().getPaaBordet().length; plass++){
-						newColour = Konstantar.FARGAR[cardsOnTableAsIntegers[plass]];
-						hovud.getMinSpelar().setPaaBordet(newColour,plass);
-						hovud.nyPaaPlass(host, newColour, plass);
-					}
+				while (host.areThereTooManyJokersOnTable()) {
+					newColour = placeNewCardsOnTable(host);
 				}
-				hovud.nyPaaPlass(host, newColour, positionOnTable);
+				hovud.newCardPlacedOnTableInNetworkGame(host, newColour, positionOnTable);
 			}
 		}
 		catch (RemoteException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private Farge placeNewCardsOnTable(ISpelar host) throws RemoteException {
+		Farge newColour = null;
+		host.leggUtFem();
+		int[] cardsOnTableAsIntegers = host.getPaaBordetInt();
+
+		for (int plass = 0; plass < hovud.getBord().getPaaBordet().length; plass++){
+			newColour = Konstantar.FARGAR[cardsOnTableAsIntegers[plass]];
+			hovud.getMinSpelar().putCardOnTable(newColour,plass);
+			hovud.newCardPlacedOnTableInNetworkGame(host, newColour, plass);
+		}
+		return newColour;
 	}
 
 	private void retrieveOneCardFromTheTable(int positionOnTable,ISpelar kvenSinTur) throws RemoteException {

@@ -144,11 +144,11 @@ public class Hovud implements IHovud {
 	}
 
 	public void sendKortMelding(boolean kort, boolean tilfeldig, Farge f) throws RemoteException {
-		kommunikasjonMedSpelarar.sendKortMelding(kort,tilfeldig,f,kvenSinTur.getNamn(),nett,this);
+		kommunikasjonMedSpelarar.sendMessageAboutCard(kort,tilfeldig,f,kvenSinTur.getNamn(),nett,this);
 	}
 
-	public void nyPaaPlass(ISpelar vert, Farge nyFarge, int i) throws RemoteException {
-		kommunikasjonMedSpelarar.nyPaaPlass(vert,nyFarge,i,this);
+	public void newCardPlacedOnTableInNetworkGame(ISpelar vert, Farge nyFarge, int i) throws RemoteException {
+		kommunikasjonMedSpelarar.newCardPlacedOnTableInNetworkGame(vert,nyFarge,i,this);
 	}
 
 	private void LagBrettet(boolean nett) throws RemoteException {
@@ -178,14 +178,14 @@ public class Hovud implements IHovud {
 	 private void givePlayersMissions() throws RemoteException {
 		 for (ISpelar player : players){
 			 for (Mission mission : player.getOppdrag()){
-				 player.trekt(mission.getMissionId());
+				 player.removeChosenMissionFromDeck(mission.getMissionId());
 			 }
 		 }
 	 }
 
 	 private void startLocalGame() throws RemoteException {
-		 for (ISpelar s : players) {
-			 Oppdragshandsamar.trekkOppdrag(gui, s, true);
+		 for (ISpelar player : players) {
+			 Oppdragshandsamar.trekkOppdrag(gui, player, true);
 		 }
 		 // ??
 	 }
@@ -212,9 +212,9 @@ public class Hovud implements IHovud {
 
 	 private void messageUsersInNetworkGame(IRoute builtRoute, ISpelar buildingPlayer) throws RemoteException {
 		 if (nett) {
-			 for (ISpelar s : players) {
-				 s.nybygdRute(builtRoute.getRouteId(),buildingPlayer);
-				 s.setTogAtt(buildingPlayer.getSpelarNummer()+1, buildingPlayer.getGjenverandeTog());
+			 for (ISpelar player : players) {
+				 player.nybygdRute(builtRoute.getRouteId(),buildingPlayer);
+				 player.setTogAtt(buildingPlayer.getSpelarNummer()+1, buildingPlayer.getGjenverandeTog());
 			 }
 		 }
 	 }
