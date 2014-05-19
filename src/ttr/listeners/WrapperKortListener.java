@@ -119,10 +119,8 @@ public class WrapperKortListener implements ActionListener{
 
 	private ISpelar orienterAndreSpelarar(int positionOnTable) throws  RemoteException{
 		ISpelar host = null;
-		if (nett){
-			if (hovud.getMinSpelar().getSpelarNummer()==0) {
-				host = hovud.getMinSpelar();
-			}
+		if (nett && hovud.getMinSpelar().getSpelarNummer()==0) {
+				host = hovud.getMinSpelar(); // TODO forsvinn ikkje denne uansett i løpet av for-løkka under?
 		}
 		for (ISpelar player : hovud.getSpelarar()) {
 			if (!nett){

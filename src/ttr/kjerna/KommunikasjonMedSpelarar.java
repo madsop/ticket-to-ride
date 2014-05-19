@@ -25,12 +25,12 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 		this.players = spelarar;
 	}
 
-	public void oppdaterAndreSpelarar(int plass, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException {
+	public void oppdaterAndreSpelarar(Farge colour, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException {
 		if (nett) {
-			for (ISpelar s : players) {
-				s.leggIStokken(plass, (kortKrevd-(jokrar-krevdJokrar)));
-				s.leggIStokken(Konstantar.ANTAL_FARGAR-1,jokrar);
-				s.faaMelding(byggjandeNamn + " bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
+			for (ISpelar player : players) {
+				player.leggIStokken(colour, (kortKrevd-(jokrar-krevdJokrar)));
+				player.leggIStokken(Farge.valfri,jokrar);
+				player.faaMelding(byggjandeNamn + " bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
 			}
 		}
 	}

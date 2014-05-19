@@ -9,7 +9,8 @@ public class Deck {
 	public Deck() {
 		initCardsLeft();
 	}
-	
+    
+	//todo reinare og finare med cardsleft
     private final int[] colourCardsLeftInDeck = {    // TODO lag ein finare rute for fargar og fargekort generelt
             Konstantar.ANTAL_AV_KVART_FARGEKORT,
             Konstantar.ANTAL_AV_KVART_FARGEKORT,
@@ -23,7 +24,7 @@ public class Deck {
     }; // samme rekkjefølge som i fargar
     
     private HashMap<Farge, Integer> cardsLeft;
-    
+
     void initCardsLeft() { // todo fortsett å fase inn denne
     	cardsLeft = new HashMap<>();
     	cardsLeft.put(Farge.blå, Konstantar.ANTAL_AV_KVART_FARGEKORT);
@@ -37,21 +38,18 @@ public class Deck {
     	cardsLeft.put(Farge.valfri, Konstantar.ANTAL_AV_KVART_FARGEKORT + 2);
     }
 	
-	void removeCardFromDeck(int position) {
-		colourCardsLeftInDeck[position]--;
-	}
 	void removeCardFromDeck(Farge colour) {
-		//todo reinare og finare med cardsleft
 		int position = Konstantar.finnPosisjonForFarge(colour);
-		removeCardFromDeck(position);
+		colourCardsLeftInDeck[position]--;
+		cardsLeft.put(colour, cardsLeft.get(colour) - 1);
 	}
 	
-	int getCardsLeftAtPosition(int position) {
-		return colourCardsLeftInDeck[position];
+	int getCardsLeftOfColour(Farge colour) {
+		return cardsLeft.get(colour);
 	}
 
-	void addCards(int position, int number) {
-		colourCardsLeftInDeck[position] += number;
+	void addCards(Farge colour, int number) {
+		cardsLeft.put(colour, cardsLeft.get(colour) + number);
 	}
 
 	void addJokers(int jokers) {
@@ -86,8 +84,8 @@ public class Deck {
 	
 	private int getNumberOfColouredCardsLeftInDeck() {
 		int fargekortpåbordet = 0;
-		for (int i = 0; i < Konstantar.ANTAL_FARGAR; i++) {
-			fargekortpåbordet += getCardsLeftAtPosition(i);
+		for (Farge colour : Konstantar.FARGAR) {
+			fargekortpåbordet += getCardsLeftOfColour(colour);
 		}
 		return fargekortpåbordet;
 	}

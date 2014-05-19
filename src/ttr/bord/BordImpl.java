@@ -29,7 +29,7 @@ public class BordImpl implements IBord {
 
     public void setEinPaaBordet(Farge colour, int position) {
 		cardsOnTable.putCardOnTable(position, colour);
-		deck.removeCardFromDeck(Konstantar.finnPosisjonForFarge(colour));
+		deck.removeCardFromDeck(colour);
 		gui.teiknOppKortPåBordet(position, colour);
 	}
 
@@ -76,8 +76,8 @@ public class BordImpl implements IBord {
 		return cardsOnTable.areThereTooManyJokersOnTable();
     }
 
-	public void addCardsToDeck(int position, int number) {
-		deck.addCards(position, number);		
+	public void addCardsToDeck(Farge colour, int number) {
+		deck.addCards(colour, number);		
 	}
 
 	public void addJokersToDeck(int jokers) {

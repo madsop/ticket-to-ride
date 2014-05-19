@@ -47,7 +47,7 @@ public class DelegationListener implements ActionListener{
                 new ByggHandler(hovud,frame);
             }
             else if (arg0.getSource() == visMineKort) {
-                new visMineKortHandler(hovud,gui);
+                new ShowMyCardsHandler(hovud,gui);
             }
             else if (arg0.getSource() == visMineOppdrag) {
                 new ShowMyMissionsHandler(hovud,gui);

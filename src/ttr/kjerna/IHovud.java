@@ -41,7 +41,7 @@ public interface IHovud {
     public void nesteSpelar() throws RemoteException;
 
     public Set<Route> findRoutesNotYetBuilt() throws RemoteException;
-    public void bygg(Route bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException;
-    public void byggTunnel(Route bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException;
+    public void bygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar) throws RemoteException;
+    public void byggTunnel(Route bygd, Farge colour, int kortKrevd, int krevdJokrar) throws RemoteException;
 
 }

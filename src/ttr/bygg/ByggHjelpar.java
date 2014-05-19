@@ -56,9 +56,9 @@ public class ByggHjelpar implements IByggHjelpar {
 				(ekstrajokrar >= numberOfDemandedNormalCards);
 	}
 
-	public ByggjandeInfo bygg(Route routeToBuild, final int plass, int kortKrevd, int krevdJokrar, ISpelar myPlayer, ISpelar kvenSinTur) throws RemoteException {
+	public ByggjandeInfo bygg(Route routeToBuild, Farge colour, int kortKrevd, int krevdJokrar, ISpelar myPlayer, ISpelar kvenSinTur) throws RemoteException {
 		ISpelar buildingPlayer = nett ? myPlayer : kvenSinTur;
-		int position = plass;
+		int position = Konstantar.finnPosisjonForFarge(colour);
 		if (routeToBuild.getColour() == Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1]){
 			position = byggValfriFarge(buildingPlayer,krevdJokrar,kortKrevd); //TODO fix denne - bruk final på position
 			if (position == -1) { return null; }
@@ -118,7 +118,7 @@ public class ByggHjelpar implements IByggHjelpar {
 	}
 
 
-	public ByggjandeInfo byggTunnel(IBord bord, Route bygd, final int plass, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
+	public ByggjandeInfo byggTunnel(IBord bord, Route bygd, Farge colour, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
 		Farge[] treTrekte = new Farge[3];
 		int ekstra = 0;
 		for (int i = 0; i < treTrekte.length; i++) {
@@ -134,7 +134,7 @@ public class ByggHjelpar implements IByggHjelpar {
 
 		int byggLell = askUserIfBuildAnyway(treTrekte, ekstra);
 		if (byggLell == JOptionPane.OK_OPTION) {
-			return bygg(bygd, plass, kortKrevd+ekstra, krevdJokrar, minSpelar,kvenSinTur);
+			return bygg(bygd, colour, kortKrevd+ekstra, krevdJokrar, minSpelar,kvenSinTur);
 		}
 		return null;
 	}

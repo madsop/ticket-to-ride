@@ -9,7 +9,7 @@ public interface IBord {
     public Farge[] getPaaBordet();
     public Farge getRandomCardFromTheDeckAndPutOnTable(int plass, boolean leggPåBordet);
     public boolean areThereTooManyJokersOnTable();
-	public void addCardsToDeck(int tabellplass, int number);
+	public void addCardsToDeck(Farge colour, int number);
 	public void addJokersToDeck(int jokrar);
 	public boolean areThereAnyCardsLeftInDeck();
 	public Farge getCardFromTable(int positionOnTable);

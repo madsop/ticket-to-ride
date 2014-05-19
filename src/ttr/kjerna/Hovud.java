@@ -128,18 +128,18 @@ public class Hovud implements IHovud {
 		return rutehandsamar.findRoutesNotYetBuilt(players);
 	}
 
-	public void bygg(Route bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
-		ByggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd,plass,kortKrevd,krevdJokrar,minSpelar,kvenSinTur);
+	public void bygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar) throws RemoteException {
+		ByggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd,colour,kortKrevd,krevdJokrar,minSpelar,kvenSinTur);
 		ISpelar byggjandeSpelar = byggjandeInfo.byggjandeSpelar;
 		int jokrar = byggjandeInfo.jokrar;
-		hjelpemetodeBygg(bygd,byggjandeInfo.position,kortKrevd,krevdJokrar,byggjandeSpelar,jokrar);
+		hjelpemetodeBygg(bygd, colour, kortKrevd, krevdJokrar, byggjandeSpelar, jokrar);
 	}
 
-	public void byggTunnel(Route bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {
-		ByggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(bord, bygd, plass, kortKrevd, krevdJokrar, minSpelar, kvenSinTur);
+	public void byggTunnel(Route bygd, Farge colour, int kortKrevd, int krevdJokrar) throws RemoteException {
+		ByggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(bord, bygd, colour, kortKrevd, krevdJokrar, minSpelar, kvenSinTur);
 		ISpelar byggjandeSpelar = byggjandeInfo.byggjandeSpelar;
 		int jokrar = byggjandeInfo.jokrar;
-		hjelpemetodeBygg(bygd,plass,kortKrevd,krevdJokrar,byggjandeSpelar,jokrar);
+		hjelpemetodeBygg(bygd,colour,kortKrevd,krevdJokrar,byggjandeSpelar,jokrar);
 	}
 
 	public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Farge f) throws RemoteException {
@@ -195,15 +195,15 @@ public class Hovud implements IHovud {
 		 settSinTur(players.get(0));
 	 }
 
-	 private void hjelpemetodeBygg(Route bygd,int plass,int kortKrevd,int krevdJokrar,ISpelar byggjandeSpelar,int jokrar) throws RemoteException{
+	 private void hjelpemetodeBygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar, ISpelar byggjandeSpelar, int jokrar) throws RemoteException{
 		 rutehandsamar.newRoute(bygd);
 
 		 messageUsersInNetworkGame(bygd, byggjandeSpelar);
 		 gui.getTogAtt()[byggjandeSpelar.getSpelarNummer()+1].setText(String.valueOf(byggjandeSpelar.getGjenverandeTog()));
-		 updateDeckOnTable(plass, kortKrevd, krevdJokrar, jokrar);
+		 updateDeckOnTable(colour, kortKrevd, krevdJokrar, jokrar);
 		 gui.getMeldingarModell().nyMelding(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
 
-		 kommunikasjonMedSpelarar.oppdaterAndreSpelarar(plass, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
+		 kommunikasjonMedSpelarar.oppdaterAndreSpelarar(colour, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
 
 		 nesteSpelar();
 
@@ -218,8 +218,8 @@ public class Hovud implements IHovud {
 		 }
 	 }
 
-	 private void updateDeckOnTable(int plass, int kortKrevd, int krevdJokrar, int jokrar) {
-		 bord.addCardsToDeck(plass, kortKrevd-(jokrar-krevdJokrar));
+	 private void updateDeckOnTable(Farge colour, int kortKrevd, int krevdJokrar, int jokrar) {
+		 bord.addCardsToDeck(colour, kortKrevd-(jokrar-krevdJokrar));
 		 bord.addJokersToDeck(jokrar);
 	 }
 }

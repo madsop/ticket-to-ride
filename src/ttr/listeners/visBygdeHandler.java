@@ -5,13 +5,16 @@ import ttr.kjerna.IHovud;
 import javax.swing.*;
 
 class visBygdeHandler {
-    public visBygdeHandler(IHovud hovud, IGUI gui, JFrame frame) {
-        JPanel bygde = new JPanel();
+	public visBygdeHandler(IHovud hovud, IGUI gui, JFrame frame) {
+		if (hovud.getAlleBygdeRuter().size() <= 0) {             
+			JOptionPane.showMessageDialog(frame, "Det er ikkje bygd noka rute enno. Bli den første!");
+			return;
+		}
 
-        if (hovud.getAlleBygdeRuter().size()>0) {
-            JList<Object> bygd = new JList<>(hovud.getAlleBygdeRuter().toArray());
+		JPanel bygde = new JPanel();
+		JList<Object> bygd = new JList<>(hovud.getAlleBygdeRuter().toArray());
 
-            /*	if (hovud.isNett()){
+		/*	if (hovud.isNett()){
                // Finn spel-verten
                for (int i = 0; i < bygd.getModel().getSize(); i++){
                    for (int j = 0; j < hovud.getSpelarar().size()+1; j++)
@@ -24,13 +27,9 @@ class visBygdeHandler {
                   }
                }
            }
-            */
+		 */
 
-            bygde.add(bygd);
-            gui.lagRamme("Desse rutene er bygd",bygde);
-        }
-        else {
-            JOptionPane.showMessageDialog(frame, "Det er ikkje bygd noka rute enno. Bli den første!");
-        }
-    }
+		bygde.add(bygd);
+		gui.lagRamme("Desse rutene er bygd",bygde);
+	}
 }

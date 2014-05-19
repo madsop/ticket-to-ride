@@ -66,9 +66,8 @@ import java.util.ArrayList;
 
     // Bord
     public void leggUtFem() { bord.layFiveCardsOutOnTable(); }
-    public void leggIStokken(int position, int number) throws RemoteException {
-        bord.addCardsToDeck(position, number);
-    }
+    public void leggIStokken(Farge colour, int number) throws RemoteException { bord.addCardsToDeck(colour, number); }
+    
     public void setPaaBord(Farge[] f) { bord.setPaaBordet(f); }
     public void putCardOnTable(Farge f, int i) throws RemoteException{
         // Har no finni fargen f og kva for plass denne har i farge-tabellen.

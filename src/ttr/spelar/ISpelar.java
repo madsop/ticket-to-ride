@@ -31,7 +31,7 @@ public interface ISpelar extends Remote {
 	public void leggUtFem() throws RemoteException;
 	public boolean areThereTooManyJokersOnTable() throws RemoteException;
 	public void removeChosenMissionFromDeck(int oppdragsid) throws RemoteException;
-	public void leggIStokken(int tabellplass, int kormange) throws RemoteException;
+	public void leggIStokken(Farge colour, int kormange) throws RemoteException;
 	public void visSpeletErFerdigmelding(String melding) throws RemoteException;
 	public void faaMelding(String melding) throws RemoteException;
 

@@ -24,15 +24,13 @@ class ByggHandler {
 		Farge routeColour = routeWantedToBuild.getColour();
 		int numberOfDemandedJokers = routeWantedToBuild.getNumberOfRequiredJokers();
 
-		int position = Konstantar.finnPosisjonForFarge(routeColour);
-
 		int playersNumberOfJokers = hovud.getKvenSinTur().getNumberOfRemainingJokers();
 	
 		if (isGreyRoute(routeWantedToBuild)){
-			buildRoute(hovud, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, position);
+			buildRoute(hovud, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, routeColour);
 		}
 		else if (playerCanBuildThisRoute(hovud.getKvenSinTur().getNumberOfCardsLeftInColour(routeColour), normalCardsDemanded, numberOfDemandedJokers, playersNumberOfJokers) ){
-			tryToBuildRoute(hovud, frame, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, position);
+			tryToBuildRoute(hovud, frame, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, routeColour);
 		}
 		else {
 			JOptionPane.showMessageDialog(frame, "Synd, men du har ikkje nok kort til å byggje denne ruta enno. Trekk inn kort, du.");
@@ -44,10 +42,10 @@ class ByggHandler {
 		return routeWantedToBuild.getColour() == Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1];
 	}
 
-	private void tryToBuildRoute(IHovud hovud, JFrame frame, Route routeWantedToBuild, int kortKrevd, int numberOfDemandedJokers, int position) throws RemoteException {
+	private void tryToBuildRoute(IHovud hovud, JFrame frame, Route routeWantedToBuild, int kortKrevd, int numberOfDemandedJokers, Farge colour) throws RemoteException {
 		try {
 			if (hovud.getKvenSinTur().getGjenverandeTog() >= kortKrevd+numberOfDemandedJokers) {
-				buildRoute(hovud, routeWantedToBuild, kortKrevd, numberOfDemandedJokers, position);
+				buildRoute(hovud, routeWantedToBuild, kortKrevd, numberOfDemandedJokers, colour);
 			}
 			else {
 				JOptionPane.showMessageDialog(frame, "Du har ikkje nok tog att til å byggje denne ruta.");
@@ -57,12 +55,12 @@ class ByggHandler {
 		}
 	}
 
-	private void buildRoute(IHovud hovud, Route routeWantedToBuild, int kortKrevd, int krevdJokrar, int plass) throws RemoteException {
+	private void buildRoute(IHovud hovud, Route routeWantedToBuild, int kortKrevd, int krevdJokrar, Farge colour) throws RemoteException {
 		if (routeWantedToBuild.isTunnel()) {
-			hovud.byggTunnel(routeWantedToBuild, plass, kortKrevd, krevdJokrar);
+			hovud.byggTunnel(routeWantedToBuild, colour, kortKrevd, krevdJokrar);
 		}
 		else {
-			hovud.bygg(routeWantedToBuild, plass, kortKrevd, krevdJokrar);
+			hovud.bygg(routeWantedToBuild, colour, kortKrevd, krevdJokrar);
 		}
 	}
 
