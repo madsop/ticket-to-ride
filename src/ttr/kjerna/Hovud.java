@@ -132,7 +132,7 @@ public class Hovud implements IHovud {
 		ByggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd,plass,kortKrevd,krevdJokrar,minSpelar,kvenSinTur);
 		ISpelar byggjandeSpelar = byggjandeInfo.byggjandeSpelar;
 		int jokrar = byggjandeInfo.jokrar;
-		hjelpemetodeBygg(bygd,plass,kortKrevd,krevdJokrar,byggjandeSpelar,jokrar);
+		hjelpemetodeBygg(bygd,byggjandeInfo.position,kortKrevd,krevdJokrar,byggjandeSpelar,jokrar);
 	}
 
 	public void byggTunnel(Route bygd, int plass, int kortKrevd, int krevdJokrar) throws RemoteException {

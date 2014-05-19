@@ -59,11 +59,10 @@ import java.util.ArrayList;
     public Farge getTilfeldigKortFråBordet(int i) throws RemoteException { return korthandsamar.getRandomCardFromTheDeck(i); }
     public Farge trekkFargekort() throws RemoteException { return korthandsamar.trekkFargekort(); }
 
-	public int getNumberOfCardsLeftInColour(int i) throws RemoteException { return korthandsamar.getNumberOfCardsLeftInColour(i); }
+	public int getNumberOfCardsLeftInColour(Farge colour) throws RemoteException { return korthandsamar.getNumberOfCardsLeftInColour(colour); }
 	public int getNumberOfRemainingJokers() throws RemoteException { return korthandsamar.getNumberOfRemainingJokers(); }
 
 	public void decrementCardsAt(Farge colour, int number) throws RemoteException { korthandsamar.decrementCardsAt(colour, number); }
-	public void decrementJokers(int number) throws RemoteException { korthandsamar.decrementJokers(number); }
 
     // Bord
     public void leggUtFem() { bord.layFiveCardsOutOnTable(); }

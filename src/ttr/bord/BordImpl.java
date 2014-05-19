@@ -76,17 +76,14 @@ public class BordImpl implements IBord {
 		return cardsOnTable.areThereTooManyJokersOnTable();
     }
 
-	@Override
 	public void addCardsToDeck(int position, int number) {
 		deck.addCards(position, number);		
 	}
 
-	@Override
 	public void addJokersToDeck(int jokers) {
 		deck.addJokers(jokers);
 	}
 
-	@Override
 	public boolean areThereAnyCardsLeftInDeck() {
 		return deck.areThereAnyCardsLeftInDeck();
 	}
@@ -95,7 +92,6 @@ public class BordImpl implements IBord {
 		cardsOnTable.setCardsOpenOnTable(cardsOpenOnTable);
 	}
 
-	@Override
 	public Farge getCardFromTable(int positionOnTable) {
 		return cardsOnTable.getCardAt(positionOnTable);
 	}

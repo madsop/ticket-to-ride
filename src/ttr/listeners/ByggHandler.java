@@ -31,7 +31,7 @@ class ByggHandler {
 		if (isGreyRoute(routeWantedToBuild)){
 			buildRoute(hovud, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, position);
 		}
-		else if (playerCanBuildThisRoute(hovud.getKvenSinTur().getNumberOfCardsLeftInColour(position), normalCardsDemanded, numberOfDemandedJokers, playersNumberOfJokers) ){
+		else if (playerCanBuildThisRoute(hovud.getKvenSinTur().getNumberOfCardsLeftInColour(routeColour), normalCardsDemanded, numberOfDemandedJokers, playersNumberOfJokers) ){
 			tryToBuildRoute(hovud, frame, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, position);
 		}
 		else {

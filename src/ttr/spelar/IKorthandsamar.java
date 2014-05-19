@@ -12,10 +12,9 @@ public interface IKorthandsamar extends Remote {
 
     Farge trekkFargekort() throws RemoteException;
 
-	int getNumberOfCardsLeftInColour(int i) throws RemoteException;
-
+	int getNumberOfCardsLeftInColour(Farge colour) throws RemoteException;
+	
 	int getNumberOfRemainingJokers() throws RemoteException;
 
 	void decrementCardsAt(Farge colour, int number) throws RemoteException;
-	void decrementJokers(int number) throws RemoteException;
 }

@@ -49,8 +49,7 @@ public interface ISpelar extends Remote {
     public void receiveCard(Farge farge) throws RemoteException;
     public Farge getTilfeldigKortFråBordet(int positionOnTable) throws RemoteException;
     public Farge trekkFargekort() throws RemoteException;
-	public int getNumberOfCardsLeftInColour(int i) throws RemoteException;
+	public int getNumberOfCardsLeftInColour(Farge colour) throws RemoteException;
 	public int getNumberOfRemainingJokers() throws RemoteException;
 	public void decrementCardsAt(Farge colour, int number)  throws RemoteException;
-	public void decrementJokers(int number)  throws RemoteException;
 }
