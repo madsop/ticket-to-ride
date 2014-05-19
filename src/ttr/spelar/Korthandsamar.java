@@ -45,7 +45,7 @@ public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar
 	}
 
     public Farge getRandomCardFromTheDeck(int positionOnTable) {
-        Farge colourOfTheRandomCard = hovud.getBord().getRandomCardFromTheDeck(positionOnTable, true);
+        Farge colourOfTheRandomCard = hovud.getBord().getRandomCardFromTheDeckAndPutOnTable(positionOnTable, true);
 
         if (colourOfTheRandomCard == null){
 //            tryingToPickNullCard(positionOnTable, colourOfTheRandomCard);
@@ -53,7 +53,7 @@ public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar
             return null;
         }
 
-        hovud.getBord().getPaaBordet()[positionOnTable] = colourOfTheRandomCard;
+        hovud.getBord().setEinPaaBordet(colourOfTheRandomCard, positionOnTable);
         return colourOfTheRandomCard;
     }
 
@@ -95,8 +95,8 @@ public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar
     /** @return eit tilfeldig fargekort frå toppen av stokken */
     @Override
     public Farge trekkFargekort() {
-        if (hovud.getBord().getAntalFargekortPåBordet() > 0) {
-            return hovud.getBord().getRandomCardFromTheDeck(0, false);
+        if (hovud.getBord().areThereAnyCardsLeftInDeck()) {
+            return hovud.getBord().getRandomCardFromTheDeckAndPutOnTable(0, false);
         }
         return null;
     }

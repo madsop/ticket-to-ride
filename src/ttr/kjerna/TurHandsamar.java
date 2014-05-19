@@ -24,9 +24,8 @@ public class TurHandsamar implements ITurhandsamar {
 	}
 
     private ISpelar nesteMedNett(final ISpelar kvenSinTur, final ISpelar minSpelar) throws RemoteException {
-        int no = kvenSinTur.getSpelarNummer();
         ISpelar host = findHost(minSpelar);
-        int next = findNextNumber(no, host.getSpelarteljar());
+        int next = findNextNumber(kvenSinTur.getSpelarNummer(), host.getSpelarteljar());
         ISpelar sinTur = findPlayerByPlayerNumber(minSpelar, next);
         
         for (ISpelar player : players) {

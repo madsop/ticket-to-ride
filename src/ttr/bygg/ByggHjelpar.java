@@ -47,7 +47,7 @@ public class ByggHjelpar implements IByggHjelpar {
 
 			if (colourPosition==-1){ return -1;	}
 		}
-		return Konstantar.finnPosisjonForFarg(mulegeFargar.get(colourPosition));
+		return Konstantar.finnPosisjonForFarge(mulegeFargar.get(colourPosition));
 	}
 
 	private boolean canBuildThisRouteInThisColour(ISpelar player, int numberOfDemandedNormalCards, int ekstrajokrar, int i)	throws RemoteException {
@@ -133,7 +133,7 @@ public class ByggHjelpar implements IByggHjelpar {
 		Farge[] treTrekte = new Farge[3];
 		int ekstra = 0;
 		for (int i = 0; i < treTrekte.length; i++) {
-			treTrekte[i] = bord.getRandomCardFromTheDeck(0, false);
+			treTrekte[i] = bord.getRandomCardFromTheDeckAndPutOnTable(0, false);
 			if (treTrekte[i] == null){
 				JOptionPane.showMessageDialog((Component) gui, Infostrengar.TomtPåBordet);
 				return null;
@@ -159,7 +159,7 @@ public class ByggHjelpar implements IByggHjelpar {
 		int playersNumberOfJokers = player.getKort()[Konstantar.ANTAL_FARGAR-1];
 		int howMany = -1;
 		while (howMany < 0 || howMany > playersNumberOfJokers || howMany > route.getLength()) {
-			String sendinn = Infostrengar.AntalJokrarStart +playersNumberOfJokers +" jokrar, " +player.getKort()[Konstantar.finnPosisjonForFarg(chosenColour)] 
+			String sendinn = Infostrengar.AntalJokrarStart +playersNumberOfJokers +" jokrar, " +player.getKort()[Konstantar.finnPosisjonForFarge(chosenColour)] 
 					+ " av fargen du skal byggje, og ruta er " +route.getLength() +" tog lang.";
 			String usersInput = JOptionPane.showInputDialog(sendinn,0);
 			howMany = Integer.parseInt(usersInput);

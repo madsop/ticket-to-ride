@@ -6,122 +6,97 @@ import ttr.gui.IGUI;
 
 public class BordImpl implements IBord {
     private final IGUI gui;
-    private Farge[] cardsOpenOnTable;
-    private final int[] colourCardsLeftInDeck = {    // TODO lag ein finare rute for fargar og fargekort generelt
-            Konstantar.ANTAL_AV_KVART_FARGEKORT,
-            Konstantar.ANTAL_AV_KVART_FARGEKORT,
-            Konstantar.ANTAL_AV_KVART_FARGEKORT,
-            Konstantar.ANTAL_AV_KVART_FARGEKORT,
-            Konstantar.ANTAL_AV_KVART_FARGEKORT,
-            Konstantar.ANTAL_AV_KVART_FARGEKORT,
-            Konstantar.ANTAL_AV_KVART_FARGEKORT,
-            Konstantar.ANTAL_AV_KVART_FARGEKORT,
-            Konstantar.ANTAL_AV_KVART_FARGEKORT+2
-    }; // samme rekkjefølge som i fargar
-
-    public BordImpl(IGUI gui, boolean nett) {
+	private Deck deck;
+	private CardsOnTable cardsOnTable;
+    
+    public BordImpl(IGUI gui, boolean nett, Deck deck) {
         this.gui = gui;
-        cardsOpenOnTable = new Farge[Konstantar.ANTAL_KORT_PÅ_BORDET];
+        this.deck = deck;
+        this.cardsOnTable = new CardsOnTable();
 
-        // Legg ut dei fem korta på bordet
-        if (!nett){       // TODO: Få generalisert bort denne if-en
-            leggUtFem();
+        if (!nett){       					// TODO: Få generalisert bort denne if-en
+            layFiveCardsOutOnTable();
         }
     }
 
 	public void setPaaBordet(Farge[] paaBordet) {
-		this.cardsOpenOnTable = paaBordet;
+		this.setCardsOpenOnTable(paaBordet);
 
-		for (int i = 0; i < paaBordet.length; i++){
-			int fargenr = Konstantar.finnPosisjonForFarg(paaBordet[i]);
-			leggKortPåBordet(i, fargenr);
+		for (int position = 0; position < paaBordet.length; position++){
+			putCardOnTable(position, paaBordet[position]);
 		}
 	}
 
-    public void setEinPaaBordet(Farge farge, int plass) {
-		cardsOpenOnTable[plass] = farge;
-		int kortPosisjon = Konstantar.finnPosisjonForFarg(farge);
-		colourCardsLeftInDeck[kortPosisjon]--;
-		gui.teiknOppKortPåBordet(plass, farge);
+    public void setEinPaaBordet(Farge colour, int position) {
+		cardsOnTable.putCardOnTable(position, colour);
+		deck.removeCardFromDeck(Konstantar.finnPosisjonForFarge(colour));
+		gui.teiknOppKortPåBordet(position, colour);
 	}
 
-	public void leggUtFem() {
-		for (int i = 0; i < Konstantar.ANTAL_KORT_PÅ_BORDET; i++) { // Legg ut fem kort på bordet
-			getRandomCardFromTheDeck(i,true);			
+	public void layFiveCardsOutOnTable() {
+		for (int i = 0; i < Konstantar.ANTAL_KORT_PÅ_BORDET; i++) {
+			getRandomCardFromTheDeckAndPutOnTable(i,true);			
 		}
-	}
-
-	public int[] getFargekortaSomErIgjenIBunken() {
-		return colourCardsLeftInDeck;
 	}
 
 	public Farge[] getPaaBordet() {
-		return cardsOpenOnTable;
+		return cardsOnTable.getCardsOpenOnTable();
 	}
 
-	public int getAntalFargekortPåBordet() {
-		int fargekortpåbordet = 0;
-		for (int i = 0; i < Konstantar.ANTAL_FARGAR; i++) {
-			fargekortpåbordet += colourCardsLeftInDeck[i];
+	public Farge getRandomCardFromTheDeckAndPutOnTable(int plass, boolean putOnTable) {
+		Farge randomColour = deck.getCardInRandomColour();
+		if (randomColour == null) {
+			System.out.println("stokk!");
+			return null;		
 		}
-		return fargekortpåbordet;
+		
+		if (putOnTable) {
+			putCardOnTable(plass, randomColour);
+		}
+		return randomColour;
 	}
 
-	public Farge getRandomCardFromTheDeck(int plass, boolean leggPåBordet) {
-        int numberOfColouredCardsOnTheTable = getAntalFargekortPåBordet();
-		int randomColour = tilfeldigFarge(numberOfColouredCardsOnTheTable, colourCardsLeftInDeck);
-		if (randomColour >= 0 && randomColour <= Konstantar.ANTAL_FARGAR) {
-			if (leggPåBordet) {
-				leggKortPåBordet(plass, randomColour);
-			}
-			return Konstantar.FARGAR[randomColour];
+    private void putCardOnTable(int position, int counter) { //TODO fas ut denne
+    	putCardOnTable(position, Konstantar.FARGAR[counter]);
+    }
+    
+    private void putCardOnTable(int position, Farge colour) {
+		if (colour != null) {	
+			cardsOnTable.putCardOnTable(position, colour);
+			deck.removeCardFromDeck(colour);
+			gui.teiknOppKortPåBordet(position, colour);
 		}
-		//TODO: stokk();
-		System.out.println("stokk!");
-		return null;
-	}
-
-	/**
-	 * Hårate metode som tar eit kort frå bunken og legg det på bordet. 
-	 * Viss det tabbar seg ut, ror det litt. (else[...])
-	 * @param Kva for plass på bordet det får (0 til 4)
-	 */
-    private void leggKortPåBordet(int plass, int teljar) {
-		if (teljar >= 0 && teljar < Konstantar.ANTAL_FARGAR) {	
-			cardsOpenOnTable[plass] = Konstantar.FARGAR[teljar];
-			colourCardsLeftInDeck[teljar]--;
-			Farge f = Konstantar.FARGAR[teljar];
-			gui.teiknOppKortPåBordet(plass, f);
-		}
-		else {
+		else { // TODO fas ut denne
 			System.err.println("oops");
-			leggKortPåBordet(plass,0);
+			putCardOnTable(position,0);
 		}
 	}
 
 	public boolean areThereTooManyJokersOnTable() {
-		int jokrar = 0;
-		for (Farge f : cardsOpenOnTable) {
-			if (f == Farge.valfri) {
-				jokrar++;
-			}
-		}
-        return jokrar > Konstantar.MAKS_JOKRAR_PAA_BORDET;
+		return cardsOnTable.areThereTooManyJokersOnTable();
     }
 
-    private int tilfeldigFarge(int colourCardsLeftOnTable, int[] cardsLeftOnTable){ //TODO: den siste her bør vel erstattes av ein map el
-        int randomlyChosenCardInDeck = (int) (Math.random() * colourCardsLeftOnTable);
+	@Override
+	public void addCardsToDeck(int position, int number) {
+		deck.addCards(position, number);		
+	}
 
-        int counter = 0;
-        int temporaryValue = 0;
-        while (shouldIncrease(colourCardsLeftOnTable, randomlyChosenCardInDeck, counter, temporaryValue)) {
-            temporaryValue += cardsLeftOnTable[counter];
-            counter++;
-        }
-        return counter-1;
-    }
+	@Override
+	public void addJokersToDeck(int jokers) {
+		deck.addJokers(jokers);
+	}
 
-	private boolean shouldIncrease(int colourCardsLeftOnTable, int indexOfRandomlyChosenCardInDeck, int colorCounter, int temporaryValue) {
-		return (temporaryValue < indexOfRandomlyChosenCardInDeck) && (colorCounter < Konstantar.ANTAL_FARGAR) && (temporaryValue <= colourCardsLeftOnTable);
+	@Override
+	public boolean areThereAnyCardsLeftInDeck() {
+		return deck.areThereAnyCardsLeftInDeck();
+	}
+
+	private void setCardsOpenOnTable(Farge[] cardsOpenOnTable) {
+		cardsOnTable.setCardsOpenOnTable(cardsOpenOnTable);
+	}
+
+	@Override
+	public Farge getCardFromTable(int positionOnTable) {
+		return cardsOnTable.getCardAt(positionOnTable);
 	}
 }

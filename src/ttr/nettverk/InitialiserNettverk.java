@@ -19,7 +19,7 @@ public class InitialiserNettverk {
 	private final String PORT = "1226";
 	private final IGUI gui;
     private final IHovud hovud;
-    private int[] paaVertBordet;
+    private int[] paaVertBordet; //TODO korfor er denne int? Pga serialisering?
 
 	public InitialiserNettverk(IGUI gui, String hostAddress, IHovud hovud) {
 		this.hostAddress = hostAddress;
@@ -55,7 +55,7 @@ public class InitialiserNettverk {
 		String url = "rmi://"+address+"/ISpelar"; // URL-en min i RMI-registeret.
 		System.out.println(hovud.getMinSpelar().getNamn() +" er spelar nummer " 
 				+hovud.getMinSpelar().getSpelarNummer());
-		hovud.getBord().leggUtFem();
+		hovud.getBord().layFiveCardsOutOnTable();
 		System.out.println(url);
 		try {
 			LocateRegistry.createRegistry(Integer.parseInt(PORT));

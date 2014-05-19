@@ -90,13 +90,13 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 		return hovud.getRuter().stream().filter(f -> f.getRouteId()==ruteId).findAny();
 	}
 
-	public int[] getPaaBordetInt() {
+	public int[] getPaaBordetInt() { // TODO wtf
 		int[] bord = new int[Konstantar.ANTAL_KORT_PÅ_BORDET];
 
 		for (int i = 0; i < hovud.getBord().getPaaBordet().length; i++) {
-			for (int f = 0; f < Konstantar.FARGAR.length; f++) {
-				if (hovud.getBord().getPaaBordet()[i] == Konstantar.FARGAR[f]) {
-					bord[i] = f;
+			for (int colourInt = 0; colourInt < Konstantar.FARGAR.length; colourInt++) {
+				if (hovud.getBord().getCardFromTable(i) == Konstantar.FARGAR[colourInt]) {
+					bord[i] = colourInt;
 				}
 			}
 		}

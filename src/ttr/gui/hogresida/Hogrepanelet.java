@@ -1,19 +1,20 @@
 package ttr.gui.hogresida;
 
-import ttr.Listeners.DelegationListener;
-import ttr.Listeners.WrapperKortListener;
 import ttr.data.Farge;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
+import ttr.listeners.DelegationListener;
+import ttr.listeners.WrapperKortListener;
 
 import javax.swing.*;
+
 import java.awt.*;
 
 
 public class Hogrepanelet extends JPanel implements IHogrepanelet {
-    // Brukargrensesnittet - på høgresida
+	private static final long serialVersionUID = 5138678205804362548L;
     private JTextField spelarnamn;
     private IGUI gui;
     private final JFrame frame;

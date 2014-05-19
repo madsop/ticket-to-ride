@@ -1,4 +1,4 @@
-package ttr.Listeners;
+package ttr.listeners;
 
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;

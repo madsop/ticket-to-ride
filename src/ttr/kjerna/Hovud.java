@@ -5,12 +5,11 @@ import ttr.bygg.ByggHjelpar;
 import ttr.bygg.IByggHjelpar;
 import ttr.bygg.ByggjandeInfo;
 import ttr.data.Farge;
-import ttr.data.Konstantar;
 import ttr.gui.IGUI;
 import ttr.nettverk.InitialiserNettverk;
 import ttr.oppdrag.Mission;
 import ttr.oppdrag.IOppdragshandsamar;
-import ttr.oppdrag.Oppdragshandsamar;
+import ttr.oppdrag.MissionHandlerImpl;
 import ttr.rute.IRoute;
 import ttr.rute.IRutehandsamar;
 import ttr.rute.Rutehandsamar;
@@ -143,7 +142,7 @@ public class Hovud implements IHovud {
 		hjelpemetodeBygg(bygd,plass,kortKrevd,krevdJokrar,byggjandeSpelar,jokrar);
 	}
 
-	public void sendKortMelding(boolean kort, boolean tilfeldig, Farge f) throws RemoteException {
+	public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Farge f) throws RemoteException {
 		kommunikasjonMedSpelarar.sendMessageAboutCard(kort,tilfeldig,f,kvenSinTur.getNamn(),nett,this);
 	}
 
@@ -155,7 +154,7 @@ public class Hovud implements IHovud {
 		rutehandsamar = new Rutehandsamar(spel);
 
 		// Legg til oppdrag
-		oppdragshandsamar = new Oppdragshandsamar(spel.getOppdrag());
+		oppdragshandsamar = new MissionHandlerImpl(spel.getOppdrag());
 
 		bygghjelpar = new ByggHjelpar(gui,nett);
 
@@ -170,7 +169,7 @@ public class Hovud implements IHovud {
 	 private void startNetworkGame(String hostAddress) throws RemoteException {
 		 InitialiserNettverk nettverk = new InitialiserNettverk(gui, hostAddress, this);
 		 nettverk.initialiseNetworkGame();
-		 Oppdragshandsamar.trekkOppdrag(gui, minSpelar, true);
+		 MissionHandlerImpl.trekkOppdrag(gui, minSpelar, true);
 
 		 givePlayersMissions();
 	 }
@@ -185,7 +184,7 @@ public class Hovud implements IHovud {
 
 	 private void startLocalGame() throws RemoteException {
 		 for (ISpelar player : players) {
-			 Oppdragshandsamar.trekkOppdrag(gui, player, true);
+			 MissionHandlerImpl.trekkOppdrag(gui, player, true);
 		 }
 		 // ??
 	 }
@@ -220,9 +219,7 @@ public class Hovud implements IHovud {
 	 }
 
 	 private void updateDeckOnTable(int plass, int kortKrevd, int krevdJokrar, int jokrar) {
-		 bord.getFargekortaSomErIgjenIBunken()[plass]+=(kortKrevd-(jokrar-krevdJokrar));
-		 bord.getFargekortaSomErIgjenIBunken()[Konstantar.ANTAL_FARGAR-1]+=jokrar;
+		 bord.addCardsToDeck(plass, kortKrevd-(jokrar-krevdJokrar));
+		 bord.addJokersToDeck(jokrar);
 	 }
-
-
 }

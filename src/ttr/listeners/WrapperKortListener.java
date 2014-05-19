@@ -1,4 +1,4 @@
-package ttr.Listeners;
+package ttr.listeners;
 
 import ttr.data.Farge;
 import ttr.data.Konstantar;
@@ -83,30 +83,38 @@ public class WrapperKortListener implements ActionListener{
 	}
 
 	private void retrieveOneCardFromTheTable(int positionOnTable,ISpelar kvenSinTur) throws RemoteException {
-		Farge colour = hovud.getBord().getPaaBordet()[positionOnTable];
+		Farge colour = hovud.getBord().getCardFromTable(positionOnTable);
+		if (colour == null) { return; }
 		if (kvenSinTur.getValdAllereie()) {
-			if (colour == Farge.valfri) {
-				JOptionPane.showMessageDialog(frame, "Haha. Nice try. Du kan ikkje ta ein joker frå bordet når du allereie har trekt inn eitt kort");
-				return;
-			}
-			else if (colour==null){return;}
-			else {
-				kvenSinTur.receiveCard(colour);
-				hovud.sendKortMelding(true,false,colour);
-				hovud.getBord().getRandomCardFromTheDeck(positionOnTable, true);
-				hovud.nesteSpelar();
-			}
+			retrieveSecondCard(positionOnTable, kvenSinTur, colour);
 		}
 		else {
-			if (colour==null){return;}
-			hovud.getKvenSinTur().receiveCard(colour);
-			hovud.sendKortMelding(true,false,colour);
-			hovud.getBord().getRandomCardFromTheDeck(positionOnTable, true);
-			if (colour == Farge.valfri) {
-				hovud.nesteSpelar();
-			}
-			hovud.getKvenSinTur().setEittKortTrektInn(true);
+			retrieveFirstCard(positionOnTable, kvenSinTur, colour);
 		}
+	}
+
+	private void retrieveSecondCard(int positionOnTable, ISpelar kvenSinTur, Farge colour) throws RemoteException {
+		if (colour == Farge.valfri) {
+			JOptionPane.showMessageDialog(frame, "Haha. Nice try. Du kan ikkje ta ein joker frå bordet når du allereie har trekt inn eitt kort");
+			return;
+		}
+		kvenSinTur.receiveCard(colour);
+		putRandomCardFromTheDeckOnTable(positionOnTable, colour);
+		hovud.nesteSpelar();
+	}
+
+	private void retrieveFirstCard(int positionOnTable, ISpelar kvenSinTur, Farge colour) throws RemoteException {
+		kvenSinTur.receiveCard(colour);
+		putRandomCardFromTheDeckOnTable(positionOnTable, colour);
+		if (colour == Farge.valfri) {
+			hovud.nesteSpelar();
+		}
+		kvenSinTur.setEittKortTrektInn(true);
+	}
+
+	private void putRandomCardFromTheDeckOnTable(int positionOnTable, Farge colour) throws RemoteException {
+		hovud.sendMessageAboutCard(true,false,colour);
+		hovud.getBord().getRandomCardFromTheDeckAndPutOnTable(positionOnTable, true);
 	}
 
 	private ISpelar orienterAndreSpelarar(int positionOnTable) throws  RemoteException{
@@ -116,13 +124,13 @@ public class WrapperKortListener implements ActionListener{
 				host = hovud.getMinSpelar();
 			}
 		}
-		for (ISpelar s : hovud.getSpelarar()) {
+		for (ISpelar player : hovud.getSpelarar()) {
 			if (!nett){
-				s.getTilfeldigKortFråBordet(positionOnTable);
+				player.getTilfeldigKortFråBordet(positionOnTable);
 			}
 			else {
-				if (s.getSpelarNummer()==0) {
-					host = s;
+				if (player.getSpelarNummer()==0) {
+					host = player;
 				}
 			}
 		}

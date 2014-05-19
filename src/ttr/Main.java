@@ -1,6 +1,7 @@
 package ttr;
 
 import ttr.bord.BordImpl;
+import ttr.bord.Deck;
 import ttr.bord.IBord;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
@@ -16,6 +17,7 @@ import ttr.utgaave.europe.Europe;
 import ttr.utgaave.nordic.Nordic;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.rmi.RemoteException;
 
@@ -30,7 +32,7 @@ public class Main {
 
         boolean nett = (JOptionPane.showConfirmDialog(null, Infostrengar.velOmNettverkEllerIkkje) == JOptionPane.YES_OPTION);
         IGUI gui = setUpGUI(spel,frame,nett);
-        IBord bord = new BordImpl(gui,nett);
+        IBord bord = new BordImpl(gui,nett, new Deck());
         IHovud hovud = new Hovud(gui, bord, nett, spel);
         gui.setHovud(hovud);
 

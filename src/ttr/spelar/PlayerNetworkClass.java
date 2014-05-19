@@ -61,9 +61,9 @@ import java.util.ArrayList;
     public Farge trekkFargekort() throws RemoteException { return korthandsamar.trekkFargekort(); }
 
     // Bord
-    public void leggUtFem() { bord.leggUtFem(); }
-    public void leggIStokken(int tabellplass, int kormange) throws RemoteException {
-        bord.getFargekortaSomErIgjenIBunken()[tabellplass] += kormange;
+    public void leggUtFem() { bord.layFiveCardsOutOnTable(); }
+    public void leggIStokken(int position, int number) throws RemoteException {
+        bord.addCardsToDeck(position, number);
     }
     public void setPaaBord(Farge[] f) { bord.setPaaBordet(f); }
     public void putCardOnTable(Farge f, int i) throws RemoteException{

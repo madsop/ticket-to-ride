@@ -1,4 +1,4 @@
-package ttr.Listeners;
+package ttr.listeners;
 
 import ttr.data.Farge;
 import ttr.data.Konstantar;
@@ -25,7 +25,7 @@ class ByggHandler {
 		Farge routeColour = routeWantedToBuild.getColour();
 		int numberOfDemandedJokers = routeWantedToBuild.getNumberOfRequiredJokers();
 
-		int position = Konstantar.finnPosisjonForFarg(routeColour);
+		int position = Konstantar.finnPosisjonForFarge(routeColour);
 
 		int playersNumberOfJokers = playersCards[playersCards.length-1];
 	

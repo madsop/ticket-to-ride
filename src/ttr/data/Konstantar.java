@@ -73,10 +73,10 @@ public class Konstantar {
 		return ret;
 	}
 	
-	public static int finnPosisjonForFarg(Farge farge){
+	public static int finnPosisjonForFarge(Farge colour){
 		int fargenr = -1;
 		for (int j = 0; j < ANTAL_FARGAR; j++) {
-			if (farge == Konstantar.FARGAR[j]) {
+			if (colour == Konstantar.FARGAR[j]) {
 				fargenr = j;
 			}
 		}

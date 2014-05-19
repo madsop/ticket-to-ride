@@ -7,10 +7,10 @@ import ttr.spelar.ISpelar;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class Oppdragshandsamar implements IOppdragshandsamar {
+public class MissionHandlerImpl implements IOppdragshandsamar {
     private final ArrayList<Mission> remainingMissions;
 
-    public Oppdragshandsamar(ArrayList<Mission> missions){
+    public MissionHandlerImpl(ArrayList<Mission> missions){
         remainingMissions = missions;
         reshuffleMissions();
     }

@@ -1,4 +1,4 @@
-package ttr.Listeners;
+package ttr.listeners;
 
 import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;

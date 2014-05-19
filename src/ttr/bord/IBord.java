@@ -5,10 +5,12 @@ import ttr.data.Farge;
 public interface IBord {
     public void setPaaBordet(Farge[] paaBordet);
     public void setEinPaaBordet(Farge f, int plass);
-    public void leggUtFem();
-    public int[] getFargekortaSomErIgjenIBunken();
+    public void layFiveCardsOutOnTable();
     public Farge[] getPaaBordet();
-    public int getAntalFargekortPåBordet();
-    public Farge getRandomCardFromTheDeck(int plass, boolean leggPåBordet);
+    public Farge getRandomCardFromTheDeckAndPutOnTable(int plass, boolean leggPåBordet);
     public boolean areThereTooManyJokersOnTable();
+	public void addCardsToDeck(int tabellplass, int number);
+	public void addJokersToDeck(int jokrar);
+	public boolean areThereAnyCardsLeftInDeck();
+	public Farge getCardFromTable(int positionOnTable);
 }

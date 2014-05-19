@@ -1,4 +1,4 @@
-package ttr.Listeners;
+package ttr.listeners;
 
 import ttr.data.Farge;
 import ttr.kjerna.IHovud;
@@ -14,7 +14,7 @@ class CardDeckHandler {
 		if (colour==null){ return; }
 
 		playerInTurn.receiveCard(colour);
-		hovud.sendKortMelding(true,true,colour);
+		hovud.sendMessageAboutCard(true,true,colour);
 		
 		displayToUser(colour);
 
@@ -26,7 +26,7 @@ class CardDeckHandler {
 		}
 	}
 
-	private void displayToUser(Farge colour) {
+	private void displayToUser(Farge colour) { // TODO denne gjer vel nada og vises vel ingen stad?
 		JPanel panel = new JPanel();
 		JLabel label = new JLabel("Du trakk eit kort av farge " +colour);
 		panel.add(label);
