@@ -35,6 +35,39 @@ public class ByggHjelpar implements IByggHjelpar {
 		return new ByggjandeInfo(buildingPlayer,jokers);
 	}
 
+	public ByggjandeInfo byggTunnel(IBord bord, Route bygd, Farge colour, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
+		Farge[] treTrekte = drawThreeRandomCards(bord);
+		int ekstra = computeExtraNeededCards(bygd, treTrekte);
+
+		if (askUserIfBuildAnyway(treTrekte, ekstra) == JOptionPane.OK_OPTION) {
+			return bygg(bygd, colour, kortKrevd+ekstra, krevdJokrar, minSpelar,kvenSinTur);
+		}
+		return null;
+	}
+
+	private Farge[] drawThreeRandomCards(IBord bord) {
+		Farge[] treTrekte = new Farge[3];
+		
+		for (int i = 0; i < treTrekte.length; i++) {
+			treTrekte[i] = bord.getRandomCardFromTheDeckAndPutOnTable(0, false);
+			if (treTrekte[i] == null){
+				JOptionPane.showMessageDialog((Component) gui, Infostrengar.TomtPåBordet);
+				return null;
+			}
+		}
+		return treTrekte;
+	}
+
+	private int computeExtraNeededCards(Route bygd, Farge[] treTrekte) {
+		int extra = 0;
+		for (Farge drawnCard : treTrekte) {
+			if (drawnCard == Farge.valfri || drawnCard == bygd.getColour()) {
+				extra++;
+			}
+		}
+		return extra;
+	}
+	
 	private Farge findColourToBuildIn(Route routeToBuild, int kortKrevd, int krevdJokrar, ISpelar buildingPlayer) throws RemoteException {
 		if (routeToBuild.getColour() == Farge.valfri){
 			return byggValfriFarge(buildingPlayer,krevdJokrar,kortKrevd); //TODO fix denne - bruk final på position
@@ -43,19 +76,25 @@ public class ByggHjelpar implements IByggHjelpar {
 	}
 
 	private Farge byggValfriFarge(ISpelar player, int numberOfDemandedJokers, int numberOfDemandedNormalCards) throws RemoteException {
+		int extraJokers = player.getNumberOfRemainingJokers() - numberOfDemandedJokers;
+		System.out.println("ekstrajokrar: " +extraJokers);
+
+		ArrayList<Farge> possibleColours = findPossibleColoursToBuildIn(player, numberOfDemandedNormalCards, extraJokers);
+
+		if (possibleColours.size() > 0){
+			return chooseColourToBuildIn(possibleColours);
+		}
+		return null;
+	}
+
+	private ArrayList<Farge> findPossibleColoursToBuildIn(ISpelar player, int numberOfDemandedNormalCards, int ekstrajokrar) throws RemoteException {
 		ArrayList<Farge> mulegeFargar = new ArrayList<>();
-		int ekstrajokrar = player.getNumberOfRemainingJokers()-numberOfDemandedJokers;
-		System.out.println("ekstrajokrar: " +ekstrajokrar);
 		for (Farge colour : Konstantar.FARGAR) {
 			if (canBuildThisRouteInThisColour(player, numberOfDemandedNormalCards,	ekstrajokrar, colour)){
 				mulegeFargar.add(colour);
 			}
 		}
-
-		if (mulegeFargar.size() > 0){
-			return chooseColourToBuildIn(mulegeFargar);
-		}
-		return null;
+		return mulegeFargar;
 	}
 
 	private Farge chooseColourToBuildIn(ArrayList<Farge> mulegeFargar) {
@@ -84,7 +123,7 @@ public class ByggHjelpar implements IByggHjelpar {
 	}
 
 	private boolean routeIsNotJokerColoured(Route bygd) {
-		return bygd.getColour() != Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1];
+		return bygd.getColour() != Farge.valfri;
 	}
 
 	private int chooseNumberOfJokersToUser(Route bygd, Farge colour, int kortKrevd, int krevdJokrar, ISpelar byggjandeSpelar) throws RemoteException {
@@ -114,28 +153,6 @@ public class ByggHjelpar implements IByggHjelpar {
 	private void updatePlayersCards(Farge colour, int kortKrevd, int krevdJokrar, ISpelar byggjandeSpelar, int jokers) throws RemoteException {
 		byggjandeSpelar.decrementCardsAt(colour, kortKrevd-(jokers-krevdJokrar));
 		byggjandeSpelar.decrementCardsAt(Farge.valfri, jokers);
-	}
-
-
-	public ByggjandeInfo byggTunnel(IBord bord, Route bygd, Farge colour, int kortKrevd, int krevdJokrar, ISpelar minSpelar, ISpelar kvenSinTur) throws RemoteException {
-		Farge[] treTrekte = new Farge[3];
-		int ekstra = 0;
-		for (int i = 0; i < treTrekte.length; i++) {
-			treTrekte[i] = bord.getRandomCardFromTheDeckAndPutOnTable(0, false);
-			if (treTrekte[i] == null){
-				JOptionPane.showMessageDialog((Component) gui, Infostrengar.TomtPåBordet);
-				return null;
-			}
-			if (treTrekte[i] == Farge.valfri || treTrekte[i] == bygd.getColour()) {
-				ekstra++;
-			}
-		}
-
-		int byggLell = askUserIfBuildAnyway(treTrekte, ekstra);
-		if (byggLell == JOptionPane.OK_OPTION) {
-			return bygg(bygd, colour, kortKrevd+ekstra, krevdJokrar, minSpelar,kvenSinTur);
-		}
-		return null;
 	}
 
 	private int askUserIfBuildAnyway(Farge[] treTrekte, int ekstra) {

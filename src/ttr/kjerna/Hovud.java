@@ -130,16 +130,18 @@ public class Hovud implements IHovud {
 
 	public void bygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar) throws RemoteException {
 		ByggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd,colour,kortKrevd,krevdJokrar,minSpelar,kvenSinTur);
-		ISpelar byggjandeSpelar = byggjandeInfo.byggjandeSpelar;
-		int jokrar = byggjandeInfo.jokrar;
-		hjelpemetodeBygg(bygd, colour, kortKrevd, krevdJokrar, byggjandeSpelar, jokrar);
+		finishBuildingRoute(bygd, colour, kortKrevd, krevdJokrar, byggjandeInfo);
 	}
 
 	public void byggTunnel(Route bygd, Farge colour, int kortKrevd, int krevdJokrar) throws RemoteException {
 		ByggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(bord, bygd, colour, kortKrevd, krevdJokrar, minSpelar, kvenSinTur);
+		finishBuildingRoute(bygd, colour, kortKrevd, krevdJokrar, byggjandeInfo);
+	}
+
+	private void finishBuildingRoute(Route bygd, Farge colour, int kortKrevd, int krevdJokrar, ByggjandeInfo byggjandeInfo) throws RemoteException {
 		ISpelar byggjandeSpelar = byggjandeInfo.byggjandeSpelar;
 		int jokrar = byggjandeInfo.jokrar;
-		hjelpemetodeBygg(bygd,colour,kortKrevd,krevdJokrar,byggjandeSpelar,jokrar);
+		hjelpemetodeBygg(bygd, colour, kortKrevd, krevdJokrar, byggjandeSpelar, jokrar);
 	}
 
 	public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Farge f) throws RemoteException {
@@ -152,12 +154,8 @@ public class Hovud implements IHovud {
 
 	private void LagBrettet(boolean nett) throws RemoteException {
 		rutehandsamar = new RouteHandlerImpl(spel);
-
-		// Legg til oppdrag
-		oppdragshandsamar = new MissionHandlerImpl(spel.getOppdrag());
-
+		oppdragshandsamar = new MissionHandlerImpl(spel.getOppdrag());		// Legg til oppdrag
 		bygghjelpar = new ByggHjelpar(gui,nett);
-
 		kommunikasjonMedSpelarar = new KommunikasjonMedSpelarar(nett,players); // TODO dependency injection?
 
 		if (!nett) {

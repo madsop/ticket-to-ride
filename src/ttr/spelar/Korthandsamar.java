@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar { //TODO refaktoriser veldig mykje av denne...
 	private static final long serialVersionUID = 3899317463384337994L;
 	private IHovud hovud;
-	private HashMap<Farge, Integer> cardz;
+	private HashMap<Farge, Integer> cards;
 
 	Korthandsamar(IHovud hovud) throws RemoteException {
 		super();
@@ -26,14 +26,14 @@ public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar
 		initialiseCards();
 		for (int startkortPosisjon = 0; startkortPosisjon < Konstantar.ANTAL_STARTKORT; startkortPosisjon++) {
 			Farge trekt = trekkFargekort();
-			cardz.put(trekt, cardz.get(trekt)+1);
+			cards.put(trekt, cards.get(trekt)+1);
 		}
 	}
 
 	private void initialiseCards() {        
-		cardz = new HashMap<>();
+		cards = new HashMap<>();
 		for (Farge colour : Farge.values()) {
-			cardz.put(colour, 0);
+			cards.put(colour, 0);
 		}
 	}
 
@@ -56,26 +56,26 @@ public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar
 	}
 
 	public void receiveCard(Farge colour) {
-		cardz.put(colour, cardz.get(colour) + 1);
+		cards.put(colour, cards.get(colour) + 1);
 	}
 
 	/** @return eit tilfeldig fargekort frå toppen av stokken */
 	public Farge trekkFargekort() {
-		if (hovud.getBord().areThereAnyCardsLeftInDeck()) {
+		if (hovud.getBord().areThereAnyCardsLeftInDeck()) { // TODO ser ut som om denne if-en bør inn i bord-klassa
 			return hovud.getBord().getRandomCardFromTheDeckAndPutOnTable(0, false);
 		}
 		return null;
 	}
 
 	public int getNumberOfCardsLeftInColour(Farge colour) throws RemoteException {
-		return cardz.get(colour);
+		return cards.get(colour);
 	}
 
 	public int getNumberOfRemainingJokers() throws RemoteException {
-		return cardz.get(Farge.valfri);
+		return cards.get(Farge.valfri);
 	}
 
 	public void decrementCardsAt(Farge colour, int number) throws RemoteException {
-		cardz.put(colour, cardz.get(colour) - number);
+		cards.put(colour, cards.get(colour) - number);
 	}
 }
