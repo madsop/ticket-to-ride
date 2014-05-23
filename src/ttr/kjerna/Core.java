@@ -27,6 +27,7 @@ public interface Core {
     public int getAntalGjenverandeOppdrag ();
     public Mission getOppdrag();
 
+    PlayerAndNetworkWTF findPlayerInAction();
 
     public ArrayList<PlayerAndNetworkWTF> getSpelarar();
     public PlayerAndNetworkWTF getMinSpelar();

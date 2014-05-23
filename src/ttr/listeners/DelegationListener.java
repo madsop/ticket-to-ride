@@ -47,10 +47,10 @@ public class DelegationListener implements ActionListener{
                 new BuildRouteHandler(hovud,frame);
             }
             else if (arg0.getSource() == visMineKort) {
-                new ShowMyCardsHandler(hovud,gui);
+                new ShowMyCardsHandler(gui, hovud.findPlayerInAction());
             }
             else if (arg0.getSource() == visMineOppdrag) {
-                new ShowMyMissionsHandler(hovud,gui);
+                new ShowMyMissionsHandler(gui, hovud.findPlayerInAction());
             }
             else if (arg0.getSource() == visBygde) {
                 new ShowBuiltRoutesHandler(hovud,gui,frame);

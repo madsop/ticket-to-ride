@@ -5,7 +5,9 @@ import java.rmi.RemoteException;
 import ttr.bord.Table;
 import ttr.gui.IGUI;
 import ttr.nettverk.InitialiserNettverk;
+import ttr.oppdrag.Mission;
 import ttr.oppdrag.MissionHandlerImpl;
+import ttr.spelar.PlayerAndNetworkWTF;
 import ttr.utgaave.GameVersion;
 
 public class NetworkCore extends CoreImpl {
@@ -18,10 +20,27 @@ public class NetworkCore extends CoreImpl {
 		nettverk.initialiseNetworkGame();
 		MissionHandlerImpl.trekkOppdrag(gui, minSpelar, true);
 
-		givePlayersMissions(); //TODO bør denne metoden flyttast hit?
+		givePlayersMissions();
+	}
+
+	private void givePlayersMissions() throws RemoteException {
+		for (PlayerAndNetworkWTF player : players){
+			for (Mission mission : player.getOppdrag()){
+				player.removeChosenMissionFromDeck(mission.getMissionId());
+			}
+		}
 	}
 
 	public boolean isNetworkGame() {
 		return true;
+	}
+
+	public PlayerAndNetworkWTF findPlayerInAction() {
+		return minSpelar;
+	}
+
+	protected void createTable() throws RemoteException {
+		communicationWithPlayers = new CommunicationWithPlayersNetwork(players);
+		turhandsamar = new TurHandsamar(players,true);		
 	}
 }

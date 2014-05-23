@@ -26,16 +26,16 @@ import javax.swing.JOptionPane;
 public abstract class CoreImpl implements Core {
 
 	private final GameVersion gameVersion;
-	private final Table table;
+	protected final Table table;
 	protected ArrayList<PlayerAndNetworkWTF> players;
 	protected final IGUI gui;
 
-	private PlayerAndNetworkWTF kvenSinTur;
+	protected PlayerAndNetworkWTF kvenSinTur;
 	protected PlayerAndNetworkWTF minSpelar;
-	private CommunicationWithPlayers communicationWithPlayers;
+	protected CommunicationWithPlayers communicationWithPlayers;
 	private MissionHandler oppdragshandsamar;
 	private RouteHandler rutehandsamar;
-	private ITurhandsamar turhandsamar;
+	protected ITurhandsamar turhandsamar;
 	private IByggHjelpar bygghjelpar;
 
 	public CoreImpl(IGUI gui, Table table, GameVersion gameVersion) throws RemoteException {
@@ -113,18 +113,20 @@ public abstract class CoreImpl implements Core {
 		return rutehandsamar.findRoutesNotYetBuilt(players);
 	}
 
+	public abstract PlayerAndNetworkWTF findPlayerInAction();
+	
 	public void bygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar) throws RemoteException {
-		ByggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd,colour,kortKrevd,krevdJokrar,minSpelar,kvenSinTur);
+		ByggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd,colour,kortKrevd,krevdJokrar,findPlayerInAction());
 		hjelpemetodeBygg(bygd, colour, kortKrevd, krevdJokrar, byggjandeInfo.byggjandeSpelar, byggjandeInfo.jokrar);
 	}
 
 	public void byggTunnel(Route bygd, Farge colour, int kortKrevd, int krevdJokrar) throws RemoteException {
-		ByggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(table, bygd, colour, kortKrevd, krevdJokrar, minSpelar, kvenSinTur);
+		ByggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(table, bygd, colour, kortKrevd, krevdJokrar, findPlayerInAction());
 		hjelpemetodeBygg(bygd, colour, kortKrevd, krevdJokrar, byggjandeInfo.byggjandeSpelar, byggjandeInfo.jokrar);
 	}
 
 	public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Farge f) throws RemoteException {
-		communicationWithPlayers.sendMessageAboutCard(kort, tilfeldig, f, kvenSinTur.getNamn(), isNetworkGame(), this);
+		communicationWithPlayers.sendMessageAboutCard(kort, tilfeldig, f, kvenSinTur.getNamn(), this);
 	}
 
 	public void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF vert, Farge nyFarge, int i) throws RemoteException {
@@ -134,29 +136,11 @@ public abstract class CoreImpl implements Core {
 	private void LagBrettet() throws RemoteException {
 		rutehandsamar = new RouteHandlerImpl(gameVersion);
 		oppdragshandsamar = new MissionHandlerImpl(gameVersion.getOppdrag());		// Legg til oppdrag
-		bygghjelpar = new ByggHjelpar(gui,isNetworkGame());
-		communicationWithPlayers = new CommunicationWithPlayersImpl(isNetworkGame(),players); // TODO dependency injection?
-
-		if (!isNetworkGame()) {
-			createPlayersAndSetUpForLocalGame();
-		}         // else er det nettverksspel og handterast seinare
-		turhandsamar = new TurHandsamar(players,isNetworkGame());
+		bygghjelpar = new ByggHjelpar(gui);
+		createTable();
 	}
-
-	protected void givePlayersMissions() throws RemoteException {
-		for (PlayerAndNetworkWTF player : players){
-			for (Mission mission : player.getOppdrag()){
-				player.removeChosenMissionFromDeck(mission.getMissionId());
-			}
-		}
-	}
-
-
-	private void createPlayersAndSetUpForLocalGame() throws RemoteException {
-		players = communicationWithPlayers.createPlayersForLocalGame(this,table); //todo playes må komme inn i arraylista her på eit vis
-		if (minSpelar == null) { setMinSpelar(players.get(0)); }
-		settSinTur(players.get(0));
-	}
+	
+	protected abstract void createTable() throws RemoteException;
 
 	private void hjelpemetodeBygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF byggjandeSpelar, int jokrar) throws RemoteException{
 		rutehandsamar.newRoute(bygd);

@@ -15,15 +15,12 @@ import java.util.ArrayList;
 
 public class ByggHjelpar implements IByggHjelpar {
 	private final IGUI gui;
-	private final boolean nett;
-
-	public ByggHjelpar(IGUI gui, boolean nett) {
+	
+	public ByggHjelpar(IGUI gui) {
 		this.gui = gui;
-		this.nett = nett;
 	}
 
-	public ByggjandeInfo bygg(Route routeToBuild, Farge colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF myPlayer, PlayerAndNetworkWTF kvenSinTur) throws RemoteException {
-		PlayerAndNetworkWTF buildingPlayer = nett ? myPlayer : kvenSinTur;
+	public ByggjandeInfo bygg(Route routeToBuild, Farge colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF buildingPlayer) throws RemoteException {
 		Farge colourToBuildIn = findColourToBuildIn(routeToBuild, kortKrevd, krevdJokrar, buildingPlayer);
 		if (colourToBuildIn == null) { return null; }
 		
@@ -35,12 +32,12 @@ public class ByggHjelpar implements IByggHjelpar {
 		return new ByggjandeInfo(buildingPlayer,jokers);
 	}
 
-	public ByggjandeInfo byggTunnel(Table bord, Route bygd, Farge colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF minSpelar, PlayerAndNetworkWTF kvenSinTur) throws RemoteException {
+	public ByggjandeInfo byggTunnel(Table bord, Route bygd, Farge colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF buildingPlayer) throws RemoteException {
 		Farge[] treTrekte = drawThreeRandomCards(bord);
 		int ekstra = computeExtraNeededCards(bygd, treTrekte);
 
 		if (askUserIfBuildAnyway(treTrekte, ekstra) == JOptionPane.OK_OPTION) {
-			return bygg(bygd, colour, kortKrevd+ekstra, krevdJokrar, minSpelar,kvenSinTur);
+			return bygg(bygd, colour, kortKrevd+ekstra, krevdJokrar, buildingPlayer);
 		}
 		return null;
 	}

@@ -2,7 +2,6 @@ package ttr.listeners;
 
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
-import ttr.kjerna.Core;
 import ttr.spelar.PlayerAndNetworkWTF;
 
 import javax.swing.*;
@@ -10,27 +9,19 @@ import java.awt.*;
 import java.rmi.RemoteException;
 
 class ShowMyCardsHandler {
-	public ShowMyCardsHandler(Core hovud, IGUI gui) throws RemoteException{
+	public ShowMyCardsHandler(IGUI gui, PlayerAndNetworkWTF playerWhoseCardToShow) throws RemoteException{
 		JPanel myCardsPanel = new JPanel();
-		PlayerAndNetworkWTF visSine = findPlayer(hovud);
-		String[] kort = setUpCardText(visSine);
+		String[] kort = setUpCardText(playerWhoseCardToShow);
 		JLabel[] cardsJLabel = new JLabel[kort.length];
 
-		myCardsPanel.add(new JLabel(visSine.getNamn()));
+		myCardsPanel.add(new JLabel(playerWhoseCardToShow.getNamn()));
 
 		for (int i = 0; i < cardsJLabel.length; i++) {
-			cardsJLabel[i] = setUpCardsJLabel(visSine, kort, i);
+			cardsJLabel[i] = setUpCardsJLabel(playerWhoseCardToShow, kort, i);
 			myCardsPanel.add(cardsJLabel[i]);
 		}
 		
-		gui.createJFrame("Viser korta til " +visSine.getNamn(), myCardsPanel);
-	}
-
-	private PlayerAndNetworkWTF findPlayer(Core hovud) {
-		if (hovud.isNetworkGame()) {
-			return hovud.getMinSpelar();
-		}
-		return hovud.getKvenSinTur();
+		gui.createJFrame("Viser korta til " +playerWhoseCardToShow.getNamn(), myCardsPanel);
 	}
 
 	private String[] setUpCardText(PlayerAndNetworkWTF visSine) throws RemoteException {
