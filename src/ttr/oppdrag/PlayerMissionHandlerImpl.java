@@ -1,7 +1,7 @@
 package ttr.oppdrag;
 
 import ttr.data.Destinasjon;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 import ttr.rute.Route;
 
 import java.rmi.RemoteException;
@@ -15,10 +15,10 @@ import java.util.Set;
 public class PlayerMissionHandlerImpl extends UnicastRemoteObject implements PlayerMissionHandler {
 	private static final long serialVersionUID = 5194460142995578869L;
 	private Set<Mission> missions;
-	private IHovud hovud;
+	private Core hovud;
 	private Map<Destinasjon, Set<Destinasjon>> mapBetweenAandB;
 
-	public PlayerMissionHandlerImpl(IHovud hovud) throws RemoteException {
+	public PlayerMissionHandlerImpl(Core hovud) throws RemoteException {
 		super();
 		missions = new HashSet<>();
 		this.hovud = hovud;

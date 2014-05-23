@@ -2,7 +2,7 @@ package ttr.spelar;
 
 import ttr.data.Farge;
 import ttr.data.Konstantar;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -11,10 +11,10 @@ import java.util.Map;
 
 public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler { //TODO refaktoriser veldig mykje av denne...
 	private static final long serialVersionUID = 3899317463384337994L;
-	private IHovud hovud;
+	private Core hovud;
 	private Map<Farge, Integer> cards;
 
-	CardHandlerImpl(IHovud hovud) throws RemoteException {
+	CardHandlerImpl(Core hovud) throws RemoteException {
 		super();
 		this.hovud = hovud;
 		faaInitielleFargekort();

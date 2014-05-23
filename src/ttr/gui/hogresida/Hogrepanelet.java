@@ -4,7 +4,7 @@ import ttr.data.Farge;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 import ttr.listeners.DelegationListener;
 import ttr.listeners.WrapperKortListener;
 
@@ -126,7 +126,7 @@ public class Hogrepanelet extends JPanel implements IHogrepanelet {
         visFargekorta(d);
     }
     
-    public void addListeners(IHovud hovud){
+    public void addListeners(Core hovud){
         DelegationListener listener = new DelegationListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
         trekkOppdrag.addActionListener(listener);
         bygg.addActionListener(listener);

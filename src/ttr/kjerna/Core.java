@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Set;
 
-public interface IHovud {
+public interface Core {
     public ArrayList<Mission> getGjenverandeOppdrag();
 
     public Set<Route> getRuter();
@@ -20,7 +20,7 @@ public interface IHovud {
     public Table getTable();
     public boolean isNetworkGame();
 
-    public void settIGangSpelet(boolean nett, String hostAddress) throws RemoteException;
+    public void settIGangSpelet(String hostAddress) throws RemoteException;
     public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Farge colour) throws RemoteException;
     public void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Farge newColour, int i) throws RemoteException;
 

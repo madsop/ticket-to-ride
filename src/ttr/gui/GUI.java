@@ -4,7 +4,7 @@ import ttr.data.Farge;
 import ttr.data.IMeldingarModell;
 import ttr.gui.hogresida.IHogrepanelet;
 import ttr.gui.hogresida.IMeldingspanel;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 import ttr.oppdrag.Mission;
 
 import javax.swing.*;
@@ -44,7 +44,7 @@ public class GUI extends JPanel implements IGUI {
 		add((JPanel) messagePanel,c);
 	}
 
-    public void setHovud(IHovud hovud){
+    public void setHovud(Core hovud){
         messagePanel.prepareChat(hovud);
         hogre.addListeners(hovud);
     }

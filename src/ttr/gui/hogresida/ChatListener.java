@@ -2,7 +2,7 @@ package ttr.gui.hogresida;
 
 import ttr.data.Infostrengar;
 import ttr.data.MeldingarModell;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 import ttr.spelar.PlayerAndNetworkWTF;
 
 import javax.swing.*;
@@ -12,11 +12,11 @@ import java.rmi.RemoteException;
 
 class ChatListener implements KeyListener {
 	private final boolean nett;
-	private final IHovud hovud;
+	private final Core hovud;
 	private final JTextField chatJTextField; //TODO denne må vel vekk herifrå?
 	private final MeldingarModell meldingarmodell;
 
-	public ChatListener(boolean nett, JTextField chat, MeldingarModell messagesModel, IHovud hovud){
+	public ChatListener(boolean nett, JTextField chat, MeldingarModell messagesModel, Core hovud){
 		this.nett = nett;
 		this.chatJTextField = chat;
 		this.meldingarmodell = messagesModel;

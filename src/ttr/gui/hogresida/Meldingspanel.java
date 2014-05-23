@@ -3,7 +3,7 @@ package ttr.gui.hogresida;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.data.MeldingarModell;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 
 import javax.swing.*;
 
@@ -40,7 +40,7 @@ public class Meldingspanel extends JPanel implements PropertyChangeListener, IMe
         this.setPreferredSize(new Dimension(Konstantar.MELDINGSPANEL,Konstantar.HOGDE));
 	}
     
-    public void prepareChat(IHovud hovud){
+    public void prepareChat(Core hovud){
         JTextField chat = new JTextField(Infostrengar.starttekst);
         chat.addKeyListener(new ChatListener(isNetworkGame, chat, messagemodel, hovud));
         chat.setPreferredSize(Konstantar.CHATDIM);

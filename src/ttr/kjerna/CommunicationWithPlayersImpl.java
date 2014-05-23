@@ -35,7 +35,7 @@ public class CommunicationWithPlayersImpl implements CommunicationWithPlayers {
 		}
 	}
 
-	public ArrayList<PlayerAndNetworkWTF> createPlayersForLocalGame(IHovud hovud, Table bord) {
+	public ArrayList<PlayerAndNetworkWTF> createPlayersForLocalGame(Core hovud, Table bord) {
 		int antalSpelarar = addPlayers();
 		try {
 			return createPlayers(hovud, bord, antalSpelarar);
@@ -52,7 +52,7 @@ public class CommunicationWithPlayersImpl implements CommunicationWithPlayers {
 		return numberOfPlayers;
 	}
 
-	private ArrayList<PlayerAndNetworkWTF> createPlayers(IHovud hovud, Table bord, int antalSpelarar) throws HeadlessException, RemoteException {
+	private ArrayList<PlayerAndNetworkWTF> createPlayers(Core hovud, Table bord, int antalSpelarar) throws HeadlessException, RemoteException {
 		players = new ArrayList<>();
 		for (int i = 1; i <= antalSpelarar; i++) {
 			players.add(new PlayerNetworkClass(hovud,JOptionPane.showInputDialog(null,Infostrengar.SkrivInnSpelarnamn +i),bord));
@@ -175,7 +175,7 @@ public class CommunicationWithPlayersImpl implements CommunicationWithPlayers {
 		return leiarNo;
 	}
 
-	public void sendMessageAboutCard(boolean card, boolean random, Farge colour, String handlandespelarsNamn, boolean nett, IHovud hovud) throws RemoteException{
+	public void sendMessageAboutCard(boolean card, boolean random, Farge colour, String handlandespelarsNamn, boolean nett, Core hovud) throws RemoteException{
 		String melding = handlandespelarsNamn;
 		melding += card ? " trakk inn " + colour +"." : " trakk oppdrag.";
 
@@ -199,7 +199,7 @@ public class CommunicationWithPlayersImpl implements CommunicationWithPlayers {
 		}
 	}
 
-	public void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Farge nyFarge, int position, IHovud hovud) throws RemoteException{
+	public void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Farge nyFarge, int position, Core hovud) throws RemoteException{
 		if (iAmHost(host, hovud)){
 			orientPlayersAboutNewCardOnTable(nyFarge, position, hovud.getSpelarar());
 		}
@@ -224,7 +224,7 @@ public class CommunicationWithPlayersImpl implements CommunicationWithPlayers {
 		}
 	}
 
-	private boolean iAmHost(PlayerAndNetworkWTF vert, IHovud hovud) throws RemoteException {
+	private boolean iAmHost(PlayerAndNetworkWTF vert, Core hovud) throws RemoteException {
 		return vert.getNamn().equals(hovud.getMinSpelar().getNamn());
 	}
 }

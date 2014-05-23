@@ -2,7 +2,7 @@ package ttr.listeners;
 
 import ttr.data.Farge;
 import ttr.data.Konstantar;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 import ttr.rute.Route;
 
 import javax.swing.JFrame;
@@ -14,7 +14,7 @@ import java.util.Set;
 
 class BuildRouteHandler {
 
-	public BuildRouteHandler(IHovud hovud, JFrame frame) throws RemoteException {
+	public BuildRouteHandler(Core hovud, JFrame frame) throws RemoteException {
 		Set<Route> notYetBuiltRoutes = hovud.findRoutesNotYetBuilt();
 
 		Route routeWantedToBuild = letUserChooseRouteToBuild(frame, notYetBuiltRoutes);
@@ -46,7 +46,7 @@ class BuildRouteHandler {
 		return routeWantedToBuild.getColour() == Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1];
 	}
 
-	private void buildRoute(IHovud hovud, Route routeWantedToBuild, int kortKrevd, int krevdJokrar, Farge colour) throws RemoteException {
+	private void buildRoute(Core hovud, Route routeWantedToBuild, int kortKrevd, int krevdJokrar, Farge colour) throws RemoteException {
 		if (routeWantedToBuild.isTunnel()) {
 			hovud.byggTunnel(routeWantedToBuild, colour, kortKrevd, krevdJokrar);
 		}
@@ -59,7 +59,7 @@ class BuildRouteHandler {
 		return krevdJokrar <= harjokrar && (kortKrevd <= ( (harjokrar-krevdJokrar) + playersCardsInThisColour) );
 	}
 
-	private void tryToBuildRoute(IHovud hovud, JFrame frame, Route routeWantedToBuild, int kortKrevd, int numberOfDemandedJokers, Farge colour) throws RemoteException {
+	private void tryToBuildRoute(Core hovud, JFrame frame, Route routeWantedToBuild, int kortKrevd, int numberOfDemandedJokers, Farge colour) throws RemoteException {
 		try {
 			if (hovud.getKvenSinTur().getGjenverandeTog() >= kortKrevd+numberOfDemandedJokers) {
 				buildRoute(hovud, routeWantedToBuild, kortKrevd, numberOfDemandedJokers, colour);

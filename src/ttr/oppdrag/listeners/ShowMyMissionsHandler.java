@@ -1,7 +1,7 @@
 package ttr.oppdrag.listeners;
 
 import ttr.gui.IGUI;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 import ttr.oppdrag.Mission;
 import ttr.spelar.PlayerAndNetworkWTF;
 
@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.rmi.RemoteException;
 
 public class ShowMyMissionsHandler {
-	public ShowMyMissionsHandler(IHovud hovud, IGUI gui) throws RemoteException {
+	public ShowMyMissionsHandler(Core hovud, IGUI gui) throws RemoteException {
 		JPanel missionJPanel = new JPanel();
 
 		PlayerAndNetworkWTF player = getPlayer(hovud);
@@ -23,7 +23,7 @@ public class ShowMyMissionsHandler {
 		showToPlayer(gui, missionJPanel, player, missionString);
 	}
 
-	private PlayerAndNetworkWTF getPlayer(IHovud hovud) {
+	private PlayerAndNetworkWTF getPlayer(Core hovud) {
 		if (hovud.isNetworkGame()) {
 			return hovud.getMinSpelar();
 		}

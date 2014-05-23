@@ -1,7 +1,7 @@
 package ttr.listeners;
 
 import ttr.gui.IGUI;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 import ttr.oppdrag.listeners.TrekkOppdragHandler;
 import ttr.oppdrag.listeners.ShowMyMissionsHandler;
 
@@ -13,11 +13,11 @@ import java.rmi.RemoteException;
 
 public class DelegationListener implements ActionListener{
     private final IGUI gui;
-    private final IHovud hovud;
+    private final Core hovud;
     private final JButton visBygde,visMineKort,visMineOppdrag,trekkOppdrag,bygg;
     private final JFrame frame;
 
-    public DelegationListener(IGUI gui, IHovud hovud, JButton visBygde,
+    public DelegationListener(IGUI gui, Core hovud, JButton visBygde,
                             JButton visMineKort, JButton visMineOppdrag, JButton trekkOppdrag, JButton bygg,
                             JFrame frame) {
         this.gui = gui;

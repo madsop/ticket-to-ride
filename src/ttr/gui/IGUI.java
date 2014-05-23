@@ -2,7 +2,7 @@ package ttr.gui;
 
 import ttr.data.Farge;
 import ttr.data.IMeldingarModell;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 import ttr.oppdrag.Mission;
 
 import javax.swing.*;
@@ -17,7 +17,7 @@ public interface IGUI {
     public JButton[] getKortButtons();
     void createJFrame(String tittel, JPanel panel);
     public String showInputDialog(String string);                       // TODO: bruk denne og liknande meir
-    public void setHovud(IHovud hovud);
+    public void setHovud(Core hovud);
     void displayGraphicallyThatThereIsNoCardHere(int positionOnTable);
 
     ArrayList<Mission> velOppdrag(ArrayList<Mission> oppd);

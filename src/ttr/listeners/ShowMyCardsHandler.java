@@ -2,7 +2,7 @@ package ttr.listeners;
 
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 import ttr.spelar.PlayerAndNetworkWTF;
 
 import javax.swing.*;
@@ -10,7 +10,7 @@ import java.awt.*;
 import java.rmi.RemoteException;
 
 class ShowMyCardsHandler {
-	public ShowMyCardsHandler(IHovud hovud, IGUI gui) throws RemoteException{
+	public ShowMyCardsHandler(Core hovud, IGUI gui) throws RemoteException{
 		JPanel myCardsPanel = new JPanel();
 		PlayerAndNetworkWTF visSine = findPlayer(hovud);
 		String[] kort = setUpCardText(visSine);
@@ -26,7 +26,7 @@ class ShowMyCardsHandler {
 		gui.createJFrame("Viser korta til " +visSine.getNamn(), myCardsPanel);
 	}
 
-	private PlayerAndNetworkWTF findPlayer(IHovud hovud) {
+	private PlayerAndNetworkWTF findPlayer(Core hovud) {
 		if (hovud.isNetworkGame()) {
 			return hovud.getMinSpelar();
 		}

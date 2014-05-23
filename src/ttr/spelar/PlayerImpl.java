@@ -7,14 +7,14 @@ import java.util.Optional;
 
 import ttr.bord.Table;
 import ttr.data.Konstantar;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 import ttr.oppdrag.PlayerMissionHandler;
 import ttr.oppdrag.PlayerMissionHandlerImpl;
 import ttr.rute.Route;
 
 public abstract class PlayerImpl extends UnicastRemoteObject {
 	private static final long serialVersionUID = -6844537139622798129L;
-	protected IHovud hovud;
+	protected Core hovud;
 	protected Table bord;
     protected PlayerMissionHandler spelarOppdragshandsamar;
 
@@ -25,7 +25,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 
 	private boolean einValdAllereie;
 	
-	public PlayerImpl (IHovud hovud, String namn, Table bord) throws RemoteException{
+	public PlayerImpl (Core hovud, String namn, Table bord) throws RemoteException{
 		super();
 		this.hovud = hovud;
 		this.bord = bord;

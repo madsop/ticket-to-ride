@@ -2,7 +2,7 @@ package ttr.spelar;
 
 import ttr.bord.Table;
 import ttr.data.Farge;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 import ttr.oppdrag.Mission;
 
 import java.rmi.RemoteException;
@@ -16,7 +16,7 @@ import java.util.Collection;
 	private static final long serialVersionUID = -3600106049579247030L;
     private CardHandler korthandsamar;
     
-	public PlayerNetworkClass(IHovud hovud, String namn, Table bord) throws RemoteException {
+	public PlayerNetworkClass(Core hovud, String namn, Table bord) throws RemoteException {
 		super(hovud, namn, bord);
         korthandsamar = new CardHandlerImpl(hovud);
 	}

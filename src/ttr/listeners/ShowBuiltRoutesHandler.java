@@ -1,11 +1,11 @@
 package ttr.listeners;
 
 import ttr.gui.IGUI;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 import javax.swing.*;
 
 class ShowBuiltRoutesHandler {
-	public ShowBuiltRoutesHandler(IHovud hovud, IGUI gui, JFrame frame) {
+	public ShowBuiltRoutesHandler(Core hovud, IGUI gui, JFrame frame) {
 		if (hovud.getAlleBygdeRuter().size() <= 0) {             
 			JOptionPane.showMessageDialog(frame, "Det er ikkje bygd noka rute enno. Bli den første!");
 			return;

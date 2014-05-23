@@ -3,7 +3,7 @@ package ttr.nettverk;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 import ttr.spelar.PlayerAndNetworkWTF;
 import ttr.spelar.PlayerNetworkClass;
 
@@ -18,10 +18,10 @@ public class InitialiserNettverk {
     private final String hostAddress;
 	private final String PORT = "1226";
 	private final IGUI gui;
-    private final IHovud hovud;
+    private final Core hovud;
     private int[] paaVertBordet; //TODO korfor er denne int? Pga serialisering?
 
-	public InitialiserNettverk(IGUI gui, String hostAddress, IHovud hovud) {
+	public InitialiserNettverk(IGUI gui, String hostAddress, Core hovud) {
 		this.hostAddress = hostAddress;
 		this.gui = gui;
         this.hovud = hovud;

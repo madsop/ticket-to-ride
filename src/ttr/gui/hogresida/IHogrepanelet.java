@@ -2,7 +2,7 @@ package ttr.gui.hogresida;
 
 import ttr.data.Farge;
 import ttr.gui.IGUI;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 
 import javax.swing.*;
 
@@ -15,7 +15,7 @@ public interface IHogrepanelet {
 
     void byggHogrepanelet();
 
-    void addListeners(IHovud hovud);
+    void addListeners(Core hovud);
 
     void teiknOppKortPåBordet(int plass, Farge farge);
 

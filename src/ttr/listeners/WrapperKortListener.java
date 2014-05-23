@@ -2,7 +2,7 @@ package ttr.listeners;
 
 import ttr.data.Farge;
 import ttr.data.Konstantar;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
 import ttr.spelar.PlayerAndNetworkWTF;
 
 import javax.swing.*;
@@ -14,11 +14,11 @@ import java.rmi.RemoteException;
 public class WrapperKortListener implements ActionListener{
 	private final JButton kortBunke;
 	private final JButton[] kortButtons;
-	private final IHovud hovud;
+	private final Core hovud;
 	private final JFrame frame;
 	private final boolean nett;
 
-	public WrapperKortListener(JButton kortBunke, JButton[] kortButtons, IHovud hovud, JFrame frame, boolean nett){
+	public WrapperKortListener(JButton kortBunke, JButton[] kortButtons, Core hovud, JFrame frame, boolean nett){
 		this.kortBunke = kortBunke;
 		this.kortButtons = kortButtons;
 		this.hovud = hovud;

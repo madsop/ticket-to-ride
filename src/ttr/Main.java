@@ -10,8 +10,9 @@ import ttr.gui.hogresida.Hogrepanelet;
 import ttr.gui.hogresida.IHogrepanelet;
 import ttr.gui.hogresida.IMeldingspanel;
 import ttr.gui.hogresida.Meldingspanel;
-import ttr.kjerna.Hovud;
-import ttr.kjerna.IHovud;
+import ttr.kjerna.Core;
+import ttr.kjerna.LocalCore;
+import ttr.kjerna.NetworkCore;
 import ttr.utgaave.GameVersion;
 import ttr.utgaave.europe.Europe;
 import ttr.utgaave.nordic.Nordic;
@@ -45,10 +46,18 @@ public class Main {
         IGUI gui = setUpGUI(gameVersion,frame,isNetworkGame);
         
         Table table = new TableImpl(gui,isNetworkGame, injector.getInstance(Deck.class));
-        IHovud hovud = new Hovud(gui, table, isNetworkGame, gameVersion);
-        gui.setHovud(hovud);
+        
+        Core core = null;
+        if (isNetworkGame) {
+        	core = new NetworkCore(gui, table, gameVersion);
+        }
+        else {
+        	core = new LocalCore(gui, table, gameVersion);
+        }
+        
+        gui.setHovud(core);
 
-        hovud.settIGangSpelet(isNetworkGame,getHostName(args));
+        core.settIGangSpelet(getHostName(args));
 	}
 
 	private String getHostName(String[] args) {

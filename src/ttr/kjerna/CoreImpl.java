@@ -6,7 +6,6 @@ import ttr.bygg.IByggHjelpar;
 import ttr.bygg.ByggjandeInfo;
 import ttr.data.Farge;
 import ttr.gui.IGUI;
-import ttr.nettverk.InitialiserNettverk;
 import ttr.oppdrag.Mission;
 import ttr.oppdrag.MissionHandler;
 import ttr.oppdrag.MissionHandlerImpl;
@@ -24,40 +23,30 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 
 // Handterer kven sin tur det er, og oppsett i startfasen av spelet
-public class Hovud implements IHovud {
+public abstract class CoreImpl implements Core {
 
 	private final GameVersion gameVersion;
 	private final Table table;
-	private ArrayList<PlayerAndNetworkWTF> players;
-	private final IGUI gui;
-
-	private final boolean isNetworkGame;
+	protected ArrayList<PlayerAndNetworkWTF> players;
+	protected final IGUI gui;
 
 	private PlayerAndNetworkWTF kvenSinTur;
-	private PlayerAndNetworkWTF minSpelar;
+	protected PlayerAndNetworkWTF minSpelar;
 	private CommunicationWithPlayers communicationWithPlayers;
 	private MissionHandler oppdragshandsamar;
 	private RouteHandler rutehandsamar;
 	private ITurhandsamar turhandsamar;
 	private IByggHjelpar bygghjelpar;
 
-	public Hovud(IGUI gui, Table table, boolean isNetworkGame, GameVersion gameVersion) throws RemoteException {
+	public CoreImpl(IGUI gui, Table table, GameVersion gameVersion) throws RemoteException {
 		this.gui = gui;
-		this.isNetworkGame = isNetworkGame;
 		this.gameVersion = gameVersion;
 		this.table = table;
 		players = new ArrayList<>();
-		LagBrettet(isNetworkGame);
+		LagBrettet();
 	}
 
-	public void settIGangSpelet(boolean nett, String hostAddress) throws RemoteException {
-		if (nett) {
-			startNetworkGame(hostAddress);
-		}
-		else {
-			startLocalGame();
-		}
-	}
+	public abstract void settIGangSpelet(String hostAddress) throws RemoteException;
 
 	public ArrayList<Mission> getGjenverandeOppdrag() {
 		return oppdragshandsamar.getRemainingMissions()   ;
@@ -78,9 +67,7 @@ public class Hovud implements IHovud {
 	public Table getTable() {
 		return table;
 	}
-	public boolean isNetworkGame() {
-		return isNetworkGame;
-	}
+	public abstract boolean isNetworkGame();
 
 	public PlayerAndNetworkWTF getKvenSinTur() {
 		return kvenSinTur;
@@ -103,14 +90,14 @@ public class Hovud implements IHovud {
 
 	public void settSinTur(PlayerAndNetworkWTF spelar) throws RemoteException {
 		kvenSinTur = spelar;
-		gui.visKvenDetErSinTur(kvenSinTur.getNamn(),isNetworkGame,minSpelar.getNamn()); //todo minspelar er null init...
+		gui.visKvenDetErSinTur(kvenSinTur.getNamn(), isNetworkGame(), minSpelar.getNamn()); //todo minspelar er null init...
 	}
 
 	public void nesteSpelar() throws RemoteException {
 		kvenSinTur = turhandsamar.nextPlayer(kvenSinTur,minSpelar);
 
 		markIfItIsMyTurn();
-		gui.visKvenDetErSinTur(kvenSinTur.getNamn(),isNetworkGame,minSpelar.getNamn());
+		gui.visKvenDetErSinTur(kvenSinTur.getNamn(), isNetworkGame(), minSpelar.getNamn());
 		kvenSinTur.setEittKortTrektInn(false);
 
 		communicationWithPlayers.sjekkOmFerdig(gui.getMeldingarModell(),kvenSinTur,gameVersion.toString(),minSpelar,rutehandsamar.getRoutes());
@@ -137,34 +124,26 @@ public class Hovud implements IHovud {
 	}
 
 	public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Farge f) throws RemoteException {
-		communicationWithPlayers.sendMessageAboutCard(kort,tilfeldig,f,kvenSinTur.getNamn(),isNetworkGame,this);
+		communicationWithPlayers.sendMessageAboutCard(kort, tilfeldig, f, kvenSinTur.getNamn(), isNetworkGame(), this);
 	}
 
 	public void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF vert, Farge nyFarge, int i) throws RemoteException {
-		communicationWithPlayers.newCardPlacedOnTableInNetworkGame(vert,nyFarge,i,this);
+		communicationWithPlayers.newCardPlacedOnTableInNetworkGame(vert, nyFarge, i, this);
 	}
 
-	private void LagBrettet(boolean nett) throws RemoteException {
+	private void LagBrettet() throws RemoteException {
 		rutehandsamar = new RouteHandlerImpl(gameVersion);
 		oppdragshandsamar = new MissionHandlerImpl(gameVersion.getOppdrag());		// Legg til oppdrag
-		bygghjelpar = new ByggHjelpar(gui,nett);
-		communicationWithPlayers = new CommunicationWithPlayersImpl(nett,players); // TODO dependency injection?
+		bygghjelpar = new ByggHjelpar(gui,isNetworkGame());
+		communicationWithPlayers = new CommunicationWithPlayersImpl(isNetworkGame(),players); // TODO dependency injection?
 
-		if (!nett) {
+		if (!isNetworkGame()) {
 			createPlayersAndSetUpForLocalGame();
 		}         // else er det nettverksspel og handterast seinare
-		turhandsamar = new TurHandsamar(players,nett);
+		turhandsamar = new TurHandsamar(players,isNetworkGame());
 	}
 
-	private void startNetworkGame(String hostAddress) throws RemoteException {
-		InitialiserNettverk nettverk = new InitialiserNettverk(gui, hostAddress, this);
-		nettverk.initialiseNetworkGame();
-		MissionHandlerImpl.trekkOppdrag(gui, minSpelar, true);
-
-		givePlayersMissions();
-	}
-
-	private void givePlayersMissions() throws RemoteException {
+	protected void givePlayersMissions() throws RemoteException {
 		for (PlayerAndNetworkWTF player : players){
 			for (Mission mission : player.getOppdrag()){
 				player.removeChosenMissionFromDeck(mission.getMissionId());
@@ -172,12 +151,6 @@ public class Hovud implements IHovud {
 		}
 	}
 
-	private void startLocalGame() throws RemoteException {
-		for (PlayerAndNetworkWTF player : players) {
-			MissionHandlerImpl.trekkOppdrag(gui, player, true);
-		}
-		// ??
-	}
 
 	private void createPlayersAndSetUpForLocalGame() throws RemoteException {
 		players = communicationWithPlayers.createPlayersForLocalGame(this,table); //todo playes må komme inn i arraylista her på eit vis
@@ -200,7 +173,7 @@ public class Hovud implements IHovud {
 	}
 
 	private void messageUsersInNetworkGame(Route builtRoute, PlayerAndNetworkWTF buildingPlayer) throws RemoteException {
-		if (isNetworkGame) {
+		if (isNetworkGame()) {
 			for (PlayerAndNetworkWTF player : players) {
 				player.nybygdRute(builtRoute.getRouteId(),buildingPlayer);
 				player.setTogAtt(buildingPlayer.getSpelarNummer()+1, buildingPlayer.getGjenverandeTog());
