@@ -17,8 +17,8 @@ public interface IHovud {
 
     public Set<Route> getAlleBygdeRuter();
 
-    public Table getBord();
-    public boolean isNett();
+    public Table getTable();
+    public boolean isNetworkGame();
 
     public void settIGangSpelet(boolean nett, String hostAddress) throws RemoteException;
     public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Farge colour) throws RemoteException;

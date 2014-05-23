@@ -25,7 +25,7 @@ public class ShowMyMissionsHandler {
 	}
 
 	private PlayerAndNetworkWTF getPlayer(IHovud hovud) {
-		if (hovud.isNett()) {
+		if (hovud.isNetworkGame()) {
 			return hovud.getMinSpelar();
 		}
 		return hovud.getKvenSinTur();

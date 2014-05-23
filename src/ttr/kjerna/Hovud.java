@@ -75,10 +75,10 @@ public class Hovud implements IHovud {
 		minSpelar = spelar;
 	}
 
-	public Table getBord() {
+	public Table getTable() {
 		return table;
 	}
-	public boolean isNett() {
+	public boolean isNetworkGame() {
 		return isNetworkGame;
 	}
 

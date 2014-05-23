@@ -7,7 +7,8 @@ public interface Table {
     public void setEinPaaBordet(Farge f, int plass);
     public void layFiveCardsOutOnTable();
     public Farge[] getPaaBordet();
-    public Farge getRandomCardFromTheDeckAndPutOnTable(int plass, boolean leggPåBordet);
+    public Farge getRandomCardFromTheDeck(int plass);
+    public Farge getRandomCardFromTheDeckAndPutOnTable(int position);
     public boolean areThereTooManyJokersOnTable();
 	public void addCardsToDeck(Farge colour, int number);
 	public void addJokersToDeck(int jokrar);

@@ -135,7 +135,7 @@ public class Hogrepanelet extends JPanel implements IHogrepanelet {
         visBygde.addActionListener(listener);
 
 
-        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, kortButtons, hovud, frame, hovud.isNett());
+        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, kortButtons, hovud, frame, hovud.isNetworkGame());
         kortBunke.addActionListener(kortListener);
         for (JButton button : kortButtons){
             button.addActionListener(kortListener);

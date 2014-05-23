@@ -27,7 +27,7 @@ class ShowMyCardsHandler {
 	}
 
 	private PlayerAndNetworkWTF findPlayer(IHovud hovud) {
-		if (hovud.isNett()) {
+		if (hovud.isNetworkGame()) {
 			return hovud.getMinSpelar();
 		}
 		return hovud.getKvenSinTur();

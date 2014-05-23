@@ -29,7 +29,7 @@ public class InitialiserNettverk {
 	}
 
 	public void initialiseNetworkGame() throws HeadlessException, RemoteException {
-        PlayerAndNetworkWTF spelar = new PlayerNetworkClass(hovud,gui.showInputDialog("Skriv inn namnet ditt"),hovud.getBord());
+        PlayerAndNetworkWTF spelar = new PlayerNetworkClass(hovud,gui.showInputDialog("Skriv inn namnet ditt"),hovud.getTable());
 		hovud.setMinSpelar(spelar);
 
 		Object[] options = {"Nytt spel", "Bli med i spel"};
@@ -55,7 +55,7 @@ public class InitialiserNettverk {
 		String url = "rmi://"+address+"/ISpelar"; // URL-en min i RMI-registeret.
 		System.out.println(hovud.getMinSpelar().getNamn() +" er spelar nummer " 
 				+hovud.getMinSpelar().getSpelarNummer());
-		hovud.getBord().layFiveCardsOutOnTable();
+		hovud.getTable().layFiveCardsOutOnTable();
 		System.out.println(url);
 		try {
 			LocateRegistry.createRegistry(Integer.parseInt(PORT));

@@ -37,7 +37,8 @@ public class Deck {
 		cardsLeft.put(Farge.valfri, cardsLeft.get(Farge.valfri) + jokers);
 	}
 
-	Farge getCardInRandomColour() {
+	Farge getCardInRandomColourFromTheDeck() {
+		if (!areThereAnyCardsLeftInDeck()) { return null; }
 		int randomlyChosenCardInDeck = (int) (Math.random() * getNumberOfColouredCardsLeftInDeck());
 
 		Farge colourToReturn = null;

@@ -12,15 +12,15 @@ public abstract class AbstractGameVersion {
 	protected ArrayList<Mission> missions;
 	protected Set<Route> routes;
 	
-	private final URL backgroundImage;
+	private final URL backgroundImageURL;
 
     public URL getBakgrunnsbildet() {
-		return backgroundImage;
+		return backgroundImageURL;
 	}
 	
 	protected AbstractGameVersion(String title, String pathToBackgroundImage) {
 		this.title = title;
-		backgroundImage = getClass().getResource(pathToBackgroundImage);
+		backgroundImageURL = getClass().getResource(pathToBackgroundImage);
         routes = leggTilRuter();
         missions = fyllMedOppdrag();
 	}
@@ -36,7 +36,6 @@ public abstract class AbstractGameVersion {
 		return routes;
 	}
 	
-	@Override
 	public String toString() {
 		return title;
 	}

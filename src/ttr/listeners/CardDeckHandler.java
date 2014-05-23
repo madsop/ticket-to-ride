@@ -4,7 +4,6 @@ import ttr.data.Farge;
 import ttr.kjerna.IHovud;
 import ttr.spelar.PlayerAndNetworkWTF;
 
-import javax.swing.*;
 import java.rmi.RemoteException;
 
 class CardDeckHandler {
@@ -16,19 +15,15 @@ class CardDeckHandler {
 		playerInTurn.receiveCard(colour);
 		hovud.sendMessageAboutCard(true,true,colour);
 		
-		displayToUser(colour);
+		proceedGame(hovud, playerInTurn);
+	}
 
+	private void proceedGame(IHovud hovud, PlayerAndNetworkWTF playerInTurn) throws RemoteException {
 		if (playerInTurn.getValdAllereie()) {
 			hovud.nesteSpelar();
 		}
 		else {
 			playerInTurn.setEittKortTrektInn(true);
 		}
-	}
-
-	private void displayToUser(Farge colour) { // TODO denne gjer vel nada og vises vel ingen stad?
-		JPanel panel = new JPanel();
-		JLabel label = new JLabel("Du trakk eit kort av farge " +colour);
-		panel.add(label);
 	}
 }

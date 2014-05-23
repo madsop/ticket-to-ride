@@ -35,23 +35,25 @@ public class TableImpl implements Table {
 
 	public void layFiveCardsOutOnTable() {
 		for (int i = 0; i < Konstantar.ANTAL_KORT_PÅ_BORDET; i++) {
-			getRandomCardFromTheDeckAndPutOnTable(i,true);			
+			getRandomCardFromTheDeckAndPutOnTable(i);
 		}
 	}
 
 	public Farge[] getPaaBordet() {
 		return cardsOnTable.getCardsOpenOnTable();
 	}
+	
+	public Farge getRandomCardFromTheDeckAndPutOnTable(int position) {
+		Farge colour = getRandomCardFromTheDeck(position);
+		putCardOnTable(position, colour);
+		return colour;
+	}
 
-	public Farge getRandomCardFromTheDeckAndPutOnTable(int plass, boolean putOnTable) {
-		Farge randomColour = deck.getCardInRandomColour();
+	public Farge getRandomCardFromTheDeck(int plass) {
+		Farge randomColour = deck.getCardInRandomColourFromTheDeck();
 		if (randomColour == null) {
 			System.out.println("stokk!");
-			return null;		
-		}
-		
-		if (putOnTable) {
-			putCardOnTable(plass, randomColour);
+			return null;
 		}
 		return randomColour;
 	}

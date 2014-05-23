@@ -59,7 +59,7 @@ import java.util.ArrayList;
     // Kort
     public void receiveCard(Farge farge) throws RemoteException { korthandsamar.receiveCard(farge);}
     public Farge getRandomCardFromTheDeck(int i) throws RemoteException { return korthandsamar.getRandomCardFromTheDeck(i); }
-    public Farge trekkFargekort() throws RemoteException { return korthandsamar.trekkFargekort(); }
+    public Farge trekkFargekort() throws RemoteException { return korthandsamar.drawRandomCardFromTheDeck(); }
 
 	public int getNumberOfCardsLeftInColour(Farge colour) throws RemoteException { return korthandsamar.getNumberOfCardsLeftInColour(colour); }
 	public int getNumberOfRemainingJokers() throws RemoteException { return korthandsamar.getNumberOfCardsLeftInColour(Farge.valfri); }

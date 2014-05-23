@@ -17,15 +17,8 @@ public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler 
 	CardHandlerImpl(IHovud hovud) throws RemoteException {
 		super();
 		this.hovud = hovud;
-		faaInitielleFargekort();
-	}
-
-	private void faaInitielleFargekort() {
 		initialiseCards();
-		for (int startkortPosisjon = 0; startkortPosisjon < Konstantar.ANTAL_STARTKORT; startkortPosisjon++) {
-			Farge trekt = trekkFargekort();
-			cards.put(trekt, cards.get(trekt)+1);
-		}
+		faaInitielleFargekort();
 	}
 
 	private void initialiseCards() {
@@ -35,15 +28,22 @@ public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler 
 		}
 	}
 
+	private void faaInitielleFargekort() {
+		for (int startkortPosisjon = 0; startkortPosisjon < Konstantar.ANTAL_STARTKORT; startkortPosisjon++) {
+			Farge trekt = drawRandomCardFromTheDeck();
+			cards.put(trekt, cards.get(trekt)+1);
+		}
+	}
+
 	public Farge getRandomCardFromTheDeck(int positionOnTable) {
-		Farge colourOfTheRandomCard = hovud.getBord().getRandomCardFromTheDeckAndPutOnTable(positionOnTable, true);
+		Farge colourOfTheRandomCard = hovud.getTable().getRandomCardFromTheDeckAndPutOnTable(positionOnTable);
 
 		if (colourOfTheRandomCard == null){
 			hovud.displayGraphicallyThatThereIsNoCardHere(positionOnTable);
 			return null;
 		}
 
-		hovud.getBord().setEinPaaBordet(colourOfTheRandomCard, positionOnTable);
+		hovud.getTable().setEinPaaBordet(colourOfTheRandomCard, positionOnTable);
 		return colourOfTheRandomCard;
 	}
 
@@ -51,12 +51,8 @@ public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler 
 		cards.put(colour, cards.get(colour) + 1);
 	}
 
-	/** @return eit tilfeldig fargekort frå toppen av stokken */
-	public Farge trekkFargekort() {
-		if (hovud.getBord().areThereAnyCardsLeftInDeck()) { // TODO ser ut som om denne if-en bør inn i bord-klassa
-			return hovud.getBord().getRandomCardFromTheDeckAndPutOnTable(0, false);
-		}
-		return null;
+	public Farge drawRandomCardFromTheDeck() {
+		return hovud.getTable().getRandomCardFromTheDeck(0);
 	}
 
 	public int getNumberOfCardsLeftInColour(Farge colour) throws RemoteException {

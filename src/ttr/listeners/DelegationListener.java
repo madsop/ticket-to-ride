@@ -33,7 +33,7 @@ public class DelegationListener implements ActionListener{
 
     public void actionPerformed(ActionEvent arg0) {
         try {
-            if (hovud.isNett() && (!hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn())) ) {
+            if (hovud.isNetworkGame() && (!hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn())) ) {
                 if (!(arg0.getSource() == visBygde || arg0.getSource() == visMineKort || arg0.getSource() == visMineOppdrag)) {
                     JOptionPane.showMessageDialog((Component) gui, "Det er ikkje din tur!");
                     return;

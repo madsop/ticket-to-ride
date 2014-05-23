@@ -88,9 +88,9 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	public int[] getPaaBordetInt() { // TODO wtf
 		int[] bord = new int[Konstantar.ANTAL_KORT_PÅ_BORDET];
 
-		for (int i = 0; i < hovud.getBord().getPaaBordet().length; i++) {
+		for (int i = 0; i < hovud.getTable().getPaaBordet().length; i++) {
 			for (int colourInt = 0; colourInt < Konstantar.FARGAR.length; colourInt++) {
-				if (hovud.getBord().getCardFromTable(i) == Konstantar.FARGAR[colourInt]) {
+				if (hovud.getTable().getCardFromTable(i) == Konstantar.FARGAR[colourInt]) {
 					bord[i] = colourInt;
 				}
 			}

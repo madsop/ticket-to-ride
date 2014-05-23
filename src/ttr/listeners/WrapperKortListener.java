@@ -74,7 +74,7 @@ public class WrapperKortListener implements ActionListener{
 		host.leggUtFem();
 		int[] cardsOnTableAsIntegers = host.getPaaBordetInt();
 
-		for (int plass = 0; plass < hovud.getBord().getPaaBordet().length; plass++){
+		for (int plass = 0; plass < hovud.getTable().getPaaBordet().length; plass++){
 			newColour = Konstantar.FARGAR[cardsOnTableAsIntegers[plass]];
 			hovud.getMinSpelar().putCardOnTable(newColour,plass);
 			hovud.newCardPlacedOnTableInNetworkGame(host, newColour, plass);
@@ -83,7 +83,7 @@ public class WrapperKortListener implements ActionListener{
 	}
 
 	private void retrieveOneCardFromTheTable(int positionOnTable,PlayerAndNetworkWTF kvenSinTur) throws RemoteException {
-		Farge colour = hovud.getBord().getCardFromTable(positionOnTable);
+		Farge colour = hovud.getTable().getCardFromTable(positionOnTable);
 		if (colour == null) { return; }
 		if (kvenSinTur.getValdAllereie()) {
 			retrieveSecondCard(positionOnTable, kvenSinTur, colour);
@@ -114,7 +114,7 @@ public class WrapperKortListener implements ActionListener{
 
 	private void putRandomCardFromTheDeckOnTable(int positionOnTable, Farge colour) throws RemoteException {
 		hovud.sendMessageAboutCard(true,false,colour);
-		hovud.getBord().getRandomCardFromTheDeckAndPutOnTable(positionOnTable, true);
+		hovud.getTable().getRandomCardFromTheDeckAndPutOnTable(positionOnTable);
 	}
 
 	private PlayerAndNetworkWTF orienterAndreSpelarar(int positionOnTable) throws  RemoteException{

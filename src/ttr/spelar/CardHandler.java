@@ -10,7 +10,7 @@ public interface CardHandler extends Remote {
 
     void receiveCard(Farge farge) throws RemoteException;
 
-    Farge trekkFargekort() throws RemoteException;
+    Farge drawRandomCardFromTheDeck() throws RemoteException;
 
 	int getNumberOfCardsLeftInColour(Farge colour) throws RemoteException;
 	
