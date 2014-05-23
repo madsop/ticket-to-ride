@@ -4,6 +4,8 @@ import java.rmi.RemoteException;
 
 import ttr.bord.Table;
 import ttr.communicationWithPlayers.CommunicationWithPlayersNetwork;
+import ttr.data.Farge;
+import ttr.data.Konstantar;
 import ttr.gui.IGUI;
 import ttr.nettverk.InitialiserNettverk;
 import ttr.oppdrag.Mission;
@@ -33,10 +35,6 @@ public class NetworkCore extends CoreImpl {
 		}
 	}
 
-	public boolean isNetworkGame() {
-		return true;
-	}
-
 	public PlayerAndNetworkWTF findPlayerInAction() {
 		return minSpelar;
 	}
@@ -56,5 +54,48 @@ public class NetworkCore extends CoreImpl {
 	@Override
 	protected String getWhoseTurnText() throws RemoteException {
 		return (minSpelar.equals(kvenSinTur) ? "min tur." : kvenSinTur.getNamn() + " sin tur.");
+	}
+
+	@Override
+	public void orientOtherPlayers(int positionOnTable) throws RemoteException {
+		PlayerAndNetworkWTF host = findHost();
+		
+		if (host != null){
+			Farge newColour = host.getRandomCardFromTheDeck(positionOnTable);
+			while (host.areThereTooManyJokersOnTable()) {
+				newColour = placeNewCardsOnTable(host);
+			}
+			newCardPlacedOnTableInNetworkGame(host, newColour, positionOnTable);
+		}
+	}
+
+	private PlayerAndNetworkWTF findHost() throws RemoteException {
+		PlayerAndNetworkWTF host = null;
+		if (minSpelar.getSpelarNummer()==0) {
+			host = minSpelar; // TODO forsvinn ikkje denne uansett i løpet av for-løkka under?
+		}
+		for (PlayerAndNetworkWTF player : getSpelarar()) {
+			if (player.getSpelarNummer()==0) {
+				return player;
+			}
+		}
+		return host;
+	}
+
+	private Farge placeNewCardsOnTable(PlayerAndNetworkWTF host) throws RemoteException {
+		Farge newColour = null;
+		host.leggUtFem();
+		int[] cardsOnTableAsIntegers = host.getPaaBordetInt();
+
+		for (int plass = 0; plass < getTable().getPaaBordet().length; plass++){
+			newColour = Konstantar.FARGAR[cardsOnTableAsIntegers[plass]];
+			getMinSpelar().putCardOnTable(newColour,plass);
+			newCardPlacedOnTableInNetworkGame(host, newColour, plass);
+		}
+		return newColour;
+	}
+
+	private void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Farge newColour, int i) throws RemoteException {
+		communicationWithPlayers.newCardPlacedOnTableInNetworkGame(host, newColour, i, this);
 	}
 }

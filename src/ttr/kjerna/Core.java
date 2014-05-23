@@ -18,11 +18,9 @@ public interface Core {
     public Set<Route> getAlleBygdeRuter();
 
     public Table getTable();
-    public boolean isNetworkGame();
 
     public void settIGangSpelet(String hostAddress) throws RemoteException;
     public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Farge colour) throws RemoteException;
-    public void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Farge newColour, int i) throws RemoteException;
 
     public int getAntalGjenverandeOppdrag ();
     public Mission getOppdrag();
@@ -45,4 +43,6 @@ public interface Core {
 	public void displayNumberOfRemainingTrains(int position, int numberOfTrains);
 	public void showGameOverMessage(String message);
 	public void receiveMessage(String message);
+	
+	void orientOtherPlayers(int positionOnTable) throws RemoteException;
 }

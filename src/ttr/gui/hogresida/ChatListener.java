@@ -35,7 +35,6 @@ class ChatListener implements KeyListener {
 	private void sendMessage(KeyEvent arg0) throws RemoteException {
 		if (arg0.getKeyCode() == KeyEvent.VK_ENTER){
 			String message = getPlayerName() + ": " + chatJTextField.getText();;
-			meldingarmodell.nyMelding(message);
 			sendMessageToPlayers(message);
 			chatJTextField.setText("");
 		}
@@ -49,6 +48,7 @@ class ChatListener implements KeyListener {
 	}
 
 	private void sendMessageToPlayers(String message) throws RemoteException {
+		meldingarmodell.nyMelding(message);
 		for (PlayerAndNetworkWTF spelar : hovud.getSpelarar()){
 			spelar.receiveMessage(message);
 		}

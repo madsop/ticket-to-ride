@@ -16,7 +16,6 @@ import java.awt.*;
 public class Hogrepanelet extends JPanel implements IHogrepanelet {
 	private static final long serialVersionUID = 5138678205804362548L;
     private JTextField spelarnamn;
-    private IGUI gui;
     private final JFrame frame;
 
     private JButton[] kortButtons;
@@ -126,9 +125,8 @@ public class Hogrepanelet extends JPanel implements IHogrepanelet {
         visFargekorta(d);
     }
     
-    public void addListeners(Core hovud){
-    	boolean nett = hovud.isNetworkGame();
-        DelegationListener listener = new DelegationListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame, nett);
+    public void addListeners(Core hovud, IGUI gui){
+        DelegationListener listener = new DelegationListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
         trekkOppdrag.addActionListener(listener);
         bygg.addActionListener(listener);
         visMineKort.addActionListener(listener);
@@ -136,63 +134,52 @@ public class Hogrepanelet extends JPanel implements IHogrepanelet {
         visBygde.addActionListener(listener);
 
 
-        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, kortButtons, hovud, frame, nett);
+        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, kortButtons, hovud, frame);
         kortBunke.addActionListener(kortListener);
         for (JButton button : kortButtons){
             button.addActionListener(kortListener);
         }
     }
 
-    /**
-     * Teiknar opp eit kort på bordet
-     * @param plass - kva for ein av plassane på bordet
-     * @param farge - i kva farge
-     */
-    public void teiknOppKortPåBordet(int plass, Farge farge) {
-        kortButtons[plass].setForeground(Color.BLACK);
-        kortButtons[plass].setBackground(Konstantar.fargeTilColor(farge));
-        String ret;
-        switch (farge) {
+    public void teiknOppKortPåBordet(int position, Farge colour) {
+        kortButtons[position].setForeground(Color.BLACK);
+        kortButtons[position].setBackground(Konstantar.fargeTilColor(colour));
+        String colourText;
+        switch (colour) {
             case blå:
-                ret = "Blå";
+                colourText = "Blå";
                 break;
             case gul:
-                ret =  "Gul";
+                colourText =  "Gul";
                 break;
             case raud:
-                ret = "Raud";
+                colourText = "Raud";
                 break;
             case grønn:
-                ret = "Grønn";
+                colourText = "Grønn";
                 break;
             case kvit:
-                ret = "Kvit";
+                colourText = "Kvit";
                 break;
             case lilla:
-                ret = "Lilla";
+                colourText = "Lilla";
                 break;
             case oransje:
-                ret = "Oransje";
+                colourText = "Oransje";
                 break;
             case svart:
-                ret = "Svart";
-                kortButtons[plass].setForeground(Color.WHITE);
+                colourText = "Svart";
+                kortButtons[position].setForeground(Color.WHITE);
                 break;
             case valfri:
-                ret = "Joker";
+                colourText = "Joker";
                 break;
             default:
-                ret = "Ops";
+                colourText = "Ops";
                 break;
         }
-        kortButtons[plass].setText(ret);
+        kortButtons[position].setText(colourText);
     }
-
-    @Override
-    public void setGUI(IGUI gui) {
-        this.gui = gui;
-    }
-
 
     private void visFargekorta(GridBagConstraints d) {
 
@@ -227,10 +214,10 @@ public class Hogrepanelet extends JPanel implements IHogrepanelet {
         mekkKortButton(tel,d);
     }
 
-    private void mekkKortButton(int tel,GridBagConstraints d){
-        kortButtons[tel] = new JButton("kort " +tel);
-        kortButtons[tel].setMinimumSize(Konstantar.KORTKNAPP);
-        kortButtons[tel].setBackground(Color.BLACK);
-        this.add(kortButtons[tel],d);
+    private void mekkKortButton(int counter,GridBagConstraints d){
+        kortButtons[counter] = new JButton("kort " +counter);
+        kortButtons[counter].setMinimumSize(Konstantar.KORTKNAPP);
+        kortButtons[counter].setBackground(Color.BLACK);
+        this.add(kortButtons[counter],d);
     }
 }

@@ -11,7 +11,7 @@ import ttr.spelar.PlayerAndNetworkWTF;
 import ttr.utgaave.GameVersion;
 
 public class LocalCore extends CoreImpl {
-	public LocalCore(IGUI gui, Table table, GameVersion gameVersion) throws RemoteException  {
+	public LocalCore(IGUI gui, Table table, GameVersion gameVersion) throws RemoteException {
 		super(gui, table, gameVersion);
 	}
 
@@ -20,10 +20,6 @@ public class LocalCore extends CoreImpl {
 			MissionHandlerImpl.trekkOppdrag(gui, player, true);
 		}
 		// ??
-	}
-
-	public boolean isNetworkGame() {
-		return false;
 	}
 
 	public PlayerAndNetworkWTF findPlayerInAction() {
@@ -47,5 +43,12 @@ public class LocalCore extends CoreImpl {
 	@Override
 	protected String getWhoseTurnText() {
 		return "min tur";
+	}
+
+	@Override
+	public void orientOtherPlayers(int positionOnTable) throws RemoteException {
+		for (PlayerAndNetworkWTF player : getSpelarar()) {
+			player.getRandomCardFromTheDeck(positionOnTable); // TODO kva er det her, og korfor? 
+		}
 	}
 }

@@ -46,7 +46,7 @@ public class GUI extends JPanel implements IGUI {
 
     public void setHovud(Core hovud){
         messagePanel.prepareChat(hovud);
-        hogre.addListeners(hovud);
+        hogre.addListeners(hovud, this);
     }
 
     public IMeldingarModell getMeldingarModell(){

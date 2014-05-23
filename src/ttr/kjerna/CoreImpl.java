@@ -48,6 +48,7 @@ public abstract class CoreImpl implements Core {
 	}
 
 	public abstract void settIGangSpelet(String hostAddress) throws RemoteException;
+	public abstract void orientOtherPlayers(int positionOnTable) throws RemoteException;
 
 	public ArrayList<Mission> getGjenverandeOppdrag() {
 		return oppdragshandsamar.getRemainingMissions()   ;
@@ -68,7 +69,6 @@ public abstract class CoreImpl implements Core {
 	public Table getTable() {
 		return table;
 	}
-	public abstract boolean isNetworkGame();
 
 	public PlayerAndNetworkWTF getKvenSinTur() {
 		return kvenSinTur;
@@ -96,7 +96,6 @@ public abstract class CoreImpl implements Core {
 
 	public void nesteSpelar() throws RemoteException {
 		kvenSinTur = turhandsamar.nextPlayer(kvenSinTur,minSpelar);
-
 		markIfItIsMyTurn();
 		gui.visKvenDetErSinTur(findPlayerInAction().getNamn(), getWhoseTurnText());
 		kvenSinTur.setEittKortTrektInn(false);
@@ -120,20 +119,19 @@ public abstract class CoreImpl implements Core {
 	
 	public void bygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar) throws RemoteException {
 		ByggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd,colour,kortKrevd,krevdJokrar,findPlayerInAction());
+		if (byggjandeInfo == null) { return; }		 // TODO betre tilbakemelding her
 		hjelpemetodeBygg(bygd, colour, kortKrevd, krevdJokrar, byggjandeInfo.byggjandeSpelar, byggjandeInfo.jokrar);
 	}
 
+	//TODO kanskje byggTunnel og bygg bør smelte saman...
 	public void byggTunnel(Route bygd, Farge colour, int kortKrevd, int krevdJokrar) throws RemoteException {
 		ByggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(table, bygd, colour, kortKrevd, krevdJokrar, findPlayerInAction());
+		if (byggjandeInfo == null) { return; }		 // TODO betre tilbakemelding her
 		hjelpemetodeBygg(bygd, colour, kortKrevd, krevdJokrar, byggjandeInfo.byggjandeSpelar, byggjandeInfo.jokrar);
 	}
 
 	public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Farge f) throws RemoteException {
 		communicationWithPlayers.sendMessageAboutCard(kort, tilfeldig, f, kvenSinTur.getNamn(), this);
-	}
-
-	public void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF vert, Farge nyFarge, int i) throws RemoteException {
-		communicationWithPlayers.newCardPlacedOnTableInNetworkGame(vert, nyFarge, i, this);
 	}
 
 	private void LagBrettet() throws RemoteException {

@@ -113,14 +113,10 @@ public class ByggHjelpar implements IByggHjelpar {
 	 //TODO denne metoden må jo returnere og ev. sørge for å stoppe bygginga
 	private void checkIfThePlayerHasEnoughCards(Route bygd, Farge colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF byggjandeSpelar, int jokers)	throws RemoteException {
 		if (jokers > byggjandeSpelar.getNumberOfRemainingJokers() || playerDoesNotHaveEnoughCardsInChosenColour(colour, kortKrevd, krevdJokrar, byggjandeSpelar, jokers)){
-			if (routeIsNotJokerColoured(bygd)){
+			if (bygd.getColour() != Farge.valfri){
 				JOptionPane.showMessageDialog((Component) gui, Infostrengar.IkkjeNokKort);
 			}
 		}
-	}
-
-	private boolean routeIsNotJokerColoured(Route bygd) {
-		return bygd.getColour() != Farge.valfri;
 	}
 
 	private int chooseNumberOfJokersToUser(Route bygd, Farge colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF byggjandeSpelar) throws RemoteException {

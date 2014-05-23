@@ -40,22 +40,12 @@ public class Main {
 		JFrame frame = new JFrame(Infostrengar.rammetittel);
 	       
         GameVersion gameVersion = chooseGameVersion(frame);
-
         boolean isNetworkGame = (JOptionPane.showConfirmDialog(null, Infostrengar.velOmNettverkEllerIkkje) == JOptionPane.YES_OPTION);
         IGUI gui = setUpGUI(gameVersion,frame);
-        
         Table table = new TableImpl(gui,isNetworkGame, injector.getInstance(Deck.class));
         
-        Core core = null;
-        if (isNetworkGame) {
-        	core = new NetworkCore(gui, table, gameVersion);
-        }
-        else {
-        	core = new LocalCore(gui, table, gameVersion);
-        }
-        
+        Core core = isNetworkGame ? new NetworkCore(gui, table, gameVersion) : new LocalCore(gui, table, gameVersion);
         gui.setHovud(core);
-
         core.settIGangSpelet(getHostName(args));
 	}
 
@@ -76,12 +66,10 @@ public class Main {
     
     private IGUI setUpGUI(GameVersion gameVersion, JFrame frame) {
         IBildePanel picturePanel = new BildePanel(gameVersion);
-
-        MissionChooser missionChoose = new MissionChooserImpl(gameVersion,frame);
+        MissionChooser missionChooser = new MissionChooserImpl(gameVersion,frame);
 
         IHogrepanelet rightpanel = new Hogrepanelet(frame);
-        IGUI gui = new GUI(picturePanel,missionChoose, injector.getInstance(Meldingspanel.class), rightpanel);        // TODO: dependency injection
-        rightpanel.setGUI(gui);	
+        IGUI gui = new GUI(picturePanel,missionChooser, injector.getInstance(Meldingspanel.class), rightpanel);        // TODO: dependency injection	
         setUpJFrame(gameVersion, frame, gui);
         return gui;
     }

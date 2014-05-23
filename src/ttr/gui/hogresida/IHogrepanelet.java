@@ -15,9 +15,7 @@ public interface IHogrepanelet {
 
     void byggHogrepanelet();
 
-    void addListeners(Core hovud);
+    void addListeners(Core core, IGUI gui);
 
-    void teiknOppKortPåBordet(int plass, Farge farge);
-
-    void setGUI(IGUI gui);
+    void teiknOppKortPåBordet(int position, Farge colour);
 }
