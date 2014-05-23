@@ -18,8 +18,6 @@ public interface IHovud {
 
     public Set<Route> getAlleBygdeRuter();
 
-    public void setMinSpelar(ISpelar spelar);
-
     public IBord getBord();
     public boolean isNett();
 
@@ -27,16 +25,17 @@ public interface IHovud {
     public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Farge f) throws RemoteException;
     public void newCardPlacedOnTableInNetworkGame(ISpelar vert, Farge nyFarge, int i) throws RemoteException;
 
-    public ISpelar getKvenSinTur();
-
-    public ArrayList<ISpelar> getSpelarar();
 
     public IGUI getGui();
 
     public int getAntalGjenverandeOppdrag ();
     public Mission getOppdrag();
 
+
+    public ArrayList<ISpelar> getSpelarar();
     public ISpelar getMinSpelar();
+    public void setMinSpelar(ISpelar spelar);
+    public ISpelar getKvenSinTur();
     public void settSinTur(ISpelar spelar) throws RemoteException;
     public void nesteSpelar() throws RemoteException;
 

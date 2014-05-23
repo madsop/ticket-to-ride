@@ -22,18 +22,18 @@ public class Europe extends AbstractSpelUtgaave implements ISpelUtgaave {
 	}
 	
 	protected Set<Route> leggTilRuter() {
-		ruter = new HashSet<Route>();
+		routes = new HashSet<>();
 		int ruteId = 0;
-		ruter.add(new RouteImpl(ruteId,Destinasjon.Brest,Destinasjon.Dieppe,2,Farge.oransje,false,0));
+		routes.add(new RouteImpl(ruteId,Destinasjon.Brest,Destinasjon.Dieppe,2,Farge.oransje,false,0));
 		//ruteId++;
-		return ruter;
+		return routes;
 	}
 	
 	protected ArrayList<Mission> fyllMedOppdrag() {
-		oppdrag = new ArrayList<Mission>();
+		missions = new ArrayList<>();
 		int oppdragsid = 0;
-		oppdrag.add(new MissionImpl(oppdragsid,Destinasjon.Brest,Destinasjon.Petrograd,21));
+		missions.add(new MissionImpl(oppdragsid,Destinasjon.Brest,Destinasjon.Petrograd,21));
 		//oppdragsid++;
-		return oppdrag;
+		return missions;
 	}
 }

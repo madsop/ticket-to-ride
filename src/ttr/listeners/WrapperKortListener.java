@@ -57,7 +57,7 @@ public class WrapperKortListener implements ActionListener{
 			ISpelar host = orienterAndreSpelarar(positionOnTable);
 
 			if (nett && host != null){
-				Farge newColour = host.getTilfeldigKortFråBordet(positionOnTable);
+				Farge newColour = host.getRandomCardFromTheDeck(positionOnTable);
 				while (host.areThereTooManyJokersOnTable()) {
 					newColour = placeNewCardsOnTable(host);
 				}
@@ -124,7 +124,7 @@ public class WrapperKortListener implements ActionListener{
 		}
 		for (ISpelar player : hovud.getSpelarar()) {
 			if (!nett){
-				player.getTilfeldigKortFråBordet(positionOnTable);
+				player.getRandomCardFromTheDeck(positionOnTable);
 			}
 			else {
 				if (player.getSpelarNummer()==0) {

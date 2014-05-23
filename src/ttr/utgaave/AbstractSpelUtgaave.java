@@ -8,37 +8,37 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public abstract class AbstractSpelUtgaave {
-	private final String tittel;
-	protected ArrayList<Mission> oppdrag;
-	protected Set<Route> ruter;
+	private final String title;
+	protected ArrayList<Mission> missions;
+	protected Set<Route> routes;
 	
-	private final URL bakgrunnsbildet;
+	private final URL backgroundImage;
 
     public URL getBakgrunnsbildet() {
-		return bakgrunnsbildet;
+		return backgroundImage;
 	}
 	
-	protected AbstractSpelUtgaave(String tittel, String adresse) {
-		this.tittel = tittel;
-		bakgrunnsbildet = getClass().getResource(adresse);
-        ruter = leggTilRuter();
-        oppdrag = fyllMedOppdrag();
+	protected AbstractSpelUtgaave(String title, String pathToBackgroundImage) {
+		this.title = title;
+		backgroundImage = getClass().getResource(pathToBackgroundImage);
+        routes = leggTilRuter();
+        missions = fyllMedOppdrag();
 	}
 
     protected abstract Set<Route> leggTilRuter();
     protected abstract ArrayList<Mission> fyllMedOppdrag();
 
     public ArrayList<Mission> getOppdrag() {
-		return oppdrag;
+		return missions;
     }
 
     public Set<Route> getRuter() {
-		return ruter;
+		return routes;
 	}
 	
 	@Override
 	public String toString() {
-		return tittel;
+		return title;
 	}
 
 }
