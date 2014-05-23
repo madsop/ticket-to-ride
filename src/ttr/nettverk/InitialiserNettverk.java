@@ -98,7 +98,7 @@ public class InitialiserNettverk {
             paaVertBordet = s.getPaaBordetInt();
         }
 
-        s.faaMelding(hovud.getMinSpelar().getNamn() + " har vorti med i spelet.");
+        s.receiveMessage(hovud.getMinSpelar().getNamn() + " har vorti med i spelet.");
 
         if (s.getSpelarNummer()!=0){
             gui.getMeldingarModell().nyMelding(s.getNamn() + " er òg med i spelet.");
@@ -112,7 +112,7 @@ public class InitialiserNettverk {
             if (!(s.getNamn().equals(hovud.getMinSpelar().toString()))){
                 //hovud.getSpelarar().add(s);
                 hovud.getMinSpelar().registrerKlient(s);
-                s.faaMelding(hovud.getMinSpelar().getNamn() + " har vorti med i spelet.");
+                s.receiveMessage(hovud.getMinSpelar().getNamn() + " har vorti med i spelet.");
                 gui.getMeldingarModell().nyMelding(s.getNamn() + " er òg med i spelet.");
                 s.registrerKlient(hovud.getMinSpelar());
             }

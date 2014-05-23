@@ -4,6 +4,7 @@ import ttr.bord.IBord;
 import ttr.data.Farge;
 import ttr.kjerna.IHovud;
 import ttr.oppdrag.Mission;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -12,11 +13,11 @@ import java.util.ArrayList;
  */
  public class PlayerNetworkClass extends PlayerImpl implements ISpelar  {
 	private static final long serialVersionUID = -3600106049579247030L;
-    private IKorthandsamar korthandsamar;
+    private CardHandler korthandsamar;
     
 	public PlayerNetworkClass(IHovud hovud, String namn, IBord bord) throws RemoteException {
 		super(hovud, namn, bord);
-        korthandsamar = new Korthandsamar(hovud);
+        korthandsamar = new CardHandlerImpl(hovud);
 	}
 	
 	/**
@@ -42,7 +43,8 @@ import java.util.ArrayList;
 	// FASADE
     public void settSinTur(ISpelar s) throws RemoteException { hovud.settSinTur(s); }
     public ArrayList<ISpelar> getSpelarar() { return hovud.getSpelarar(); }
-    public void faaMelding(String melding) throws RemoteException{ hovud.getGui().getMeldingarModell().nyMelding(melding); }
+    public void receiveMessage(String message) throws RemoteException{ hovud.receiveMessage(message); }
+	public void showGameOverMessage(String points) throws RemoteException { hovud.showGameOverMessage(points); }
 
     // Oppdrag
     public int getAntalFullfoerteOppdrag() throws RemoteException { return spelarOppdragshandsamar.getAntalFullfoerteOppdrag(); }
@@ -60,7 +62,7 @@ import java.util.ArrayList;
     public Farge trekkFargekort() throws RemoteException { return korthandsamar.trekkFargekort(); }
 
 	public int getNumberOfCardsLeftInColour(Farge colour) throws RemoteException { return korthandsamar.getNumberOfCardsLeftInColour(colour); }
-	public int getNumberOfRemainingJokers() throws RemoteException { return korthandsamar.getNumberOfRemainingJokers(); }
+	public int getNumberOfRemainingJokers() throws RemoteException { return korthandsamar.getNumberOfCardsLeftInColour(Farge.valfri); }
 
 	public void decrementCardsAt(Farge colour, int number) throws RemoteException { korthandsamar.decrementCardsAt(colour, number); }
 

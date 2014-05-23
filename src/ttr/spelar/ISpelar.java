@@ -32,8 +32,7 @@ public interface ISpelar extends Remote {
 	public boolean areThereTooManyJokersOnTable() throws RemoteException;
 	public void removeChosenMissionFromDeck(int oppdragsid) throws RemoteException;
 	public void leggIStokken(Farge colour, int kormange) throws RemoteException;
-	public void visSpeletErFerdigmelding(String melding) throws RemoteException;
-	public void faaMelding(String melding) throws RemoteException;
+	public void receiveMessage(String melding) throws RemoteException;
 
 
 	public int getAntalFullfoerteOppdrag() throws RemoteException;
@@ -51,5 +50,6 @@ public interface ISpelar extends Remote {
     public Farge trekkFargekort() throws RemoteException;
 	public int getNumberOfCardsLeftInColour(Farge colour) throws RemoteException;
 	public int getNumberOfRemainingJokers() throws RemoteException;
-	public void decrementCardsAt(Farge colour, int number)  throws RemoteException;
+	public void decrementCardsAt(Farge colour, int number) throws RemoteException;
+	public void showGameOverMessage(String poeng) throws RemoteException;
 }

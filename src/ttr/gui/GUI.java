@@ -8,19 +8,20 @@ import ttr.kjerna.IHovud;
 import ttr.oppdrag.Mission;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.util.ArrayList;
 
 public class GUI extends JPanel implements IGUI {
 	private static final long serialVersionUID = -1540067881602979318L;
-	private final IMeldingspanel meldingsboks;
+	private final IMeldingspanel messagePanel;
     private IHogrepanelet hogre;
     private final IOppdragsveljar oppdragsveljar;
 
 
     public GUI(IBildePanel bp, IOppdragsveljar oppdragsveljar, IMeldingspanel meldingspanel, IHogrepanelet hogre){
         this.oppdragsveljar = oppdragsveljar;
-        this.meldingsboks = meldingspanel;
+        this.messagePanel = meldingspanel;
         this.hogre = hogre;
 
         GridBagLayout gbl = new GridBagLayout();
@@ -40,23 +41,21 @@ public class GUI extends JPanel implements IGUI {
 		add((JPanel) hogre,c);
 
 		c.gridx = 2;
-		add((JPanel) meldingsboks,c);
+		add((JPanel) messagePanel,c);
 	}
 
     public void setHovud(IHovud hovud){
-        meldingsboks.prepareChat(hovud);
+        messagePanel.prepareChat(hovud);
         hogre.addListeners(hovud);
     }
 
     public IMeldingarModell getMeldingarModell(){
-        return meldingsboks.getMeldingarModell();
+        return messagePanel.getMeldingarModell();
     }
 
 	public void visKvenDetErSinTur(String sinTurNo, boolean nett, String minSpelar) {
 		if (nett){
-            String tekst = "Eg er " + minSpelar + ", og det er ";
-            tekst += minSpelar.equals(sinTurNo) ? "min tur." : sinTurNo+ " sin tur.";
-            hogre.getSpelarnamn().setText(tekst);
+            hogre.getSpelarnamn().setText("Eg er " + minSpelar + ", og det er " + (minSpelar.equals(sinTurNo) ? "min tur." : sinTurNo + " sin tur."));
         }
 		else{
             hogre.getSpelarnamn().setText("Eg er " + sinTurNo + ", og det er min tur.");
@@ -88,4 +87,9 @@ public class GUI extends JPanel implements IGUI {
 
     public ArrayList<Mission> velOppdrag(ArrayList<Mission> oppdrag) { return oppdragsveljar.setUpOppdragsveljar(oppdrag); }
 
+    public void displayGraphicallyThatThereIsNoCardHere(int positionOnTable) {
+		JOptionPane.showMessageDialog(this, "Det er ikkje noko kort der, ser du vel.");
+		getKortButtons()[positionOnTable].setBackground(Color.GRAY);
+		getKortButtons()[positionOnTable].setText("Tom");
+	}
 }

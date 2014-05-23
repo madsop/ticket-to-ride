@@ -4,19 +4,17 @@ import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.kjerna.IHovud;
 
-import javax.swing.*;
-
-import java.awt.*;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
+import java.util.Map;
 
-public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar { //TODO refaktoriser veldig mykje av denne...
+public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler { //TODO refaktoriser veldig mykje av denne...
 	private static final long serialVersionUID = 3899317463384337994L;
 	private IHovud hovud;
-	private HashMap<Farge, Integer> cards;
+	private Map<Farge, Integer> cards;
 
-	Korthandsamar(IHovud hovud) throws RemoteException {
+	CardHandlerImpl(IHovud hovud) throws RemoteException {
 		super();
 		this.hovud = hovud;
 		faaInitielleFargekort();
@@ -30,7 +28,7 @@ public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar
 		}
 	}
 
-	private void initialiseCards() {        
+	private void initialiseCards() {
 		cards = new HashMap<>();
 		for (Farge colour : Farge.values()) {
 			cards.put(colour, 0);
@@ -41,18 +39,12 @@ public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar
 		Farge colourOfTheRandomCard = hovud.getBord().getRandomCardFromTheDeckAndPutOnTable(positionOnTable, true);
 
 		if (colourOfTheRandomCard == null){
-			displayGraphicallyThatThereIsNoCardHere(positionOnTable);
+			hovud.displayGraphicallyThatThereIsNoCardHere(positionOnTable);
 			return null;
 		}
 
 		hovud.getBord().setEinPaaBordet(colourOfTheRandomCard, positionOnTable);
 		return colourOfTheRandomCard;
-	}
-
-	private void displayGraphicallyThatThereIsNoCardHere(int positionOnTable) {
-		JOptionPane.showMessageDialog((Component) hovud.getGui(), "Det er ikkje noko kort der, ser du vel.");
-		hovud.getGui().getKortButtons()[positionOnTable].setBackground(Color.GRAY);
-		hovud.getGui().getKortButtons()[positionOnTable].setText("Tom");
 	}
 
 	public void receiveCard(Farge colour) {
@@ -69,10 +61,6 @@ public class Korthandsamar extends UnicastRemoteObject implements IKorthandsamar
 
 	public int getNumberOfCardsLeftInColour(Farge colour) throws RemoteException {
 		return cards.get(colour);
-	}
-
-	public int getNumberOfRemainingJokers() throws RemoteException {
-		return cards.get(Farge.valfri);
 	}
 
 	public void decrementCardsAt(Farge colour, int number) throws RemoteException {

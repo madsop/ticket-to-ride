@@ -18,6 +18,7 @@ public interface IGUI {
     void lagRamme(String tittel, JPanel panel);
     public String showInputDialog(String string);                       // TODO: bruk denne og liknande meir
     public void setHovud(IHovud hovud);
+    void displayGraphicallyThatThereIsNoCardHere(int positionOnTable);
 
     ArrayList<Mission> velOppdrag(ArrayList<Mission> oppd);
 

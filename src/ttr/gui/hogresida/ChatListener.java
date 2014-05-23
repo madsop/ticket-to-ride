@@ -44,7 +44,7 @@ class ChatListener implements KeyListener {
 
 			for (ISpelar spelar : hovud.getSpelarar()){
 				try {
-					spelar.faaMelding(message);
+					spelar.receiveMessage(message);
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				}

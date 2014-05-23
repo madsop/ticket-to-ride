@@ -1,12 +1,9 @@
 package ttr.spelar;
 
-import java.awt.Component;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Optional;
-
-import javax.swing.JOptionPane;
 
 import ttr.bord.IBord;
 import ttr.data.Konstantar;
@@ -59,9 +56,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 		return einValdAllereie;
 	}
 
-	public void setTogAtt(int plass, int tog) {
-		hovud.getGui().getTogAtt()[plass].setText(String.valueOf(tog));
-	}
+	public void setTogAtt(int position, int numberOfTrains) { hovud.displayNumberOfRemainingTrains(position, numberOfTrains);	}
 	public void setSpelarNummer(int nummer) { spelarNummer = nummer; }
 	public int getSpelarteljar() { return spelarteljar; }
 	public void setSpelarteljar(int teljar) { spelarteljar = teljar; }
@@ -102,11 +97,6 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 		}
 
 		return bord;
-	}
-
-
-	public void visSpeletErFerdigmelding(String melding) {
-		JOptionPane.showMessageDialog((Component) hovud.getGui(), melding);
 	}
 
 }

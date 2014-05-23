@@ -21,6 +21,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 // Handterer kven sin tur det er, og oppsett i startfasen av spelet
 public class Hovud implements IHovud {
 
@@ -86,11 +88,7 @@ public class Hovud implements IHovud {
 	public ArrayList<ISpelar> getSpelarar() {
 		return players;
 	}
-
-	public IGUI getGui() {
-		return gui;
-	}
-
+	
 	public int getAntalGjenverandeOppdrag() {
 		return oppdragshandsamar.getNumberOfRemainingMissions();
 	}
@@ -156,62 +154,78 @@ public class Hovud implements IHovud {
 			createPlayersAndSetUpForLocalGame();
 		}         // else er det nettverksspel og handterast seinare
 		turhandsamar = new TurHandsamar(players,nett);
-	 }
+	}
 
-	 private void startNetworkGame(String hostAddress) throws RemoteException {
-		 InitialiserNettverk nettverk = new InitialiserNettverk(gui, hostAddress, this);
-		 nettverk.initialiseNetworkGame();
-		 MissionHandlerImpl.trekkOppdrag(gui, minSpelar, true);
+	private void startNetworkGame(String hostAddress) throws RemoteException {
+		InitialiserNettverk nettverk = new InitialiserNettverk(gui, hostAddress, this);
+		nettverk.initialiseNetworkGame();
+		MissionHandlerImpl.trekkOppdrag(gui, minSpelar, true);
 
-		 givePlayersMissions();
-	 }
+		givePlayersMissions();
+	}
 
-	 private void givePlayersMissions() throws RemoteException {
-		 for (ISpelar player : players){
-			 for (Mission mission : player.getOppdrag()){
-				 player.removeChosenMissionFromDeck(mission.getMissionId());
-			 }
-		 }
-	 }
+	private void givePlayersMissions() throws RemoteException {
+		for (ISpelar player : players){
+			for (Mission mission : player.getOppdrag()){
+				player.removeChosenMissionFromDeck(mission.getMissionId());
+			}
+		}
+	}
 
-	 private void startLocalGame() throws RemoteException {
-		 for (ISpelar player : players) {
-			 MissionHandlerImpl.trekkOppdrag(gui, player, true);
-		 }
-		 // ??
-	 }
+	private void startLocalGame() throws RemoteException {
+		for (ISpelar player : players) {
+			MissionHandlerImpl.trekkOppdrag(gui, player, true);
+		}
+		// ??
+	}
 
-	 private void createPlayersAndSetUpForLocalGame() throws RemoteException {
-		 players = communicationWithPlayers.createPlayersForLocalGame(this,table); //todo playes må komme inn i arraylista her på eit vis
-		 if (minSpelar == null) { setMinSpelar(players.get(0)); }
-		 settSinTur(players.get(0));
-	 }
+	private void createPlayersAndSetUpForLocalGame() throws RemoteException {
+		players = communicationWithPlayers.createPlayersForLocalGame(this,table); //todo playes må komme inn i arraylista her på eit vis
+		if (minSpelar == null) { setMinSpelar(players.get(0)); }
+		settSinTur(players.get(0));
+	}
 
-	 private void hjelpemetodeBygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar, ISpelar byggjandeSpelar, int jokrar) throws RemoteException{
-		 rutehandsamar.newRoute(bygd);
+	private void hjelpemetodeBygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar, ISpelar byggjandeSpelar, int jokrar) throws RemoteException{
+		rutehandsamar.newRoute(bygd);
 
-		 messageUsersInNetworkGame(bygd, byggjandeSpelar);
-		 gui.getTogAtt()[byggjandeSpelar.getSpelarNummer()+1].setText(String.valueOf(byggjandeSpelar.getGjenverandeTog()));
-		 updateDeckOnTable(colour, kortKrevd, krevdJokrar, jokrar);
-		 gui.getMeldingarModell().nyMelding(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
+		messageUsersInNetworkGame(bygd, byggjandeSpelar);
+		gui.getTogAtt()[byggjandeSpelar.getSpelarNummer()+1].setText(String.valueOf(byggjandeSpelar.getGjenverandeTog()));
+		updateDeckOnTable(colour, kortKrevd, krevdJokrar, jokrar);
+		gui.getMeldingarModell().nyMelding(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
 
-		 communicationWithPlayers.oppdaterAndreSpelarar(colour, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
+		communicationWithPlayers.oppdaterAndreSpelarar(colour, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
 
-		 nesteSpelar();
+		nesteSpelar();
 
-	 }
+	}
 
-	 private void messageUsersInNetworkGame(Route builtRoute, ISpelar buildingPlayer) throws RemoteException {
-		 if (isNetworkGame) {
-			 for (ISpelar player : players) {
-				 player.nybygdRute(builtRoute.getRouteId(),buildingPlayer);
-				 player.setTogAtt(buildingPlayer.getSpelarNummer()+1, buildingPlayer.getGjenverandeTog());
-			 }
-		 }
-	 }
+	private void messageUsersInNetworkGame(Route builtRoute, ISpelar buildingPlayer) throws RemoteException {
+		if (isNetworkGame) {
+			for (ISpelar player : players) {
+				player.nybygdRute(builtRoute.getRouteId(),buildingPlayer);
+				player.setTogAtt(buildingPlayer.getSpelarNummer()+1, buildingPlayer.getGjenverandeTog());
+			}
+		}
+	}
 
-	 private void updateDeckOnTable(Farge colour, int kortKrevd, int krevdJokrar, int jokrar) {
-		 table.addCardsToDeck(colour, kortKrevd-(jokrar-krevdJokrar));
-		 table.addJokersToDeck(jokrar);
-	 }
+	private void updateDeckOnTable(Farge colour, int kortKrevd, int krevdJokrar, int jokrar) {
+		table.addCardsToDeck(colour, kortKrevd-(jokrar-krevdJokrar));
+		table.addJokersToDeck(jokrar);
+	}
+
+	public void displayGraphicallyThatThereIsNoCardHere(int positionOnTable) {
+		gui.displayGraphicallyThatThereIsNoCardHere(positionOnTable);
+	}
+
+	public void displayNumberOfRemainingTrains(int position, int numberOfTrains) {
+		gui.getTogAtt()[position].setText(String.valueOf(numberOfTrains));
+	}
+
+	public void showGameOverMessage(String message) {
+		JOptionPane.showMessageDialog((Component) gui, message);
+	}
+	
+	public void receiveMessage(String message) {
+		gui.getMeldingarModell().nyMelding(message);
+	}
 }

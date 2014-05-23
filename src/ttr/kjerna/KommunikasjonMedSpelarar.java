@@ -30,7 +30,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 			for (ISpelar player : players) {
 				player.leggIStokken(colour, (kortKrevd-(jokrar-krevdJokrar)));
 				player.leggIStokken(Farge.valfri,jokrar);
-				player.faaMelding(byggjandeNamn + " bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
+				player.receiveMessage(byggjandeNamn + " bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
 			}
 		}
 	}
@@ -89,7 +89,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 	private void orientPlayersThatTheGameIsOver(IMeldingarModell meldingarModell) throws RemoteException {
 		if (nett) {meldingarModell.nyMelding(Infostrengar.SpeletErFerdig);}
 		for (ISpelar player : players){
-			player.faaMelding(Infostrengar.SpeletErFerdig);
+			player.receiveMessage(Infostrengar.SpeletErFerdig);
 		}
 	}
 
@@ -109,7 +109,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 			meldingarModell.nyMelding(playerWithMostMissionsAccomplished.getNamn() + " klarte flest oppdrag, " + bestNumberOfMissionsAccomplished);
 		}
 		for (ISpelar s : players){
-			s.faaMelding(playerWithMostMissionsAccomplished.getNamn() +" klarte flest oppdrag, " +bestNumberOfMissionsAccomplished);
+			s.receiveMessage(playerWithMostMissionsAccomplished.getNamn() +" klarte flest oppdrag, " +bestNumberOfMissionsAccomplished);
 		}
 	}
 
@@ -134,8 +134,8 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 		poeng += vinnaren;
 		meldingarModell.nyMelding(vinnaren);
 		for (ISpelar player : players){
-			player.faaMelding(vinnaren);
-			player.visSpeletErFerdigmelding(poeng);
+			player.receiveMessage(vinnaren);
+			player.showGameOverMessage(poeng);
 		}
 		JOptionPane.showMessageDialog(new JPanel(), poeng);
 	}
@@ -163,7 +163,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 		String sp = player.getNamn() + " fekk " + totalpoeng[player.getSpelarNummer()] + " poeng. ";
 		meldingarModell.nyMelding(sp);
 		for (ISpelar otherPlayer : players) {
-			otherPlayer.faaMelding(sp);
+			otherPlayer.receiveMessage(sp);
 		}
 		return sp;
 	}
@@ -180,7 +180,7 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 		melding += card ? " trakk inn " + colour +"." : " trakk oppdrag.";
 
 		if (nett){
-			hovud.getMinSpelar().faaMelding(melding);
+			hovud.getMinSpelar().receiveMessage(melding);
 		}
 
 		for (ISpelar player : hovud.getSpelarar()){
@@ -192,10 +192,10 @@ public class KommunikasjonMedSpelarar implements IKommunikasjonMedSpelarar {
 
 	private void sendMessageToPlayer(boolean card, boolean random, String handlandespelarsNamn, String melding, ISpelar player) throws RemoteException {
 		if (!random){
-			player.faaMelding(melding);
+			player.receiveMessage(melding);
 		}
 		else if(card && random){
-			player.faaMelding(handlandespelarsNamn + " trakk tilfeldig.");
+			player.receiveMessage(handlandespelarsNamn + " trakk tilfeldig.");
 		}
 	}
 

@@ -2,7 +2,6 @@ package ttr.kjerna;
 
 import ttr.bord.IBord;
 import ttr.data.Farge;
-import ttr.gui.IGUI;
 import ttr.oppdrag.Mission;
 import ttr.rute.Route;
 import ttr.spelar.ISpelar;
@@ -22,11 +21,8 @@ public interface IHovud {
     public boolean isNett();
 
     public void settIGangSpelet(boolean nett, String hostAddress) throws RemoteException;
-    public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Farge f) throws RemoteException;
-    public void newCardPlacedOnTableInNetworkGame(ISpelar vert, Farge nyFarge, int i) throws RemoteException;
-
-
-    public IGUI getGui();
+    public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Farge colour) throws RemoteException;
+    public void newCardPlacedOnTableInNetworkGame(ISpelar host, Farge newColour, int i) throws RemoteException;
 
     public int getAntalGjenverandeOppdrag ();
     public Mission getOppdrag();
@@ -43,4 +39,9 @@ public interface IHovud {
     public void bygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar) throws RemoteException;
     public void byggTunnel(Route bygd, Farge colour, int kortKrevd, int krevdJokrar) throws RemoteException;
 
+	public void displayGraphicallyThatThereIsNoCardHere(int positionOnTable);
+	
+	public void displayNumberOfRemainingTrains(int position, int numberOfTrains);
+	public void showGameOverMessage(String message);
+	public void receiveMessage(String message);
 }
