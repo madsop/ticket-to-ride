@@ -2,7 +2,7 @@ package ttr.bord;
 
 import ttr.data.Farge;
 
-public interface IBord {
+public interface Table {
     public void setPaaBordet(Farge[] paaBordet);
     public void setEinPaaBordet(Farge f, int plass);
     public void layFiveCardsOutOnTable();

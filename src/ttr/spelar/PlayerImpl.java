@@ -5,18 +5,18 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import ttr.bord.IBord;
+import ttr.bord.Table;
 import ttr.data.Konstantar;
 import ttr.kjerna.IHovud;
-import ttr.oppdrag.ISpelarOppdragshandsamar;
-import ttr.oppdrag.SpelarOppdragshandsamar;
+import ttr.oppdrag.PlayerMissionHandler;
+import ttr.oppdrag.PlayerMissionHandlerImpl;
 import ttr.rute.Route;
 
 public abstract class PlayerImpl extends UnicastRemoteObject {
 	private static final long serialVersionUID = -6844537139622798129L;
 	protected IHovud hovud;
-	protected IBord bord;
-    protected ISpelarOppdragshandsamar spelarOppdragshandsamar;
+	protected Table bord;
+    protected PlayerMissionHandler spelarOppdragshandsamar;
 
 	private static int spelarteljar = 0;    //TODO bør flyttes vekk. Kanskje til hovud.
 	private int spelarNummer;
@@ -27,17 +27,17 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 
 
 	
-	public PlayerImpl (IHovud hovud, String namn, IBord bord) throws RemoteException{
+	public PlayerImpl (IHovud hovud, String namn, Table bord) throws RemoteException{
 		super();
 		this.hovud = hovud;
 		this.bord = bord;
 		this.namn = namn;
 		einValdAllereie = false;
 		bygdeRuter = new ArrayList<>();
-        spelarOppdragshandsamar = new SpelarOppdragshandsamar(hovud);
+        spelarOppdragshandsamar = new PlayerMissionHandlerImpl(hovud);
 	}
 	
-	public abstract ISpelar getThisAsISpelar();
+	public abstract PlayerAndNetworkWTF getThisAsISpelar();
 
 	public void bygg(Route rute) throws RemoteException  {
 		rute.setBuiltBy(getThisAsISpelar());
@@ -75,7 +75,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 
 
 
-	public void nybygdRute(int ruteId, ISpelar byggjandeSpelar) {
+	public void nybygdRute(int ruteId, PlayerAndNetworkWTF byggjandeSpelar) {
 		Route vald = getRoute(ruteId).get();
 		vald.setBuiltBy(byggjandeSpelar);
 		hovud.getAlleBygdeRuter().add(vald);

@@ -8,25 +8,25 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public interface ISpelar extends Remote {
-	public void registrerKlient(ISpelar s) throws RemoteException;
+public interface PlayerAndNetworkWTF extends Remote {
+	public void registrerKlient(PlayerAndNetworkWTF s) throws RemoteException;
 	public void bygg(Route rute) throws RemoteException;
 	public int getGjenverandeTog() throws RemoteException;
 	public String getNamn() throws RemoteException;
 	public void setEittKortTrektInn(boolean b) throws RemoteException;
 	public boolean getValdAllereie() throws RemoteException;
-	public void settSinTur(ISpelar s) throws RemoteException;
+	public void settSinTur(PlayerAndNetworkWTF s) throws RemoteException;
 	public int getSpelarNummer() throws RemoteException;
 	public void setSpelarNummer(int nummer) throws RemoteException;
 	public int getSpelarteljar() throws RemoteException;
 	public void setSpelarteljar(int teljar) throws RemoteException;
 	public void setTogAtt(int plass, int tog) throws RemoteException;
-	public void nybygdRute(int ruteId, ISpelar byggjandeSpelar) throws RemoteException;
+	public void nybygdRute(int ruteId, PlayerAndNetworkWTF byggjandeSpelar) throws RemoteException;
 	public int getBygdeRuterSize() throws RemoteException;
 	public int getBygdeRuterId(int j) throws RemoteException;
 	public int[] getPaaBordetInt() throws RemoteException;
 	public void setPaaBord(Farge[] f) throws RemoteException;
-	public ArrayList<ISpelar> getSpelarar() throws RemoteException;
+	public ArrayList<PlayerAndNetworkWTF> getSpelarar() throws RemoteException;
 	public void putCardOnTable(Farge f, int plass) throws RemoteException;
 	public void leggUtFem() throws RemoteException;
 	public boolean areThereTooManyJokersOnTable() throws RemoteException;

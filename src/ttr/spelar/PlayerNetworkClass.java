@@ -1,6 +1,6 @@
 package ttr.spelar;
 
-import ttr.bord.IBord;
+import ttr.bord.Table;
 import ttr.data.Farge;
 import ttr.kjerna.IHovud;
 import ttr.oppdrag.Mission;
@@ -11,11 +11,11 @@ import java.util.ArrayList;
 /**
  * Ein spelar. All nettverkskommunikasjon går via denne, så litt hårate klasse med ein del ad hoc-metodar.
  */
- public class PlayerNetworkClass extends PlayerImpl implements ISpelar  {
+ public class PlayerNetworkClass extends PlayerImpl implements PlayerAndNetworkWTF  {
 	private static final long serialVersionUID = -3600106049579247030L;
     private CardHandler korthandsamar;
     
-	public PlayerNetworkClass(IHovud hovud, String namn, IBord bord) throws RemoteException {
+	public PlayerNetworkClass(IHovud hovud, String namn, Table bord) throws RemoteException {
 		super(hovud, namn, bord);
         korthandsamar = new CardHandlerImpl(hovud);
 	}
@@ -25,9 +25,9 @@ import java.util.ArrayList;
 	 * Kokt frå distsys, øving 2.
 	 * @param p	The client that is registering as the adversary
 	 */
-	public void registrerKlient(ISpelar nyMotspelar) {
+	public void registrerKlient(PlayerAndNetworkWTF nyMotspelar) {
 		boolean cont = false;
-		for (ISpelar eksisterandeSpelar : hovud.getSpelarar()) {
+		for (PlayerAndNetworkWTF eksisterandeSpelar : hovud.getSpelarar()) {
 			if (nyMotspelar == eksisterandeSpelar) {
 				cont = true;
 			}
@@ -41,8 +41,8 @@ import java.util.ArrayList;
 	}
 	
 	// FASADE
-    public void settSinTur(ISpelar s) throws RemoteException { hovud.settSinTur(s); }
-    public ArrayList<ISpelar> getSpelarar() { return hovud.getSpelarar(); }
+    public void settSinTur(PlayerAndNetworkWTF s) throws RemoteException { hovud.settSinTur(s); }
+    public ArrayList<PlayerAndNetworkWTF> getSpelarar() { return hovud.getSpelarar(); }
     public void receiveMessage(String message) throws RemoteException{ hovud.receiveMessage(message); }
 	public void showGameOverMessage(String points) throws RemoteException { hovud.showGameOverMessage(points); }
 
@@ -78,7 +78,7 @@ import java.util.ArrayList;
     }
     public boolean areThereTooManyJokersOnTable() throws RemoteException{ return bord.areThereTooManyJokersOnTable(); }
 
-	public ISpelar getThisAsISpelar() {
+	public PlayerAndNetworkWTF getThisAsISpelar() {
 		return this;
 	}
 }

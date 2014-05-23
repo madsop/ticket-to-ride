@@ -2,7 +2,7 @@ package ttr.rute;
 
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
-import ttr.spelar.ISpelar;
+import ttr.spelar.PlayerAndNetworkWTF;
 
 public interface Route {
     int getRouteId();
@@ -19,5 +19,5 @@ public interface Route {
 
     int getNumberOfRequiredJokers();
 
-    void setBuiltBy(ISpelar player);
+    void setBuiltBy(PlayerAndNetworkWTF player);
 }

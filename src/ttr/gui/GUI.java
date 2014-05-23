@@ -16,10 +16,10 @@ public class GUI extends JPanel implements IGUI {
 	private static final long serialVersionUID = -1540067881602979318L;
 	private final IMeldingspanel messagePanel;
     private IHogrepanelet hogre;
-    private final IOppdragsveljar oppdragsveljar;
+    private final MissionChooser oppdragsveljar;
 
 
-    public GUI(IBildePanel bp, IOppdragsveljar oppdragsveljar, IMeldingspanel meldingspanel, IHogrepanelet hogre){
+    public GUI(IBildePanel bp, MissionChooser oppdragsveljar, IMeldingspanel meldingspanel, IHogrepanelet hogre){
         this.oppdragsveljar = oppdragsveljar;
         this.messagePanel = meldingspanel;
         this.hogre = hogre;
@@ -68,12 +68,7 @@ public class GUI extends JPanel implements IGUI {
     public JButton[] getKortButtons(){ return hogre.getKortButtons(); }
 
 
-	/**
-	 * Lager ei ramme (ein JFrame)
-	 * @param tittel - kva tittelen på ramma skal vera
-	 * @param panel - eit JPanel med alt som skal vises fram 
-	 */
-    public void lagRamme(String tittel, JPanel panel) {
+    public void createJFrame(String tittel, JPanel panel) {
 		JFrame frame = new JFrame();
 		frame.setContentPane(panel);
 		frame.setBackground(Color.DARK_GRAY);

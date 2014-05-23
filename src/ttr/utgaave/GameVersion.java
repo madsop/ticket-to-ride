@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
 
-public interface ISpelUtgaave {
+public interface GameVersion {
 //	public int getAntalStarttog(); ??      //TODO
 //	public int getAntalStartoppdrag(); ???       //TODO
 	public Set<Route> getRuter();

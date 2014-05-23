@@ -30,6 +30,6 @@ class visBygdeHandler {
 		 */
 
 		bygde.add(bygd);
-		gui.lagRamme("Desse rutene er bygd",bygde);
+		gui.createJFrame("Desse rutene er bygd",bygde);
 	}
 }

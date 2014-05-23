@@ -8,13 +8,13 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class SpelarOppdragshandsamar extends UnicastRemoteObject implements ISpelarOppdragshandsamar{
+public class PlayerMissionHandlerImpl extends UnicastRemoteObject implements PlayerMissionHandler {
 	private static final long serialVersionUID = 5194460142995578869L;
 	private ArrayList<Mission> missions;
 	private IHovud hovud;
 	private boolean[][] harEgBygdMellomAogB;
 
-	public SpelarOppdragshandsamar(IHovud hovud) throws RemoteException {
+	public PlayerMissionHandlerImpl(IHovud hovud) throws RemoteException {
 		super();
 		missions = new ArrayList<>();
 		this.hovud = hovud;

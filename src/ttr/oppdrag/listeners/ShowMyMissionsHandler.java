@@ -3,7 +3,7 @@ package ttr.oppdrag.listeners;
 import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
 import ttr.oppdrag.Mission;
-import ttr.spelar.ISpelar;
+import ttr.spelar.PlayerAndNetworkWTF;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
@@ -13,7 +13,7 @@ public class ShowMyMissionsHandler {
 	public ShowMyMissionsHandler(IHovud hovud, IGUI gui) throws RemoteException {
 		JPanel missionJPanel = new JPanel();
 
-		ISpelar player = getPlayer(hovud);
+		PlayerAndNetworkWTF player = getPlayer(hovud);
 		String missionString = player.getNamn() +": ";
 
 		for (int i = 0; i < player.getAntalOppdrag(); i++) {
@@ -24,14 +24,14 @@ public class ShowMyMissionsHandler {
 		showToPlayer(gui, missionJPanel, player, missionString);
 	}
 
-	private ISpelar getPlayer(IHovud hovud) {
+	private PlayerAndNetworkWTF getPlayer(IHovud hovud) {
 		if (hovud.isNett()) {
 			return hovud.getMinSpelar();
 		}
 		return hovud.getKvenSinTur();
 	}
 
-	private String prepareMissionString(ISpelar player,int i, Mission mission) throws RemoteException {
+	private String prepareMissionString(PlayerAndNetworkWTF player,int i, Mission mission) throws RemoteException {
 		String missionString = mission.toString();
 		if (player.isMissionAccomplished(mission.getMissionId())){
 			missionString += " (OK)";
@@ -45,9 +45,9 @@ public class ShowMyMissionsHandler {
 		return missionString;
 	}
 
-	private void showToPlayer(IGUI gui, JPanel missionJPanel, ISpelar player, String missionString) throws RemoteException {
+	private void showToPlayer(IGUI gui, JPanel missionJPanel, PlayerAndNetworkWTF player, String missionString) throws RemoteException {
 		JLabel missionJLabel = new JLabel(missionString);
 		missionJPanel.add(missionJLabel);
-		gui.lagRamme("Viser oppdraga til " +player.getNamn(), missionJPanel);
+		gui.createJFrame("Viser oppdraga til " +player.getNamn(), missionJPanel);
 	}
 }

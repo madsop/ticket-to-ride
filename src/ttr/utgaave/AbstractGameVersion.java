@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
 
-public abstract class AbstractSpelUtgaave {
+public abstract class AbstractGameVersion {
 	private final String title;
 	protected ArrayList<Mission> missions;
 	protected Set<Route> routes;
@@ -18,7 +18,7 @@ public abstract class AbstractSpelUtgaave {
 		return backgroundImage;
 	}
 	
-	protected AbstractSpelUtgaave(String title, String pathToBackgroundImage) {
+	protected AbstractGameVersion(String title, String pathToBackgroundImage) {
 		this.title = title;
 		backgroundImage = getClass().getResource(pathToBackgroundImage);
         routes = leggTilRuter();

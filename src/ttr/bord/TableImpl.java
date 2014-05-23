@@ -4,12 +4,12 @@ import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
 
-public class BordImpl implements IBord {
+public class TableImpl implements Table {
     private final IGUI gui;
 	private Deck deck;
 	private CardsOnTable cardsOnTable;
     
-    public BordImpl(IGUI gui, boolean nett, Deck deck) {
+    public TableImpl(IGUI gui, boolean nett, Deck deck) {
         this.gui = gui;
         this.deck = deck;
         this.cardsOnTable = new CardsOnTable();

@@ -1,10 +1,10 @@
 package ttr.kjerna;
 
-import ttr.bord.IBord;
+import ttr.bord.Table;
 import ttr.data.Farge;
 import ttr.oppdrag.Mission;
 import ttr.rute.Route;
-import ttr.spelar.ISpelar;
+import ttr.spelar.PlayerAndNetworkWTF;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -17,22 +17,22 @@ public interface IHovud {
 
     public Set<Route> getAlleBygdeRuter();
 
-    public IBord getBord();
+    public Table getBord();
     public boolean isNett();
 
     public void settIGangSpelet(boolean nett, String hostAddress) throws RemoteException;
     public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Farge colour) throws RemoteException;
-    public void newCardPlacedOnTableInNetworkGame(ISpelar host, Farge newColour, int i) throws RemoteException;
+    public void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Farge newColour, int i) throws RemoteException;
 
     public int getAntalGjenverandeOppdrag ();
     public Mission getOppdrag();
 
 
-    public ArrayList<ISpelar> getSpelarar();
-    public ISpelar getMinSpelar();
-    public void setMinSpelar(ISpelar spelar);
-    public ISpelar getKvenSinTur();
-    public void settSinTur(ISpelar spelar) throws RemoteException;
+    public ArrayList<PlayerAndNetworkWTF> getSpelarar();
+    public PlayerAndNetworkWTF getMinSpelar();
+    public void setMinSpelar(PlayerAndNetworkWTF spelar);
+    public PlayerAndNetworkWTF getKvenSinTur();
+    public void settSinTur(PlayerAndNetworkWTF spelar) throws RemoteException;
     public void nesteSpelar() throws RemoteException;
 
     public Set<Route> findRoutesNotYetBuilt() throws RemoteException;

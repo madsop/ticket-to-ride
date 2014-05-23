@@ -2,7 +2,7 @@ package ttr.rute;
 
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
-import ttr.spelar.ISpelar;
+import ttr.spelar.PlayerAndNetworkWTF;
 
 import java.rmi.RemoteException;
 import java.text.MessageFormat;
@@ -13,7 +13,7 @@ public class RouteImpl implements Route {
 	private final Farge colour;
 	private final boolean tunnel;
 	private final int numberOfRequiredJokers;
-	private ISpelar builtBy;
+	private PlayerAndNetworkWTF builtBy;
 	private final int routeId;
 	private final Destinasjon start;
 	private final Destinasjon end;
@@ -61,7 +61,7 @@ public class RouteImpl implements Route {
 		return numberOfRequiredJokers;
 	}
 
-    public void setBuiltBy(ISpelar spelar) {
+    public void setBuiltBy(PlayerAndNetworkWTF spelar) {
 		builtBy = spelar;
 	}
 

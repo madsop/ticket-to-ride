@@ -3,7 +3,7 @@ package ttr.gui.hogresida;
 import ttr.data.Infostrengar;
 import ttr.data.MeldingarModell;
 import ttr.kjerna.IHovud;
-import ttr.spelar.ISpelar;
+import ttr.spelar.PlayerAndNetworkWTF;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -29,7 +29,7 @@ class ChatListener implements KeyListener {
 	public void keyReleased(KeyEvent arg0) {
 		if (arg0.getKeyCode() == KeyEvent.VK_ENTER){
 			String message = "";
-			ISpelar player = nett ? hovud.getMinSpelar() : hovud.getKvenSinTur();
+			PlayerAndNetworkWTF player = nett ? hovud.getMinSpelar() : hovud.getKvenSinTur();
 			try {
 				message = player.getNamn();
 			}
@@ -42,7 +42,7 @@ class ChatListener implements KeyListener {
 				meldingarmodell.nyMelding(message);
 			}
 
-			for (ISpelar spelar : hovud.getSpelarar()){
+			for (PlayerAndNetworkWTF spelar : hovud.getSpelarar()){
 				try {
 					spelar.receiveMessage(message);
 				} catch (RemoteException e) {

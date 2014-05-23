@@ -1,7 +1,7 @@
 package ttr.rute;
 
-import ttr.spelar.ISpelar;
-import ttr.utgaave.ISpelUtgaave;
+import ttr.spelar.PlayerAndNetworkWTF;
+import ttr.utgaave.GameVersion;
 
 import java.rmi.RemoteException;
 import java.util.Collection;
@@ -13,7 +13,7 @@ public class RouteHandlerImpl implements RouteHandler {
 	private final Set<Route> allRoutes;
 	private final Set<Route> allBuiltRoutes;
 
-	public RouteHandlerImpl(ISpelUtgaave spel){
+	public RouteHandlerImpl(GameVersion spel){
 		this.allRoutes = spel.getRuter();
 		this.allBuiltRoutes = new HashSet<>();
 	}
@@ -30,19 +30,19 @@ public class RouteHandlerImpl implements RouteHandler {
 		allBuiltRoutes.add(rute);
 	}
 
-	public Set<Route> findRoutesNotYetBuilt(Collection<ISpelar> spelarar) throws RemoteException {
+	public Set<Route> findRoutesNotYetBuilt(Collection<PlayerAndNetworkWTF> spelarar) throws RemoteException {
 		findAllBuiltRoutes(spelarar);
 		return findNotYetBuiltRoutes();
 	}
 
 	//TODO Lagringa av kven som har bygd kva rute generelt bør kunne gjerast mykje enklare..
-	private void findAllBuiltRoutes(Collection<ISpelar> players) throws RemoteException {
-		for (ISpelar player : players) {
+	private void findAllBuiltRoutes(Collection<PlayerAndNetworkWTF> players) throws RemoteException {
+		for (PlayerAndNetworkWTF player : players) {
 			findRoutesBuiltByThisPlayer(player);
 		}
 	}
 
-	private void findRoutesBuiltByThisPlayer(ISpelar player) throws RemoteException {
+	private void findRoutesBuiltByThisPlayer(PlayerAndNetworkWTF player) throws RemoteException {
 		for (int i = 0; i < player.getBygdeRuterSize(); i++) {
 			int routeId = player.getBygdeRuterId(i);
 			allRoutes.stream().filter(route -> route.getRouteId() == routeId).forEach(x -> allBuiltRoutes.add(x));

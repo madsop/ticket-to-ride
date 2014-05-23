@@ -1,8 +1,8 @@
 package ttr;
 
-import ttr.bord.BordImpl;
+import ttr.bord.TableImpl;
 import ttr.bord.Deck;
-import ttr.bord.IBord;
+import ttr.bord.Table;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.gui.*;
@@ -12,7 +12,7 @@ import ttr.gui.hogresida.IMeldingspanel;
 import ttr.gui.hogresida.Meldingspanel;
 import ttr.kjerna.Hovud;
 import ttr.kjerna.IHovud;
-import ttr.utgaave.ISpelUtgaave;
+import ttr.utgaave.GameVersion;
 import ttr.utgaave.europe.Europe;
 import ttr.utgaave.nordic.Nordic;
 
@@ -25,11 +25,11 @@ public class Main {
 	public static void main(String args[]) throws RemoteException {
 		JFrame frame = new JFrame(Infostrengar.rammetittel);
 		       
-        ISpelUtgaave gameVersion = chooseGameVersion(frame);
+        GameVersion gameVersion = chooseGameVersion(frame);
 
         boolean isNetworkGame = (JOptionPane.showConfirmDialog(null, Infostrengar.velOmNettverkEllerIkkje) == JOptionPane.YES_OPTION);
         IGUI gui = setUpGUI(gameVersion,frame,isNetworkGame);
-        IBord table = new BordImpl(gui,isNetworkGame, new Deck());
+        Table table = new TableImpl(gui,isNetworkGame, new Deck());
         IHovud hovud = new Hovud(gui, table, isNetworkGame, gameVersion);
         gui.setHovud(hovud);
 
@@ -42,8 +42,8 @@ public class Main {
 		return args[0];
 	}
     
-    private static ISpelUtgaave chooseGameVersion(JFrame frame) {
-        ISpelUtgaave[] gameVersions = new ISpelUtgaave[2];
+    private static GameVersion chooseGameVersion(JFrame frame) {
+        GameVersion[] gameVersions = new GameVersion[2];
         gameVersions[0] = new Nordic();
         gameVersions[1] = new Europe();
         int chosenGameID = JOptionPane.showOptionDialog(frame, Infostrengar.velUtgåve, Infostrengar.velUtgåve,
@@ -52,10 +52,10 @@ public class Main {
         return gameVersions[chosenGameID];
     }
     
-    private static IGUI setUpGUI(ISpelUtgaave gameVersion, JFrame frame, boolean isNetworkGame) {
+    private static IGUI setUpGUI(GameVersion gameVersion, JFrame frame, boolean isNetworkGame) {
         IBildePanel picturePanel = new BildePanel(gameVersion);
 
-        IOppdragsveljar missionChoose = new Oppdragsveljar(gameVersion,frame);
+        MissionChooser missionChoose = new MissionChooserImpl(gameVersion,frame);
 
         IMeldingspanel messagepanel = new Meldingspanel(isNetworkGame);
         IHogrepanelet rightpanel = new Hogrepanelet(frame);
@@ -65,7 +65,7 @@ public class Main {
         return gui;
     }
 
-	private static void setUpJFrame(ISpelUtgaave utgaave, JFrame frame, IGUI gui) {
+	private static void setUpJFrame(GameVersion utgaave, JFrame frame, IGUI gui) {
 		frame.setTitle(frame.getTitle() + " - " +utgaave);
         frame.setPreferredSize(Konstantar.VINDUSSTORLEIK);
         frame.setContentPane((Container) gui);

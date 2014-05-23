@@ -3,7 +3,7 @@ package ttr.gui;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.oppdrag.Mission;
-import ttr.utgaave.ISpelUtgaave;
+import ttr.utgaave.GameVersion;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,8 +12,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Oppdragsveljar implements IOppdragsveljar {
-    private final ISpelUtgaave gameVersion;
+public class MissionChooserImpl implements MissionChooser {
+    private final GameVersion gameVersion;
     private final JFrame frame;
     private JDialog missionChooserDialog;
     private JPanel choosePanel;
@@ -21,7 +21,7 @@ public class Oppdragsveljar implements IOppdragsveljar {
     private HashMap<JCheckBox,Mission> missionsToChooooseFrom;
     private JButton ok;
 
-    public Oppdragsveljar(ISpelUtgaave spel, JFrame frame){
+    public MissionChooserImpl(GameVersion spel, JFrame frame){
         this.gameVersion = spel;
         this.frame = frame;
     }

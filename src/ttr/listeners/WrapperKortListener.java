@@ -3,7 +3,7 @@ package ttr.listeners;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.kjerna.IHovud;
-import ttr.spelar.ISpelar;
+import ttr.spelar.PlayerAndNetworkWTF;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -54,7 +54,7 @@ public class WrapperKortListener implements ActionListener{
 		try {
 			retrieveOneCardFromTheTable(positionOnTable,hovud.getKvenSinTur());
 
-			ISpelar host = orienterAndreSpelarar(positionOnTable);
+			PlayerAndNetworkWTF host = orienterAndreSpelarar(positionOnTable);
 
 			if (nett && host != null){
 				Farge newColour = host.getRandomCardFromTheDeck(positionOnTable);
@@ -69,7 +69,7 @@ public class WrapperKortListener implements ActionListener{
 		}
 	}
 
-	private Farge placeNewCardsOnTable(ISpelar host) throws RemoteException {
+	private Farge placeNewCardsOnTable(PlayerAndNetworkWTF host) throws RemoteException {
 		Farge newColour = null;
 		host.leggUtFem();
 		int[] cardsOnTableAsIntegers = host.getPaaBordetInt();
@@ -82,7 +82,7 @@ public class WrapperKortListener implements ActionListener{
 		return newColour;
 	}
 
-	private void retrieveOneCardFromTheTable(int positionOnTable,ISpelar kvenSinTur) throws RemoteException {
+	private void retrieveOneCardFromTheTable(int positionOnTable,PlayerAndNetworkWTF kvenSinTur) throws RemoteException {
 		Farge colour = hovud.getBord().getCardFromTable(positionOnTable);
 		if (colour == null) { return; }
 		if (kvenSinTur.getValdAllereie()) {
@@ -93,7 +93,7 @@ public class WrapperKortListener implements ActionListener{
 		}
 	}
 
-	private void retrieveSecondCard(int positionOnTable, ISpelar kvenSinTur, Farge colour) throws RemoteException {
+	private void retrieveSecondCard(int positionOnTable, PlayerAndNetworkWTF kvenSinTur, Farge colour) throws RemoteException {
 		if (colour == Farge.valfri) {
 			JOptionPane.showMessageDialog(frame, "Haha. Nice try. Du kan ikkje ta ein joker frå bordet når du allereie har trekt inn eitt kort");
 			return;
@@ -103,7 +103,7 @@ public class WrapperKortListener implements ActionListener{
 		hovud.nesteSpelar();
 	}
 
-	private void retrieveFirstCard(int positionOnTable, ISpelar kvenSinTur, Farge colour) throws RemoteException {
+	private void retrieveFirstCard(int positionOnTable, PlayerAndNetworkWTF kvenSinTur, Farge colour) throws RemoteException {
 		kvenSinTur.receiveCard(colour);
 		putRandomCardFromTheDeckOnTable(positionOnTable, colour);
 		if (colour == Farge.valfri) {
@@ -117,12 +117,12 @@ public class WrapperKortListener implements ActionListener{
 		hovud.getBord().getRandomCardFromTheDeckAndPutOnTable(positionOnTable, true);
 	}
 
-	private ISpelar orienterAndreSpelarar(int positionOnTable) throws  RemoteException{
-		ISpelar host = null;
+	private PlayerAndNetworkWTF orienterAndreSpelarar(int positionOnTable) throws  RemoteException{
+		PlayerAndNetworkWTF host = null;
 		if (nett && hovud.getMinSpelar().getSpelarNummer()==0) {
 				host = hovud.getMinSpelar(); // TODO forsvinn ikkje denne uansett i løpet av for-løkka under?
 		}
-		for (ISpelar player : hovud.getSpelarar()) {
+		for (PlayerAndNetworkWTF player : hovud.getSpelarar()) {
 			if (!nett){
 				player.getRandomCardFromTheDeck(positionOnTable);
 			}

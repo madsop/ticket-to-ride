@@ -4,6 +4,6 @@ import ttr.oppdrag.Mission;
 
 import java.util.ArrayList;
 
-public interface IOppdragsveljar {
+public interface MissionChooser {
     ArrayList<Mission> setUpOppdragsveljar(ArrayList<Mission> innsendteOppdragÅVeljeFrå);
 }

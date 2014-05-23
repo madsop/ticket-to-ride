@@ -6,7 +6,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public interface ISpelarOppdragshandsamar extends Remote{
+public interface PlayerMissionHandler extends Remote{
     void bygg(Route rute) throws RemoteException;
     Mission trekkOppdragskort() throws RemoteException;
     boolean isMissionAccomplished(int oppdragsid) throws RemoteException;

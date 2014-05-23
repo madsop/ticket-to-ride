@@ -15,7 +15,7 @@ public interface IGUI {
     public JLabel[] getTogAtt();
     public void teiknOppKortPåBordet(int plass, Farge farge);
     public JButton[] getKortButtons();
-    void lagRamme(String tittel, JPanel panel);
+    void createJFrame(String tittel, JPanel panel);
     public String showInputDialog(String string);                       // TODO: bruk denne og liknande meir
     public void setHovud(IHovud hovud);
     void displayGraphicallyThatThereIsNoCardHere(int positionOnTable);

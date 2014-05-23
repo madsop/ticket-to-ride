@@ -6,14 +6,14 @@ import ttr.oppdrag.Mission;
 import ttr.oppdrag.MissionImpl;
 import ttr.rute.Route;
 import ttr.rute.RouteImpl;
-import ttr.utgaave.AbstractSpelUtgaave;
-import ttr.utgaave.ISpelUtgaave;
+import ttr.utgaave.AbstractGameVersion;
+import ttr.utgaave.GameVersion;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Europe extends AbstractSpelUtgaave implements ISpelUtgaave {
+public class Europe extends AbstractGameVersion implements GameVersion {
 	private static final String tittel = "Europe";
 	private static final String bilde = "";
 	

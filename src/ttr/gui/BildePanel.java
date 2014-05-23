@@ -1,7 +1,7 @@
 package ttr.gui;
 
 import ttr.data.Konstantar;
-import ttr.utgaave.ISpelUtgaave;
+import ttr.utgaave.GameVersion;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +11,7 @@ public class BildePanel extends JPanel implements IBildePanel {
 	private static final long serialVersionUID = -2629995315390856995L;
 	private final Image bildet;
 
-	public BildePanel(ISpelUtgaave spel){
+	public BildePanel(GameVersion spel){
 		URL bakgrunnsbildeURL = spel.getBakgrunnsbildet();
 		bildet = new ImageIcon(bakgrunnsbildeURL).getImage();
 	}

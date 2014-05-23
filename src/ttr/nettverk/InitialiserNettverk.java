@@ -4,7 +4,7 @@ import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
-import ttr.spelar.ISpelar;
+import ttr.spelar.PlayerAndNetworkWTF;
 import ttr.spelar.PlayerNetworkClass;
 
 import javax.swing.*;
@@ -29,7 +29,7 @@ public class InitialiserNettverk {
 	}
 
 	public void initialiseNetworkGame() throws HeadlessException, RemoteException {
-        ISpelar spelar = new PlayerNetworkClass(hovud,gui.showInputDialog("Skriv inn namnet ditt"),hovud.getBord());
+        PlayerAndNetworkWTF spelar = new PlayerNetworkClass(hovud,gui.showInputDialog("Skriv inn namnet ditt"),hovud.getBord());
 		hovud.setMinSpelar(spelar);
 
 		Object[] options = {"Nytt spel", "Bli med i spel"};
@@ -60,7 +60,7 @@ public class InitialiserNettverk {
 		try {
 			LocateRegistry.createRegistry(Integer.parseInt(PORT));
 			long time = System.currentTimeMillis();
-			ISpelar meg = hovud.getMinSpelar();
+			PlayerAndNetworkWTF meg = hovud.getMinSpelar();
 			Naming.rebind(url, meg); // Legg til spelar i RMI-registeret
 			time = System.currentTimeMillis() - time;
 			System.out.println("Time to register with RMI registry: "+(time/1000)+"s");
@@ -89,7 +89,7 @@ public class InitialiserNettverk {
 
     } 
     
-    private void faaMedSpelar(ISpelar s) throws RemoteException{
+    private void faaMedSpelar(PlayerAndNetworkWTF s) throws RemoteException{
         if (s.getSpelarNummer() == 0) {
             hovud.getMinSpelar().setSpelarNummer(s.getSpelarteljar());
             s.setSpelarteljar(s.getSpelarteljar()+1);
@@ -107,8 +107,8 @@ public class InitialiserNettverk {
         s.registrerKlient(hovud.getMinSpelar());
     }
 
-    void oppdaterAndreSpelarar(ISpelar join) throws RemoteException{
-        for (ISpelar s : join.getSpelarar()){
+    void oppdaterAndreSpelarar(PlayerAndNetworkWTF join) throws RemoteException{
+        for (PlayerAndNetworkWTF s : join.getSpelarar()){
             if (!(s.getNamn().equals(hovud.getMinSpelar().toString()))){
                 //hovud.getSpelarar().add(s);
                 hovud.getMinSpelar().registrerKlient(s);
@@ -133,10 +133,10 @@ public class InitialiserNettverk {
 
 		try {
 			// Sei ifrå til host-spelaren
-			ISpelar host = (ISpelar)Naming.lookup(url);
+			PlayerAndNetworkWTF host = (PlayerAndNetworkWTF)Naming.lookup(url);
 
 			hovud.getMinSpelar().registrerKlient(host); // Finn verten i RMI-registeret og registrér han som motstandaren min.
-			for (ISpelar s : hovud.getSpelarar()) {
+			for (PlayerAndNetworkWTF s : hovud.getSpelarar()) {
                 faaMedSpelar(s);
 			}
 

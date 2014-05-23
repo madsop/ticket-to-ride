@@ -1,9 +1,9 @@
 package ttr.kjerna;
 
-import ttr.spelar.ISpelar;
+import ttr.spelar.PlayerAndNetworkWTF;
 
 import java.rmi.RemoteException;
 
 interface ITurhandsamar {
-    ISpelar nextPlayer(ISpelar kvenSinTur, ISpelar minSpelar) throws RemoteException;
+    PlayerAndNetworkWTF nextPlayer(PlayerAndNetworkWTF kvenSinTur, PlayerAndNetworkWTF minSpelar) throws RemoteException;
 }

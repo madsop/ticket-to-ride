@@ -2,14 +2,14 @@ package ttr.listeners;
 
 import ttr.data.Farge;
 import ttr.kjerna.IHovud;
-import ttr.spelar.ISpelar;
+import ttr.spelar.PlayerAndNetworkWTF;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
 
 class CardDeckHandler {
 	public CardDeckHandler(IHovud hovud) throws RemoteException {
-		ISpelar playerInTurn = hovud.getKvenSinTur();
+		PlayerAndNetworkWTF playerInTurn = hovud.getKvenSinTur();
 		Farge colour = playerInTurn.trekkFargekort();
 		if (colour==null){ return; }
 
