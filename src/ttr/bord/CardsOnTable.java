@@ -18,7 +18,6 @@ public class CardsOnTable {
 		return cardsOpenOnTable[position];
 	}
 
-
 	void setCardsOpenOnTable(Farge[] cardsOpenOnTable) {
 		this.cardsOpenOnTable = cardsOpenOnTable;
 	}

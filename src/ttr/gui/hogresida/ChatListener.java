@@ -13,47 +13,49 @@ import java.rmi.RemoteException;
 class ChatListener implements KeyListener {
 	private final boolean nett;
 	private final IHovud hovud;
-	private final JTextField chat;
+	private final JTextField chatJTextField; //TODO denne må vel vekk herifrå?
 	private final MeldingarModell meldingarmodell;
 
-	public ChatListener(boolean nett, JTextField chat, MeldingarModell meldingarmodell, IHovud hovud){
+	public ChatListener(boolean nett, JTextField chat, MeldingarModell messagesModel, IHovud hovud){
 		this.nett = nett;
-		this.chat = chat;
-		this.meldingarmodell = meldingarmodell;
+		this.chatJTextField = chat;
+		this.meldingarmodell = messagesModel;
 		this.hovud = hovud;
 	}
 
-
 	public void keyPressed(KeyEvent arg0) {	}
+	public void keyTyped(KeyEvent arg0) {}
 
 	public void keyReleased(KeyEvent arg0) {
-		if (arg0.getKeyCode() == KeyEvent.VK_ENTER){
-			String message = "";
-			PlayerAndNetworkWTF player = nett ? hovud.getMinSpelar() : hovud.getKvenSinTur();
-			try {
-				message = player.getNamn();
-			}
-			catch (RemoteException e) {
-				e.printStackTrace();
-			}
-			message += ": " +chat.getText();
+		try {
+			sendMessage(arg0);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
 
+	private void sendMessage(KeyEvent arg0) throws RemoteException {
+		if (arg0.getKeyCode() == KeyEvent.VK_ENTER){
+			String message = getPlayerName() + ": " + chatJTextField.getText();;
 			if (nett){
 				meldingarmodell.nyMelding(message);
 			}
-
-			for (PlayerAndNetworkWTF spelar : hovud.getSpelarar()){
-				try {
-					spelar.receiveMessage(message);
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
-			}
-			chat.setText("");
+			sendMessageToPlayers(message);
+			chatJTextField.setText("");
 		}
-		else if (chat.getText().contains(Infostrengar.starttekst)){
-			chat.setText(String.valueOf(arg0.getKeyChar()));
+		else if (chatJTextField.getText().contains(Infostrengar.starttekst)){
+			chatJTextField.setText(String.valueOf(arg0.getKeyChar()));
 		}
 	}
-	public void keyTyped(KeyEvent arg0) {}
+
+	private String getPlayerName() throws RemoteException {
+		PlayerAndNetworkWTF player = nett ? hovud.getMinSpelar() : hovud.getKvenSinTur();
+		return player.getNamn();	
+	}
+
+	private void sendMessageToPlayers(String message) throws RemoteException {
+		for (PlayerAndNetworkWTF spelar : hovud.getSpelarar()){
+			spelar.receiveMessage(message);
+		}
+	}
 }

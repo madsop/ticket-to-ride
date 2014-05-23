@@ -4,6 +4,9 @@ import ttr.data.Konstantar;
 import ttr.utgaave.GameVersion;
 
 import javax.swing.*;
+
+import com.google.inject.Inject;
+
 import java.awt.*;
 import java.net.URL;
 
@@ -11,6 +14,7 @@ public class BildePanel extends JPanel implements IBildePanel {
 	private static final long serialVersionUID = -2629995315390856995L;
 	private final Image bildet;
 
+	@Inject
 	public BildePanel(GameVersion spel){
 		URL bakgrunnsbildeURL = spel.getBakgrunnsbildet();
 		bildet = new ImageIcon(bakgrunnsbildeURL).getImage();

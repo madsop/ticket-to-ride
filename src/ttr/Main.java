@@ -18,41 +18,55 @@ import ttr.utgaave.nordic.Nordic;
 
 import javax.swing.*;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
 import java.awt.*;
 import java.rmi.RemoteException;
 
 public class Main {
-	public static void main(String args[]) throws RemoteException {
+	private Injector injector;
+	
+	public static void main(String args[]) {
+		try {
+			new Main(args);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public Main(String args[]) throws RemoteException {
+		this.injector = Guice.createInjector();
 		JFrame frame = new JFrame(Infostrengar.rammetittel);
-		       
+	       
         GameVersion gameVersion = chooseGameVersion(frame);
 
         boolean isNetworkGame = (JOptionPane.showConfirmDialog(null, Infostrengar.velOmNettverkEllerIkkje) == JOptionPane.YES_OPTION);
         IGUI gui = setUpGUI(gameVersion,frame,isNetworkGame);
-        Table table = new TableImpl(gui,isNetworkGame, new Deck());
+        
+        Table table = new TableImpl(gui,isNetworkGame, injector.getInstance(Deck.class));
         IHovud hovud = new Hovud(gui, table, isNetworkGame, gameVersion);
         gui.setHovud(hovud);
 
         hovud.settIGangSpelet(isNetworkGame,getHostName(args));
-
 	}
 
-	private static String getHostName(String[] args) {
+	private String getHostName(String[] args) {
 		if (args.length < 1) { return Infostrengar.standardHostForNettverk; }
 		return args[0];
 	}
     
-    private static GameVersion chooseGameVersion(JFrame frame) {
+    private GameVersion chooseGameVersion(JFrame frame) {
         GameVersion[] gameVersions = new GameVersion[2];
-        gameVersions[0] = new Nordic();
-        gameVersions[1] = new Europe();
+        gameVersions[0] = injector.getInstance(Nordic.class);
+        gameVersions[1] = injector.getInstance(Europe.class);
         int chosenGameID = JOptionPane.showOptionDialog(frame, Infostrengar.velUtgåve, Infostrengar.velUtgåve,
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, gameVersions, gameVersions[0]);
         if (chosenGameID < 0 || chosenGameID >= gameVersions.length){ System.exit(0); }
         return gameVersions[chosenGameID];
     }
     
-    private static IGUI setUpGUI(GameVersion gameVersion, JFrame frame, boolean isNetworkGame) {
+    private IGUI setUpGUI(GameVersion gameVersion, JFrame frame, boolean isNetworkGame) {
         IBildePanel picturePanel = new BildePanel(gameVersion);
 
         MissionChooser missionChoose = new MissionChooserImpl(gameVersion,frame);
@@ -65,7 +79,7 @@ public class Main {
         return gui;
     }
 
-	private static void setUpJFrame(GameVersion utgaave, JFrame frame, IGUI gui) {
+	private void setUpJFrame(GameVersion utgaave, JFrame frame, IGUI gui) {
 		frame.setTitle(frame.getTitle() + " - " +utgaave);
         frame.setPreferredSize(Konstantar.VINDUSSTORLEIK);
         frame.setContentPane((Container) gui);
