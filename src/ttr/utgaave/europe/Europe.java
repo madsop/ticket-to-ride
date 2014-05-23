@@ -3,9 +3,9 @@ package ttr.utgaave.europe;
 import ttr.data.Destinasjon;
 import ttr.data.Farge;
 import ttr.oppdrag.Mission;
-import ttr.oppdrag.MissionImpl;
+import ttr.oppdrag.Mission;
 import ttr.rute.Route;
-import ttr.rute.RouteImpl;
+import ttr.rute.Route;
 import ttr.utgaave.AbstractGameVersion;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,7 +22,7 @@ public class Europe extends AbstractGameVersion {
 	protected Set<Route> leggTilRuter() {
 		routes = new HashSet<>();
 		int ruteId = 0;
-		routes.add(new RouteImpl(ruteId,Destinasjon.Brest,Destinasjon.Dieppe,2,Farge.oransje,false,0));
+		routes.add(new Route(ruteId,Destinasjon.Brest,Destinasjon.Dieppe,2,Farge.oransje,false,0));
 		//ruteId++;
 		return routes;
 	}
@@ -30,7 +30,7 @@ public class Europe extends AbstractGameVersion {
 	protected ArrayList<Mission> fyllMedOppdrag() {
 		missions = new ArrayList<>();
 		int oppdragsid = 0;
-		missions.add(new MissionImpl(oppdragsid,Destinasjon.Brest,Destinasjon.Petrograd,21));
+		missions.add(new Mission(oppdragsid,Destinasjon.Brest,Destinasjon.Petrograd,21));
 		//oppdragsid++;
 		return missions;
 	}

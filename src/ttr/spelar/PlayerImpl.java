@@ -9,7 +9,7 @@ import ttr.bord.Table;
 import ttr.data.Konstantar;
 import ttr.kjerna.Core;
 import ttr.oppdrag.PlayerMissionHandler;
-import ttr.oppdrag.PlayerMissionHandlerImpl;
+import ttr.oppdrag.PlayerMissionHandler;
 import ttr.rute.Route;
 
 public abstract class PlayerImpl extends UnicastRemoteObject {
@@ -32,7 +32,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 		this.namn = namn;
 		einValdAllereie = false;
 		bygdeRuter = new ArrayList<>();
-        spelarOppdragshandsamar = new PlayerMissionHandlerImpl();
+        spelarOppdragshandsamar = new PlayerMissionHandler();
 	}
 	
 	public abstract PlayerAndNetworkWTF getThisAsISpelar();
@@ -41,7 +41,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 		rute.setBuiltBy(getThisAsISpelar());
 		// Fjern kort frå spelaren og legg dei i stokken eller ved sida av?
 		bygdeRuter.add(rute);
-        spelarOppdragshandsamar.bygg(rute);
+        spelarOppdragshandsamar.markRouteAsBuilt(rute);
 	}
 
 	public void setEittKortTrektInn(boolean b) {

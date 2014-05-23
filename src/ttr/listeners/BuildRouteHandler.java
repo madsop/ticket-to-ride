@@ -13,24 +13,24 @@ import java.util.Set;
 
 class BuildRouteHandler {
 
-	public BuildRouteHandler(Core hovud, JFrame frame) throws RemoteException {
-		Set<Route> notYetBuiltRoutes = hovud.findRoutesNotYetBuilt();
+	public BuildRouteHandler(Core core, JFrame frame) throws RemoteException {
+		Set<Route> notYetBuiltRoutes = core.findRoutesNotYetBuilt();
 		Route routeWantedToBuild = letUserChooseRouteToBuild(frame, notYetBuiltRoutes);
 		if (routeWantedToBuild == null) { return; }
 
 		int normalCardsDemanded = routeWantedToBuild.getLength()-routeWantedToBuild.getNumberOfRequiredJokers();
 		Farge routeColour = routeWantedToBuild.getColour();
 		int numberOfDemandedJokers = routeWantedToBuild.getNumberOfRequiredJokers();
-		int playersNumberOfJokers = hovud.findPlayerInAction().getNumberOfRemainingJokers();
+		int playersNumberOfJokers = core.findPlayerInAction().getNumberOfRemainingJokers();
 
-		buildRoute(hovud, frame, routeWantedToBuild, normalCardsDemanded,
+		buildRoute(core, frame, routeWantedToBuild, normalCardsDemanded,
 				routeColour, numberOfDemandedJokers, playersNumberOfJokers);
 	}
 
-	private void buildRoute(Core hovud, JFrame frame, Route routeWantedToBuild,	int normalCardsDemanded, 
+	private void buildRoute(Core core, JFrame frame, Route routeWantedToBuild,	int normalCardsDemanded, 
 			Farge routeColour, int numberOfDemandedJokers, int playersNumberOfJokers) throws RemoteException {
-		if (playerCanBuildThisRoute(hovud.findPlayerInAction(), routeColour, normalCardsDemanded, numberOfDemandedJokers, playersNumberOfJokers) ){
-			buildRoute(hovud, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, routeColour);
+		if (playerCanBuildThisRoute(core.findPlayerInAction(), routeColour, normalCardsDemanded, numberOfDemandedJokers, playersNumberOfJokers) ){
+			buildRoute(core, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, routeColour);
 		}
 		else { //TODO god feilmelding her.
 			JOptionPane.showMessageDialog(frame, "Synd, men du har ikkje nok kort til å byggje denne ruta enno. Trekk inn kort, du.");

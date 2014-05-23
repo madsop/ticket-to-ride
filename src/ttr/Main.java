@@ -1,8 +1,7 @@
 package ttr;
 
-import ttr.bord.TableImpl;
-import ttr.bord.Deck;
 import ttr.bord.Table;
+import ttr.bord.Deck;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.gui.*;
@@ -44,7 +43,7 @@ public class Main {
         GameVersion gameVersion = chooseGameVersion(frame);
         boolean isNetworkGame = (JOptionPane.showConfirmDialog(null, Infostrengar.velOmNettverkEllerIkkje) == JOptionPane.YES_OPTION);
         IGUI gui = setUpGUI(gameVersion,frame);
-        Table table = new TableImpl(gui,isNetworkGame, injector.getInstance(Deck.class));
+        Table table = new Table(gui,isNetworkGame, injector.getInstance(Deck.class));
         
         Core core = isNetworkGame ? new NetworkCore(gui, table, gameVersion) : new LocalCore(gui, table, gameVersion);
         gui.setHovud(core);
@@ -68,7 +67,7 @@ public class Main {
     
     private IGUI setUpGUI(GameVersion gameVersion, JFrame frame) {
         ImagePanel picturePanel = new ImagePanelImpl(gameVersion);
-        MissionChooser missionChooser = new MissionChooserImpl(gameVersion,frame);
+        MissionChooser missionChooser = new MissionChooser(gameVersion,frame);
 
         IHogrepanelet rightpanel = new Hogrepanelet(frame);
         IGUI gui = new GUI(picturePanel,missionChooser, injector.getInstance(Meldingspanel.class), rightpanel);        // TODO: dependency injection	

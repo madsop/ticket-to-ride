@@ -58,7 +58,7 @@ public class WrapperKortListener implements ActionListener{
 
 	private void createButtonForRetrievingCardFromTable(int positionOnTable) {
 		try {
-			retrieveOneCardFromTheTable(positionOnTable,hovud.getKvenSinTur());
+			retrieveOneCardFromTheTable(positionOnTable,hovud.findPlayerInAction());
 			hovud.orientOtherPlayers(positionOnTable);
 		}
 		catch (RemoteException e) {

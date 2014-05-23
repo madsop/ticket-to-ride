@@ -13,7 +13,7 @@ import java.awt.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class ByggHjelpar implements IByggHjelpar {
+public class ByggHjelpar {
 	private final IGUI gui;
 	
 	//TODO fortener denne å bli splitta i ein kan-bygge-her-klasse og resten? evt. ein colour-finder-klasse

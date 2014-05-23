@@ -31,7 +31,7 @@ public class NetworkCore extends Core {
 	private void givePlayersMissions() throws RemoteException {
 		for (PlayerAndNetworkWTF player : players){
 			for (Mission mission : player.getOppdrag()){
-				player.removeChosenMissionFromDeck(mission.getMissionId());
+				player.removeChosenMissionFromDeck(mission);
 			}
 		}
 	}

@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
 public class TrekkOppdragHandler {
     public TrekkOppdragHandler(Core hovud, IGUI gui) throws RemoteException {
             hovud.sendMessageAboutCard(false, false, Konstantar.FARGAR[0]);
-            MissionHandlerImpl.trekkOppdrag(gui, hovud.getKvenSinTur(), false);
+            MissionHandlerImpl.trekkOppdrag(gui, hovud.findPlayerInAction(), false);
             hovud.nesteSpelar();
     }
 }

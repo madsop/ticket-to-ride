@@ -20,7 +20,7 @@ public abstract class CommunicationWithPlayersImpl implements CommunicationWithP
 		this.players = players;
 	}
 
-	public abstract void oppdaterAndreSpelarar(Farge colour, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException;
+	public abstract void updateOtherPlayers(Farge colour, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException;
 	public abstract ArrayList<PlayerAndNetworkWTF> createPlayersForLocalGame(Core hovud, Table bord);
 	public abstract void sjekkOmFerdig(IMeldingarModell meldingarModell, PlayerAndNetworkWTF kvenSinTur, String speltittel, PlayerAndNetworkWTF minSpelar, Set<Route> ruter) throws RemoteException;
 
@@ -117,7 +117,7 @@ public abstract class CommunicationWithPlayersImpl implements CommunicationWithP
 		localOrNetworkSpecificMessageStuff(hovud.getMinSpelar(), melding);
 		
 		for (PlayerAndNetworkWTF player : hovud.getSpelarar()){
-			if (hovud.getKvenSinTur()==player){
+			if (hovud.getKvenSinTur()==player){ //TODO eh, hæ?
 				sendMessageToPlayer(card, random, handlandespelarsNamn, melding, player);
 			}
 		}

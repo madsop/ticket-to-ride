@@ -15,7 +15,6 @@ import ttr.data.Konstantar;
 import ttr.kjerna.Core;
 import ttr.rute.Route;
 import ttr.spelar.PlayerAndNetworkWTF;
-import ttr.spelar.PlayerNetworkClass;
 
 public class CommunicationWithPlayersLocal extends CommunicationWithPlayersImpl {
 
@@ -33,7 +32,7 @@ public class CommunicationWithPlayersLocal extends CommunicationWithPlayersImpl 
 	
 	
 	@Override
-	public void oppdaterAndreSpelarar(Farge colour, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException { }
+	public void updateOtherPlayers(Farge colour, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException { }
 
 	@Override
 	public void sjekkOmFerdig(IMeldingarModell meldingarModell,	PlayerAndNetworkWTF kvenSinTur, String speltittel, PlayerAndNetworkWTF minSpelar, Set<Route> ruter)
@@ -70,7 +69,7 @@ public class CommunicationWithPlayersLocal extends CommunicationWithPlayersImpl 
 	private ArrayList<PlayerAndNetworkWTF> createPlayers(Core hovud, Table bord, int antalSpelarar) throws HeadlessException, RemoteException {
 		players = new ArrayList<>();
 		for (int i = 1; i <= antalSpelarar; i++) {
-			players.add(new PlayerNetworkClass(hovud,JOptionPane.showInputDialog(null,Infostrengar.SkrivInnSpelarnamn +i),bord));
+			players.add(new PlayerAndNetworkWTF(hovud,JOptionPane.showInputDialog(null,Infostrengar.SkrivInnSpelarnamn +i),bord));
 		}
 		return players;
 	}

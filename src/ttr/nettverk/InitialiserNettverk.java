@@ -6,7 +6,6 @@ import ttr.gui.IGUI;
 import ttr.gui.SwingUtils;
 import ttr.kjerna.Core;
 import ttr.spelar.PlayerAndNetworkWTF;
-import ttr.spelar.PlayerNetworkClass;
 
 import javax.swing.*;
 
@@ -33,7 +32,7 @@ public class InitialiserNettverk {
 	}
 
 	public void initialiseNetworkGame() throws HeadlessException, RemoteException {
-		PlayerAndNetworkWTF spelar = new PlayerNetworkClass(hovud,SwingUtils.showInputDialog("Skriv inn namnet ditt"),hovud.getTable());
+		PlayerAndNetworkWTF spelar = new PlayerAndNetworkWTF(hovud,SwingUtils.showInputDialog("Skriv inn namnet ditt"),hovud.getTable());
 		hovud.setMinSpelar(spelar);
 
 		Object[] options = {"Nytt spel", "Bli med i spel"};

@@ -2,7 +2,6 @@ package ttr.kjerna;
 
 import ttr.bord.Table;
 import ttr.bygg.ByggHjelpar;
-import ttr.bygg.IByggHjelpar;
 import ttr.bygg.ByggjandeInfo;
 import ttr.communicationWithPlayers.CommunicationWithPlayers;
 import ttr.data.Farge;
@@ -22,11 +21,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Set;
 
-import javax.swing.JOptionPane;
-
 // Handterer kven sin tur det er, og oppsett i startfasen av spelet
 public abstract class Core {
-
 	private final GameVersion gameVersion;
 	protected final Table table;
 	protected ArrayList<PlayerAndNetworkWTF> players;
@@ -38,30 +34,21 @@ public abstract class Core {
 	private MissionHandler oppdragshandsamar;
 	private RouteHandler rutehandsamar;
 	protected TurHandsamar turhandsamar;
-	private IByggHjelpar bygghjelpar;
+	private ByggHjelpar bygghjelpar;
 
 	public Core(IGUI gui, Table table, GameVersion gameVersion) throws RemoteException {
 		this.gui = gui;
 		this.gameVersion = gameVersion;
 		this.table = table;
 		players = new ArrayList<>();
-		LagBrettet();
+		rutehandsamar = new RouteHandlerImpl(gameVersion);
+		oppdragshandsamar = new MissionHandlerImpl(gameVersion.getOppdrag());		// Legg til oppdrag
+		bygghjelpar = new ByggHjelpar(gui);
+		createTable();
 	}
 
 	public abstract void settIGangSpelet(String hostAddress) throws RemoteException;
 	public abstract void orientOtherPlayers(int positionOnTable) throws RemoteException;
-
-	public ArrayList<Mission> getGjenverandeOppdrag() {
-		return oppdragshandsamar.getRemainingMissions();
-	}
-
-	public Set<Route> getRuter() {
-		return rutehandsamar.getRoutes();
-	}
-
-	public Set<Route> getAlleBygdeRuter() {
-		return rutehandsamar.getBuiltRoutes();
-	}
 
 	public void setMinSpelar(PlayerAndNetworkWTF spelar){
 		minSpelar = spelar;
@@ -76,14 +63,6 @@ public abstract class Core {
 	}
 	public ArrayList<PlayerAndNetworkWTF> getSpelarar() {
 		return players;
-	}
-	
-	public int getAntalGjenverandeOppdrag() {
-		return oppdragshandsamar.getNumberOfRemainingMissions();
-	}
-
-	public Mission getOppdrag() {
-		return oppdragshandsamar.getMissionAndRemoveItFromDeck();
 	}
 
 	public PlayerAndNetworkWTF getMinSpelar() {
@@ -104,6 +83,7 @@ public abstract class Core {
 		communicationWithPlayers.sjekkOmFerdig(gui.getMessagesModel(),kvenSinTur,gameVersion.toString(),minSpelar,rutehandsamar.getRoutes());
 	}
 	
+	public abstract PlayerAndNetworkWTF findPlayerInAction();
 	protected abstract String getWhoseTurnText() throws RemoteException;
 
 	private void markIfItIsMyTurn() throws RemoteException {
@@ -111,12 +91,6 @@ public abstract class Core {
 			gui.getPlayerNameJTextField().setBackground(Color.YELLOW);
 		}
 	}
-
-	public Set<Route> findRoutesNotYetBuilt() throws RemoteException {
-		return rutehandsamar.findRoutesNotYetBuilt(players);
-	}
-
-	public abstract PlayerAndNetworkWTF findPlayerInAction();
 	
 	public void bygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar) throws RemoteException {
 		ByggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd,colour,kortKrevd,krevdJokrar,findPlayerInAction());
@@ -135,36 +109,21 @@ public abstract class Core {
 		communicationWithPlayers.sendMessageAboutCard(kort, tilfeldig, f, kvenSinTur.getNamn(), this);
 	}
 
-	private void LagBrettet() throws RemoteException {
-		rutehandsamar = new RouteHandlerImpl(gameVersion);
-		oppdragshandsamar = new MissionHandlerImpl(gameVersion.getOppdrag());		// Legg til oppdrag
-		bygghjelpar = new ByggHjelpar(gui);
-		createTable();
-	}
-	
 	protected abstract void createTable() throws RemoteException;
 
 	private void hjelpemetodeBygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF byggjandeSpelar, int jokrar) throws RemoteException {
 		rutehandsamar.newRoute(bygd);
-
 		messageUsersInNetworkGame(bygd, byggjandeSpelar);
 		gui.getRemainingTrainsLabel()[byggjandeSpelar.getSpelarNummer()+1].setText(String.valueOf(byggjandeSpelar.getGjenverandeTog()));
-		updateDeckOnTable(colour, kortKrevd, krevdJokrar, jokrar);
+		table.updateDeckOnTable(colour, kortKrevd, krevdJokrar, jokrar);
 		gui.getMessagesModel().nyMelding(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
-
-		communicationWithPlayers.oppdaterAndreSpelarar(colour, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
-
+		communicationWithPlayers.updateOtherPlayers(colour, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
 		nesteSpelar();
-
 	}
 
 	protected abstract void messageUsersInNetworkGame(Route bygd, PlayerAndNetworkWTF byggjandeSpelar) throws RemoteException;
 
-	private void updateDeckOnTable(Farge colour, int kortKrevd, int krevdJokrar, int jokrar) {
-		table.addCardsToDeck(colour, kortKrevd-(jokrar-krevdJokrar));
-		table.addJokersToDeck(jokrar);
-	}
-
+	/** GUI BLOCK **/
 	public void displayGraphicallyThatThereIsNoCardHere(int positionOnTable) {
 		gui.displayGraphicallyThatThereIsNoCardHere(positionOnTable);
 	}
@@ -172,30 +131,34 @@ public abstract class Core {
 	public void displayNumberOfRemainingTrains(int position, int numberOfTrains) {
 		gui.getRemainingTrainsLabel()[position].setText(String.valueOf(numberOfTrains));
 	}
-
-	public void showGameOverMessage(String message) {
-		JOptionPane.showMessageDialog((Component) gui, message);
-	}
 	
 	public void receiveMessage(String message) {
 		gui.getMessagesModel().nyMelding(message);
 	}
 	
 
-	public Mission trekkOppdragskort() throws RemoteException  { //TODO flytt vidare inn i oppdragshandsamar
-		if (getAntalGjenverandeOppdrag() > 0) {
-			return getOppdrag();
+	public Mission missionHandler_trekkOppdragskort() throws RemoteException  { //TODO flytt vidare inn i oppdragshandsamar
+		if (oppdragshandsamar.getNumberOfRemainingMissions() > 0) {
+			return oppdragshandsamar.getMissionAndRemoveItFromDeck();
 			//System.out.println(trekt.getDestinasjonar().toArray()[1]);
 		}
 		return null;
 	}
 
-	public void removeChosenMissionFromDeck(int oppdragsid) throws RemoteException { //TODO flytt vidare inn i oppdragshandsamar?
-		getGjenverandeOppdrag().removeIf(x -> (x.getMissionId() == oppdragsid));
+	public void missionHandler_removeChosenMissionFromDeck(Mission mission) throws RemoteException { //TODO flytt vidare inn i oppdragshandsamar?
+		oppdragshandsamar.getRemainingMissions().remove(mission);
 	}
 
-	public void nybygdRute(Route route, PlayerAndNetworkWTF byggjandeSpelar) { //TODO vidare ned til rutehandsamar
+	public void routeHandler_nybygdRute(Route route, PlayerAndNetworkWTF byggjandeSpelar) { //TODO vidare ned til rutehandsamar
 		route.setBuiltBy(byggjandeSpelar);
-		getAlleBygdeRuter().add(route);
+		rutehandsamar.getBuiltRoutes().add(route);
+	}
+	
+	public Set<Route> findRoutesNotYetBuilt() throws RemoteException {
+		return rutehandsamar.findRoutesNotYetBuilt(players);
+	}
+
+	public Set<Route> getAlleBygdeRuter() {
+		return rutehandsamar.getBuiltRoutes();
 	}
 }

@@ -19,11 +19,10 @@ public class CommunicationWithPlayersNetwork extends CommunicationWithPlayersImp
 		super(spelarar);
 	}
 
-	@Override
-	public void oppdaterAndreSpelarar(Farge colour, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException {				
+	public void updateOtherPlayers(Farge colour, int kortKrevd, int numberOfJokers, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException {				
 		for (PlayerAndNetworkWTF player : players) {
-			player.leggIStokken(colour, (kortKrevd-(jokrar-krevdJokrar)));
-			player.leggIStokken(Farge.valfri,jokrar);
+			player.putCardsInDeck(colour, (kortKrevd-(numberOfJokers-krevdJokrar)));
+			player.putCardsInDeck(Farge.valfri, numberOfJokers);
 			player.receiveMessage(byggjandeNamn + " bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
 		}
 	}
