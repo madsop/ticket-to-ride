@@ -1,7 +1,6 @@
 package ttr.oppdrag;
 
 import ttr.data.Destinasjon;
-import ttr.kjerna.Core;
 import ttr.rute.Route;
 
 import java.rmi.RemoteException;
@@ -17,7 +16,7 @@ public class PlayerMissionHandlerImpl extends UnicastRemoteObject implements Pla
 	private Set<Mission> missions;
 	private Map<Destinasjon, Set<Destinasjon>> mapBetweenAandB;
 
-	public PlayerMissionHandlerImpl(Core hovud) throws RemoteException {
+	public PlayerMissionHandlerImpl() throws RemoteException {
 		super();
 		missions = new HashSet<>();
 		initialiseConnectedRoutes();

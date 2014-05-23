@@ -15,7 +15,7 @@ import ttr.spelar.PlayerAndNetworkWTF;
 import ttr.turhandsamar.TurHandsamarNetwork;
 import ttr.utgaave.GameVersion;
 
-public class NetworkCore extends CoreImpl {
+public class NetworkCore extends Core {
 	public NetworkCore(IGUI gui, Table table, GameVersion gameVersion) throws RemoteException  {
 		super(gui, table, gameVersion);
 	}

@@ -3,7 +3,6 @@ package ttr.spelar;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Optional;
 
 import ttr.bord.Table;
 import ttr.data.Konstantar;
@@ -32,7 +31,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 		this.namn = namn;
 		einValdAllereie = false;
 		bygdeRuter = new ArrayList<>();
-        spelarOppdragshandsamar = new PlayerMissionHandlerImpl(hovud);
+        spelarOppdragshandsamar = new PlayerMissionHandlerImpl();
 	}
 	
 	public abstract PlayerAndNetworkWTF getThisAsISpelar();
@@ -69,29 +68,4 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	}
 
 	public String toString() { return namn; }
-
-	public void nybygdRute(int ruteId, PlayerAndNetworkWTF byggjandeSpelar) {
-		Route vald = getRoute(ruteId).get();
-		vald.setBuiltBy(byggjandeSpelar);
-		hovud.getAlleBygdeRuter().add(vald);
-	}
-
-	private Optional<Route> getRoute(int ruteId) {
-		return hovud.getRuter().stream().filter(f -> f.getRouteId()==ruteId).findAny();
-	}
-
-	public int[] getPaaBordetInt() { // TODO wtf
-		int[] bord = new int[Konstantar.ANTAL_KORT_PÅ_BORDET];
-
-		for (int i = 0; i < hovud.getTable().getPaaBordet().length; i++) {
-			for (int colourInt = 0; colourInt < Konstantar.FARGAR.length; colourInt++) {
-				if (hovud.getTable().getCardFromTable(i) == Konstantar.FARGAR[colourInt]) {
-					bord[i] = colourInt;
-				}
-			}
-		}
-
-		return bord;
-	}
-
 }

@@ -97,4 +97,18 @@ public class TableImpl implements Table {
 	public Farge getCardFromTable(int positionOnTable) {
 		return cardsOnTable.getCardAt(positionOnTable);
 	}
+
+
+	public int[] getPaaBordetInt() { // TODO wtf
+		int[] bord = new int[Konstantar.ANTAL_KORT_PÅ_BORDET];
+
+		for (int i = 0; i < getPaaBordet().length; i++) {
+			for (int colourInt = 0; colourInt < Konstantar.FARGAR.length; colourInt++) {
+				if (getCardFromTable(i) == Konstantar.FARGAR[colourInt]) {
+					bord[i] = colourInt;
+				}
+			}
+		}
+		return bord;
+	}
 }

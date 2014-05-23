@@ -77,4 +77,7 @@ import java.util.Collection;
 	public PlayerAndNetworkWTF getThisAsISpelar() {
 		return this;
 	}
+
+	public void nybygdRute(int ruteId, PlayerAndNetworkWTF byggjandeSpelar) throws RemoteException { hovud.nybygdRute(ruteId, byggjandeSpelar); }
+	public int[] getPaaBordetInt() throws RemoteException { return hovud.getTable().getPaaBordetInt(); }
 }
