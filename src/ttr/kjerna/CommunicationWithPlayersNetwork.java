@@ -2,8 +2,10 @@ package ttr.kjerna;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 
+import ttr.bord.Table;
 import ttr.data.Farge;
 import ttr.data.IMeldingarModell;
 import ttr.data.Infostrengar;
@@ -26,9 +28,8 @@ public class CommunicationWithPlayersNetwork extends CommunicationWithPlayersImp
 	}
 
 	@Override
-	protected void orientNetwork(IMeldingarModell meldingarModell,
-			PlayerAndNetworkWTF playerWithMostMissionsAccomplished,
-			int bestNumberOfMissionsAccomplished) throws RemoteException {
+	protected void orientNetwork(IMeldingarModell meldingarModell, PlayerAndNetworkWTF playerWithMostMissionsAccomplished, int bestNumberOfMissionsAccomplished) 
+			throws RemoteException {
 		meldingarModell.nyMelding(playerWithMostMissionsAccomplished.getNamn() + " klarte flest oppdrag, " + bestNumberOfMissionsAccomplished);
 	}
 
@@ -57,23 +58,45 @@ public class CommunicationWithPlayersNetwork extends CommunicationWithPlayersImp
 		}
 	}
 	
-	@Override
-	protected void orientPlayersThatTheGameIsOver(IMeldingarModell meldingarModell) throws RemoteException {
+	protected void orientOthers(IMeldingarModell meldingarModell) {
 		meldingarModell.nyMelding(Infostrengar.SpeletErFerdig);
-		for (PlayerAndNetworkWTF player : players){
-			player.receiveMessage(Infostrengar.SpeletErFerdig);
-		}
 	}
 	
 	@Override
-	public void sendMessageAboutCard(boolean card, boolean random, Farge colour, String handlandespelarsNamn, Core hovud) throws RemoteException{
-		String melding = handlandespelarsNamn;
-		melding += card ? " trakk inn " + colour +"." : " trakk oppdrag.";
+	protected void localOrNetworkSpecificMessageStuff(PlayerAndNetworkWTF myPlayer, String melding) throws RemoteException {
+		myPlayer.receiveMessage(melding);
+	}
+	
 
-		hovud.getMinSpelar().receiveMessage(melding);
-
-		for (PlayerAndNetworkWTF player : hovud.getSpelarar()){
-			sendMessageToPlayer(card, random, handlandespelarsNamn, melding, player);
+	public void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Farge nyFarge, int position, Core hovud) throws RemoteException{
+		if (iAmHost(host, hovud)){
+			orientPlayersAboutNewCardOnTable(nyFarge, position, hovud.getSpelarar());
+		}
+		else {
+			orientPlayersAndHostAboutNewCardOnTable(host, nyFarge, position, hovud.getSpelarar(), hovud.getMinSpelar());
 		}
 	}
+
+	private boolean iAmHost(PlayerAndNetworkWTF vert, Core hovud) throws RemoteException {
+		return vert.getNamn().equals(hovud.getMinSpelar().getNamn());
+	}
+
+	private void orientPlayersAboutNewCardOnTable(Farge nyFarge, int position, Collection<PlayerAndNetworkWTF> players) throws RemoteException {
+		for (PlayerAndNetworkWTF player : players){
+			// metode for å legge kortet host nettopp trakk på plass i på bordet hos spelar s
+			player.putCardOnTable(nyFarge,position);
+		}
+	}
+
+	private void orientPlayersAndHostAboutNewCardOnTable(PlayerAndNetworkWTF host, Farge nyFarge, int position, ArrayList<PlayerAndNetworkWTF> players, PlayerAndNetworkWTF myPlayer) throws RemoteException {
+		myPlayer.putCardOnTable(nyFarge, position);
+		for (PlayerAndNetworkWTF player : players){
+			if (!host.getNamn().equals(player.getNamn())){
+				player.putCardOnTable(nyFarge, position);
+			}
+		}
+	}
+
+	@Override
+	public ArrayList<PlayerAndNetworkWTF> createPlayersForLocalGame(Core hovud,	Table bord) { return null; }
 }

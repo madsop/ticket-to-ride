@@ -29,7 +29,7 @@ public class LocalCore extends CoreImpl {
 	}
 
 	protected void createTable() throws RemoteException {
-		communicationWithPlayers = new CommunicationWithPlayersImpl(players); // TODO dependency injection?
+		communicationWithPlayers = new CommunicationWithPlayersLocal(players); // TODO dependency injection?
 		createPlayersAndSetUpForLocalGame();
 		turhandsamar = new TurHandsamar(players,false);	
 	}
