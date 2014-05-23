@@ -14,6 +14,7 @@ import ttr.rute.Route;
 import ttr.rute.RouteHandler;
 import ttr.rute.RouteHandlerImpl;
 import ttr.spelar.PlayerAndNetworkWTF;
+import ttr.turhandsamar.TurHandsamar;
 import ttr.utgaave.GameVersion;
 
 import java.awt.*;
@@ -36,7 +37,7 @@ public abstract class CoreImpl implements Core {
 	protected CommunicationWithPlayers communicationWithPlayers;
 	private MissionHandler oppdragshandsamar;
 	private RouteHandler rutehandsamar;
-	protected ITurhandsamar turhandsamar;
+	protected TurHandsamar turhandsamar;
 	private IByggHjelpar bygghjelpar;
 
 	public CoreImpl(IGUI gui, Table table, GameVersion gameVersion) throws RemoteException {

@@ -23,7 +23,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	private String namn;
 	protected ArrayList<Route> bygdeRuter; // Delvis unaudsynt pga. harEgBygdMellomAogB
 
-	private boolean einValdAllereie;
+	private boolean einValdAllereie; //TODO denne bør vel ikkje vera her?
 	
 	public PlayerImpl (Core hovud, String namn, Table bord) throws RemoteException{
 		super();

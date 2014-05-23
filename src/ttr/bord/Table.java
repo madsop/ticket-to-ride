@@ -4,7 +4,7 @@ import ttr.data.Farge;
 
 public interface Table {
     public void setPaaBordet(Farge[] paaBordet);
-    public void setEinPaaBordet(Farge f, int plass);
+    public void putOneCardOnTable(Farge f, int plass);
     public void layFiveCardsOutOnTable();
     public Farge[] getPaaBordet();
     public Farge getRandomCardFromTheDeck(int plass);

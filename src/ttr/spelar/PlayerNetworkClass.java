@@ -69,14 +69,9 @@ import java.util.Collection;
 
     // Bord
     public void leggUtFem() { bord.layFiveCardsOutOnTable(); }
-    public void leggIStokken(Farge colour, int number) throws RemoteException { bord.addCardsToDeck(colour, number); }
-    
+    public void leggIStokken(Farge colour, int number) throws RemoteException { bord.addCardsToDeck(colour, number); }    
     public void setPaaBord(Farge[] f) { bord.setPaaBordet(f); }
-    public void putCardOnTable(Farge f, int i) throws RemoteException{
-        // Har no finni fargen f og kva for plass denne har i farge-tabellen.
-        // Bør no få lagt ut eit kort på bordet i denne fargen.
-        bord.setEinPaaBordet(f, i);
-    }
+    public void putCardOnTable(Farge colour, int position) throws RemoteException{ bord.putOneCardOnTable(colour, position); }
     public boolean areThereTooManyJokersOnTable() throws RemoteException{ return bord.areThereTooManyJokersOnTable(); }
 
 	public PlayerAndNetworkWTF getThisAsISpelar() {

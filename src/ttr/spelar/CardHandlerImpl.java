@@ -9,7 +9,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler { //TODO refaktoriser veldig mykje av denne...
+public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler {
 	private static final long serialVersionUID = 3899317463384337994L;
 	private Core hovud;
 	private Map<Farge, Integer> cards;
@@ -43,7 +43,7 @@ public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler 
 			return null;
 		}
 
-		hovud.getTable().setEinPaaBordet(colourOfTheRandomCard, positionOnTable);
+		hovud.getTable().putOneCardOnTable(colourOfTheRandomCard, positionOnTable);
 		return colourOfTheRandomCard;
 	}
 

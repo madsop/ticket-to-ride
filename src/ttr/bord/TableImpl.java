@@ -27,7 +27,7 @@ public class TableImpl implements Table {
 		}
 	}
 
-    public void setEinPaaBordet(Farge colour, int position) {
+    public void putOneCardOnTable(Farge colour, int position) {
 		cardsOnTable.putCardOnTable(position, colour);
 		deck.removeCardFromDeck(colour);
 		gui.teiknOppKortPåBordet(position, colour);

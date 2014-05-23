@@ -8,6 +8,7 @@ import ttr.gui.IGUI;
 import ttr.oppdrag.MissionHandlerImpl;
 import ttr.rute.Route;
 import ttr.spelar.PlayerAndNetworkWTF;
+import ttr.turhandsamar.TurHandsamarLocal;
 import ttr.utgaave.GameVersion;
 
 public class LocalCore extends CoreImpl {
@@ -29,7 +30,7 @@ public class LocalCore extends CoreImpl {
 	protected void createTable() throws RemoteException {
 		communicationWithPlayers = new CommunicationWithPlayersLocal(players); // TODO dependency injection?
 		createPlayersAndSetUpForLocalGame();
-		turhandsamar = new TurHandsamar(players,false);	
+		turhandsamar = new TurHandsamarLocal(players);	
 	}
 
 	private void createPlayersAndSetUpForLocalGame() throws RemoteException {

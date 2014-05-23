@@ -12,6 +12,7 @@ import ttr.oppdrag.Mission;
 import ttr.oppdrag.MissionHandlerImpl;
 import ttr.rute.Route;
 import ttr.spelar.PlayerAndNetworkWTF;
+import ttr.turhandsamar.TurHandsamarNetwork;
 import ttr.utgaave.GameVersion;
 
 public class NetworkCore extends CoreImpl {
@@ -41,7 +42,7 @@ public class NetworkCore extends CoreImpl {
 
 	protected void createTable() throws RemoteException {
 		communicationWithPlayers = new CommunicationWithPlayersNetwork(players);
-		turhandsamar = new TurHandsamar(players,true);		
+		turhandsamar = new TurHandsamarNetwork(players);		
 	}
 
 	protected void messageUsersInNetworkGame(Route builtRoute, PlayerAndNetworkWTF buildingPlayer) throws RemoteException {

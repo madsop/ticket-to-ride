@@ -8,28 +8,31 @@ import ttr.spelar.PlayerAndNetworkWTF;
 import ttr.spelar.PlayerNetworkClass;
 
 import javax.swing.*;
+
 import java.awt.*;
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
 public class InitialiserNettverk {
-
-    private final String hostAddress;
+	//TODO denne klassa treng refaktorisering frå h
+	private final String hostAddress;
 	private final String PORT = "1226";
 	private final IGUI gui;
-    private final Core hovud;
-    private int[] paaVertBordet; //TODO korfor er denne int? Pga serialisering?
+	private final Core hovud;
+	private int[] paaVertBordet; //TODO korfor er denne int? Pga serialisering?
 
 	public InitialiserNettverk(IGUI gui, String hostAddress, Core hovud) {
 		this.hostAddress = hostAddress;
 		this.gui = gui;
-        this.hovud = hovud;
-        paaVertBordet =new int[Konstantar.ANTAL_KORT_PÅ_BORDET];
+		this.hovud = hovud;
+		paaVertBordet = new int[Konstantar.ANTAL_KORT_PÅ_BORDET];
 	}
 
 	public void initialiseNetworkGame() throws HeadlessException, RemoteException {
-        PlayerAndNetworkWTF spelar = new PlayerNetworkClass(hovud,gui.showInputDialog("Skriv inn namnet ditt"),hovud.getTable());
+		PlayerAndNetworkWTF spelar = new PlayerNetworkClass(hovud,gui.showInputDialog("Skriv inn namnet ditt"),hovud.getTable());
 		hovud.setMinSpelar(spelar);
 
 		Object[] options = {"Nytt spel", "Bli med i spel"};
@@ -37,16 +40,20 @@ public class InitialiserNettverk {
 		if(option == 0){
 			hostGame();
 		}else if (option == 1){ // Vel å bli med i eit spel
-			String remoteAddress = JOptionPane.showInputDialog("Kven vil du kople deg til? (IP-adresse eller hostnamn)");
-			if (remoteAddress.equals("") || remoteAddress.length()==0) {
-				remoteAddress = "localhost"; 
-			}
-			System.out.println(remoteAddress);
-			joinGame(remoteAddress);
+			joinGame(findRemoteAddress());
 		}
 		else { // Vel å avbryte
 			System.exit(0);
 		}
+	}
+
+	private String findRemoteAddress() {
+		String remoteAddress = JOptionPane.showInputDialog("Kven vil du kople deg til? (IP-adresse eller hostnamn)");
+		if (remoteAddress.equals("") || remoteAddress.length()==0) {
+			remoteAddress = "localhost"; 
+		}
+		System.out.println(remoteAddress);
+		return remoteAddress;
 	}
 
 	void hostGame() throws HeadlessException, RemoteException {
@@ -58,96 +65,104 @@ public class InitialiserNettverk {
 		hovud.getTable().layFiveCardsOutOnTable();
 		System.out.println(url);
 		try {
-			LocateRegistry.createRegistry(Integer.parseInt(PORT));
-			long time = System.currentTimeMillis();
-			PlayerAndNetworkWTF meg = hovud.getMinSpelar();
-			Naming.rebind(url, meg); // Legg til spelar i RMI-registeret
-			time = System.currentTimeMillis() - time;
-			System.out.println("Time to register with RMI registry: "+(time/1000)+"s");
-			System.out.println("Spelet er starta, vent på at nokon skal kople seg til...");
-			hovud.settSinTur(meg);
-			meg.setSpelarNummer(0);
-			meg.setSpelarteljar(1);
-			gui.getMeldingarModell().nyMelding(meg.getNamn() +" er vert for spelet.");
+			startHostingGame(url);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog((Component) gui, "Kunne ikkje starta spelet. Det er sikkert porten som er opptatt.");
 			e.printStackTrace();
 			initialiseNetworkGame(); // Vi prøver om att.
 		}
 	}
-    
-    private String initJoin(String remoteAddress){
-        System.setSecurityManager(new LiberalSecurityManager());
-        String url = "rmi://"+remoteAddress+":"+PORT+"/ISpelar"; // URL-en til verten i RMI-registeret.
-        System.out.println(url);
 
-        if (hovud.getSpelarar().size()+1 >= Konstantar.MAKS_ANTAL_SPELARAR) {
-            JOptionPane.showMessageDialog((Component) gui, "Synd, men det kan ikkje vera med fleire spelarar enn dei som no spelar. Betre lukke neste gong!");
-            System.exit(0);
-        }
-        return url;
+	private void startHostingGame(String url) throws RemoteException, MalformedURLException {
+		LocateRegistry.createRegistry(Integer.parseInt(PORT));
+		long time = System.currentTimeMillis();
+		PlayerAndNetworkWTF meg = hovud.getMinSpelar();
+		Naming.rebind(url, meg); // Legg til spelar i RMI-registeret
+		time = System.currentTimeMillis() - time;
+		System.out.println("Time to register with RMI registry: "+(time/1000)+"s");
+		System.out.println("Spelet er starta, vent på at nokon skal kople seg til...");
+		hovud.settSinTur(meg);
+		meg.setSpelarNummer(0);
+		meg.setSpelarteljar(1);
+		gui.getMeldingarModell().nyMelding(meg.getNamn() +" er vert for spelet.");
+	}
 
-    } 
-    
-    private void faaMedSpelar(PlayerAndNetworkWTF s) throws RemoteException{
-        if (s.getSpelarNummer() == 0) {
-            hovud.getMinSpelar().setSpelarNummer(s.getSpelarteljar());
-            s.setSpelarteljar(s.getSpelarteljar()+1);
+	private String initJoin(String remoteAddress){
+		System.setSecurityManager(new LiberalSecurityManager());
+		String url = "rmi://"+remoteAddress+":"+PORT+"/ISpelar"; // URL-en til verten i RMI-registeret.
+		System.out.println(url);
 
-            gui.getMeldingarModell().nyMelding(s.getNamn() +" er vert for spelet.");
-            paaVertBordet = s.getPaaBordetInt();
-        }
+		if (hovud.getSpelarar().size()+1 >= Konstantar.MAKS_ANTAL_SPELARAR) {
+			JOptionPane.showMessageDialog((Component) gui, "Synd, men det kan ikkje vera med fleire spelarar enn dei som no spelar. Betre lukke neste gong!");
+			System.exit(0);
+		}
+		return url;
 
-        s.receiveMessage(hovud.getMinSpelar().getNamn() + " har vorti med i spelet.");
+	} 
 
-        if (s.getSpelarNummer()!=0){
-            gui.getMeldingarModell().nyMelding(s.getNamn() + " er òg med i spelet.");
-        }
+	private void faaMedSpelar(PlayerAndNetworkWTF player) throws RemoteException{
+		if (player.getSpelarNummer() == 0) {
+			registerHost(player);
+		}
 
-        s.registrerKlient(hovud.getMinSpelar());
-    }
+		player.receiveMessage(hovud.getMinSpelar().getNamn() + " har vorti med i spelet.");
 
-    void oppdaterAndreSpelarar(PlayerAndNetworkWTF join) throws RemoteException{
-        for (PlayerAndNetworkWTF s : join.getSpelarar()){
-            if (!(s.getNamn().equals(hovud.getMinSpelar().toString()))){
-                //hovud.getSpelarar().add(s);
-                hovud.getMinSpelar().registrerKlient(s);
-                s.receiveMessage(hovud.getMinSpelar().getNamn() + " har vorti med i spelet.");
-                gui.getMeldingarModell().nyMelding(s.getNamn() + " er òg med i spelet.");
-                s.registrerKlient(hovud.getMinSpelar());
-            }
-        }
-    }
-    void ordnePåBordet() throws RemoteException {
+		if (player.getSpelarNummer()!=0){
+			gui.getMeldingarModell().nyMelding(player.getNamn() + " er òg med i spelet.");
+		}
 
-        Farge[] paaBord = new Farge[paaVertBordet.length];
-        for (int i = 0; i < paaBord.length; i++) {
-            paaBord[i] = Konstantar.FARGAR[paaVertBordet[i]];
-        }
-        hovud.getMinSpelar().setPaaBord(paaBord);
+		player.registrerKlient(hovud.getMinSpelar());
+	}
 
-    }
+	private void registerHost(PlayerAndNetworkWTF player) throws RemoteException {
+		hovud.getMinSpelar().setSpelarNummer(player.getSpelarteljar());
+		player.setSpelarteljar(player.getSpelarteljar()+1);
+		gui.getMeldingarModell().nyMelding(player.getNamn() +" er vert for spelet.");
+		paaVertBordet = player.getPaaBordetInt();
+	}
+
+	void oppdaterAndreSpelarar(PlayerAndNetworkWTF host) throws RemoteException{
+		for (PlayerAndNetworkWTF player : host.getSpelarar()){
+			if (!(player.getNamn().equals(hovud.getMinSpelar().toString()))){
+				//hovud.getSpelarar().add(s);
+				hovud.getMinSpelar().registrerKlient(player);
+				player.receiveMessage(hovud.getMinSpelar().getNamn() + " har vorti med i spelet.");
+				gui.getMeldingarModell().nyMelding(player.getNamn() + " er òg med i spelet.");
+				player.registrerKlient(hovud.getMinSpelar());
+			}
+		}
+	}
+	
+	void ordnePåBordet() throws RemoteException {
+		Farge[] paaBord = new Farge[paaVertBordet.length];
+		for (int i = 0; i < paaBord.length; i++) {
+			paaBord[i] = Konstantar.FARGAR[paaVertBordet[i]];
+		}
+		hovud.getMinSpelar().setPaaBord(paaBord);
+	}
 
 	void joinGame(String remoteAddress) throws HeadlessException, RemoteException {
 		String url = initJoin(remoteAddress);
 
 		try {
-			// Sei ifrå til host-spelaren
-			PlayerAndNetworkWTF host = (PlayerAndNetworkWTF)Naming.lookup(url);
-
-			hovud.getMinSpelar().registrerKlient(host); // Finn verten i RMI-registeret og registrér han som motstandaren min.
-			for (PlayerAndNetworkWTF s : hovud.getSpelarar()) {
-                faaMedSpelar(s);
-			}
-
-            ordnePåBordet();
-            oppdaterAndreSpelarar(host);
-			hovud.settSinTur(host);
+			actuallyJoinGame(url);
 		}
 		catch (Exception e) {
 			JOptionPane.showMessageDialog((Component) gui, "Klarte dessverre ikkje å bli med i spelet.");
 			e.printStackTrace();
 			initialiseNetworkGame(); // We try again
 		}
+	}
+
+	private void actuallyJoinGame(String url) throws NotBoundException, 	MalformedURLException, RemoteException {
+		PlayerAndNetworkWTF host = (PlayerAndNetworkWTF)Naming.lookup(url);
+		hovud.getMinSpelar().registrerKlient(host); 
+		for (PlayerAndNetworkWTF s : hovud.getSpelarar()) {
+			faaMedSpelar(s);
+		}
+
+		ordnePåBordet();
+		oppdaterAndreSpelarar(host);
+		hovud.settSinTur(host);
 	}
 }
