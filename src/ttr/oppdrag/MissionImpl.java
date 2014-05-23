@@ -32,7 +32,6 @@ public class MissionImpl implements Mission {
 		return start;
 	}
 
-	@Override
 	public Destinasjon getEnd() {
 		return end;
 	}

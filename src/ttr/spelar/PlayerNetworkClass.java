@@ -7,6 +7,7 @@ import ttr.oppdrag.Mission;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Ein spelar. All nettverkskommunikasjon går via denne, så litt hårate klasse med ein del ad hoc-metodar.
@@ -49,11 +50,11 @@ import java.util.ArrayList;
     // Oppdrag
     public int getAntalFullfoerteOppdrag() throws RemoteException { return spelarOppdragshandsamar.getAntalFullfoerteOppdrag(); }
     public int getOppdragspoeng() throws RemoteException { return spelarOppdragshandsamar.getOppdragspoeng(); }
-    public ArrayList<Mission> getOppdrag() throws RemoteException { return spelarOppdragshandsamar.getOppdrag(); }
-    public void receiveMission(Mission o) throws RemoteException { spelarOppdragshandsamar.retrieveMission(o); }
+    public Collection<Mission> getOppdrag() throws RemoteException { return spelarOppdragshandsamar.getOppdrag(); }
+    public void receiveMission(Mission mission) throws RemoteException { spelarOppdragshandsamar.retrieveMission(mission); }
     public int getAntalOppdrag() throws RemoteException { return spelarOppdragshandsamar.getAntalOppdrag(); }
     public Mission trekkOppdragskort() throws RemoteException { return spelarOppdragshandsamar.trekkOppdragskort(); }
-    public boolean isMissionAccomplished(int oppdragsid) throws RemoteException { return spelarOppdragshandsamar.isMissionAccomplished(oppdragsid); }
+    public boolean isMissionAccomplished(Mission mission) throws RemoteException { return spelarOppdragshandsamar.isMissionAccomplished(mission); }
     public void removeChosenMissionFromDeck(int oppdragsid) throws RemoteException { spelarOppdragshandsamar.removeChosenMissionFromDeck(oppdragsid); }
     
     // Kort

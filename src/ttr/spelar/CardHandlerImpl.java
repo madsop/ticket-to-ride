@@ -17,7 +17,6 @@ public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler 
 	CardHandlerImpl(IHovud hovud) throws RemoteException {
 		super();
 		this.hovud = hovud;
-		initialiseCards();
 		faaInitielleFargekort();
 	}
 
@@ -29,6 +28,7 @@ public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler 
 	}
 
 	private void faaInitielleFargekort() {
+		initialiseCards();
 		for (int startkortPosisjon = 0; startkortPosisjon < Konstantar.ANTAL_STARTKORT; startkortPosisjon++) {
 			Farge trekt = drawRandomCardFromTheDeck();
 			cards.put(trekt, cards.get(trekt)+1);

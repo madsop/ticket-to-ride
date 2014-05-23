@@ -7,6 +7,7 @@ import ttr.rute.Route;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public interface PlayerAndNetworkWTF extends Remote {
 	public void registrerKlient(PlayerAndNetworkWTF s) throws RemoteException;
@@ -37,11 +38,11 @@ public interface PlayerAndNetworkWTF extends Remote {
 
 	public int getAntalFullfoerteOppdrag() throws RemoteException;
     public int getOppdragspoeng() throws RemoteException;
-    public ArrayList<Mission> getOppdrag() throws RemoteException;
-    public void receiveMission(Mission o) throws RemoteException;
+    public Collection<Mission> getOppdrag() throws RemoteException;
+    public void receiveMission(Mission mission) throws RemoteException;
     public int getAntalOppdrag() throws RemoteException;
 
-    public boolean isMissionAccomplished(int oppdragsid) throws RemoteException;
+    public boolean isMissionAccomplished(Mission mission) throws RemoteException;
     public Mission trekkOppdragskort() throws RemoteException;
 
 

@@ -9,18 +9,17 @@ import javax.swing.*;
 import java.rmi.RemoteException;
 
 public class ShowMyMissionsHandler {
-
 	public ShowMyMissionsHandler(IHovud hovud, IGUI gui) throws RemoteException {
 		JPanel missionJPanel = new JPanel();
 
 		PlayerAndNetworkWTF player = getPlayer(hovud);
 		String missionString = player.getNamn() +": ";
 
-		for (int i = 0; i < player.getAntalOppdrag(); i++) {
-			Mission mission = player.getOppdrag().get(i);
-			missionString += prepareMissionString(player, i, mission);
-		}
 		
+		for (Mission mission : player.getOppdrag()) {
+			missionString += prepareMissionString(player, mission);
+		}
+		missionString = missionString.substring(0, missionString.length() - 2) + ".";		
 		showToPlayer(gui, missionJPanel, player, missionString);
 	}
 
@@ -31,17 +30,12 @@ public class ShowMyMissionsHandler {
 		return hovud.getKvenSinTur();
 	}
 
-	private String prepareMissionString(PlayerAndNetworkWTF player,int i, Mission mission) throws RemoteException {
+	private String prepareMissionString(PlayerAndNetworkWTF player, Mission mission) throws RemoteException {
 		String missionString = mission.toString();
-		if (player.isMissionAccomplished(mission.getMissionId())){
+		if (player.isMissionAccomplished(mission)){
 			missionString += " (OK)";
 		}
-		if (i == player.getAntalOppdrag()-1){
-			missionString += ".";
-		}
-		else{
-			missionString += ", ";
-		}
+		missionString += ", ";
 		return missionString;
 	}
 

@@ -6,39 +6,42 @@ import ttr.rute.Route;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class PlayerMissionHandlerImpl extends UnicastRemoteObject implements PlayerMissionHandler {
 	private static final long serialVersionUID = 5194460142995578869L;
-	private ArrayList<Mission> missions;
+	private Set<Mission> missions;
 	private IHovud hovud;
-	private boolean[][] harEgBygdMellomAogB;
+	private Map<Destinasjon, Set<Destinasjon>> mapBetweenAandB;
 
 	public PlayerMissionHandlerImpl(IHovud hovud) throws RemoteException {
 		super();
-		missions = new ArrayList<>();
+		missions = new HashSet<>();
 		this.hovud = hovud;
-		harEgBygdMellomAogB = new boolean[Destinasjon.values().length][Destinasjon.values().length];
+		mapBetweenAandB = new HashMap<>();
 		initialiserMatrise();
+	}
+
+	public void retrieveMission(Mission mission) throws RemoteException{
+		this.missions.add(mission);
+	}
+
+	public Collection<Mission> getOppdrag() throws RemoteException  {
+		return missions;
 	}
 
 	public int getAntalOppdrag() throws RemoteException {
 		return missions.size();
 	}
-
-	public void retrieveMission(Mission mission) throws RemoteException{
-		if(!this.missions.contains(mission)){
-			this.missions.add(mission);
-		}
-	}
-	public ArrayList<Mission> getOppdrag() throws RemoteException  {
-		return missions;
-	}
 	
-	public int getOppdragspoeng() throws RemoteException  {
+	public int getOppdragspoeng() throws RemoteException  { //TODO skill ut alt som har med å avslutte spelet i ei eiga klasse?
 		int totalMissionValue = 0;
 		for (Mission mission : missions) {
-			if (haveIBuiltThisMission(mission)) {
+			if (isMissionAccomplished(mission)) {
 				totalMissionValue += mission.getValue();
 			} else {
 				totalMissionValue -= mission.getValue();
@@ -47,30 +50,22 @@ public class PlayerMissionHandlerImpl extends UnicastRemoteObject implements Pla
 		return totalMissionValue;
 	}
 	
-	public boolean isMissionAccomplished(int oppdragsid) throws RemoteException{
-		Mission mission = findMissionById(oppdragsid);
-		return haveIBuiltThisMission(mission);
+	public boolean isMissionAccomplished(Mission mission) {
+		return mapBetweenAandB.get(mission.getStart()).contains(mission.getEnd()) || mapBetweenAandB.get(mission.getEnd()).contains(mission.getStart());
 	}
 
 	public int getAntalFullfoerteOppdrag() throws RemoteException{
-		return (int) missions.stream().filter(x -> haveIBuiltThisMission(x)).count();
+		return (int) missions.stream().filter(x -> isMissionAccomplished(x)).count();
 	}
 
-	public void bygg(Route rute) throws RemoteException{
+	public void bygg(Route rute) throws RemoteException {
 		// Sjekk for fullførde oppdrag?
-				// Fyller matrisa med ei rute frå d1 til d2 (og motsett):
-					// Må først iterere over mengda med destinasjonar for å få dei ut
-		int destinasjon1 = rute.getStart().ordinal();
-		int destinasjon2 = rute.getEnd().ordinal();
-		harEgBygdMellomAogB[destinasjon1][destinasjon2] = true;
-		harEgBygdMellomAogB[destinasjon2][destinasjon1] = true;
-		transitivTillukking();
+		mapBetweenAandB.get(rute.getStart()).add(rute.getEnd());
+		mapBetweenAandB.get(rute.getEnd()).add(rute.getStart());
+		
+		transitiveClosure();
 	}
 
-
-	/**
-	 * @return trekk eit oppdrag frå kortbunken
-	 */
 	public Mission trekkOppdragskort() throws RemoteException  {
 		if (hovud.getAntalGjenverandeOppdrag() > 0) {
 			return hovud.getOppdrag();
@@ -83,40 +78,22 @@ public class PlayerMissionHandlerImpl extends UnicastRemoteObject implements Pla
 		hovud.getGjenverandeOppdrag().removeIf(x -> (x.getMissionId() == oppdragsid));
 	}
 
-	private Mission findMissionById(int oppdragsid) {
-		return missions.stream().filter(mission -> mission.getMissionId() == oppdragsid).findAny().get();
-	}
-
-	private boolean haveIBuiltThisMission(Mission mission) {
-		int start = mission.getStart().ordinal();
-		int end = mission.getEnd().ordinal();
-		return harEgBygdMellomAogB[start][end] || harEgBygdMellomAogB[end][start];
-	}
-
-	/**
-	 * Bør testes
-	 */
-	private void transitivTillukking() {
-		// Dette er ein implementasjon av Warshallalgoritma, side 553 i Rosen [DiskMat]
-		// Køyretida er på (u)behagelege 2n³, som er tilnærma likt optimalt
-		int n = harEgBygdMellomAogB.length;
-
-		for (int k = 0; k < n; k++) {
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j < n; j++) {
-					harEgBygdMellomAogB[i][j] = harEgBygdMellomAogB[i][j] || (harEgBygdMellomAogB[i][k] && harEgBygdMellomAogB[k][j]);
-				}
-			}
+	private void initialiserMatrise() {
+		for (int y = 0; y < Destinasjon.values().length; y++) {
+			mapBetweenAandB.putIfAbsent(Destinasjon.values()[y], new HashSet<>());
 		}
 	}
 
-	/**
-	 * Oppretter ei #destinasjonar*#destinasjonar med alle verdiar false.
-	 */
-	private void initialiserMatrise() {
-		for (int y = 0; y < Destinasjon.values().length; y++) {
-			for (int x = 0; x < Destinasjon.values().length; x++) {
-				harEgBygdMellomAogB[y][x] = false;
+	private void transitiveClosure() {
+		// Dette er ein implementasjon av Warshallalgoritma, side 553 i Rosen [DiskMat]
+		// Køyretida er på (u)behagelege 2n³, som er tilnærma likt optimalt
+		for (Destinasjon d1 : mapBetweenAandB.keySet()) {
+			for (Destinasjon d2 : mapBetweenAandB.get(d1)) {
+				for (Destinasjon d3 : mapBetweenAandB.get(d2)) {
+					if (mapBetweenAandB.get(d1).contains(d2) && mapBetweenAandB.get(d2).contains(d3)) {
+						mapBetweenAandB.get(d1).add(d3);
+					}
+				}
 			}
 		}
 	}
