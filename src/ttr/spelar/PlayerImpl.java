@@ -24,8 +24,6 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	protected ArrayList<Route> bygdeRuter; // Delvis unaudsynt pga. harEgBygdMellomAogB
 
 	private boolean einValdAllereie;
-
-
 	
 	public PlayerImpl (IHovud hovud, String namn, Table bord) throws RemoteException{
 		super();
@@ -70,10 +68,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 		return Konstantar.ANTAL_TOG - brukteTog;
 	}
 
-	@Override
 	public String toString() { return namn; }
-
-
 
 	public void nybygdRute(int ruteId, PlayerAndNetworkWTF byggjandeSpelar) {
 		Route vald = getRoute(ruteId).get();

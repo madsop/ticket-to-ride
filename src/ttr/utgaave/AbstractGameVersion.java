@@ -7,17 +7,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
 
-public abstract class AbstractGameVersion {
+public abstract class AbstractGameVersion implements GameVersion {
 	private final String title;
+	private final URL backgroundImageURL;
 	protected ArrayList<Mission> missions;
 	protected Set<Route> routes;
-	
-	private final URL backgroundImageURL;
 
-    public URL getBakgrunnsbildet() {
-		return backgroundImageURL;
-	}
-	
 	protected AbstractGameVersion(String title, String pathToBackgroundImage) {
 		this.title = title;
 		backgroundImageURL = getClass().getResource(pathToBackgroundImage);
@@ -25,9 +20,10 @@ public abstract class AbstractGameVersion {
         missions = fyllMedOppdrag();
 	}
 
-    protected abstract Set<Route> leggTilRuter();
-    protected abstract ArrayList<Mission> fyllMedOppdrag();
-
+    public URL getBakgrunnsbildet() {
+		return backgroundImageURL;
+	}
+	
     public ArrayList<Mission> getOppdrag() {
 		return missions;
     }
@@ -40,4 +36,6 @@ public abstract class AbstractGameVersion {
 		return title;
 	}
 
+    protected abstract Set<Route> leggTilRuter();
+    protected abstract ArrayList<Mission> fyllMedOppdrag();
 }

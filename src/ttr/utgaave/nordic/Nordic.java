@@ -7,14 +7,12 @@ import ttr.oppdrag.MissionImpl;
 import ttr.rute.Route;
 import ttr.rute.RouteImpl;
 import ttr.utgaave.AbstractGameVersion;
-import ttr.utgaave.GameVersion;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 
-public final class Nordic extends AbstractGameVersion implements GameVersion {
+public final class Nordic extends AbstractGameVersion {
 	public static final String tittel = "Nordic countries";
 	private static final String bilde = "nordic_map.jpg";
 	

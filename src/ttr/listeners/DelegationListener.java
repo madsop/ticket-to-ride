@@ -44,7 +44,7 @@ public class DelegationListener implements ActionListener{
                 new TrekkOppdragHandler(hovud,gui);
             }
             else if (arg0.getSource() == bygg) {
-                new ByggHandler(hovud,frame);
+                new BuildRouteHandler(hovud,frame);
             }
             else if (arg0.getSource() == visMineKort) {
                 new ShowMyCardsHandler(hovud,gui);
@@ -53,7 +53,7 @@ public class DelegationListener implements ActionListener{
                 new ShowMyMissionsHandler(hovud,gui);
             }
             else if (arg0.getSource() == visBygde) {
-                new visBygdeHandler(hovud,gui,frame);
+                new ShowBuiltRoutesHandler(hovud,gui,frame);
             }
         }
         catch (RemoteException e2) {

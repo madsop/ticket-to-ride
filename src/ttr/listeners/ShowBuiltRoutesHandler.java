@@ -4,8 +4,8 @@ import ttr.gui.IGUI;
 import ttr.kjerna.IHovud;
 import javax.swing.*;
 
-class visBygdeHandler {
-	public visBygdeHandler(IHovud hovud, IGUI gui, JFrame frame) {
+class ShowBuiltRoutesHandler {
+	public ShowBuiltRoutesHandler(IHovud hovud, IGUI gui, JFrame frame) {
 		if (hovud.getAlleBygdeRuter().size() <= 0) {             
 			JOptionPane.showMessageDialog(frame, "Det er ikkje bygd noka rute enno. Bli den første!");
 			return;

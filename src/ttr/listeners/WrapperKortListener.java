@@ -6,6 +6,7 @@ import ttr.kjerna.IHovud;
 import ttr.spelar.PlayerAndNetworkWTF;
 
 import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
@@ -26,6 +27,14 @@ public class WrapperKortListener implements ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
+		try {
+			if (hovud.isNetworkGame() && (!hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn())) ) {
+				JOptionPane.showMessageDialog(frame, "Det er ikkje din tur!");
+				return;
+			}
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
+		}
 		if (arg0.getSource() == kortBunke) {
 			try {
 				new CardDeckHandler(hovud);
@@ -120,7 +129,7 @@ public class WrapperKortListener implements ActionListener{
 	private PlayerAndNetworkWTF orienterAndreSpelarar(int positionOnTable) throws  RemoteException{
 		PlayerAndNetworkWTF host = null;
 		if (nett && hovud.getMinSpelar().getSpelarNummer()==0) {
-				host = hovud.getMinSpelar(); // TODO forsvinn ikkje denne uansett i løpet av for-løkka under?
+			host = hovud.getMinSpelar(); // TODO forsvinn ikkje denne uansett i løpet av for-løkka under?
 		}
 		for (PlayerAndNetworkWTF player : hovud.getSpelarar()) {
 			if (!nett){

@@ -7,13 +7,11 @@ import ttr.oppdrag.MissionImpl;
 import ttr.rute.Route;
 import ttr.rute.RouteImpl;
 import ttr.utgaave.AbstractGameVersion;
-import ttr.utgaave.GameVersion;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Europe extends AbstractGameVersion implements GameVersion {
+public class Europe extends AbstractGameVersion {
 	private static final String tittel = "Europe";
 	private static final String bilde = "";
 	
