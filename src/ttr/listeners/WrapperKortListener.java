@@ -69,7 +69,7 @@ public class WrapperKortListener implements ActionListener{
 	private void retrieveOneCardFromTheTable(int positionOnTable,PlayerAndNetworkWTF kvenSinTur) throws RemoteException {
 		Farge colour = hovud.getTable().getCardFromTable(positionOnTable);
 		if (colour == null) { return; }
-		if (kvenSinTur.getValdAllereie()) {
+		if (kvenSinTur.hasAlreadyDrawnOneCard()) {
 			retrieveSecondCard(positionOnTable, kvenSinTur, colour);
 		}
 		else {

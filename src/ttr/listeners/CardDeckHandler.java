@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 
 class CardDeckHandler {
 	public CardDeckHandler(Core hovud) throws RemoteException {
-		PlayerAndNetworkWTF playerInTurn = hovud.getKvenSinTur();
+		PlayerAndNetworkWTF playerInTurn = hovud.findPlayerInAction();
 		Farge colour = playerInTurn.trekkFargekort();
 		if (colour==null){ return; }
 
@@ -19,7 +19,7 @@ class CardDeckHandler {
 	}
 
 	private void proceedGame(Core hovud, PlayerAndNetworkWTF playerInTurn) throws RemoteException {
-		if (playerInTurn.getValdAllereie()) {
+		if (playerInTurn.hasAlreadyDrawnOneCard()) {
 			hovud.nesteSpelar();
 		}
 		else {

@@ -52,7 +52,7 @@ public abstract class CoreImpl implements Core {
 	public abstract void orientOtherPlayers(int positionOnTable) throws RemoteException;
 
 	public ArrayList<Mission> getGjenverandeOppdrag() {
-		return oppdragshandsamar.getRemainingMissions()   ;
+		return oppdragshandsamar.getRemainingMissions();
 	}
 
 	public Set<Route> getRuter() {
@@ -92,23 +92,23 @@ public abstract class CoreImpl implements Core {
 	
 	public void settSinTur(PlayerAndNetworkWTF spelar) throws RemoteException {
 		kvenSinTur = spelar;
-		gui.visKvenDetErSinTur(findPlayerInAction().getNamn(), getWhoseTurnText());
+		gui.showWhoseTurnItIs(findPlayerInAction().getNamn(), getWhoseTurnText());
 	}
 
 	public void nesteSpelar() throws RemoteException {
 		kvenSinTur = turhandsamar.nextPlayer(kvenSinTur,minSpelar);
 		markIfItIsMyTurn();
-		gui.visKvenDetErSinTur(findPlayerInAction().getNamn(), getWhoseTurnText());
+		gui.showWhoseTurnItIs(findPlayerInAction().getNamn(), getWhoseTurnText());
 		kvenSinTur.setEittKortTrektInn(false);
 
-		communicationWithPlayers.sjekkOmFerdig(gui.getMeldingarModell(),kvenSinTur,gameVersion.toString(),minSpelar,rutehandsamar.getRoutes());
+		communicationWithPlayers.sjekkOmFerdig(gui.getMessagesModel(),kvenSinTur,gameVersion.toString(),minSpelar,rutehandsamar.getRoutes());
 	}
 	
 	protected abstract String getWhoseTurnText() throws RemoteException;
 
 	private void markIfItIsMyTurn() throws RemoteException {
 		if (kvenSinTur.getNamn().equals(minSpelar.getNamn())) {
-			gui.getSpelarnamn().setBackground(Color.YELLOW);
+			gui.getPlayerNameJTextField().setBackground(Color.YELLOW);
 		}
 	}
 
@@ -148,9 +148,9 @@ public abstract class CoreImpl implements Core {
 		rutehandsamar.newRoute(bygd);
 
 		messageUsersInNetworkGame(bygd, byggjandeSpelar);
-		gui.getTogAtt()[byggjandeSpelar.getSpelarNummer()+1].setText(String.valueOf(byggjandeSpelar.getGjenverandeTog()));
+		gui.getRemainingTrainsLabel()[byggjandeSpelar.getSpelarNummer()+1].setText(String.valueOf(byggjandeSpelar.getGjenverandeTog()));
 		updateDeckOnTable(colour, kortKrevd, krevdJokrar, jokrar);
-		gui.getMeldingarModell().nyMelding(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
+		gui.getMessagesModel().nyMelding(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
 
 		communicationWithPlayers.oppdaterAndreSpelarar(colour, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
 
@@ -170,7 +170,7 @@ public abstract class CoreImpl implements Core {
 	}
 
 	public void displayNumberOfRemainingTrains(int position, int numberOfTrains) {
-		gui.getTogAtt()[position].setText(String.valueOf(numberOfTrains));
+		gui.getRemainingTrainsLabel()[position].setText(String.valueOf(numberOfTrains));
 	}
 
 	public void showGameOverMessage(String message) {
@@ -178,6 +178,19 @@ public abstract class CoreImpl implements Core {
 	}
 	
 	public void receiveMessage(String message) {
-		gui.getMeldingarModell().nyMelding(message);
+		gui.getMessagesModel().nyMelding(message);
+	}
+	
+
+	public Mission trekkOppdragskort() throws RemoteException  {
+		if (getAntalGjenverandeOppdrag() > 0) {
+			return getOppdrag();
+			//System.out.println(trekt.getDestinasjonar().toArray()[1]);
+		}
+		return null;
+	}
+
+	public void removeChosenMissionFromDeck(int oppdragsid) throws RemoteException {
+		getGjenverandeOppdrag().removeIf(x -> (x.getMissionId() == oppdragsid));
 	}
 }

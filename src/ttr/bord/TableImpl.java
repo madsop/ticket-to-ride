@@ -30,7 +30,7 @@ public class TableImpl implements Table {
     public void putOneCardOnTable(Farge colour, int position) {
 		cardsOnTable.putCardOnTable(position, colour);
 		deck.removeCardFromDeck(colour);
-		gui.teiknOppKortPåBordet(position, colour);
+		gui.drawCardsOnTable(position, colour);
 	}
 
 	public void layFiveCardsOutOnTable() {
@@ -66,7 +66,7 @@ public class TableImpl implements Table {
 		if (colour != null) {	
 			cardsOnTable.putCardOnTable(position, colour);
 			deck.removeCardFromDeck(colour);
-			gui.teiknOppKortPåBordet(position, colour);
+			gui.drawCardsOnTable(position, colour);
 		}
 		else { // TODO fas ut denne
 			System.err.println("oops");

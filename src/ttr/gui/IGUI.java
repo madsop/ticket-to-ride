@@ -9,17 +9,15 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public interface IGUI {
-    public IMeldingarModell getMeldingarModell();
-    public void visKvenDetErSinTur(String spelarnamn, String minSpelar);
-    public JTextField getSpelarnamn();
-    public JLabel[] getTogAtt();
-    public void teiknOppKortPåBordet(int plass, Farge farge);
-    public JButton[] getKortButtons();
-    void createJFrame(String tittel, JPanel panel);
-    public String showInputDialog(String string);                       // TODO: bruk denne og liknande meir
+    public IMeldingarModell getMessagesModel();
+    public void showWhoseTurnItIs(String spelarnamn, String minSpelar);
+    public JTextField getPlayerNameJTextField();
+    public JLabel[] getRemainingTrainsLabel();
+    public void drawCardsOnTable(int plass, Farge farge);
+    public JButton[] getCardButtons();
     public void setHovud(Core hovud);
     void displayGraphicallyThatThereIsNoCardHere(int positionOnTable);
 
-    ArrayList<Mission> velOppdrag(ArrayList<Mission> oppd);
+    ArrayList<Mission> chooseMissions(ArrayList<Mission> oppd);
 
 }

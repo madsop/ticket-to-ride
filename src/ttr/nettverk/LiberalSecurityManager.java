@@ -9,19 +9,16 @@ import java.util.Hashtable;
  * logs and outputs any non-standard permissions granted.
  */
 class LiberalSecurityManager extends SecurityManager {
-    @SuppressWarnings("unchecked")
-	private final Hashtable grantedPermissions;
+    private final Hashtable<Permission, Permission> grantedPermissions;
 
-    @SuppressWarnings("unchecked")
-	public LiberalSecurityManager() {
-		grantedPermissions = new Hashtable();
+    public LiberalSecurityManager() {
+		grantedPermissions = new Hashtable<Permission, Permission>();
     }
 
 	/**
 	 * Override checkPermission to grant all kind of permissions:
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	public void checkPermission(Permission perm) {
         try {
             super.checkPermission(perm);

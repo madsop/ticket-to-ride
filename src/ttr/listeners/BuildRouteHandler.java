@@ -3,6 +3,7 @@ package ttr.listeners;
 import ttr.data.Farge;
 import ttr.kjerna.Core;
 import ttr.rute.Route;
+import ttr.spelar.PlayerAndNetworkWTF;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,7 +21,7 @@ class BuildRouteHandler {
 		int normalCardsDemanded = routeWantedToBuild.getLength()-routeWantedToBuild.getNumberOfRequiredJokers();
 		Farge routeColour = routeWantedToBuild.getColour();
 		int numberOfDemandedJokers = routeWantedToBuild.getNumberOfRequiredJokers();
-		int playersNumberOfJokers = hovud.getKvenSinTur().getNumberOfRemainingJokers();
+		int playersNumberOfJokers = hovud.findPlayerInAction().getNumberOfRemainingJokers();
 
 		buildRoute(hovud, frame, routeWantedToBuild, normalCardsDemanded,
 				routeColour, numberOfDemandedJokers, playersNumberOfJokers);
@@ -28,10 +29,10 @@ class BuildRouteHandler {
 
 	private void buildRoute(Core hovud, JFrame frame, Route routeWantedToBuild,	int normalCardsDemanded, 
 			Farge routeColour, int numberOfDemandedJokers, int playersNumberOfJokers) throws RemoteException {
-		if (playerCanBuildThisRoute(hovud.getKvenSinTur().getNumberOfCardsLeftInColour(routeColour), normalCardsDemanded, numberOfDemandedJokers, playersNumberOfJokers) ){
-			tryToBuildRoute(hovud, frame, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, routeColour);
+		if (playerCanBuildThisRoute(hovud.findPlayerInAction(), routeColour, normalCardsDemanded, numberOfDemandedJokers, playersNumberOfJokers) ){
+			buildRoute(hovud, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, routeColour);
 		}
-		else {
+		else { //TODO god feilmelding her.
 			JOptionPane.showMessageDialog(frame, "Synd, men du har ikkje nok kort til å byggje denne ruta enno. Trekk inn kort, du.");
 		}
 	}
@@ -50,16 +51,10 @@ class BuildRouteHandler {
 		}
 	}
 
-	private boolean playerCanBuildThisRoute(int playersCardsInThisColour, int kortKrevd, int krevdJokrar, int harjokrar) {
-		return krevdJokrar <= harjokrar && (kortKrevd <= ( (harjokrar-krevdJokrar) + playersCardsInThisColour) );
-	}
-
-	private void tryToBuildRoute(Core hovud, JFrame frame, Route routeWantedToBuild, int kortKrevd, int numberOfDemandedJokers, Farge colour) throws RemoteException {
-		if (hovud.getKvenSinTur().getGjenverandeTog() >= kortKrevd+numberOfDemandedJokers) {
-			buildRoute(hovud, routeWantedToBuild, kortKrevd, numberOfDemandedJokers, colour);
-		}
-		else {
-			JOptionPane.showMessageDialog(frame, "Du har ikkje nok tog att til å byggje denne ruta.");
-		}
+	private boolean playerCanBuildThisRoute(PlayerAndNetworkWTF player, Farge routeColour, int kortKrevd, int krevdJokrar, int harjokrar) throws RemoteException {
+		return
+				player.getGjenverandeTog() >= (kortKrevd + krevdJokrar)
+				&& krevdJokrar <= harjokrar; 
+//				&& (kortKrevd <= ( (harjokrar-krevdJokrar) + player.getNumberOfCardsLeftInColour(routeColour)) );
 	}
 }

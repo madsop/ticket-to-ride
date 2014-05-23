@@ -9,7 +9,6 @@ public class Konstantar {
 	public static final int ANTAL_AV_KVART_FARGEKORT = 12;
 	public static final int ANTAL_STARTOPPDRAG = 5;
 	public static final int ANTAL_STARTKORT = 4;
-	public static final int ANTAL_FARGAR = 9; // FARGAR.length;
 	public static final int ANTAL_TOG = 40;
 	public static final int MAKS_JOKRAR_PAA_BORDET = 2;
 	public static final int MAKS_ANTAL_SPELARAR = 3;
@@ -71,16 +70,6 @@ public class Konstantar {
 			break;
 		}
 		return ret;
-	}
-	
-	public static int finnPosisjonForFarge(Farge colour){
-		int fargenr = -1;
-		for (int j = 0; j < ANTAL_FARGAR; j++) {
-			if (colour == Konstantar.FARGAR[j]) {
-				fargenr = j;
-			}
-		}
-		return fargenr;
 	}
 }
 

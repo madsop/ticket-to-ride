@@ -50,7 +50,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	public int getSpelarNummer() {
 		return spelarNummer;
 	}
-	public boolean getValdAllereie() {
+	public boolean hasAlreadyDrawnOneCard() {
 		return einValdAllereie;
 	}
 

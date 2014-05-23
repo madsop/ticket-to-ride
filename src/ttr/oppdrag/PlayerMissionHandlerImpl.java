@@ -15,15 +15,12 @@ import java.util.Set;
 public class PlayerMissionHandlerImpl extends UnicastRemoteObject implements PlayerMissionHandler {
 	private static final long serialVersionUID = 5194460142995578869L;
 	private Set<Mission> missions;
-	private Core hovud;
 	private Map<Destinasjon, Set<Destinasjon>> mapBetweenAandB;
 
 	public PlayerMissionHandlerImpl(Core hovud) throws RemoteException {
 		super();
 		missions = new HashSet<>();
-		this.hovud = hovud;
-		mapBetweenAandB = new HashMap<>();
-		initialiserMatrise();
+		initialiseConnectedRoutes();
 	}
 
 	public void retrieveMission(Mission mission) throws RemoteException{
@@ -66,19 +63,8 @@ public class PlayerMissionHandlerImpl extends UnicastRemoteObject implements Pla
 		transitiveClosure();
 	}
 
-	public Mission trekkOppdragskort() throws RemoteException  {
-		if (hovud.getAntalGjenverandeOppdrag() > 0) {
-			return hovud.getOppdrag();
-			//System.out.println(trekt.getDestinasjonar().toArray()[1]);
-		}
-		return null;
-	}
-
-	public void removeChosenMissionFromDeck(int oppdragsid) throws RemoteException {
-		hovud.getGjenverandeOppdrag().removeIf(x -> (x.getMissionId() == oppdragsid));
-	}
-
-	private void initialiserMatrise() {
+	private void initialiseConnectedRoutes() {
+		mapBetweenAandB = new HashMap<>();
 		for (int y = 0; y < Destinasjon.values().length; y++) {
 			mapBetweenAandB.putIfAbsent(Destinasjon.values()[y], new HashSet<>());
 		}

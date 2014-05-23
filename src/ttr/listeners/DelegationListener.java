@@ -30,7 +30,6 @@ public class DelegationListener implements ActionListener{
     }
 
 
-    //TODO sørg for at du ikkje får gjort anna enn å trekke kort etter du har trekt det første kortet
     public void actionPerformed(ActionEvent arg0) {
         try {
             if (!hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn())) {
@@ -38,6 +37,11 @@ public class DelegationListener implements ActionListener{
                     JOptionPane.showMessageDialog((Component) gui, "Det er ikkje din tur!");
                     return;
                 }
+            }
+            if (hovud.findPlayerInAction().hasAlreadyDrawnOneCard() &&
+            		(arg0.getSource() == trekkOppdrag || arg0.getSource() == bygg)) {
+            	JOptionPane.showMessageDialog((Component) gui, "Du har allereie trekt eitt kort. Da kan du ikkje bygge eller trekke oppdrag, du må trekke eitt kort til.");
+                return;
             }
 
             if (arg0.getSource() == trekkOppdrag) {
@@ -47,13 +51,13 @@ public class DelegationListener implements ActionListener{
                 new BuildRouteHandler(hovud,frame);
             }
             else if (arg0.getSource() == visMineKort) {
-                new ShowMyCardsHandler(gui, hovud.findPlayerInAction());
+                new ShowMyCardsHandler(hovud.findPlayerInAction());
             }
             else if (arg0.getSource() == visMineOppdrag) {
-                new ShowMyMissionsHandler(gui, hovud.findPlayerInAction());
+                new ShowMyMissionsHandler(hovud.findPlayerInAction());
             }
             else if (arg0.getSource() == visBygde) {
-                new ShowBuiltRoutesHandler(hovud,gui,frame);
+                new ShowBuiltRoutesHandler(hovud, frame);
             }
         }
         catch (RemoteException e2) {

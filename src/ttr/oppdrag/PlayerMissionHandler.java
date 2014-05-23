@@ -8,7 +8,6 @@ import java.util.Collection;
 
 public interface PlayerMissionHandler extends Remote{
     void bygg(Route rute) throws RemoteException;
-    Mission trekkOppdragskort() throws RemoteException;
     boolean isMissionAccomplished(Mission mission) throws RemoteException;
 
     int getAntalFullfoerteOppdrag() throws RemoteException;
@@ -16,6 +15,5 @@ public interface PlayerMissionHandler extends Remote{
     Collection<Mission> getOppdrag() throws RemoteException;
     void retrieveMission(Mission o) throws RemoteException;
     int getAntalOppdrag() throws RemoteException;
-    void removeChosenMissionFromDeck(int oppdragsid) throws RemoteException;
 
 }

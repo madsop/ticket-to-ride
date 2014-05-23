@@ -57,7 +57,7 @@ public class MissionHandlerImpl implements MissionHandler {
 	private static ArrayList<Mission> chooseMissions(IGUI gui, int numberOfMissionsToPickFrom, ArrayList<Mission> missions) {
 		ArrayList<Mission> chosenMissions = new ArrayList<>();
 		while (chosenMissions.size() < numberOfMissionsToPickFrom-2) {
-			chosenMissions = gui.velOppdrag(missions);
+			chosenMissions = gui.chooseMissions(missions);
 		}
 		return chosenMissions;
 	}

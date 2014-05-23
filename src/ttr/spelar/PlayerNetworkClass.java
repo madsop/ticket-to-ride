@@ -53,9 +53,9 @@ import java.util.Collection;
     public Collection<Mission> getOppdrag() throws RemoteException { return spelarOppdragshandsamar.getOppdrag(); }
     public void receiveMission(Mission mission) throws RemoteException { spelarOppdragshandsamar.retrieveMission(mission); }
     public int getAntalOppdrag() throws RemoteException { return spelarOppdragshandsamar.getAntalOppdrag(); }
-    public Mission trekkOppdragskort() throws RemoteException { return spelarOppdragshandsamar.trekkOppdragskort(); }
+    public Mission trekkOppdragskort() throws RemoteException { return hovud.trekkOppdragskort(); }
     public boolean isMissionAccomplished(Mission mission) throws RemoteException { return spelarOppdragshandsamar.isMissionAccomplished(mission); }
-    public void removeChosenMissionFromDeck(int oppdragsid) throws RemoteException { spelarOppdragshandsamar.removeChosenMissionFromDeck(oppdragsid); }
+    public void removeChosenMissionFromDeck(int oppdragsid) throws RemoteException { hovud.removeChosenMissionFromDeck(oppdragsid); }
     
     // Kort
     public void receiveCard(Farge farge) throws RemoteException { korthandsamar.receiveCard(farge);}

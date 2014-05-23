@@ -3,6 +3,7 @@ package ttr.nettverk;
 import ttr.data.Farge;
 import ttr.data.Konstantar;
 import ttr.gui.IGUI;
+import ttr.gui.SwingUtils;
 import ttr.kjerna.Core;
 import ttr.spelar.PlayerAndNetworkWTF;
 import ttr.spelar.PlayerNetworkClass;
@@ -32,7 +33,7 @@ public class InitialiserNettverk {
 	}
 
 	public void initialiseNetworkGame() throws HeadlessException, RemoteException {
-		PlayerAndNetworkWTF spelar = new PlayerNetworkClass(hovud,gui.showInputDialog("Skriv inn namnet ditt"),hovud.getTable());
+		PlayerAndNetworkWTF spelar = new PlayerNetworkClass(hovud,SwingUtils.showInputDialog("Skriv inn namnet ditt"),hovud.getTable());
 		hovud.setMinSpelar(spelar);
 
 		Object[] options = {"Nytt spel", "Bli med i spel"};
@@ -84,7 +85,7 @@ public class InitialiserNettverk {
 		hovud.settSinTur(meg);
 		meg.setSpelarNummer(0);
 		meg.setSpelarteljar(1);
-		gui.getMeldingarModell().nyMelding(meg.getNamn() +" er vert for spelet.");
+		gui.getMessagesModel().nyMelding(meg.getNamn() +" er vert for spelet.");
 	}
 
 	private String initJoin(String remoteAddress){
@@ -108,7 +109,7 @@ public class InitialiserNettverk {
 		player.receiveMessage(hovud.getMinSpelar().getNamn() + " har vorti med i spelet.");
 
 		if (player.getSpelarNummer()!=0){
-			gui.getMeldingarModell().nyMelding(player.getNamn() + " er òg med i spelet.");
+			gui.getMessagesModel().nyMelding(player.getNamn() + " er òg med i spelet.");
 		}
 
 		player.registrerKlient(hovud.getMinSpelar());
@@ -117,7 +118,7 @@ public class InitialiserNettverk {
 	private void registerHost(PlayerAndNetworkWTF player) throws RemoteException {
 		hovud.getMinSpelar().setSpelarNummer(player.getSpelarteljar());
 		player.setSpelarteljar(player.getSpelarteljar()+1);
-		gui.getMeldingarModell().nyMelding(player.getNamn() +" er vert for spelet.");
+		gui.getMessagesModel().nyMelding(player.getNamn() +" er vert for spelet.");
 		paaVertBordet = player.getPaaBordetInt();
 	}
 
@@ -127,7 +128,7 @@ public class InitialiserNettverk {
 				//hovud.getSpelarar().add(s);
 				hovud.getMinSpelar().registrerKlient(player);
 				player.receiveMessage(hovud.getMinSpelar().getNamn() + " har vorti med i spelet.");
-				gui.getMeldingarModell().nyMelding(player.getNamn() + " er òg med i spelet.");
+				gui.getMessagesModel().nyMelding(player.getNamn() + " er òg med i spelet.");
 				player.registrerKlient(hovud.getMinSpelar());
 			}
 		}
@@ -157,8 +158,8 @@ public class InitialiserNettverk {
 	private void actuallyJoinGame(String url) throws NotBoundException, 	MalformedURLException, RemoteException {
 		PlayerAndNetworkWTF host = (PlayerAndNetworkWTF)Naming.lookup(url);
 		hovud.getMinSpelar().registrerKlient(host); 
-		for (PlayerAndNetworkWTF s : hovud.getSpelarar()) {
-			faaMedSpelar(s);
+		for (PlayerAndNetworkWTF player : hovud.getSpelarar()) {
+			faaMedSpelar(player);
 		}
 
 		ordnePåBordet();

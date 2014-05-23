@@ -65,7 +65,7 @@ public class Main {
     }
     
     private IGUI setUpGUI(GameVersion gameVersion, JFrame frame) {
-        IBildePanel picturePanel = new BildePanel(gameVersion);
+        ImagePanel picturePanel = new ImagePanelImpl(gameVersion);
         MissionChooser missionChooser = new MissionChooserImpl(gameVersion,frame);
 
         IHogrepanelet rightpanel = new Hogrepanelet(frame);

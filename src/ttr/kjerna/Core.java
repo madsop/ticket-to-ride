@@ -45,4 +45,6 @@ public interface Core {
 	public void receiveMessage(String message);
 	
 	void orientOtherPlayers(int positionOnTable) throws RemoteException;
+	public void removeChosenMissionFromDeck(int oppdragsid) throws RemoteException;
+	public Mission trekkOppdragskort() throws RemoteException;
 }

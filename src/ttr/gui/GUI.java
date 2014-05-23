@@ -15,71 +15,58 @@ import java.util.ArrayList;
 public class GUI extends JPanel implements IGUI {
 	private static final long serialVersionUID = -1540067881602979318L;
 	private final IMeldingspanel messagePanel;
-    private IHogrepanelet hogre;
-    private final MissionChooser oppdragsveljar;
+    private IHogrepanelet right;
+    private final MissionChooser missionChooser;
 
 
-    public GUI(IBildePanel bp, MissionChooser oppdragsveljar, IMeldingspanel meldingspanel, IHogrepanelet hogre){
-        this.oppdragsveljar = oppdragsveljar;
-        this.messagePanel = meldingspanel;
-        this.hogre = hogre;
+    public GUI(ImagePanel imagePanel, MissionChooser missionChooser, IMeldingspanel messagePanel, IHogrepanelet right){
+        this.missionChooser = missionChooser;
+        this.messagePanel = messagePanel;
+        this.right = right;
 
-        GridBagLayout gbl = new GridBagLayout();
-		setLayout(gbl);
-		GridBagConstraints c;
-		c = new GridBagConstraints();
-		c.anchor = GridBagConstraints.WEST;
+        GridBagLayout gridBagLayout = new GridBagLayout();
+		setLayout(gridBagLayout);
+		GridBagConstraints gridBagConstraints;
+		gridBagConstraints = new GridBagConstraints();
+		gridBagConstraints.anchor = GridBagConstraints.WEST;
 
-		c.ipadx = 0;
-		c.ipady = 0;
-		c.gridx = 0;
-		c.gridy = 0;
-		add((JPanel) bp,c);
+		gridBagConstraints.ipadx = 0;
+		gridBagConstraints.ipady = 0;
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 0;
+		add((JPanel) imagePanel,gridBagConstraints);
 
-		c.gridx = 1;
-        hogre.byggHogrepanelet();
-		add((JPanel) hogre,c);
+		gridBagConstraints.gridx = 1;
+        right.byggHogrepanelet();
+		add((JPanel) right,gridBagConstraints);
 
-		c.gridx = 2;
-		add((JPanel) messagePanel,c);
+		gridBagConstraints.gridx = 2;
+		add((JPanel) messagePanel,gridBagConstraints);
 	}
 
-    public void setHovud(Core hovud){
-        messagePanel.prepareChat(hovud);
-        hogre.addListeners(hovud, this);
+    public void setHovud(Core core){
+        messagePanel.prepareChat(core);
+        right.addListeners(core, this);
     }
 
-    public IMeldingarModell getMeldingarModell(){ //TODO få bort denne?
+    public IMeldingarModell getMessagesModel(){ //TODO få bort denne?
         return messagePanel.getMeldingarModell();
     }
 
-	public void visKvenDetErSinTur(String myPlayerName, String whoseTurnText) {
-        hogre.getSpelarnamn().setText("Eg er " + myPlayerName + ", og det er " + whoseTurnText + ".");
+	public void showWhoseTurnItIs(String myPlayerName, String whoseTurnText) {
+        right.getSpelarnamn().setText("Eg er " + myPlayerName + ", og det er " + whoseTurnText + ".");
 	}
 
-    public JTextField getSpelarnamn() { return hogre.getSpelarnamn(); }
-    public JLabel[] getTogAtt() { return hogre.getTogAtt(); }
-    public void teiknOppKortPåBordet(int plass, Farge farge){ hogre.teiknOppKortPåBordet(plass, farge); }
-    public JButton[] getKortButtons(){ return hogre.getKortButtons(); }
+    public JTextField getPlayerNameJTextField() { return right.getSpelarnamn(); }
+    public JLabel[] getRemainingTrainsLabel() { return right.getTogAtt(); }
+    public void drawCardsOnTable(int plass, Farge farge){ right.teiknOppKortPåBordet(plass, farge); }
+    public JButton[] getCardButtons(){ return right.getKortButtons(); }
 
-
-    public void createJFrame(String tittel, JPanel panel) {
-		JFrame frame = new JFrame();
-		frame.setContentPane(panel);
-		frame.setBackground(Color.DARK_GRAY);
-		frame.setTitle(tittel);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-	}
-
-    public String showInputDialog(String string) { return JOptionPane.showInputDialog(this, string); }
-
-    public ArrayList<Mission> velOppdrag(ArrayList<Mission> oppdrag) { return oppdragsveljar.setUpOppdragsveljar(oppdrag); }
+    public ArrayList<Mission> chooseMissions(ArrayList<Mission> missions) { return missionChooser.setUpMissionChooser(missions); }
 
     public void displayGraphicallyThatThereIsNoCardHere(int positionOnTable) {
 		JOptionPane.showMessageDialog(this, "Det er ikkje noko kort der, ser du vel.");
-		getKortButtons()[positionOnTable].setBackground(Color.GRAY);
-		getKortButtons()[positionOnTable].setText("Tom");
+		getCardButtons()[positionOnTable].setBackground(Color.GRAY); //TODO dette e rjo litt ekkelt
+		getCardButtons()[positionOnTable].setText("Tom");
 	}
 }

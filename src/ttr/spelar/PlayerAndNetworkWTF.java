@@ -15,7 +15,7 @@ public interface PlayerAndNetworkWTF extends Remote {
 	public int getGjenverandeTog() throws RemoteException;
 	public String getNamn() throws RemoteException;
 	public void setEittKortTrektInn(boolean b) throws RemoteException;
-	public boolean getValdAllereie() throws RemoteException;
+	public boolean hasAlreadyDrawnOneCard() throws RemoteException;
 	public void settSinTur(PlayerAndNetworkWTF s) throws RemoteException;
 	public int getSpelarNummer() throws RemoteException;
 	public void setSpelarNummer(int nummer) throws RemoteException;

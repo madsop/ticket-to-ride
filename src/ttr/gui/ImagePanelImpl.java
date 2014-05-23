@@ -10,12 +10,12 @@ import com.google.inject.Inject;
 import java.awt.*;
 import java.net.URL;
 
-public class BildePanel extends JPanel implements IBildePanel {
+public class ImagePanelImpl extends JPanel implements ImagePanel {
 	private static final long serialVersionUID = -2629995315390856995L;
 	private final Image bildet;
 
 	@Inject
-	public BildePanel(GameVersion spel){
+	public ImagePanelImpl(GameVersion spel){
 		URL bakgrunnsbildeURL = spel.getBakgrunnsbildet();
 		bildet = new ImageIcon(bakgrunnsbildeURL).getImage();
 	}
