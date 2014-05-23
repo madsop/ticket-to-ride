@@ -49,7 +49,7 @@ public class GUI extends JPanel implements IGUI {
         hogre.addListeners(hovud, this);
     }
 
-    public IMeldingarModell getMeldingarModell(){
+    public IMeldingarModell getMeldingarModell(){ //TODO få bort denne?
         return messagePanel.getMeldingarModell();
     }
 

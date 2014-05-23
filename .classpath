@@ -3,9 +3,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="/home/mads/Dropbox/Programmering/CX-PC/Colibreek/lib/guice-4.0-beta4-no_aop.jar"/>
-	<classpathentry kind="lib" path="/home/mads/Dropbox/Programmering/CX-PC/Colibreek/lib/guice-assistedinject-4.0-beta4.jar"/>
-	<classpathentry kind="lib" path="/home/mads/Dropbox/Programmering/CX-PC/Colibreek/lib/javax.inject.jar"/>
-	<classpathentry kind="lib" path="/home/mads/Dropbox/Programmering/CX-PC/Colibreek/lib/guava-17.0-rc2.jar"/>
+	<classpathentry kind="lib" path="/home/mads/Eclipse-workshop/TTR/lib/javax.inject.jar"/>
+	<classpathentry kind="lib" path="/home/mads/Eclipse-workshop/TTR/lib/guice-assistedinject-4.0-beta4.jar"/>
+	<classpathentry kind="lib" path="/home/mads/Eclipse-workshop/TTR/lib/guice-4.0-beta4-no_aop.jar"/>
+	<classpathentry kind="lib" path="/home/mads/Eclipse-workshop/TTR/lib/guava-17.0-rc2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

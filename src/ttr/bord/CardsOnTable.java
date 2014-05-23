@@ -13,13 +13,17 @@ public class CardsOnTable {
 	Farge[] getCardsOpenOnTable() {
 		return cardsOpenOnTable;
 	}
+
+	void setCardsOpenOnTable(Farge[] cardsOpenOnTable) {
+		this.cardsOpenOnTable = cardsOpenOnTable;
+	}
 	
 	Farge getCardAt(int position) {
 		return cardsOpenOnTable[position];
 	}
-
-	void setCardsOpenOnTable(Farge[] cardsOpenOnTable) {
-		this.cardsOpenOnTable = cardsOpenOnTable;
+	
+	void putCardOnTable(int position, Farge colour) {
+		cardsOpenOnTable[position] = colour;
 	}
 
 	boolean areThereTooManyJokersOnTable() {
@@ -30,9 +34,5 @@ public class CardsOnTable {
 			}
 		}
         return jokrar > Konstantar.MAKS_JOKRAR_PAA_BORDET;
-	}
-	
-	void putCardOnTable(int position, Farge colour) {
-		cardsOpenOnTable[position] = colour;
 	}
 }

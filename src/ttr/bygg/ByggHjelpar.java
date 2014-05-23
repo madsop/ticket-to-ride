@@ -16,6 +16,8 @@ import java.util.ArrayList;
 public class ByggHjelpar implements IByggHjelpar {
 	private final IGUI gui;
 	
+	//TODO fortener denne å bli splitta i ein kan-bygge-her-klasse og resten? evt. ein colour-finder-klasse
+	
 	public ByggHjelpar(IGUI gui) {
 		this.gui = gui;
 	}

@@ -22,15 +22,19 @@ public class BildePanel extends JPanel implements IBildePanel {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		double bilderatio = (double) bildet.getHeight(null) / (double) bildet.getWidth(null);
-		int bildehogde = Konstantar.VINDUSSTORLEIK.height * 6/7;
-		int br = (int) ((bildehogde / bilderatio) * 1.3);
+		int imageHeight = Konstantar.VINDUSSTORLEIK.height * 6/7;
+		int imageWidth = computeImageWidth(imageHeight);
+		this.setPreferredSize(new Dimension(imageWidth + 50, imageHeight + 50));
 		try {
-			g.drawImage(bildet, 0, 25, br, bildehogde, null);
-			this.setPreferredSize(new Dimension(br + 50, bildehogde + 50));
+			g.drawImage(bildet, 0, 25, imageWidth, imageHeight, null);
 		}
 		catch (NullPointerException npe) {
 			npe.printStackTrace();
 		}
+	}
+
+	private int computeImageWidth(int imageHeight) {
+		double bilderatio = (double) bildet.getHeight(null) / (double) bildet.getWidth(null);
+		return (int) ((imageHeight / bilderatio) * 1.3);
 	}
 }

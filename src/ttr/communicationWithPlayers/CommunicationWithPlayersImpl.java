@@ -47,8 +47,8 @@ public abstract class CommunicationWithPlayersImpl implements CommunicationWithP
 		totalpoeng[playerWithMostMissionsAccomplished.getSpelarNummer()] = 10;
 
 		orientNetwork(meldingarModell, playerWithMostMissionsAccomplished,	bestNumberOfMissionsAccomplished);
-		for (PlayerAndNetworkWTF s : players){
-			s.receiveMessage(playerWithMostMissionsAccomplished.getNamn() +" klarte flest oppdrag, " +bestNumberOfMissionsAccomplished);
+		for (PlayerAndNetworkWTF player : players){
+			player.receiveMessage(playerWithMostMissionsAccomplished.getNamn() +" klarte flest oppdrag, " +bestNumberOfMissionsAccomplished);
 		}
 	}
 
@@ -70,9 +70,8 @@ public abstract class CommunicationWithPlayersImpl implements CommunicationWithP
 
 
 	protected void avsluttSpeletMedSuksess(PlayerAndNetworkWTF vinnar,String pointsString, IMeldingarModell meldingarModell) throws RemoteException {
-		String poeng = pointsString;
 		String vinnaren = vinnar.getNamn() +" vann spelet, gratulerer!";
-		poeng += vinnaren;
+		String poeng = pointsString + vinnaren;
 		meldingarModell.nyMelding(vinnaren);
 		for (PlayerAndNetworkWTF player : players){
 			player.receiveMessage(vinnaren);

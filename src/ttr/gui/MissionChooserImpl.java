@@ -18,7 +18,7 @@ public class MissionChooserImpl implements MissionChooser {
     private JDialog missionChooserDialog;
     private JPanel choosePanel;
     private ArrayList<Mission> chosenMissions; //todo: dette er ikkje gui-stuff
-    private HashMap<JCheckBox,Mission> missionsToChooooseFrom;
+    private HashMap<JCheckBox,Mission> missionsToChooseFrom;
     private JButton ok;
 
     public MissionChooserImpl(GameVersion spel, JFrame frame){
@@ -28,7 +28,8 @@ public class MissionChooserImpl implements MissionChooser {
 
     @Override
     public ArrayList<Mission> setUpOppdragsveljar(ArrayList<Mission> innsendteOppdragÅVeljeFrå) {
-        missionsToChooooseFrom = new HashMap<>();
+    	chosenMissions = new ArrayList<>();
+        missionsToChooseFrom = new HashMap<>();
         choosePanel = new JPanel();
         GridLayout gl = new GridLayout(0, 2);
         choosePanel.setLayout(gl);
@@ -36,16 +37,16 @@ public class MissionChooserImpl implements MissionChooser {
         setUpCheckBoxes(innsendteOppdragÅVeljeFrå);
         setUpOKButton();
 
-        chosenMissions = new ArrayList<>();
-
-        ImageIcon kartet = new ImageIcon(gameVersion.getBakgrunnsbildet());
-
-        JLabel kartImplementasjonen = new JLabel(kartet);
-        JScrollPane jsp = setUpScrollPane(kartet, kartImplementasjonen);
-        fixMissionChooserGUIBox(jsp);
+        fixMissionChooserGUIBox(drawAndSetupMap());
 
         return chosenMissions;
     }
+
+	private JScrollPane drawAndSetupMap() {
+		ImageIcon kartet = new ImageIcon(gameVersion.getBakgrunnsbildet());
+        JLabel kartImplementasjonen = new JLabel(kartet);
+        return setUpScrollPane(kartet, kartImplementasjonen);
+	}
 
 	private void setUpOKButton() {
 		ok = new JButton(Infostrengar.OKLabel);
@@ -56,14 +57,19 @@ public class MissionChooserImpl implements MissionChooser {
 
     private void setUpCheckBoxes(ArrayList<Mission> missionsToChooseFrom){ //TODO legg inn handtering for når oppdragsbunken er tom
         for (Mission mission : missionsToChooseFrom){
-            JCheckBox missionCheckBox = new JCheckBox();
-            missionCheckBox.addActionListener(new okListener());
-            missionCheckBox.setSelected(false);
+            JCheckBox missionCheckBox = createAndConfigureMissionCheckBox();
             choosePanel.add(new JTextField(mission.toString()));
             choosePanel.add(missionCheckBox);
-            missionsToChooooseFrom.put(missionCheckBox,mission);
+            this.missionsToChooseFrom.put(missionCheckBox,mission);
         }
     }
+
+	private JCheckBox createAndConfigureMissionCheckBox() {
+		JCheckBox missionCheckBox = new JCheckBox();
+		missionCheckBox.addActionListener(new okListener());
+		missionCheckBox.setSelected(false);
+		return missionCheckBox;
+	}
 
 	private JScrollPane setUpScrollPane(ImageIcon kartet, JLabel kartImplementasjonen) {
 		JScrollPane jsp = new JScrollPane();
@@ -73,9 +79,8 @@ public class MissionChooserImpl implements MissionChooser {
 	}
 
 	private void fixMissionChooserGUIBox(JScrollPane jsp) {
-		JPanel heile = fixJPanel(jsp);
 		missionChooserDialog = new JDialog(frame,Infostrengar.VelOppdragLabel,true);
-        missionChooserDialog.setContentPane(heile);
+        missionChooserDialog.setContentPane(fixJPanel(jsp));
         missionChooserDialog.pack();
         missionChooserDialog.setVisible(true);
 	}
@@ -95,9 +100,9 @@ public class MissionChooserImpl implements MissionChooser {
      */
     private class okListener implements ActionListener {
         public void perform(Object clickedItem){
-            if (missionsToChooooseFrom.containsKey(clickedItem)){
+            if (missionsToChooseFrom.containsKey(clickedItem)){
                 JCheckBox clicked = (JCheckBox)clickedItem;
-                if (chosenMissions.contains(missionsToChooooseFrom.get(clicked))){
+                if (chosenMissions.contains(missionsToChooseFrom.get(clicked))){
                     uncheck(clicked);
                 }
                 else{
@@ -107,26 +112,26 @@ public class MissionChooserImpl implements MissionChooser {
         }
 
 		private void uncheck(JCheckBox clicked) {
-			chosenMissions.remove(missionsToChooooseFrom.get(clicked));
+			chosenMissions.remove(missionsToChooseFrom.get(clicked));
 			clicked.setSelected(false);
 		}
 
 		private void check(JCheckBox clicked) {
-			chosenMissions.add(missionsToChooooseFrom.get(clicked));
+			chosenMissions.add(missionsToChooseFrom.get(clicked));
 			clicked.setSelected(true);
 			ok.setEnabled(true);
 		}
 
         public void actionPerformed(ActionEvent arg0) {
-            if (arg0.getSource() == ok && (chosenMissions.size() >= missionsToChooooseFrom.size()-2)){
+            if (arg0.getSource() == ok && (chosenMissions.size() >= missionsToChooseFrom.size()-2)){
                 missionChooserDialog.dispose();
                 return;
             }
 
-            for (int i = 0; i < missionsToChooooseFrom.size(); i++) {
+            for (int i = 0; i < missionsToChooseFrom.size(); i++) {
                 perform(arg0.getSource());
             }
-            if (chosenMissions.size() < missionsToChooooseFrom.size() -2){
+            if (chosenMissions.size() < missionsToChooseFrom.size() -2){
                 ok.setEnabled(false);
             }
         }

@@ -88,7 +88,7 @@ public class NetworkCore extends CoreImpl {
 		host.leggUtFem();
 		int[] cardsOnTableAsIntegers = host.getPaaBordetInt();
 
-		for (int plass = 0; plass < getTable().getPaaBordet().length; plass++){
+		for (int plass = 0; plass < Konstantar.ANTAL_KORT_PÅ_BORDET; plass++){
 			newColour = Konstantar.FARGAR[cardsOnTableAsIntegers[plass]];
 			getMinSpelar().putCardOnTable(newColour,plass);
 			newCardPlacedOnTableInNetworkGame(host, newColour, plass);

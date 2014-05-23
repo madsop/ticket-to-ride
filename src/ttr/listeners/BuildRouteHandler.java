@@ -1,14 +1,12 @@
 package ttr.listeners;
 
 import ttr.data.Farge;
-import ttr.data.Konstantar;
 import ttr.kjerna.Core;
 import ttr.rute.Route;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import java.awt.HeadlessException;
 import java.rmi.RemoteException;
 import java.util.Set;
 
@@ -16,20 +14,21 @@ class BuildRouteHandler {
 
 	public BuildRouteHandler(Core hovud, JFrame frame) throws RemoteException {
 		Set<Route> notYetBuiltRoutes = hovud.findRoutesNotYetBuilt();
-
 		Route routeWantedToBuild = letUserChooseRouteToBuild(frame, notYetBuiltRoutes);
 		if (routeWantedToBuild == null) { return; }
 
 		int normalCardsDemanded = routeWantedToBuild.getLength()-routeWantedToBuild.getNumberOfRequiredJokers();
 		Farge routeColour = routeWantedToBuild.getColour();
 		int numberOfDemandedJokers = routeWantedToBuild.getNumberOfRequiredJokers();
-
 		int playersNumberOfJokers = hovud.getKvenSinTur().getNumberOfRemainingJokers();
-	
-		if (isGreyRoute(routeWantedToBuild)){
-			buildRoute(hovud, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, routeColour);
-		}
-		else if (playerCanBuildThisRoute(hovud.getKvenSinTur().getNumberOfCardsLeftInColour(routeColour), normalCardsDemanded, numberOfDemandedJokers, playersNumberOfJokers) ){
+
+		buildRoute(hovud, frame, routeWantedToBuild, normalCardsDemanded,
+				routeColour, numberOfDemandedJokers, playersNumberOfJokers);
+	}
+
+	private void buildRoute(Core hovud, JFrame frame, Route routeWantedToBuild,	int normalCardsDemanded, 
+			Farge routeColour, int numberOfDemandedJokers, int playersNumberOfJokers) throws RemoteException {
+		if (playerCanBuildThisRoute(hovud.getKvenSinTur().getNumberOfCardsLeftInColour(routeColour), normalCardsDemanded, numberOfDemandedJokers, playersNumberOfJokers) ){
 			tryToBuildRoute(hovud, frame, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, routeColour);
 		}
 		else {
@@ -40,10 +39,6 @@ class BuildRouteHandler {
 	private Route letUserChooseRouteToBuild(JFrame frame, Set<Route> ruterArray) {
 		return (Route) JOptionPane.showInputDialog(frame, "Vel ruta du vil byggje", "Vel rute",
 				JOptionPane.QUESTION_MESSAGE, null, ruterArray.toArray(), ruterArray.iterator().next());
-	}
-
-	private boolean isGreyRoute(Route routeWantedToBuild) {
-		return routeWantedToBuild.getColour() == Konstantar.FARGAR[Konstantar.ANTAL_FARGAR-1];
 	}
 
 	private void buildRoute(Core hovud, Route routeWantedToBuild, int kortKrevd, int krevdJokrar, Farge colour) throws RemoteException {
@@ -60,15 +55,11 @@ class BuildRouteHandler {
 	}
 
 	private void tryToBuildRoute(Core hovud, JFrame frame, Route routeWantedToBuild, int kortKrevd, int numberOfDemandedJokers, Farge colour) throws RemoteException {
-		try {
-			if (hovud.getKvenSinTur().getGjenverandeTog() >= kortKrevd+numberOfDemandedJokers) {
-				buildRoute(hovud, routeWantedToBuild, kortKrevd, numberOfDemandedJokers, colour);
-			}
-			else {
-				JOptionPane.showMessageDialog(frame, "Du har ikkje nok tog att til å byggje denne ruta.");
-			}
-		} catch (HeadlessException e) {
-			e.printStackTrace();
+		if (hovud.getKvenSinTur().getGjenverandeTog() >= kortKrevd+numberOfDemandedJokers) {
+			buildRoute(hovud, routeWantedToBuild, kortKrevd, numberOfDemandedJokers, colour);
+		}
+		else {
+			JOptionPane.showMessageDialog(frame, "Du har ikkje nok tog att til å byggje denne ruta.");
 		}
 	}
 }
