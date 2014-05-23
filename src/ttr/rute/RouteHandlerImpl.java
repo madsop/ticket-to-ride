@@ -43,10 +43,7 @@ public class RouteHandlerImpl implements RouteHandler {
 	}
 
 	private void findRoutesBuiltByThisPlayer(PlayerAndNetworkWTF player) throws RemoteException {
-		for (int i = 0; i < player.getBygdeRuterSize(); i++) {
-			int routeId = player.getBygdeRuterId(i);
-			allRoutes.stream().filter(route -> route.getRouteId() == routeId).forEach(x -> allBuiltRoutes.add(x));
-		}
+		allRoutes.addAll(player.getBygdeRuter());
 	}
 
 	private Set<Route> findNotYetBuiltRoutes() {

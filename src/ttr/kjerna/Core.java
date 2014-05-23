@@ -194,13 +194,8 @@ public abstract class Core {
 		getGjenverandeOppdrag().removeIf(x -> (x.getMissionId() == oppdragsid));
 	}
 
-	public Route getRoute(int ruteId) { //TODO flytt til rutehandsamar
-		return getRuter().stream().filter(f -> f.getRouteId()==ruteId).findAny().get();
-	}
-
-	public void nybygdRute(int ruteId, PlayerAndNetworkWTF byggjandeSpelar) { //TODO vidare ned til rutehandsamar
-		Route vald = getRoute(ruteId);
-		vald.setBuiltBy(byggjandeSpelar);
-		getAlleBygdeRuter().add(vald);
+	public void nybygdRute(Route route, PlayerAndNetworkWTF byggjandeSpelar) { //TODO vidare ned til rutehandsamar
+		route.setBuiltBy(byggjandeSpelar);
+		getAlleBygdeRuter().add(route);
 	}
 }

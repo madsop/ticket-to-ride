@@ -3,6 +3,7 @@ package ttr.spelar;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import ttr.bord.Table;
 import ttr.data.Konstantar;
@@ -57,8 +58,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	public void setSpelarNummer(int nummer) { spelarNummer = nummer; }
 	public int getSpelarteljar() { return spelarteljar; }
 	public void setSpelarteljar(int teljar) { spelarteljar = teljar; }
-	public int getBygdeRuterSize() { return bygdeRuter.size(); }
-	public int getBygdeRuterId(int j) { return bygdeRuter.get(j).getRouteId(); }
+	public Collection<Route> getBygdeRuter() { return bygdeRuter; }
 
 	public String getNamn() { return namn; }
 

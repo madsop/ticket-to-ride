@@ -89,12 +89,8 @@ public abstract class CommunicationWithPlayersImpl implements CommunicationWithP
 
 	protected int reknUtPoeng(PlayerAndNetworkWTF player, Set<Route> ruter) throws RemoteException {
 		int poeng = player.getOppdragspoeng();
-		for (int j = 0; j < player.getBygdeRuterSize(); j++) {
-			for (Route route : ruter) {
-				if (player.getBygdeRuterId(j) == route.getRouteId()) {
-					poeng += route.getValue();
-				}
-			}
+		for (Route route : player.getBygdeRuter()) {
+			poeng += route.getValue();
 		}
 		return poeng;
 	}

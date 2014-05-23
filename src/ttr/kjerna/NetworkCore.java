@@ -47,7 +47,7 @@ public class NetworkCore extends Core {
 
 	protected void messageUsersInNetworkGame(Route builtRoute, PlayerAndNetworkWTF buildingPlayer) throws RemoteException {
 		for (PlayerAndNetworkWTF player : players) {
-			player.nybygdRute(builtRoute.getRouteId(),buildingPlayer);
+			player.nybygdRute(builtRoute,buildingPlayer);
 			player.setTogAtt(buildingPlayer.getSpelarNummer()+1, buildingPlayer.getGjenverandeTog());
 		}
 	}
@@ -86,10 +86,10 @@ public class NetworkCore extends Core {
 	private Farge placeNewCardsOnTable(PlayerAndNetworkWTF host) throws RemoteException {
 		Farge newColour = null;
 		host.leggUtFem();
-		int[] cardsOnTableAsIntegers = host.getPaaBordetInt();
+		Farge[] cardsOnTable = host.getCardsOnTable();
 
 		for (int plass = 0; plass < Konstantar.ANTAL_KORT_PÅ_BORDET; plass++){
-			newColour = Konstantar.FARGAR[cardsOnTableAsIntegers[plass]];
+			newColour = cardsOnTable[plass];
 			getMinSpelar().putCardOnTable(newColour,plass);
 			newCardPlacedOnTableInNetworkGame(host, newColour, plass);
 		}

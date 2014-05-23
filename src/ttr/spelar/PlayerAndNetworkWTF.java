@@ -22,10 +22,9 @@ public interface PlayerAndNetworkWTF extends Remote {
 	public int getSpelarteljar() throws RemoteException;
 	public void setSpelarteljar(int teljar) throws RemoteException;
 	public void setTogAtt(int plass, int tog) throws RemoteException;
-	public void nybygdRute(int ruteId, PlayerAndNetworkWTF byggjandeSpelar) throws RemoteException;
-	public int getBygdeRuterSize() throws RemoteException;
-	public int getBygdeRuterId(int j) throws RemoteException;
-	public int[] getPaaBordetInt() throws RemoteException;
+	public void nybygdRute(Route route, PlayerAndNetworkWTF byggjandeSpelar) throws RemoteException;
+	public Collection<Route> getBygdeRuter() throws RemoteException;
+	public Farge[] getCardsOnTable() throws RemoteException;
 	public void setPaaBord(Farge[] f) throws RemoteException;
 	public ArrayList<PlayerAndNetworkWTF> getSpelarar() throws RemoteException;
 	public void putCardOnTable(Farge f, int plass) throws RemoteException;

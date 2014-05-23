@@ -4,6 +4,7 @@ import ttr.bord.Table;
 import ttr.data.Farge;
 import ttr.kjerna.Core;
 import ttr.oppdrag.Mission;
+import ttr.rute.Route;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -78,6 +79,6 @@ import java.util.Collection;
 		return this;
 	}
 
-	public void nybygdRute(int ruteId, PlayerAndNetworkWTF byggjandeSpelar) throws RemoteException { hovud.nybygdRute(ruteId, byggjandeSpelar); }
-	public int[] getPaaBordetInt() throws RemoteException { return hovud.getTable().getPaaBordetInt(); }
+	public void nybygdRute(Route route, PlayerAndNetworkWTF byggjandeSpelar) throws RemoteException { hovud.nybygdRute(route, byggjandeSpelar); }
+	public Farge[] getCardsOnTable() throws RemoteException { return hovud.getTable().getPaaBordet(); }
 }

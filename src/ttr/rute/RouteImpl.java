@@ -8,18 +8,21 @@ import java.rmi.RemoteException;
 import java.text.MessageFormat;
 
 public class RouteImpl implements Route {
+	private static final long serialVersionUID = -7151848709424908866L;
 	private static final int[] valuesForRoute = {1,2,4,7,10,15,0,0,27};
 	private final int length;
 	private final Farge colour;
 	private final boolean tunnel;
 	private final int numberOfRequiredJokers;
 	private PlayerAndNetworkWTF builtBy;
-	private final int routeId;
 	private final Destinasjon start;
 	private final Destinasjon end;
 
 	public RouteImpl(int routeId, Destinasjon start, Destinasjon end, int length, Farge colour, boolean tunnel, int numberOfRequiredJokers) {
-		this.routeId = routeId;
+		this(start, end, length, colour, tunnel, numberOfRequiredJokers);
+	}
+	
+	public RouteImpl(Destinasjon start, Destinasjon end, int length, Farge colour, boolean tunnel, int numberOfRequiredJokers) {
 		this.start = start;
 		this.end = end;
 		
@@ -35,10 +38,6 @@ public class RouteImpl implements Route {
 
 	public Destinasjon getEnd() {
 		return end;
-	}
-
-	public int getRouteId() {
-		return routeId;
 	}
 
 	public int getValue() {

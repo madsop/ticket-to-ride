@@ -23,13 +23,13 @@ public class InitialiserNettverk {
 	private final String PORT = "1226";
 	private final IGUI gui;
 	private final Core hovud;
-	private int[] paaVertBordet; //TODO korfor er denne int? Pga serialisering?
+	private Farge[] paaVertBordet; //TODO korfor er denne int? Pga serialisering?
 
 	public InitialiserNettverk(IGUI gui, String hostAddress, Core hovud) {
 		this.hostAddress = hostAddress;
 		this.gui = gui;
 		this.hovud = hovud;
-		paaVertBordet = new int[Konstantar.ANTAL_KORT_PÅ_BORDET];
+		paaVertBordet = new Farge[Konstantar.ANTAL_KORT_PÅ_BORDET];
 	}
 
 	public void initialiseNetworkGame() throws HeadlessException, RemoteException {
@@ -119,7 +119,7 @@ public class InitialiserNettverk {
 		hovud.getMinSpelar().setSpelarNummer(player.getSpelarteljar());
 		player.setSpelarteljar(player.getSpelarteljar()+1);
 		gui.getMessagesModel().nyMelding(player.getNamn() +" er vert for spelet.");
-		paaVertBordet = player.getPaaBordetInt();
+		paaVertBordet = player.getCardsOnTable();
 	}
 
 	void oppdaterAndreSpelarar(PlayerAndNetworkWTF host) throws RemoteException{
@@ -137,7 +137,7 @@ public class InitialiserNettverk {
 	void ordnePåBordet() throws RemoteException {
 		Farge[] paaBord = new Farge[paaVertBordet.length];
 		for (int i = 0; i < paaBord.length; i++) {
-			paaBord[i] = Konstantar.FARGAR[paaVertBordet[i]];
+			paaBord[i] = paaVertBordet[i];
 		}
 		hovud.getMinSpelar().setPaaBord(paaBord);
 	}

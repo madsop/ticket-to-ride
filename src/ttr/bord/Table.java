@@ -14,5 +14,4 @@ public interface Table {
 	public void addJokersToDeck(int jokrar);
 	public boolean areThereAnyCardsLeftInDeck();
 	public Farge getCardFromTable(int positionOnTable);
-	public int[] getPaaBordetInt();//TODO wtf
 }

@@ -27,6 +27,8 @@ import java.rmi.RemoteException;
 public class Main {
 	private Injector injector;
 	
+	//TODO folk får no berre sine eigne meldingar... (iallfall i nettverksspel)
+	
 	public static void main(String args[]) {
 		try {
 			new Main(args);
