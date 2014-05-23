@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public interface IGUI {
     public IMeldingarModell getMeldingarModell();
-    public void visKvenDetErSinTur(String spelarnamn, boolean nett, String minSpelar);
+    public void visKvenDetErSinTur(String spelarnamn, String minSpelar);
     public JTextField getSpelarnamn();
     public JLabel[] getTogAtt();
     public void teiknOppKortPåBordet(int plass, Farge farge);

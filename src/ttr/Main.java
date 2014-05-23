@@ -8,7 +8,6 @@ import ttr.data.Konstantar;
 import ttr.gui.*;
 import ttr.gui.hogresida.Hogrepanelet;
 import ttr.gui.hogresida.IHogrepanelet;
-import ttr.gui.hogresida.IMeldingspanel;
 import ttr.gui.hogresida.Meldingspanel;
 import ttr.kjerna.Core;
 import ttr.kjerna.LocalCore;
@@ -43,7 +42,7 @@ public class Main {
         GameVersion gameVersion = chooseGameVersion(frame);
 
         boolean isNetworkGame = (JOptionPane.showConfirmDialog(null, Infostrengar.velOmNettverkEllerIkkje) == JOptionPane.YES_OPTION);
-        IGUI gui = setUpGUI(gameVersion,frame,isNetworkGame);
+        IGUI gui = setUpGUI(gameVersion,frame);
         
         Table table = new TableImpl(gui,isNetworkGame, injector.getInstance(Deck.class));
         
@@ -75,14 +74,13 @@ public class Main {
         return gameVersions[chosenGameID];
     }
     
-    private IGUI setUpGUI(GameVersion gameVersion, JFrame frame, boolean isNetworkGame) {
+    private IGUI setUpGUI(GameVersion gameVersion, JFrame frame) {
         IBildePanel picturePanel = new BildePanel(gameVersion);
 
         MissionChooser missionChoose = new MissionChooserImpl(gameVersion,frame);
 
-        IMeldingspanel messagepanel = new Meldingspanel(isNetworkGame);
         IHogrepanelet rightpanel = new Hogrepanelet(frame);
-        IGUI gui = new GUI(picturePanel,missionChoose,messagepanel, rightpanel);        // TODO: dependency injection
+        IGUI gui = new GUI(picturePanel,missionChoose, injector.getInstance(Meldingspanel.class), rightpanel);        // TODO: dependency injection
         rightpanel.setGUI(gui);	
         setUpJFrame(gameVersion, frame, gui);
         return gui;

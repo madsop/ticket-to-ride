@@ -11,13 +11,11 @@ import java.awt.event.KeyListener;
 import java.rmi.RemoteException;
 
 class ChatListener implements KeyListener {
-	private final boolean nett;
 	private final Core hovud;
 	private final JTextField chatJTextField; //TODO denne må vel vekk herifrå?
 	private final MeldingarModell meldingarmodell;
 
-	public ChatListener(boolean nett, JTextField chat, MeldingarModell messagesModel, Core hovud){
-		this.nett = nett;
+	public ChatListener(JTextField chat, MeldingarModell messagesModel, Core hovud){
 		this.chatJTextField = chat;
 		this.meldingarmodell = messagesModel;
 		this.hovud = hovud;
@@ -37,9 +35,7 @@ class ChatListener implements KeyListener {
 	private void sendMessage(KeyEvent arg0) throws RemoteException {
 		if (arg0.getKeyCode() == KeyEvent.VK_ENTER){
 			String message = getPlayerName() + ": " + chatJTextField.getText();;
-			if (nett){
-				meldingarmodell.nyMelding(message);
-			}
+			meldingarmodell.nyMelding(message);
 			sendMessageToPlayers(message);
 			chatJTextField.setText("");
 		}
@@ -49,8 +45,7 @@ class ChatListener implements KeyListener {
 	}
 
 	private String getPlayerName() throws RemoteException {
-		PlayerAndNetworkWTF player = nett ? hovud.getMinSpelar() : hovud.getKvenSinTur();
-		return player.getNamn();	
+		return hovud.findPlayerInAction().getNamn();
 	}
 
 	private void sendMessageToPlayers(String message) throws RemoteException {

@@ -53,13 +53,8 @@ public class GUI extends JPanel implements IGUI {
         return messagePanel.getMeldingarModell();
     }
 
-	public void visKvenDetErSinTur(String sinTurNo, boolean nett, String minSpelar) {
-		if (nett){
-            hogre.getSpelarnamn().setText("Eg er " + minSpelar + ", og det er " + (minSpelar.equals(sinTurNo) ? "min tur." : sinTurNo + " sin tur."));
-        }
-		else{
-            hogre.getSpelarnamn().setText("Eg er " + sinTurNo + ", og det er min tur.");
-        }
+	public void visKvenDetErSinTur(String myPlayerName, String whoseTurnText) {
+        hogre.getSpelarnamn().setText("Eg er " + myPlayerName + ", og det er " + whoseTurnText + ".");
 	}
 
     public JTextField getSpelarnamn() { return hogre.getSpelarnamn(); }

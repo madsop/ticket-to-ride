@@ -31,7 +31,7 @@ public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler 
 		initialiseCards();
 		for (int startkortPosisjon = 0; startkortPosisjon < Konstantar.ANTAL_STARTKORT; startkortPosisjon++) {
 			Farge trekt = drawRandomCardFromTheDeck();
-			cards.put(trekt, cards.get(trekt)+1);
+			cards.put(trekt, cards.get(trekt)+1); //todo denne feilar som berre pokker..hmm
 		}
 	}
 

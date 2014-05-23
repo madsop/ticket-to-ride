@@ -28,19 +28,20 @@ public class WrapperKortListener implements ActionListener{
 
 	public void actionPerformed(ActionEvent arg0) {
 		try {
-			if (hovud.isNetworkGame() && (!hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn())) ) {
-				JOptionPane.showMessageDialog(frame, "Det er ikkje din tur!");
-				return;
-			}
-		} catch (RemoteException e1) {
-			e1.printStackTrace();
+			buttonPressed(arg0);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void buttonPressed(ActionEvent arg0) throws RemoteException {
+		if (nett && (!hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn())) ) {
+			JOptionPane.showMessageDialog(frame, "Det er ikkje din tur!");
+			return;
+			
 		}
 		if (arg0.getSource() == kortBunke) {
-			try {
-				new CardDeckHandler(hovud);
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
+			new CardDeckHandler(hovud);
 		}
 		else if (arg0.getSource() == kortButtons[0]) {
 			createButtonForRetrievingCardFromTable(0);

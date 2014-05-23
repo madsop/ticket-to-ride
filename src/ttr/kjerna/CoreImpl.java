@@ -88,21 +88,23 @@ public abstract class CoreImpl implements Core {
 	public PlayerAndNetworkWTF getMinSpelar() {
 		return minSpelar;
 	}
-
+	
 	public void settSinTur(PlayerAndNetworkWTF spelar) throws RemoteException {
 		kvenSinTur = spelar;
-		gui.visKvenDetErSinTur(kvenSinTur.getNamn(), isNetworkGame(), minSpelar.getNamn()); //todo minspelar er null init...
+		gui.visKvenDetErSinTur(findPlayerInAction().getNamn(), getWhoseTurnText());
 	}
 
 	public void nesteSpelar() throws RemoteException {
 		kvenSinTur = turhandsamar.nextPlayer(kvenSinTur,minSpelar);
 
 		markIfItIsMyTurn();
-		gui.visKvenDetErSinTur(kvenSinTur.getNamn(), isNetworkGame(), minSpelar.getNamn());
+		gui.visKvenDetErSinTur(findPlayerInAction().getNamn(), getWhoseTurnText());
 		kvenSinTur.setEittKortTrektInn(false);
 
 		communicationWithPlayers.sjekkOmFerdig(gui.getMeldingarModell(),kvenSinTur,gameVersion.toString(),minSpelar,rutehandsamar.getRoutes());
 	}
+	
+	protected abstract String getWhoseTurnText() throws RemoteException;
 
 	private void markIfItIsMyTurn() throws RemoteException {
 		if (kvenSinTur.getNamn().equals(minSpelar.getNamn())) {
@@ -143,7 +145,7 @@ public abstract class CoreImpl implements Core {
 	
 	protected abstract void createTable() throws RemoteException;
 
-	private void hjelpemetodeBygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF byggjandeSpelar, int jokrar) throws RemoteException{
+	private void hjelpemetodeBygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF byggjandeSpelar, int jokrar) throws RemoteException {
 		rutehandsamar.newRoute(bygd);
 
 		messageUsersInNetworkGame(bygd, byggjandeSpelar);
@@ -157,14 +159,7 @@ public abstract class CoreImpl implements Core {
 
 	}
 
-	private void messageUsersInNetworkGame(Route builtRoute, PlayerAndNetworkWTF buildingPlayer) throws RemoteException {
-		if (isNetworkGame()) {
-			for (PlayerAndNetworkWTF player : players) {
-				player.nybygdRute(builtRoute.getRouteId(),buildingPlayer);
-				player.setTogAtt(buildingPlayer.getSpelarNummer()+1, buildingPlayer.getGjenverandeTog());
-			}
-		}
-	}
+	protected abstract void messageUsersInNetworkGame(Route bygd, PlayerAndNetworkWTF byggjandeSpelar) throws RemoteException;
 
 	private void updateDeckOnTable(Farge colour, int kortKrevd, int krevdJokrar, int jokrar) {
 		table.addCardsToDeck(colour, kortKrevd-(jokrar-krevdJokrar));

@@ -7,6 +7,8 @@ import ttr.kjerna.Core;
 
 import javax.swing.*;
 
+import com.google.inject.Inject;
+
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -16,10 +18,9 @@ public class Meldingspanel extends JPanel implements PropertyChangeListener, IMe
 	
 	private MeldingarModell messagemodel;
     private final JList<String> messages;
-    private final boolean isNetworkGame; //TODO denne skal da ikkje måtte trengs her
-
-    public Meldingspanel(boolean isNetworkGame) {
-        this.isNetworkGame = isNetworkGame;
+    
+    @Inject
+    public Meldingspanel() {
         messages = initialiseMessagePanel();
         setUpGUI();
     }
@@ -42,7 +43,7 @@ public class Meldingspanel extends JPanel implements PropertyChangeListener, IMe
     
     public void prepareChat(Core hovud){
         JTextField chat = new JTextField(Infostrengar.starttekst);
-        chat.addKeyListener(new ChatListener(isNetworkGame, chat, messagemodel, hovud));
+        chat.addKeyListener(new ChatListener(chat, messagemodel, hovud));
         chat.setPreferredSize(Konstantar.CHATDIM);
         this.add(chat);
     }

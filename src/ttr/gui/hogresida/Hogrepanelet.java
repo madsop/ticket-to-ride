@@ -127,7 +127,8 @@ public class Hogrepanelet extends JPanel implements IHogrepanelet {
     }
     
     public void addListeners(Core hovud){
-        DelegationListener listener = new DelegationListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
+    	boolean nett = hovud.isNetworkGame();
+        DelegationListener listener = new DelegationListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame, nett);
         trekkOppdrag.addActionListener(listener);
         bygg.addActionListener(listener);
         visMineKort.addActionListener(listener);
@@ -135,7 +136,7 @@ public class Hogrepanelet extends JPanel implements IHogrepanelet {
         visBygde.addActionListener(listener);
 
 
-        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, kortButtons, hovud, frame, hovud.isNetworkGame());
+        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, kortButtons, hovud, frame, nett);
         kortBunke.addActionListener(kortListener);
         for (JButton button : kortButtons){
             button.addActionListener(kortListener);

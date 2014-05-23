@@ -8,6 +8,7 @@ import ttr.gui.IGUI;
 import ttr.nettverk.InitialiserNettverk;
 import ttr.oppdrag.Mission;
 import ttr.oppdrag.MissionHandlerImpl;
+import ttr.rute.Route;
 import ttr.spelar.PlayerAndNetworkWTF;
 import ttr.utgaave.GameVersion;
 
@@ -43,5 +44,17 @@ public class NetworkCore extends CoreImpl {
 	protected void createTable() throws RemoteException {
 		communicationWithPlayers = new CommunicationWithPlayersNetwork(players);
 		turhandsamar = new TurHandsamar(players,true);		
+	}
+
+	protected void messageUsersInNetworkGame(Route builtRoute, PlayerAndNetworkWTF buildingPlayer) throws RemoteException {
+		for (PlayerAndNetworkWTF player : players) {
+			player.nybygdRute(builtRoute.getRouteId(),buildingPlayer);
+			player.setTogAtt(buildingPlayer.getSpelarNummer()+1, buildingPlayer.getGjenverandeTog());
+		}
+	}
+
+	@Override
+	protected String getWhoseTurnText() throws RemoteException {
+		return (minSpelar.equals(kvenSinTur) ? "min tur." : kvenSinTur.getNamn() + " sin tur.");
 	}
 }

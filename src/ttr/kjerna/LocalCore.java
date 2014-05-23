@@ -6,6 +6,7 @@ import ttr.bord.Table;
 import ttr.communicationWithPlayers.CommunicationWithPlayersLocal;
 import ttr.gui.IGUI;
 import ttr.oppdrag.MissionHandlerImpl;
+import ttr.rute.Route;
 import ttr.spelar.PlayerAndNetworkWTF;
 import ttr.utgaave.GameVersion;
 
@@ -39,5 +40,12 @@ public class LocalCore extends CoreImpl {
 		players = communicationWithPlayers.createPlayersForLocalGame(this,table); //todo playes må komme inn i arraylista her på eit vis
 		if (minSpelar == null) {setMinSpelar(players.get(0)); }
 		settSinTur(players.get(0));
+	}
+
+	protected void messageUsersInNetworkGame(Route bygd, PlayerAndNetworkWTF byggjandeSpelar) throws RemoteException { }
+
+	@Override
+	protected String getWhoseTurnText() {
+		return "min tur";
 	}
 }
