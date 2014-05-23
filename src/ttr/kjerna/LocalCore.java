@@ -3,6 +3,7 @@ package ttr.kjerna;
 import java.rmi.RemoteException;
 
 import ttr.bord.Table;
+import ttr.communicationWithPlayers.CommunicationWithPlayersLocal;
 import ttr.gui.IGUI;
 import ttr.oppdrag.MissionHandlerImpl;
 import ttr.spelar.PlayerAndNetworkWTF;

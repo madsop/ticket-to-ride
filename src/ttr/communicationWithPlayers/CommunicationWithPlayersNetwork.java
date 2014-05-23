@@ -1,4 +1,4 @@
-package ttr.kjerna;
+package ttr.communicationWithPlayers;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import ttr.data.Farge;
 import ttr.data.IMeldingarModell;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
+import ttr.kjerna.Core;
 import ttr.rute.Route;
 import ttr.spelar.PlayerAndNetworkWTF;
 

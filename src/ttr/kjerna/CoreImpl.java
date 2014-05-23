@@ -4,6 +4,7 @@ import ttr.bord.Table;
 import ttr.bygg.ByggHjelpar;
 import ttr.bygg.IByggHjelpar;
 import ttr.bygg.ByggjandeInfo;
+import ttr.communicationWithPlayers.CommunicationWithPlayers;
 import ttr.data.Farge;
 import ttr.gui.IGUI;
 import ttr.oppdrag.Mission;

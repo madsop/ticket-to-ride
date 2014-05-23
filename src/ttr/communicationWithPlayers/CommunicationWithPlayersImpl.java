@@ -1,7 +1,8 @@
-package ttr.kjerna;
+package ttr.communicationWithPlayers;
 
 import ttr.bord.Table;
 import ttr.data.*;
+import ttr.kjerna.Core;
 import ttr.rute.Route;
 import ttr.spelar.PlayerAndNetworkWTF;
 import ttr.utgaave.nordic.Nordic;
