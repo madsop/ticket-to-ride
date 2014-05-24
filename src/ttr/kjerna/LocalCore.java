@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import ttr.bord.Table;
 import ttr.communicationWithPlayers.CommunicationWithPlayersLocal;
 import ttr.gui.GUI;
-import ttr.oppdrag.MissionHandlerImpl;
+import ttr.oppdrag.MissionHandler;
 import ttr.rute.Route;
 import ttr.spelar.PlayerAndNetworkWTF;
 import ttr.turhandsamar.TurHandsamarLocal;
@@ -18,7 +18,7 @@ public class LocalCore extends Core {
 
 	public void settIGangSpelet(String hostAddress) throws RemoteException {
 		for (PlayerAndNetworkWTF player : players) {
-			MissionHandlerImpl.trekkOppdrag(gui, player, true);
+			MissionHandler.trekkOppdrag(gui, player, true);
 		}
 		// ??
 	}

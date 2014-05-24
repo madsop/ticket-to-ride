@@ -9,7 +9,7 @@ import ttr.data.Konstantar;
 import ttr.gui.GUI;
 import ttr.nettverk.InitialiserNettverk;
 import ttr.oppdrag.Mission;
-import ttr.oppdrag.MissionHandlerImpl;
+import ttr.oppdrag.MissionHandler;
 import ttr.rute.Route;
 import ttr.spelar.PlayerAndNetworkWTF;
 import ttr.turhandsamar.TurHandsamarNetwork;
@@ -23,7 +23,7 @@ public class NetworkCore extends Core {
 	public void settIGangSpelet(String hostAddress) throws RemoteException {
 		InitialiserNettverk nettverk = new InitialiserNettverk(gui, hostAddress, this);
 		nettverk.initialiseNetworkGame();
-		MissionHandlerImpl.trekkOppdrag(gui, minSpelar, true);
+		MissionHandler.trekkOppdrag(gui, minSpelar, true);
 
 		givePlayersMissions();
 	}

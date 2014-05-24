@@ -7,13 +7,13 @@ import javax.swing.*;
 
 class ShowBuiltRoutesHandler {
 	public ShowBuiltRoutesHandler(Core hovud, JFrame frame) {
-		if (hovud.getAlleBygdeRuter().size() <= 0) {             
+		if (hovud.routeHandler_getAlleBygdeRuter().size() <= 0) {             
 			JOptionPane.showMessageDialog(frame, "Det er ikkje bygd noka rute enno. Bli den første!");
 			return;
 		}
 
 		JPanel bygde = new JPanel();
-		JList<Object> bygd = new JList<>(hovud.getAlleBygdeRuter().toArray());
+		JList<Object> bygd = new JList<>(hovud.routeHandler_getAlleBygdeRuter().toArray());
 
 		/*	if (hovud.isNett()){
                // Finn spel-verten

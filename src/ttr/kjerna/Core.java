@@ -8,7 +8,6 @@ import ttr.data.Colour;
 import ttr.gui.GUI;
 import ttr.oppdrag.Mission;
 import ttr.oppdrag.MissionHandler;
-import ttr.oppdrag.MissionHandlerImpl;
 import ttr.rute.Route;
 import ttr.rute.RouteHandler;
 import ttr.rute.RouteHandlerImpl;
@@ -42,7 +41,7 @@ public abstract class Core {
 		this.table = table;
 		players = new ArrayList<>();
 		rutehandsamar = new RouteHandlerImpl(gameVersion);
-		oppdragshandsamar = new MissionHandlerImpl(gameVersion.getOppdrag());		// Legg til oppdrag
+		oppdragshandsamar = new MissionHandler(gameVersion.getOppdrag());		// Legg til oppdrag
 		bygghjelpar = new ByggHjelpar(gui);
 		createTable();
 	}
@@ -138,15 +137,11 @@ public abstract class Core {
 	
 
 	public Mission missionHandler_trekkOppdragskort() throws RemoteException  { //TODO flytt vidare inn i oppdragshandsamar
-		if (oppdragshandsamar.getNumberOfRemainingMissions() > 0) {
-			return oppdragshandsamar.getMissionAndRemoveItFromDeck();
-			//System.out.println(trekt.getDestinasjonar().toArray()[1]);
-		}
-		return null;
+		return oppdragshandsamar.trekkOppdragskort();
 	}
 
 	public void missionHandler_removeChosenMissionFromDeck(Mission mission) throws RemoteException { //TODO flytt vidare inn i oppdragshandsamar?
-		oppdragshandsamar.getRemainingMissions().remove(mission);
+		oppdragshandsamar.removeChosenMissionFromDeck(mission);
 	}
 
 	public void routeHandler_nybygdRute(Route route, PlayerAndNetworkWTF byggjandeSpelar) { //TODO vidare ned til rutehandsamar
@@ -158,7 +153,7 @@ public abstract class Core {
 		return rutehandsamar.findRoutesNotYetBuilt(players);
 	}
 
-	public Set<Route> getAlleBygdeRuter() {
+	public Set<Route> routeHandler_getAlleBygdeRuter() {
 		return rutehandsamar.getBuiltRoutes();
 	}
 }
