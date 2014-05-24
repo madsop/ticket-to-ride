@@ -6,8 +6,8 @@ import java.util.Collection;
 import java.util.Set;
 
 import ttr.bord.Table;
-import ttr.data.Farge;
-import ttr.data.IMeldingarModell;
+import ttr.data.Colour;
+import ttr.data.MeldingarModell;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.kjerna.Core;
@@ -19,22 +19,22 @@ public class CommunicationWithPlayersNetwork extends CommunicationWithPlayersImp
 		super(spelarar);
 	}
 
-	public void updateOtherPlayers(Farge colour, int kortKrevd, int numberOfJokers, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException {				
+	public void updateOtherPlayers(Colour colour, int kortKrevd, int numberOfJokers, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException {				
 		for (PlayerAndNetworkWTF player : players) {
 			player.putCardsInDeck(colour, (kortKrevd-(numberOfJokers-krevdJokrar)));
-			player.putCardsInDeck(Farge.valfri, numberOfJokers);
+			player.putCardsInDeck(Colour.valfri, numberOfJokers);
 			player.receiveMessage(byggjandeNamn + " bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
 		}
 	}
 
 	@Override
-	protected void orientNetwork(IMeldingarModell meldingarModell, PlayerAndNetworkWTF playerWithMostMissionsAccomplished, int bestNumberOfMissionsAccomplished) 
+	protected void orientNetwork(MeldingarModell meldingarModell, PlayerAndNetworkWTF playerWithMostMissionsAccomplished, int bestNumberOfMissionsAccomplished) 
 			throws RemoteException {
 		meldingarModell.nyMelding(playerWithMostMissionsAccomplished.getNamn() + " klarte flest oppdrag, " + bestNumberOfMissionsAccomplished);
 	}
 
 	@Override
-	public void sjekkOmFerdig(IMeldingarModell meldingarModell, PlayerAndNetworkWTF kvenSinTur, String speltittel, PlayerAndNetworkWTF minSpelar, Set<Route> ruter) throws RemoteException{
+	public void sjekkOmFerdig(MeldingarModell meldingarModell, PlayerAndNetworkWTF kvenSinTur, String speltittel, PlayerAndNetworkWTF minSpelar, Set<Route> ruter) throws RemoteException{
 		if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
 			orientPlayersThatTheGameIsOver(meldingarModell);
 
@@ -58,7 +58,7 @@ public class CommunicationWithPlayersNetwork extends CommunicationWithPlayersImp
 		}
 	}
 	
-	protected void orientOthers(IMeldingarModell meldingarModell) {
+	protected void orientOthers(MeldingarModell meldingarModell) {
 		meldingarModell.nyMelding(Infostrengar.SpeletErFerdig);
 	}
 	
@@ -68,7 +68,7 @@ public class CommunicationWithPlayersNetwork extends CommunicationWithPlayersImp
 	}
 	
 
-	public void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Farge nyFarge, int position, Core hovud) throws RemoteException{
+	public void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Colour nyFarge, int position, Core hovud) throws RemoteException{
 		if (iAmHost(host, hovud)){
 			orientPlayersAboutNewCardOnTable(nyFarge, position, hovud.getSpelarar());
 		}
@@ -81,14 +81,14 @@ public class CommunicationWithPlayersNetwork extends CommunicationWithPlayersImp
 		return vert.getNamn().equals(hovud.getMinSpelar().getNamn());
 	}
 
-	private void orientPlayersAboutNewCardOnTable(Farge nyFarge, int position, Collection<PlayerAndNetworkWTF> players) throws RemoteException {
+	private void orientPlayersAboutNewCardOnTable(Colour nyFarge, int position, Collection<PlayerAndNetworkWTF> players) throws RemoteException {
 		for (PlayerAndNetworkWTF player : players){
 			// metode for å legge kortet host nettopp trakk på plass i på bordet hos spelar s
 			player.putCardOnTable(nyFarge,position);
 		}
 	}
 
-	private void orientPlayersAndHostAboutNewCardOnTable(PlayerAndNetworkWTF host, Farge nyFarge, int position, ArrayList<PlayerAndNetworkWTF> players, PlayerAndNetworkWTF myPlayer) throws RemoteException {
+	private void orientPlayersAndHostAboutNewCardOnTable(PlayerAndNetworkWTF host, Colour nyFarge, int position, ArrayList<PlayerAndNetworkWTF> players, PlayerAndNetworkWTF myPlayer) throws RemoteException {
 		myPlayer.putCardOnTable(nyFarge, position);
 		for (PlayerAndNetworkWTF player : players){
 			if (!host.getNamn().equals(player.getNamn())){

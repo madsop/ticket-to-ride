@@ -9,7 +9,6 @@ import ttr.bord.Table;
 import ttr.data.Konstantar;
 import ttr.kjerna.Core;
 import ttr.oppdrag.PlayerMissionHandler;
-import ttr.oppdrag.PlayerMissionHandler;
 import ttr.rute.Route;
 
 public abstract class PlayerImpl extends UnicastRemoteObject {
@@ -54,7 +53,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 		return einValdAllereie;
 	}
 
-	public void setTogAtt(int position, int numberOfTrains) { hovud.displayNumberOfRemainingTrains(position, numberOfTrains);	}
+	public void setTogAtt(int position, int numberOfTrains) { hovud.displayNumberOfRemainingTrains(position, numberOfTrains); }
 	public void setSpelarNummer(int nummer) { spelarNummer = nummer; }
 	public int getSpelarteljar() { return spelarteljar; }
 	public void setSpelarteljar(int teljar) { spelarteljar = teljar; }

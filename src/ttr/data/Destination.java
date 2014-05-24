@@ -1,6 +1,6 @@
 package ttr.data;
 
-public enum Destinasjon {
+public enum Destination {
 	
 	/**
 	 * Nordic

@@ -1,35 +1,35 @@
 package ttr.bord;
 
-import ttr.data.Farge;
+import ttr.data.Colour;
 import ttr.data.Konstantar;
 
 public class CardsOnTable {
-    private Farge[] cardsOpenOnTable;
+    private Colour[] cardsOpenOnTable;
 
     public CardsOnTable() {
-    	cardsOpenOnTable = new Farge[Konstantar.ANTAL_KORT_PÅ_BORDET];
+    	cardsOpenOnTable = new Colour[Konstantar.ANTAL_KORT_PÅ_BORDET];
 	}
 
-	Farge[] getCardsOpenOnTable() {
+	Colour[] getCardsOpenOnTable() {
 		return cardsOpenOnTable;
 	}
 
-	void setCardsOpenOnTable(Farge[] cardsOpenOnTable) {
+	void setCardsOpenOnTable(Colour[] cardsOpenOnTable) {
 		this.cardsOpenOnTable = cardsOpenOnTable;
 	}
 	
-	Farge getCardAt(int position) {
+	Colour getCardAt(int position) {
 		return cardsOpenOnTable[position];
 	}
 	
-	void putCardOnTable(int position, Farge colour) {
+	void putCardOnTable(int position, Colour colour) {
 		cardsOpenOnTable[position] = colour;
 	}
 
 	boolean areThereTooManyJokersOnTable() {
 		int jokrar = 0;
-		for (Farge f : cardsOpenOnTable) {
-			if (f == Farge.valfri) {
+		for (Colour f : cardsOpenOnTable) {
+			if (f == Colour.valfri) {
 				jokrar++;
 			}
 		}

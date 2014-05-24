@@ -1,15 +1,15 @@
 package ttr.bord;
 
-import ttr.data.Farge;
+import ttr.data.Colour;
 import ttr.data.Konstantar;
-import ttr.gui.IGUI;
+import ttr.gui.GUI;
 
 public class Table {
-    private final IGUI gui;
+    private final GUI gui;
 	private Deck deck;
 	private CardsOnTable cardsOnTable;
     
-    public Table(IGUI gui, boolean nett, Deck deck) {
+    public Table(GUI gui, boolean nett, Deck deck) {
         this.gui = gui;
         this.deck = deck;
         this.cardsOnTable = new CardsOnTable();
@@ -19,7 +19,7 @@ public class Table {
         }
     }
 
-	public void setPaaBordet(Farge[] paaBordet) {
+	public void setPaaBordet(Colour[] paaBordet) {
 		this.setCardsOpenOnTable(paaBordet);
 
 		for (int position = 0; position < paaBordet.length; position++){
@@ -27,7 +27,7 @@ public class Table {
 		}
 	}
 
-    public void putOneCardOnTable(Farge colour, int position) {
+    public void putOneCardOnTable(Colour colour, int position) {
 		cardsOnTable.putCardOnTable(position, colour);
 		deck.removeCardFromDeck(colour);
 		gui.drawCardsOnTable(position, colour);
@@ -39,18 +39,18 @@ public class Table {
 		}
 	}
 
-	public Farge[] getPaaBordet() {
+	public Colour[] getPaaBordet() {
 		return cardsOnTable.getCardsOpenOnTable();
 	}
 	
-	public Farge getRandomCardFromTheDeckAndPutOnTable(int position) {
-		Farge colour = getRandomCardFromTheDeck(position);
+	public Colour getRandomCardFromTheDeckAndPutOnTable(int position) {
+		Colour colour = getRandomCardFromTheDeck(position);
 		putCardOnTable(position, colour);
 		return colour;
 	}
 
-	public Farge getRandomCardFromTheDeck(int plass) {
-		Farge randomColour = deck.getCardInRandomColourFromTheDeck();
+	public Colour getRandomCardFromTheDeck(int plass) {
+		Colour randomColour = deck.getCardInRandomColourFromTheDeck();
 		if (randomColour == null) {
 			System.out.println("stokk!");
 			return null;
@@ -62,7 +62,7 @@ public class Table {
     	putCardOnTable(position, Konstantar.FARGAR[counter]);
     }
     
-    private void putCardOnTable(int position, Farge colour) {
+    private void putCardOnTable(int position, Colour colour) {
 		if (colour != null) {	
 			cardsOnTable.putCardOnTable(position, colour);
 			deck.removeCardFromDeck(colour);
@@ -78,7 +78,7 @@ public class Table {
 		return cardsOnTable.areThereTooManyJokersOnTable();
     }
 
-	public void addCardsToDeck(Farge colour, int number) {
+	public void addCardsToDeck(Colour colour, int number) {
 		deck.addCards(colour, number);		
 	}
 
@@ -90,15 +90,15 @@ public class Table {
 		return deck.areThereAnyCardsLeftInDeck();
 	}
 
-	private void setCardsOpenOnTable(Farge[] cardsOpenOnTable) {
+	private void setCardsOpenOnTable(Colour[] cardsOpenOnTable) {
 		cardsOnTable.setCardsOpenOnTable(cardsOpenOnTable);
 	}
 
-	public Farge getCardFromTable(int positionOnTable) {
+	public Colour getCardFromTable(int positionOnTable) {
 		return cardsOnTable.getCardAt(positionOnTable);
 	}
 
-	public void updateDeckOnTable(Farge colour, int kortKrevd, int krevdJokrar, int jokrar) {
+	public void updateDeckOnTable(Colour colour, int kortKrevd, int krevdJokrar, int jokrar) {
 		addCardsToDeck(colour, kortKrevd - (jokrar - krevdJokrar));
 		addJokersToDeck(jokrar);
 	}

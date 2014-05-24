@@ -1,7 +1,7 @@
 package ttr.data;
 
 
-public enum Farge {
+public enum Colour {
     blå, raud, kvit, svart, gul, grønn, oransje, lilla, valfri
 }
 

@@ -4,8 +4,8 @@ import ttr.bord.Table;
 import ttr.bygg.ByggHjelpar;
 import ttr.bygg.ByggjandeInfo;
 import ttr.communicationWithPlayers.CommunicationWithPlayers;
-import ttr.data.Farge;
-import ttr.gui.IGUI;
+import ttr.data.Colour;
+import ttr.gui.GUI;
 import ttr.oppdrag.Mission;
 import ttr.oppdrag.MissionHandler;
 import ttr.oppdrag.MissionHandlerImpl;
@@ -26,7 +26,7 @@ public abstract class Core {
 	private final GameVersion gameVersion;
 	protected final Table table;
 	protected ArrayList<PlayerAndNetworkWTF> players;
-	protected final IGUI gui;
+	protected final GUI gui;
 
 	protected PlayerAndNetworkWTF kvenSinTur;
 	protected PlayerAndNetworkWTF minSpelar;
@@ -36,7 +36,7 @@ public abstract class Core {
 	protected TurHandsamar turhandsamar;
 	private ByggHjelpar bygghjelpar;
 
-	public Core(IGUI gui, Table table, GameVersion gameVersion) throws RemoteException {
+	public Core(GUI gui, Table table, GameVersion gameVersion) throws RemoteException {
 		this.gui = gui;
 		this.gameVersion = gameVersion;
 		this.table = table;
@@ -92,26 +92,26 @@ public abstract class Core {
 		}
 	}
 	
-	public void bygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar) throws RemoteException {
+	public void bygg(Route bygd, Colour colour, int kortKrevd, int krevdJokrar) throws RemoteException {
 		ByggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd,colour,kortKrevd,krevdJokrar,findPlayerInAction());
 		if (byggjandeInfo == null) { return; }		 // TODO betre tilbakemelding her
 		hjelpemetodeBygg(bygd, colour, kortKrevd, krevdJokrar, byggjandeInfo.byggjandeSpelar, byggjandeInfo.jokrar);
 	}
 
 	//TODO kanskje byggTunnel og bygg bør smelte saman...
-	public void byggTunnel(Route bygd, Farge colour, int kortKrevd, int krevdJokrar) throws RemoteException {
+	public void byggTunnel(Route bygd, Colour colour, int kortKrevd, int krevdJokrar) throws RemoteException {
 		ByggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(table, bygd, colour, kortKrevd, krevdJokrar, findPlayerInAction());
 		if (byggjandeInfo == null) { return; }		 // TODO betre tilbakemelding her
 		hjelpemetodeBygg(bygd, colour, kortKrevd, krevdJokrar, byggjandeInfo.byggjandeSpelar, byggjandeInfo.jokrar);
 	}
 
-	public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Farge f) throws RemoteException {
+	public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Colour f) throws RemoteException {
 		communicationWithPlayers.sendMessageAboutCard(kort, tilfeldig, f, kvenSinTur.getNamn(), this);
 	}
 
 	protected abstract void createTable() throws RemoteException;
 
-	private void hjelpemetodeBygg(Route bygd, Farge colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF byggjandeSpelar, int jokrar) throws RemoteException {
+	private void hjelpemetodeBygg(Route bygd, Colour colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF byggjandeSpelar, int jokrar) throws RemoteException {
 		rutehandsamar.newRoute(bygd);
 		messageUsersInNetworkGame(bygd, byggjandeSpelar);
 		gui.getRemainingTrainsLabel()[byggjandeSpelar.getSpelarNummer()+1].setText(String.valueOf(byggjandeSpelar.getGjenverandeTog()));

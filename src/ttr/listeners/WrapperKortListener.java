@@ -1,6 +1,6 @@
 package ttr.listeners;
 
-import ttr.data.Farge;
+import ttr.data.Colour;
 import ttr.kjerna.Core;
 import ttr.spelar.PlayerAndNetworkWTF;
 
@@ -67,7 +67,7 @@ public class WrapperKortListener implements ActionListener{
 	}
 
 	private void retrieveOneCardFromTheTable(int positionOnTable,PlayerAndNetworkWTF kvenSinTur) throws RemoteException {
-		Farge colour = hovud.getTable().getCardFromTable(positionOnTable);
+		Colour colour = hovud.getTable().getCardFromTable(positionOnTable);
 		if (colour == null) { return; }
 		if (kvenSinTur.hasAlreadyDrawnOneCard()) {
 			retrieveSecondCard(positionOnTable, kvenSinTur, colour);
@@ -77,8 +77,8 @@ public class WrapperKortListener implements ActionListener{
 		}
 	}
 
-	private void retrieveSecondCard(int positionOnTable, PlayerAndNetworkWTF kvenSinTur, Farge colour) throws RemoteException {
-		if (colour == Farge.valfri) {
+	private void retrieveSecondCard(int positionOnTable, PlayerAndNetworkWTF kvenSinTur, Colour colour) throws RemoteException {
+		if (colour == Colour.valfri) {
 			JOptionPane.showMessageDialog(frame, "Haha. Nice try. Du kan ikkje ta ein joker frå bordet når du allereie har trekt inn eitt kort");
 			return;
 		}
@@ -87,16 +87,16 @@ public class WrapperKortListener implements ActionListener{
 		hovud.nesteSpelar();
 	}
 
-	private void retrieveFirstCard(int positionOnTable, PlayerAndNetworkWTF kvenSinTur, Farge colour) throws RemoteException {
+	private void retrieveFirstCard(int positionOnTable, PlayerAndNetworkWTF kvenSinTur, Colour colour) throws RemoteException {
 		kvenSinTur.receiveCard(colour);
 		putRandomCardFromTheDeckOnTable(positionOnTable, colour);
-		if (colour == Farge.valfri) {
+		if (colour == Colour.valfri) {
 			hovud.nesteSpelar();
 		}
 		kvenSinTur.setEittKortTrektInn(true);
 	}
 
-	private void putRandomCardFromTheDeckOnTable(int positionOnTable, Farge colour) throws RemoteException {
+	private void putRandomCardFromTheDeckOnTable(int positionOnTable, Colour colour) throws RemoteException {
 		hovud.sendMessageAboutCard(true,false,colour);
 		hovud.getTable().getRandomCardFromTheDeckAndPutOnTable(positionOnTable);
 	}

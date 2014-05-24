@@ -4,10 +4,11 @@ import javax.swing.*;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class MeldingarModell extends AbstractListModel<String> implements IMeldingarModell {
+public class MeldingarModell extends AbstractListModel<String> implements Serializable {
 	private static final long serialVersionUID = -6448830036131823839L;
 	private final PropertyChangeSupport pcs;
 	private final ArrayList<String> meldingar;

@@ -6,7 +6,6 @@ import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.gui.*;
 import ttr.gui.hogresida.Hogrepanelet;
-import ttr.gui.hogresida.IHogrepanelet;
 import ttr.gui.hogresida.Meldingspanel;
 import ttr.kjerna.Core;
 import ttr.kjerna.LocalCore;
@@ -42,7 +41,7 @@ public class Main {
 	       
         GameVersion gameVersion = chooseGameVersion(frame);
         boolean isNetworkGame = (JOptionPane.showConfirmDialog(null, Infostrengar.velOmNettverkEllerIkkje) == JOptionPane.YES_OPTION);
-        IGUI gui = setUpGUI(gameVersion,frame);
+        GUI gui = setUpGUI(gameVersion,frame);
         Table table = new Table(gui,isNetworkGame, injector.getInstance(Deck.class));
         
         Core core = isNetworkGame ? new NetworkCore(gui, table, gameVersion) : new LocalCore(gui, table, gameVersion);
@@ -65,17 +64,17 @@ public class Main {
         return gameVersions[chosenGameID];
     }
     
-    private IGUI setUpGUI(GameVersion gameVersion, JFrame frame) {
+    private GUI setUpGUI(GameVersion gameVersion, JFrame frame) {
         ImagePanel picturePanel = new ImagePanelImpl(gameVersion);
         MissionChooser missionChooser = new MissionChooser(gameVersion,frame);
 
-        IHogrepanelet rightpanel = new Hogrepanelet(frame);
-        IGUI gui = new GUI(picturePanel,missionChooser, injector.getInstance(Meldingspanel.class), rightpanel);        // TODO: dependency injection	
+        Hogrepanelet rightpanel = new Hogrepanelet(frame);
+        GUI gui = new GUI(picturePanel,missionChooser, injector.getInstance(Meldingspanel.class), rightpanel);        // TODO: dependency injection	
         setUpJFrame(gameVersion, frame, gui);
         return gui;
     }
 
-	private void setUpJFrame(GameVersion utgaave, JFrame frame, IGUI gui) {
+	private void setUpJFrame(GameVersion utgaave, JFrame frame, GUI gui) {
 		frame.setTitle(frame.getTitle() + " - " +utgaave);
         frame.setPreferredSize(Konstantar.VINDUSSTORLEIK);
         frame.setContentPane((Container) gui);

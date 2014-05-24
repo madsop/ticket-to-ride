@@ -4,7 +4,7 @@ import java.rmi.RemoteException;
 
 import ttr.bord.Table;
 import ttr.communicationWithPlayers.CommunicationWithPlayersLocal;
-import ttr.gui.IGUI;
+import ttr.gui.GUI;
 import ttr.oppdrag.MissionHandlerImpl;
 import ttr.rute.Route;
 import ttr.spelar.PlayerAndNetworkWTF;
@@ -12,7 +12,7 @@ import ttr.turhandsamar.TurHandsamarLocal;
 import ttr.utgaave.GameVersion;
 
 public class LocalCore extends Core {
-	public LocalCore(IGUI gui, Table table, GameVersion gameVersion) throws RemoteException {
+	public LocalCore(GUI gui, Table table, GameVersion gameVersion) throws RemoteException {
 		super(gui, table, gameVersion);
 	}
 

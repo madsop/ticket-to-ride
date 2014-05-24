@@ -1,18 +1,18 @@
 package ttr.spelar;
 
-import ttr.data.Farge;
+import ttr.data.Colour;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface CardHandler extends Remote {
-    Farge getRandomCardFromTheDeck(int i) throws RemoteException;
+    Colour getRandomCardFromTheDeck(int i) throws RemoteException;
 
-    void receiveCard(Farge farge) throws RemoteException;
+    void receiveCard(Colour farge) throws RemoteException;
 
-    Farge drawRandomCardFromTheDeck() throws RemoteException;
+    Colour drawRandomCardFromTheDeck() throws RemoteException;
 
-	int getNumberOfCardsLeftInColour(Farge colour) throws RemoteException;
+	int getNumberOfCardsLeftInColour(Colour colour) throws RemoteException;
 	
-	void decrementCardsAt(Farge colour, int number) throws RemoteException;
+	void decrementCardsAt(Colour colour, int number) throws RemoteException;
 }

@@ -1,6 +1,6 @@
 package ttr.spelar;
 
-import ttr.data.Farge;
+import ttr.data.Colour;
 import ttr.data.Konstantar;
 import ttr.kjerna.Core;
 
@@ -12,7 +12,7 @@ import java.util.Map;
 public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler {
 	private static final long serialVersionUID = 3899317463384337994L;
 	private Core hovud;
-	private Map<Farge, Integer> cards;
+	private Map<Colour, Integer> cards;
 
 	CardHandlerImpl(Core hovud) throws RemoteException {
 		super();
@@ -22,7 +22,7 @@ public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler 
 
 	private void initialiseCards() {
 		cards = new HashMap<>();
-		for (Farge colour : Farge.values()) {
+		for (Colour colour : Colour.values()) {
 			cards.put(colour, 0);
 		}
 	}
@@ -30,13 +30,13 @@ public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler 
 	private void faaInitielleFargekort() {
 		initialiseCards();
 		for (int startkortPosisjon = 0; startkortPosisjon < Konstantar.ANTAL_STARTKORT; startkortPosisjon++) {
-			Farge trekt = drawRandomCardFromTheDeck();
+			Colour trekt = drawRandomCardFromTheDeck();
 			cards.put(trekt, cards.get(trekt)+1); //todo denne feilar som berre pokker..hmm
 		}
 	}
 
-	public Farge getRandomCardFromTheDeck(int positionOnTable) {
-		Farge colourOfTheRandomCard = hovud.getTable().getRandomCardFromTheDeckAndPutOnTable(positionOnTable);
+	public Colour getRandomCardFromTheDeck(int positionOnTable) {
+		Colour colourOfTheRandomCard = hovud.getTable().getRandomCardFromTheDeckAndPutOnTable(positionOnTable);
 
 		if (colourOfTheRandomCard == null){
 			hovud.displayGraphicallyThatThereIsNoCardHere(positionOnTable);
@@ -47,19 +47,19 @@ public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler 
 		return colourOfTheRandomCard;
 	}
 
-	public void receiveCard(Farge colour) {
+	public void receiveCard(Colour colour) {
 		cards.put(colour, cards.get(colour) + 1);
 	}
 
-	public Farge drawRandomCardFromTheDeck() {
+	public Colour drawRandomCardFromTheDeck() {
 		return hovud.getTable().getRandomCardFromTheDeck(0);
 	}
 
-	public int getNumberOfCardsLeftInColour(Farge colour) throws RemoteException {
+	public int getNumberOfCardsLeftInColour(Colour colour) throws RemoteException {
 		return cards.get(colour);
 	}
 
-	public void decrementCardsAt(Farge colour, int number) throws RemoteException {
+	public void decrementCardsAt(Colour colour, int number) throws RemoteException {
 		cards.put(colour, cards.get(colour) - number);
 	}
 }

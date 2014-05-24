@@ -20,28 +20,28 @@ public abstract class CommunicationWithPlayersImpl implements CommunicationWithP
 		this.players = players;
 	}
 
-	public abstract void updateOtherPlayers(Farge colour, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException;
+	public abstract void updateOtherPlayers(Colour colour, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException;
 	public abstract ArrayList<PlayerAndNetworkWTF> createPlayersForLocalGame(Core hovud, Table bord);
-	public abstract void sjekkOmFerdig(IMeldingarModell meldingarModell, PlayerAndNetworkWTF kvenSinTur, String speltittel, PlayerAndNetworkWTF minSpelar, Set<Route> ruter) throws RemoteException;
+	public abstract void sjekkOmFerdig(MeldingarModell meldingarModell, PlayerAndNetworkWTF kvenSinTur, String speltittel, PlayerAndNetworkWTF minSpelar, Set<Route> ruter) throws RemoteException;
 
 
-	protected void orientPlayersThatTheGameIsOver(IMeldingarModell meldingarModell) throws RemoteException {
+	protected void orientPlayersThatTheGameIsOver(MeldingarModell meldingarModell) throws RemoteException {
 		orientOthers(meldingarModell);
 		for (PlayerAndNetworkWTF player : players){
 			player.receiveMessage(Infostrengar.SpeletErFerdig);
 		}
 	}
 	
-	protected abstract void orientOthers(IMeldingarModell meldingarModell);
+	protected abstract void orientOthers(MeldingarModell meldingarModell);
 
 	//TODO Legg inn spelutgaave-spesifikk bonus her - lengst rute for Europe
-	protected void addGameSpecificBonus(IMeldingarModell meldingarModell,	String speltittel, PlayerAndNetworkWTF minSpelar, int[] totalpoeng)	throws RemoteException {
+	protected void addGameSpecificBonus(MeldingarModell meldingarModell,	String speltittel, PlayerAndNetworkWTF minSpelar, int[] totalpoeng)	throws RemoteException {
 		if (speltittel.equals(Nordic.tittel)){
 			finnSpelarSomKlarteFlestOppdrag(totalpoeng,minSpelar,meldingarModell);
 		}
 	}
 
-	private void finnSpelarSomKlarteFlestOppdrag(int[] totalpoeng, PlayerAndNetworkWTF minSpelar, IMeldingarModell meldingarModell) throws RemoteException {
+	private void finnSpelarSomKlarteFlestOppdrag(int[] totalpoeng, PlayerAndNetworkWTF minSpelar, MeldingarModell meldingarModell) throws RemoteException {
 		PlayerAndNetworkWTF playerWithMostMissionsAccomplished = getPlayerWithMostMissionsAccomplished(minSpelar);
 		int bestNumberOfMissionsAccomplished = playerWithMostMissionsAccomplished.getAntalFullfoerteOppdrag();
 		totalpoeng[playerWithMostMissionsAccomplished.getSpelarNummer()] = 10;
@@ -52,7 +52,7 @@ public abstract class CommunicationWithPlayersImpl implements CommunicationWithP
 		}
 	}
 
-	protected abstract void orientNetwork(IMeldingarModell meldingarModell,	PlayerAndNetworkWTF playerWithMostMissionsAccomplished,	int bestNumberOfMissionsAccomplished) throws RemoteException;
+	protected abstract void orientNetwork(MeldingarModell meldingarModell,	PlayerAndNetworkWTF playerWithMostMissionsAccomplished,	int bestNumberOfMissionsAccomplished) throws RemoteException;
 
 	private PlayerAndNetworkWTF getPlayerWithMostMissionsAccomplished(PlayerAndNetworkWTF myPlayer) throws RemoteException {
 		PlayerAndNetworkWTF playerWithMostAccomplishedMissions = myPlayer;
@@ -64,12 +64,12 @@ public abstract class CommunicationWithPlayersImpl implements CommunicationWithP
 		return playerWithMostAccomplishedMissions;
 	}
 
-	protected String informTheOthersAboutMyPoints(IMeldingarModell messagesModel, PlayerAndNetworkWTF myPlayer, int[] totalpoeng) throws RemoteException {
+	protected String informTheOthersAboutMyPoints(MeldingarModell messagesModel, PlayerAndNetworkWTF myPlayer, int[] totalpoeng) throws RemoteException {
 		return " " + orientOthersAboutThisPlayersTotalPoints(totalpoeng, myPlayer, messagesModel);
 	}
 
 
-	protected void avsluttSpeletMedSuksess(PlayerAndNetworkWTF vinnar,String pointsString, IMeldingarModell meldingarModell) throws RemoteException {
+	protected void avsluttSpeletMedSuksess(PlayerAndNetworkWTF vinnar,String pointsString, MeldingarModell meldingarModell) throws RemoteException {
 		String vinnaren = vinnar.getNamn() +" vann spelet, gratulerer!";
 		String poeng = pointsString + vinnaren;
 		meldingarModell.nyMelding(vinnaren);
@@ -80,7 +80,8 @@ public abstract class CommunicationWithPlayersImpl implements CommunicationWithP
 		JOptionPane.showMessageDialog(new JPanel(), poeng);
 	}
 
-	protected PlayerAndNetworkWTF reknUtPoengOgFinnVinnar(int[] totalpoeng, PlayerAndNetworkWTF player, int vinnarpoeng, PlayerAndNetworkWTF currentLeader, IMeldingarModell meldingarModell, Set<Route> ruter) throws RemoteException {
+	protected PlayerAndNetworkWTF reknUtPoengOgFinnVinnar(int[] totalpoeng, PlayerAndNetworkWTF player, int vinnarpoeng, 
+			PlayerAndNetworkWTF currentLeader, MeldingarModell meldingarModell, Set<Route> ruter) throws RemoteException {
 		PlayerAndNetworkWTF leiarNo = currentLeader;
 		int thisPlayersPoints = reknUtPoeng(player,ruter);
 		orientOthersAboutThisPlayersTotalPoints(totalpoeng, player,	meldingarModell);
@@ -95,7 +96,7 @@ public abstract class CommunicationWithPlayersImpl implements CommunicationWithP
 		return poeng;
 	}
 
-	private String orientOthersAboutThisPlayersTotalPoints(int[] totalpoeng, PlayerAndNetworkWTF player, IMeldingarModell meldingarModell) throws RemoteException {
+	private String orientOthersAboutThisPlayersTotalPoints(int[] totalpoeng, PlayerAndNetworkWTF player, MeldingarModell meldingarModell) throws RemoteException {
 		String sp = player.getNamn() + " fekk " + totalpoeng[player.getSpelarNummer()] + " poeng. ";
 		meldingarModell.nyMelding(sp);
 		for (PlayerAndNetworkWTF otherPlayer : players) {
@@ -111,7 +112,7 @@ public abstract class CommunicationWithPlayersImpl implements CommunicationWithP
 		return leiarNo;
 	}
 
-	public void sendMessageAboutCard(boolean card, boolean random, Farge colour, String handlandespelarsNamn, Core hovud) throws RemoteException {
+	public void sendMessageAboutCard(boolean card, boolean random, Colour colour, String handlandespelarsNamn, Core hovud) throws RemoteException {
 		String melding = handlandespelarsNamn + (card ? " trakk inn " + colour +"." : " trakk oppdrag.");
 
 		localOrNetworkSpecificMessageStuff(hovud.getMinSpelar(), melding);
@@ -134,5 +135,5 @@ public abstract class CommunicationWithPlayersImpl implements CommunicationWithP
 		}
 	}
 
-	public abstract void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Farge nyFarge, int position, Core hovud) throws RemoteException;
+	public abstract void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Colour nyFarge, int position, Core hovud) throws RemoteException;
 }

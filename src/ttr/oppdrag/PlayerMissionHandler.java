@@ -1,6 +1,6 @@
 package ttr.oppdrag;
 
-import ttr.data.Destinasjon;
+import ttr.data.Destination;
 import ttr.rute.Route;
 
 import java.rmi.Remote;
@@ -15,7 +15,7 @@ import java.util.Set;
 public class PlayerMissionHandler extends UnicastRemoteObject implements Remote {
 	private static final long serialVersionUID = 5194460142995578869L;
 	private Set<Mission> missions;
-	private Map<Destinasjon, Set<Destinasjon>> mapBetweenAandB;
+	private Map<Destination, Set<Destination>> mapBetweenAandB;
 
 	public PlayerMissionHandler() throws RemoteException {
 		super();
@@ -61,17 +61,17 @@ public class PlayerMissionHandler extends UnicastRemoteObject implements Remote 
 
 	private void initialiseConnectedRoutes() {
 		mapBetweenAandB = new HashMap<>();
-		for (int y = 0; y < Destinasjon.values().length; y++) {
-			mapBetweenAandB.putIfAbsent(Destinasjon.values()[y], new HashSet<>());
+		for (int y = 0; y < Destination.values().length; y++) {
+			mapBetweenAandB.putIfAbsent(Destination.values()[y], new HashSet<>());
 		}
 	}
 
 	private void transitiveClosure() {
 		// Dette er ein implementasjon av Warshallalgoritma, side 553 i Rosen [DiskMat]
 		// Køyretida er på (u)behagelege 2n³, som er tilnærma likt optimalt
-		for (Destinasjon d1 : mapBetweenAandB.keySet()) {
-			for (Destinasjon d2 : mapBetweenAandB.get(d1)) {
-				for (Destinasjon d3 : mapBetweenAandB.get(d2)) {
+		for (Destination d1 : mapBetweenAandB.keySet()) {
+			for (Destination d2 : mapBetweenAandB.get(d1)) {
+				for (Destination d3 : mapBetweenAandB.get(d2)) {
 					if (mapBetweenAandB.get(d1).contains(d2) && mapBetweenAandB.get(d2).contains(d3)) {
 						mapBetweenAandB.get(d1).add(d3);
 					}

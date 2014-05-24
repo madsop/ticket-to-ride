@@ -1,7 +1,7 @@
 package ttr.oppdrag;
 
 import ttr.data.Konstantar;
-import ttr.gui.IGUI;
+import ttr.gui.GUI;
 import ttr.spelar.PlayerAndNetworkWTF;
 
 import java.rmi.RemoteException;
@@ -36,7 +36,7 @@ public class MissionHandlerImpl implements MissionHandler {
 		}
 	}
 
-	public static void trekkOppdrag(IGUI gui, PlayerAndNetworkWTF player, boolean start) throws RemoteException {
+	public static void trekkOppdrag(GUI gui, PlayerAndNetworkWTF player, boolean start) throws RemoteException {
 		int numberOfMissionsToPickFrom = start ? Konstantar.ANTAL_STARTOPPDRAG : Konstantar.ANTAL_VELJEOPPDRAG;
 
 		ArrayList<Mission> missions = chooseMissions(gui, numberOfMissionsToPickFrom, getMissionsToChooseFrom(player, numberOfMissionsToPickFrom));
@@ -54,7 +54,7 @@ public class MissionHandlerImpl implements MissionHandler {
 		return missions;
 	}
 
-	private static ArrayList<Mission> chooseMissions(IGUI gui, int numberOfMissionsToPickFrom, ArrayList<Mission> missions) {
+	private static ArrayList<Mission> chooseMissions(GUI gui, int numberOfMissionsToPickFrom, ArrayList<Mission> missions) {
 		ArrayList<Mission> chosenMissions = new ArrayList<>();
 		while (chosenMissions.size() < numberOfMissionsToPickFrom-2) {
 			chosenMissions = gui.chooseMissions(missions);

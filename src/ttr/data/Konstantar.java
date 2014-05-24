@@ -3,8 +3,8 @@ package ttr.data;
 import java.awt.*;
 
 public class Konstantar {
-	public static final Farge[] FARGAR = {Farge.blå, Farge.raud, Farge.kvit, Farge.svart,
-		Farge.gul, Farge.grønn, Farge.oransje, Farge.lilla, Farge.valfri};
+	public static final Colour[] FARGAR = {Colour.blå, Colour.raud, Colour.kvit, Colour.svart,
+		Colour.gul, Colour.grønn, Colour.oransje, Colour.lilla, Colour.valfri};
 	public static final int ANTAL_KORT_PÅ_BORDET = 5;
 	public static final int ANTAL_AV_KVART_FARGEKORT = 12;
 	public static final int ANTAL_STARTOPPDRAG = 5;
@@ -35,7 +35,7 @@ public class Konstantar {
 	 * @param farge - kva for farge ein skal gjera om
 	 * @return - fargen i Color
 	 */
-	public static Color fargeTilColor(Farge farge) {
+	public static Color fargeTilColor(Colour farge) {
 		Color ret;
 		switch (farge) {
 		case blå:

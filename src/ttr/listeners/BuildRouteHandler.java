@@ -1,6 +1,6 @@
 package ttr.listeners;
 
-import ttr.data.Farge;
+import ttr.data.Colour;
 import ttr.kjerna.Core;
 import ttr.rute.Route;
 import ttr.spelar.PlayerAndNetworkWTF;
@@ -19,7 +19,7 @@ class BuildRouteHandler {
 		if (routeWantedToBuild == null) { return; }
 
 		int normalCardsDemanded = routeWantedToBuild.getLength()-routeWantedToBuild.getNumberOfRequiredJokers();
-		Farge routeColour = routeWantedToBuild.getColour();
+		Colour routeColour = routeWantedToBuild.getColour();
 		int numberOfDemandedJokers = routeWantedToBuild.getNumberOfRequiredJokers();
 		int playersNumberOfJokers = core.findPlayerInAction().getNumberOfRemainingJokers();
 
@@ -28,7 +28,7 @@ class BuildRouteHandler {
 	}
 
 	private void buildRoute(Core core, JFrame frame, Route routeWantedToBuild,	int normalCardsDemanded, 
-			Farge routeColour, int numberOfDemandedJokers, int playersNumberOfJokers) throws RemoteException {
+			Colour routeColour, int numberOfDemandedJokers, int playersNumberOfJokers) throws RemoteException {
 		if (playerCanBuildThisRoute(core.findPlayerInAction(), routeColour, normalCardsDemanded, numberOfDemandedJokers, playersNumberOfJokers) ){
 			buildRoute(core, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, routeColour);
 		}
@@ -42,7 +42,7 @@ class BuildRouteHandler {
 				JOptionPane.QUESTION_MESSAGE, null, ruterArray.toArray(), ruterArray.iterator().next());
 	}
 
-	private void buildRoute(Core hovud, Route routeWantedToBuild, int kortKrevd, int krevdJokrar, Farge colour) throws RemoteException {
+	private void buildRoute(Core hovud, Route routeWantedToBuild, int kortKrevd, int krevdJokrar, Colour colour) throws RemoteException {
 		if (routeWantedToBuild.isTunnel()) {
 			hovud.byggTunnel(routeWantedToBuild, colour, kortKrevd, krevdJokrar);
 		}
@@ -51,7 +51,7 @@ class BuildRouteHandler {
 		}
 	}
 
-	private boolean playerCanBuildThisRoute(PlayerAndNetworkWTF player, Farge routeColour, int kortKrevd, int krevdJokrar, int harjokrar) throws RemoteException {
+	private boolean playerCanBuildThisRoute(PlayerAndNetworkWTF player, Colour routeColour, int kortKrevd, int krevdJokrar, int harjokrar) throws RemoteException {
 		return
 				player.getGjenverandeTog() >= (kortKrevd + krevdJokrar)
 				&& krevdJokrar <= harjokrar; 

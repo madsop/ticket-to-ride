@@ -2,48 +2,48 @@ package ttr.bord;
 
 import java.util.HashMap;
 
-import ttr.data.Farge;
+import ttr.data.Colour;
 import ttr.data.Konstantar;
 
 public class Deck {
-	private HashMap<Farge, Integer> cardsLeft;
+	private HashMap<Colour, Integer> cardsLeft;
 
 	public Deck() {
 		cardsLeft = new HashMap<>();
-		cardsLeft.put(Farge.blå, Konstantar.ANTAL_AV_KVART_FARGEKORT);
-		cardsLeft.put(Farge.grønn, Konstantar.ANTAL_AV_KVART_FARGEKORT);
-		cardsLeft.put(Farge.gul, Konstantar.ANTAL_AV_KVART_FARGEKORT);
-		cardsLeft.put(Farge.kvit, Konstantar.ANTAL_AV_KVART_FARGEKORT);
-		cardsLeft.put(Farge.lilla, Konstantar.ANTAL_AV_KVART_FARGEKORT);
-		cardsLeft.put(Farge.oransje, Konstantar.ANTAL_AV_KVART_FARGEKORT);
-		cardsLeft.put(Farge.raud, Konstantar.ANTAL_AV_KVART_FARGEKORT);
-		cardsLeft.put(Farge.svart, Konstantar.ANTAL_AV_KVART_FARGEKORT);
-		cardsLeft.put(Farge.valfri, Konstantar.ANTAL_AV_KVART_FARGEKORT + 2);
+		cardsLeft.put(Colour.blå, Konstantar.ANTAL_AV_KVART_FARGEKORT);
+		cardsLeft.put(Colour.grønn, Konstantar.ANTAL_AV_KVART_FARGEKORT);
+		cardsLeft.put(Colour.gul, Konstantar.ANTAL_AV_KVART_FARGEKORT);
+		cardsLeft.put(Colour.kvit, Konstantar.ANTAL_AV_KVART_FARGEKORT);
+		cardsLeft.put(Colour.lilla, Konstantar.ANTAL_AV_KVART_FARGEKORT);
+		cardsLeft.put(Colour.oransje, Konstantar.ANTAL_AV_KVART_FARGEKORT);
+		cardsLeft.put(Colour.raud, Konstantar.ANTAL_AV_KVART_FARGEKORT);
+		cardsLeft.put(Colour.svart, Konstantar.ANTAL_AV_KVART_FARGEKORT);
+		cardsLeft.put(Colour.valfri, Konstantar.ANTAL_AV_KVART_FARGEKORT + 2);
 	}
 
-	void removeCardFromDeck(Farge colour) {
+	void removeCardFromDeck(Colour colour) {
 		cardsLeft.put(colour, cardsLeft.get(colour) - 1);
 	}
 
-	int getCardsLeftOfColour(Farge colour) {
+	int getCardsLeftOfColour(Colour colour) {
 		return cardsLeft.get(colour);
 	}
 
-	void addCards(Farge colour, int number) {
+	void addCards(Colour colour, int number) {
 		cardsLeft.put(colour, cardsLeft.get(colour) + number);
 	}
 
 	void addJokers(int jokers) {
-		cardsLeft.put(Farge.valfri, cardsLeft.get(Farge.valfri) + jokers);
+		cardsLeft.put(Colour.valfri, cardsLeft.get(Colour.valfri) + jokers);
 	}
 
-	Farge getCardInRandomColourFromTheDeck() {
+	Colour getCardInRandomColourFromTheDeck() {
 		if (!areThereAnyCardsLeftInDeck()) { return null; }
 		int randomlyChosenCardInDeck = (int) (Math.random() * getNumberOfColouredCardsLeftInDeck());
 
-		Farge colourToReturn = null;
+		Colour colourToReturn = null;
 		int temporaryValue = 0;
-		for (Farge colour : cardsLeft.keySet()) {
+		for (Colour colour : cardsLeft.keySet()) {
 			if (temporaryValue >= randomlyChosenCardInDeck) {
 				break;
 			}

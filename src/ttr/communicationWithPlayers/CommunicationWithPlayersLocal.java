@@ -8,8 +8,8 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 
 import ttr.bord.Table;
-import ttr.data.Farge;
-import ttr.data.IMeldingarModell;
+import ttr.data.Colour;
+import ttr.data.MeldingarModell;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.kjerna.Core;
@@ -32,10 +32,10 @@ public class CommunicationWithPlayersLocal extends CommunicationWithPlayersImpl 
 	
 	
 	@Override
-	public void updateOtherPlayers(Farge colour, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException { }
+	public void updateOtherPlayers(Colour colour, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException { }
 
 	@Override
-	public void sjekkOmFerdig(IMeldingarModell meldingarModell,	PlayerAndNetworkWTF kvenSinTur, String speltittel, PlayerAndNetworkWTF minSpelar, Set<Route> ruter)
+	public void sjekkOmFerdig(MeldingarModell meldingarModell,	PlayerAndNetworkWTF kvenSinTur, String speltittel, PlayerAndNetworkWTF minSpelar, Set<Route> ruter)
 					throws RemoteException {
 		if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
 			orientPlayersThatTheGameIsOver(meldingarModell);
@@ -75,10 +75,10 @@ public class CommunicationWithPlayersLocal extends CommunicationWithPlayersImpl 
 	}
 	
 	@Override
-	protected void orientOthers(IMeldingarModell meldingarModell) { }
+	protected void orientOthers(MeldingarModell meldingarModell) { }
 
 	@Override
-	protected void orientNetwork(IMeldingarModell meldingarModell, PlayerAndNetworkWTF playerWithMostMissionsAccomplished, int bestNumberOfMissionsAccomplished) 
+	protected void orientNetwork(MeldingarModell meldingarModell, PlayerAndNetworkWTF playerWithMostMissionsAccomplished, int bestNumberOfMissionsAccomplished) 
 			throws RemoteException { }
 
 	@Override
@@ -86,6 +86,6 @@ public class CommunicationWithPlayersLocal extends CommunicationWithPlayersImpl 
 			throws RemoteException { }
 
 	@Override
-	public void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Farge nyFarge, int position, Core hovud) throws RemoteException { }
+	public void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Colour nyFarge, int position, Core hovud) throws RemoteException { }
 
 }

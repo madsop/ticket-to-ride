@@ -4,9 +4,9 @@ import java.rmi.RemoteException;
 
 import ttr.bord.Table;
 import ttr.communicationWithPlayers.CommunicationWithPlayersNetwork;
-import ttr.data.Farge;
+import ttr.data.Colour;
 import ttr.data.Konstantar;
-import ttr.gui.IGUI;
+import ttr.gui.GUI;
 import ttr.nettverk.InitialiserNettverk;
 import ttr.oppdrag.Mission;
 import ttr.oppdrag.MissionHandlerImpl;
@@ -16,7 +16,7 @@ import ttr.turhandsamar.TurHandsamarNetwork;
 import ttr.utgaave.GameVersion;
 
 public class NetworkCore extends Core {
-	public NetworkCore(IGUI gui, Table table, GameVersion gameVersion) throws RemoteException  {
+	public NetworkCore(GUI gui, Table table, GameVersion gameVersion) throws RemoteException  {
 		super(gui, table, gameVersion);
 	}
 
@@ -62,7 +62,7 @@ public class NetworkCore extends Core {
 		PlayerAndNetworkWTF host = findHost();
 		
 		if (host != null){
-			Farge newColour = host.getRandomCardFromTheDeck(positionOnTable);
+			Colour newColour = host.getRandomCardFromTheDeck(positionOnTable);
 			while (host.areThereTooManyJokersOnTable()) {
 				newColour = placeNewCardsOnTable(host);
 			}
@@ -83,10 +83,10 @@ public class NetworkCore extends Core {
 		return host;
 	}
 
-	private Farge placeNewCardsOnTable(PlayerAndNetworkWTF host) throws RemoteException {
-		Farge newColour = null;
+	private Colour placeNewCardsOnTable(PlayerAndNetworkWTF host) throws RemoteException {
+		Colour newColour = null;
 		host.leggUtFem();
-		Farge[] cardsOnTable = host.getCardsOnTable();
+		Colour[] cardsOnTable = host.getCardsOnTable();
 
 		for (int plass = 0; plass < Konstantar.ANTAL_KORT_PÅ_BORDET; plass++){
 			newColour = cardsOnTable[plass];
@@ -96,7 +96,7 @@ public class NetworkCore extends Core {
 		return newColour;
 	}
 
-	private void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Farge newColour, int i) throws RemoteException {
+	private void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Colour newColour, int i) throws RemoteException {
 		communicationWithPlayers.newCardPlacedOnTableInNetworkGame(host, newColour, i, this);
 	}
 }

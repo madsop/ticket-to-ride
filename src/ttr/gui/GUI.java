@@ -1,9 +1,9 @@
 package ttr.gui;
 
-import ttr.data.Farge;
-import ttr.data.IMeldingarModell;
-import ttr.gui.hogresida.IHogrepanelet;
-import ttr.gui.hogresida.IMeldingspanel;
+import ttr.data.Colour;
+import ttr.data.MeldingarModell;
+import ttr.gui.hogresida.Hogrepanelet;
+import ttr.gui.hogresida.Meldingspanel;
 import ttr.kjerna.Core;
 import ttr.oppdrag.Mission;
 
@@ -12,14 +12,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class GUI extends JPanel implements IGUI {
+public class GUI extends JPanel {
 	private static final long serialVersionUID = -1540067881602979318L;
-	private final IMeldingspanel messagePanel;
-    private IHogrepanelet right;
+	private final Meldingspanel messagePanel;
+    private Hogrepanelet right;
     private final MissionChooser missionChooser;
 
 
-    public GUI(ImagePanel imagePanel, MissionChooser missionChooser, IMeldingspanel messagePanel, IHogrepanelet right){
+    public GUI(ImagePanel imagePanel, MissionChooser missionChooser, Meldingspanel messagePanel, Hogrepanelet right){
         this.missionChooser = missionChooser;
         this.messagePanel = messagePanel;
         this.right = right;
@@ -49,7 +49,7 @@ public class GUI extends JPanel implements IGUI {
         right.addListeners(core, this);
     }
 
-    public IMeldingarModell getMessagesModel(){ //TODO få bort denne?
+    public MeldingarModell getMessagesModel(){ //TODO få bort denne?
         return messagePanel.getMeldingarModell();
     }
 
@@ -59,7 +59,7 @@ public class GUI extends JPanel implements IGUI {
 
     public JTextField getPlayerNameJTextField() { return right.getSpelarnamn(); }
     public JLabel[] getRemainingTrainsLabel() { return right.getTogAtt(); }
-    public void drawCardsOnTable(int plass, Farge farge){ right.teiknOppKortPåBordet(plass, farge); }
+    public void drawCardsOnTable(int plass, Colour farge){ right.teiknOppKortPåBordet(plass, farge); }
     public JButton[] getCardButtons(){ return right.getKortButtons(); }
 
     public ArrayList<Mission> chooseMissions(ArrayList<Mission> missions) { return missionChooser.setUpMissionChooser(missions); }

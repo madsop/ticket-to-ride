@@ -1,8 +1,8 @@
 package ttr.nettverk;
 
-import ttr.data.Farge;
+import ttr.data.Colour;
 import ttr.data.Konstantar;
-import ttr.gui.IGUI;
+import ttr.gui.GUI;
 import ttr.gui.SwingUtils;
 import ttr.kjerna.Core;
 import ttr.spelar.PlayerAndNetworkWTF;
@@ -20,15 +20,15 @@ public class InitialiserNettverk {
 	//TODO denne klassa treng refaktorisering frå h
 	private final String hostAddress;
 	private final String PORT = "1226";
-	private final IGUI gui;
+	private final GUI gui;
 	private final Core hovud;
-	private Farge[] paaVertBordet; //TODO korfor er denne int? Pga serialisering?
+	private Colour[] paaVertBordet; //TODO korfor er denne int? Pga serialisering?
 
-	public InitialiserNettverk(IGUI gui, String hostAddress, Core hovud) {
+	public InitialiserNettverk(GUI gui, String hostAddress, Core hovud) {
 		this.hostAddress = hostAddress;
 		this.gui = gui;
 		this.hovud = hovud;
-		paaVertBordet = new Farge[Konstantar.ANTAL_KORT_PÅ_BORDET];
+		paaVertBordet = new Colour[Konstantar.ANTAL_KORT_PÅ_BORDET];
 	}
 
 	public void initialiseNetworkGame() throws HeadlessException, RemoteException {
@@ -134,7 +134,7 @@ public class InitialiserNettverk {
 	}
 	
 	void ordnePåBordet() throws RemoteException {
-		Farge[] paaBord = new Farge[paaVertBordet.length];
+		Colour[] paaBord = new Colour[paaVertBordet.length];
 		for (int i = 0; i < paaBord.length; i++) {
 			paaBord[i] = paaVertBordet[i];
 		}

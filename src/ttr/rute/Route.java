@@ -1,7 +1,7 @@
 package ttr.rute;
 
-import ttr.data.Destinasjon;
-import ttr.data.Farge;
+import ttr.data.Destination;
+import ttr.data.Colour;
 import ttr.spelar.PlayerAndNetworkWTF;
 
 import java.io.Serializable;
@@ -11,18 +11,18 @@ public class Route implements Serializable {
 	private static final long serialVersionUID = -7151848709424908866L;
 	private static final int[] valuesForRoute = {1,2,4,7,10,15,0,0,27};
 	private final int length;
-	private final Farge colour;
+	private final Colour colour;
 	private final boolean tunnel;
 	private final int numberOfRequiredJokers;
 	private PlayerAndNetworkWTF builtBy;
-	private final Destinasjon start;
-	private final Destinasjon end;
+	private final Destination start;
+	private final Destination end;
 
-	public Route(int routeId, Destinasjon start, Destinasjon end, int length, Farge colour, boolean tunnel, int numberOfRequiredJokers) {
+	public Route(int routeId, Destination start, Destination end, int length, Colour colour, boolean tunnel, int numberOfRequiredJokers) {
 		this(start, end, length, colour, tunnel, numberOfRequiredJokers);
 	}
 
-	public Route(Destinasjon start, Destinasjon end, int length, Farge colour, boolean tunnel, int numberOfRequiredJokers) {
+	public Route(Destination start, Destination end, int length, Colour colour, boolean tunnel, int numberOfRequiredJokers) {
 		this.start = start;
 		this.end = end;
 
@@ -32,11 +32,11 @@ public class Route implements Serializable {
 		this.numberOfRequiredJokers = numberOfRequiredJokers;
 	}
 
-	public Destinasjon getStart() {
+	public Destination getStart() {
 		return start;
 	}
 
-	public Destinasjon getEnd() {
+	public Destination getEnd() {
 		return end;
 	}
 
@@ -48,7 +48,7 @@ public class Route implements Serializable {
 		return length;
 	}
 
-	public Farge getColour() {
+	public Colour getColour() {
 		return colour;
 	}
 

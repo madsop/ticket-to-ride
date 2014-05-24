@@ -1,9 +1,9 @@
 package ttr.gui.hogresida;
 
-import ttr.data.Farge;
+import ttr.data.Colour;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
-import ttr.gui.IGUI;
+import ttr.gui.GUI;
 import ttr.kjerna.Core;
 import ttr.listeners.DelegationListener;
 import ttr.listeners.WrapperKortListener;
@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class Hogrepanelet extends JPanel implements IHogrepanelet {
+public class Hogrepanelet extends JPanel {
 	private static final long serialVersionUID = 5138678205804362548L;
     private JTextField spelarnamn;
     private final JFrame frame;
@@ -125,7 +125,7 @@ public class Hogrepanelet extends JPanel implements IHogrepanelet {
         visFargekorta(d);
     }
     
-    public void addListeners(Core hovud, IGUI gui){
+    public void addListeners(Core hovud, GUI gui){
         DelegationListener listener = new DelegationListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
         trekkOppdrag.addActionListener(listener);
         bygg.addActionListener(listener);
@@ -141,7 +141,7 @@ public class Hogrepanelet extends JPanel implements IHogrepanelet {
         }
     }
 
-    public void teiknOppKortPåBordet(int position, Farge colour) {
+    public void teiknOppKortPåBordet(int position, Colour colour) {
         kortButtons[position].setForeground(Color.BLACK);
         kortButtons[position].setBackground(Konstantar.fargeTilColor(colour));
         String colourText;

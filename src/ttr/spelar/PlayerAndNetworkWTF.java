@@ -1,7 +1,7 @@
 package ttr.spelar;
 
 import ttr.bord.Table;
-import ttr.data.Farge;
+import ttr.data.Colour;
 import ttr.gui.SwingUtils;
 import ttr.kjerna.Core;
 import ttr.oppdrag.Mission;
@@ -59,20 +59,20 @@ import java.util.Collection;
     public void removeChosenMissionFromDeck(Mission mission) throws RemoteException { hovud.missionHandler_removeChosenMissionFromDeck(mission); }
     
     // Kort
-    public void receiveCard(Farge farge) throws RemoteException { korthandsamar.receiveCard(farge);}
-    public Farge getRandomCardFromTheDeck(int i) throws RemoteException { return korthandsamar.getRandomCardFromTheDeck(i); }
-    public Farge trekkFargekort() throws RemoteException { return korthandsamar.drawRandomCardFromTheDeck(); }
+    public void receiveCard(Colour farge) throws RemoteException { korthandsamar.receiveCard(farge);}
+    public Colour getRandomCardFromTheDeck(int i) throws RemoteException { return korthandsamar.getRandomCardFromTheDeck(i); }
+    public Colour trekkFargekort() throws RemoteException { return korthandsamar.drawRandomCardFromTheDeck(); }
 
-	public int getNumberOfCardsLeftInColour(Farge colour) throws RemoteException { return korthandsamar.getNumberOfCardsLeftInColour(colour); }
-	public int getNumberOfRemainingJokers() throws RemoteException { return korthandsamar.getNumberOfCardsLeftInColour(Farge.valfri); }
+	public int getNumberOfCardsLeftInColour(Colour colour) throws RemoteException { return korthandsamar.getNumberOfCardsLeftInColour(colour); }
+	public int getNumberOfRemainingJokers() throws RemoteException { return korthandsamar.getNumberOfCardsLeftInColour(Colour.valfri); }
 
-	public void decrementCardsAt(Farge colour, int number) throws RemoteException { korthandsamar.decrementCardsAt(colour, number); }
+	public void decrementCardsAt(Colour colour, int number) throws RemoteException { korthandsamar.decrementCardsAt(colour, number); }
 
     // Bord
     public void leggUtFem() { bord.layFiveCardsOutOnTable(); }
-    public void putCardsInDeck(Farge colour, int number) throws RemoteException { bord.addCardsToDeck(colour, number); }    
-    public void setPaaBord(Farge[] f) { bord.setPaaBordet(f); }
-    public void putCardOnTable(Farge colour, int position) throws RemoteException{ bord.putOneCardOnTable(colour, position); }
+    public void putCardsInDeck(Colour colour, int number) throws RemoteException { bord.addCardsToDeck(colour, number); }    
+    public void setPaaBord(Colour[] f) { bord.setPaaBordet(f); }
+    public void putCardOnTable(Colour colour, int position) throws RemoteException{ bord.putOneCardOnTable(colour, position); }
     public boolean areThereTooManyJokersOnTable() throws RemoteException{ return bord.areThereTooManyJokersOnTable(); }
 
 	public PlayerAndNetworkWTF getThisAsISpelar() {
@@ -80,5 +80,5 @@ import java.util.Collection;
 	}
 
 	public void nybygdRute(Route route, PlayerAndNetworkWTF byggjandeSpelar) throws RemoteException { hovud.routeHandler_nybygdRute(route, byggjandeSpelar); }
-	public Farge[] getCardsOnTable() throws RemoteException { return hovud.getTable().getPaaBordet(); }
+	public Colour[] getCardsOnTable() throws RemoteException { return hovud.getTable().getPaaBordet(); }
 }

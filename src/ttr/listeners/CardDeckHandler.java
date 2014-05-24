@@ -1,6 +1,6 @@
 package ttr.listeners;
 
-import ttr.data.Farge;
+import ttr.data.Colour;
 import ttr.kjerna.Core;
 import ttr.spelar.PlayerAndNetworkWTF;
 
@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
 class CardDeckHandler {
 	public CardDeckHandler(Core hovud) throws RemoteException {
 		PlayerAndNetworkWTF playerInTurn = hovud.findPlayerInAction();
-		Farge colour = playerInTurn.trekkFargekort();
+		Colour colour = playerInTurn.trekkFargekort();
 		if (colour==null){ return; }
 
 		playerInTurn.receiveCard(colour);
