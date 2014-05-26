@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.rmi.RemoteException;
 
-class ShowMyCardsHandler {
+class ShowMyCardsHandler { // TODO ikkje fornøgd med denne
 	public ShowMyCardsHandler(IPlayer playerWhoseCardToShow) throws RemoteException{
 		JPanel myCardsPanel = new JPanel();
 		String[] kort = setUpCardText(playerWhoseCardToShow);

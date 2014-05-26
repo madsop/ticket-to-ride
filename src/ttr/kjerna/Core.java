@@ -28,7 +28,7 @@ public abstract class Core {
 	protected IPlayer playerInTurn;
 	protected IPlayer myPlayer;
 	protected CommunicationWithPlayers communicationWithPlayers;
-	private MissionHandler missionHandler;
+	protected MissionHandler missionHandler;
 	private RouteHandler routeHandler;
 	protected TurHandsamar turhandsamar;
 	private ByggHjelpar buildingHelper;
@@ -153,5 +153,9 @@ public abstract class Core {
 
 	public void sendMessageAboutCard(boolean isColourCard, boolean isRandom, Colour colour) throws RemoteException {
 		communicationWithPlayers.sendMessageAboutCard(isColourCard, isRandom, colour, playerInTurn.getNamn(), this);
+	}
+
+	public MissionHandler getMissionHandler() {
+		return missionHandler; //TODO denne må bort etter kvart som DI kjem på plass
 	}
 }

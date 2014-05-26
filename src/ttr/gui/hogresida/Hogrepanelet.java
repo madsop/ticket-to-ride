@@ -7,6 +7,7 @@ import ttr.gui.GUI;
 import ttr.kjerna.Core;
 import ttr.listeners.DelegationListener;
 import ttr.listeners.WrapperKortListener;
+import ttr.oppdrag.MissionHandler;
 
 import javax.swing.*;
 
@@ -118,8 +119,8 @@ public class Hogrepanelet extends JPanel {
         visFargekorta(d);
     }
     
-    public void addListeners(Core core, GUI gui){
-        DelegationListener listener = new DelegationListener(gui, core, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
+    public void addListeners(MissionHandler missionHandler, Core core, GUI gui) {
+        DelegationListener listener = new DelegationListener(missionHandler, gui, core, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
         trekkOppdrag.addActionListener(listener);
         bygg.addActionListener(listener);
         visMineKort.addActionListener(listener);

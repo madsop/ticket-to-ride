@@ -6,6 +6,7 @@ import ttr.gui.hogresida.Hogrepanelet;
 import ttr.gui.hogresida.Meldingspanel;
 import ttr.kjerna.Core;
 import ttr.oppdrag.Mission;
+import ttr.oppdrag.MissionHandler;
 
 import javax.swing.*;
 
@@ -47,9 +48,9 @@ public class GUI extends JPanel {
 		return gridBagConstraints;
 	}
 
-    public void setHovud(Core core){ //TODO liker ikkje denne heller
+    public void setHovud(MissionHandler missionHandler, Core core){ //TODO liker ikkje denne heller
         messagePanel.prepareChat(core.findPlayerInAction(), core.getSpelarar());
-        right.addListeners(core, this);
+        right.addListeners(missionHandler, core, this);
     }
 
     public MeldingarModell getMessagesModel(){ //TODO få bort denne?

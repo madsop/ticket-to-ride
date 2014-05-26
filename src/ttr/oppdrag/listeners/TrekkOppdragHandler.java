@@ -8,9 +8,9 @@ import ttr.kjerna.Core;
 import ttr.oppdrag.MissionHandler;
 
 public class TrekkOppdragHandler {
-    public TrekkOppdragHandler(Core core, GUI gui) throws RemoteException {
+    public TrekkOppdragHandler(Core core, GUI gui, MissionHandler missionHandler) throws RemoteException {
             core.sendMessageAboutCard(false, false, Konstantar.FARGAR[0]);
-            MissionHandler.trekkOppdrag(gui, core.findPlayerInAction(), false);
+            missionHandler.trekkOppdrag(gui, core.findPlayerInAction(), false);
             core.nesteSpelar();
     }
 }

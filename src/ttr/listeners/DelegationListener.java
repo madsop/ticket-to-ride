@@ -2,10 +2,12 @@ package ttr.listeners;
 
 import ttr.gui.GUI;
 import ttr.kjerna.Core;
+import ttr.oppdrag.MissionHandler;
 import ttr.oppdrag.listeners.TrekkOppdragHandler;
 import ttr.oppdrag.listeners.ShowMyMissionsHandler;
 
 import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
@@ -15,9 +17,11 @@ public class DelegationListener implements ActionListener {
     private final Core hovud;
     private final JButton visBygde,visMineKort,visMineOppdrag,trekkOppdrag,bygg;
     private final JFrame frame;
+	private MissionHandler missionHandler;
     
-	public DelegationListener(GUI gui, Core core, JButton visBygde, JButton visMineKort, JButton visMineOppdrag, JButton trekkOppdrag, JButton bygg, JFrame frame) {
-        this.gui = gui;
+	public DelegationListener(MissionHandler missionHandler, GUI gui, Core core, JButton visBygde, JButton visMineKort, JButton visMineOppdrag, JButton trekkOppdrag, JButton bygg, JFrame frame) {
+        this.missionHandler = missionHandler;
+		this.gui = gui;
         this.hovud = core;
         this.visBygde = visBygde;
         this.visMineKort = visMineKort;
@@ -42,7 +46,7 @@ public class DelegationListener implements ActionListener {
             }
 
             if (arg0.getSource() == trekkOppdrag) {
-                new TrekkOppdragHandler(hovud,gui);
+                new TrekkOppdragHandler(hovud,gui, missionHandler);
             }
             else if (arg0.getSource() == bygg) {
                 new BuildRouteHandler(hovud.findRoutesNotYetBuilt(), hovud.findPlayerInAction().getNumberOfRemainingJokers(), hovud, frame);

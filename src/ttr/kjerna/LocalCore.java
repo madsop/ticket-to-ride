@@ -5,7 +5,6 @@ import java.rmi.RemoteException;
 import ttr.bord.Table;
 import ttr.communicationWithPlayers.CommunicationWithPlayersLocal;
 import ttr.gui.GUI;
-import ttr.oppdrag.MissionHandler;
 import ttr.rute.Route;
 import ttr.spelar.IPlayer;
 import ttr.turhandsamar.TurHandsamarLocal;
@@ -18,7 +17,7 @@ public class LocalCore extends Core {
 
 	public void settIGangSpelet(String hostAddress) throws RemoteException {
 		for (IPlayer player : players) {
-			MissionHandler.trekkOppdrag(gui, player, true);
+			missionHandler.trekkOppdrag(gui, player, true);
 		}
 		// ??
 	}
@@ -41,12 +40,10 @@ public class LocalCore extends Core {
 
 	protected void messageUsersInNetworkGame(Route bygd, IPlayer byggjandeSpelar) { }
 
-	@Override
 	protected String getWhoseTurnText() {
 		return "min tur";
 	}
 
-	@Override
 	public void orientOtherPlayers(int positionOnTable) throws RemoteException {
 		for (IPlayer player : getSpelarar()) {
 			player.getRandomCardFromTheDeck(positionOnTable); // TODO kva er det her, og korfor? 

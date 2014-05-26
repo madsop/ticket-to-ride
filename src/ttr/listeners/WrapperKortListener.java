@@ -10,15 +10,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
-public class WrapperKortListener implements ActionListener{
-	private final JButton kortBunke;
-	private final JButton[] kortButtons;
-	private final Core hovud;
+public class WrapperKortListener implements ActionListener {
+	private final JButton cardDeckButton;
+	private final JButton[] cardButtons;
+	private final Core core;
 	private final JFrame frame;
+	
 	public WrapperKortListener(JButton kortBunke, JButton[] kortButtons, Core hovud, JFrame frame){
-		this.kortBunke = kortBunke;
-		this.kortButtons = kortButtons;
-		this.hovud = hovud;
+		this.cardDeckButton = kortBunke;
+		this.cardButtons = kortButtons;
+		this.core = hovud;
 		this.frame = frame;
 	}
 
@@ -31,38 +32,38 @@ public class WrapperKortListener implements ActionListener{
 	}
 
 	private void buttonClicked(ActionEvent arg0) throws RemoteException {
-		if (!hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn())) {
+		if (!core.getMinSpelar().getNamn().equals(core.getKvenSinTur().getNamn())) {
 			JOptionPane.showMessageDialog(frame, "Det er ikkje din tur!");
 			return;
 			
 		}
-		if (arg0.getSource() == kortBunke) {
-			new CardDeckHandler(hovud);
+		if (arg0.getSource() == cardDeckButton) {
+			new CardDeckHandler(core);
 		}
-		else if (arg0.getSource() == kortButtons[0]) {
+		else if (arg0.getSource() == cardButtons[0]) {
 			createButtonForRetrievingCardFromTable(0);
 		}
-		else if (arg0.getSource() == kortButtons[1]) {
+		else if (arg0.getSource() == cardButtons[1]) {
 			createButtonForRetrievingCardFromTable(1);
 		}
-		else if (arg0.getSource() == kortButtons[2]) {
+		else if (arg0.getSource() == cardButtons[2]) {
 			createButtonForRetrievingCardFromTable(2);
 		}
-		else if (arg0.getSource() == kortButtons[3]) {
+		else if (arg0.getSource() == cardButtons[3]) {
 			createButtonForRetrievingCardFromTable(3);
 		}
-		else if (arg0.getSource() == kortButtons[4]) {
+		else if (arg0.getSource() == cardButtons[4]) {
 			createButtonForRetrievingCardFromTable(4);
 		}
 	}
 
 	private void createButtonForRetrievingCardFromTable(int positionOnTable) throws RemoteException {
-		retrieveOneCardFromTheTable(positionOnTable,hovud.findPlayerInAction());
-		hovud.orientOtherPlayers(positionOnTable);
+		retrieveOneCardFromTheTable(positionOnTable,core.findPlayerInAction());
+		core.orientOtherPlayers(positionOnTable);
 	}
 
 	private void retrieveOneCardFromTheTable(int positionOnTable, IPlayer kvenSinTur) throws RemoteException {
-		Colour colour = hovud.getTable().getCardFromTable(positionOnTable);
+		Colour colour = core.getTable().getCardFromTable(positionOnTable);
 		if (colour == null) { return; }
 		if (kvenSinTur.hasAlreadyDrawnOneCard()) {
 			retrieveSecondCard(positionOnTable, kvenSinTur, colour);
@@ -79,20 +80,20 @@ public class WrapperKortListener implements ActionListener{
 		}
 		kvenSinTur.receiveCard(colour);
 		putRandomCardFromTheDeckOnTable(positionOnTable, colour);
-		hovud.nesteSpelar();
+		core.nesteSpelar();
 	}
 
 	private void retrieveFirstCard(int positionOnTable, IPlayer kvenSinTur, Colour colour) throws RemoteException {
 		kvenSinTur.receiveCard(colour);
 		putRandomCardFromTheDeckOnTable(positionOnTable, colour);
 		if (colour == Colour.valfri) {
-			hovud.nesteSpelar();
+			core.nesteSpelar();
 		}
 		kvenSinTur.setEittKortTrektInn(true);
 	}
 
 	private void putRandomCardFromTheDeckOnTable(int positionOnTable, Colour colour) throws RemoteException {
-		hovud.sendMessageAboutCard(true,false,colour);
-		hovud.getTable().getRandomCardFromTheDeckAndPutOnTable(positionOnTable);
+		core.sendMessageAboutCard(true,false,colour);
+		core.getTable().getRandomCardFromTheDeckAndPutOnTable(positionOnTable);
 	}
 }

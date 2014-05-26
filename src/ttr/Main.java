@@ -44,7 +44,7 @@ public class Main {
         Table table = new Table(gui,isNetworkGame, injector.getInstance(Deck.class));
         
         Core core = isNetworkGame ? new NetworkCore(gui, table, gameVersion) : new LocalCore(gui, table, gameVersion);
-        gui.setHovud(core);
+        gui.setHovud(core.getMissionHandler(), core);
         core.settIGangSpelet(getHostName(args));
 	}
 
