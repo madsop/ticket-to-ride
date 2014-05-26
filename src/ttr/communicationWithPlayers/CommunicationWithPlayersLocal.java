@@ -13,15 +13,16 @@ import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.kjerna.Core;
 import ttr.rute.Route;
+import ttr.spelar.IPlayer;
 import ttr.spelar.PlayerAndNetworkWTF;
 
 public class CommunicationWithPlayersLocal extends CommunicationWithPlayers {
 
-	public CommunicationWithPlayersLocal(ArrayList<PlayerAndNetworkWTF> spelarar) {
-		super(spelarar);
+	public CommunicationWithPlayersLocal(ArrayList<IPlayer> players) {
+		super(players);
 	}
 
-	public ArrayList<PlayerAndNetworkWTF> createPlayersForLocalGame(Core hovud, Table bord) {
+	public ArrayList<IPlayer> createPlayersForLocalGame(Core hovud, Table bord) {
 		int antalSpelarar = addPlayers();
 		try {
 			return createPlayers(hovud, bord, antalSpelarar);
@@ -31,24 +32,23 @@ public class CommunicationWithPlayersLocal extends CommunicationWithPlayers {
 	
 	
 	@Override
-	public void updateOtherPlayers(Colour colour, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException { }
+	public void updateOtherPlayers(Colour colour, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Route bygd) { }
 
 	@Override
-	public void sjekkOmFerdig(MeldingarModell meldingarModell,	PlayerAndNetworkWTF kvenSinTur, String speltittel, PlayerAndNetworkWTF minSpelar)
-					throws RemoteException {
+	public void sjekkOmFerdig(MeldingarModell meldingarModell,	IPlayer kvenSinTur, String speltittel, IPlayer minSpelar) throws RemoteException {
 		if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
 			orientPlayersThatTheGameIsOver(meldingarModell);
 
 			int[] totalpoeng = new int[players.size()];
 
-			PlayerAndNetworkWTF vinnar = null;
+			IPlayer vinnar = null;
 			int vinnarpoeng = 0;
 			addGameSpecificBonus(meldingarModell, speltittel, minSpelar, totalpoeng);
 
 			String pointsString = Infostrengar.SpeletErFerdig;
 
-			for (PlayerAndNetworkWTF player : players) {
-				PlayerAndNetworkWTF leiar = reknUtPoengOgFinnVinnar(totalpoeng,player,vinnarpoeng,vinnar,meldingarModell);
+			for (IPlayer player : players) {
+				IPlayer leiar = reknUtPoengOgFinnVinnar(totalpoeng,player,vinnarpoeng,vinnar,meldingarModell);
 				vinnarpoeng = reknUtPoeng(leiar);
 			}
 			avsluttSpeletMedSuksess(vinnar,pointsString,meldingarModell);
@@ -65,7 +65,7 @@ public class CommunicationWithPlayersLocal extends CommunicationWithPlayers {
 		return numberOfPlayers;
 	}
 
-	private ArrayList<PlayerAndNetworkWTF> createPlayers(Core hovud, Table bord, int antalSpelarar) throws HeadlessException, RemoteException {
+	private ArrayList<IPlayer> createPlayers(Core hovud, Table bord, int antalSpelarar) throws HeadlessException, RemoteException {
 		players = new ArrayList<>();
 		for (int i = 1; i <= antalSpelarar; i++) {
 			players.add(new PlayerAndNetworkWTF(hovud,JOptionPane.showInputDialog(null,Infostrengar.SkrivInnSpelarnamn +i),bord));
@@ -77,14 +77,12 @@ public class CommunicationWithPlayersLocal extends CommunicationWithPlayers {
 	protected void orientOthers(MeldingarModell meldingarModell) { }
 
 	@Override
-	protected void orientNetwork(MeldingarModell meldingarModell, PlayerAndNetworkWTF playerWithMostMissionsAccomplished, int bestNumberOfMissionsAccomplished) 
-			throws RemoteException { }
+	protected void orientNetwork(MeldingarModell meldingarModell, IPlayer playerWithMostMissionsAccomplished, int bestNumberOfMissionsAccomplished) { }
 
 	@Override
-	protected void localOrNetworkSpecificMessageStuff(PlayerAndNetworkWTF myPlayer, String melding)
-			throws RemoteException { }
+	protected void localOrNetworkSpecificMessageStuff(IPlayer myPlayer, String melding) { }
 
 	@Override
-	public void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Colour nyFarge, int position, Core hovud) throws RemoteException { }
+	public void newCardPlacedOnTableInNetworkGame(IPlayer host, Colour nyFarge, int position, Core hovud) { }
 
 }

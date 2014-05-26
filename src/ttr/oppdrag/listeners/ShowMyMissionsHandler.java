@@ -1,13 +1,14 @@
 package ttr.oppdrag.listeners;
 
+import java.rmi.RemoteException;
+
 import ttr.gui.SwingUtils;
 import ttr.oppdrag.Mission;
-import ttr.spelar.PlayerAndNetworkWTF;
-
+import ttr.spelar.IPlayer;
 import javax.swing.*;
 
 public class ShowMyMissionsHandler {
-	public ShowMyMissionsHandler(PlayerAndNetworkWTF player) {
+	public ShowMyMissionsHandler(IPlayer player) throws RemoteException {
 		JPanel missionJPanel = new JPanel();
 
 		String missionString = player.getNamn() +": ";
@@ -20,7 +21,7 @@ public class ShowMyMissionsHandler {
 		showToPlayer(missionJPanel, player, missionString);
 	}
 
-	private String prepareMissionString(PlayerAndNetworkWTF player, Mission mission) {
+	private String prepareMissionString(IPlayer player, Mission mission) throws RemoteException {
 		String missionString = mission.toString();
 		if (player.isMissionAccomplished(mission)){
 			missionString += " (OK)";
@@ -29,7 +30,7 @@ public class ShowMyMissionsHandler {
 		return missionString;
 	}
 
-	private void showToPlayer(JPanel missionJPanel, PlayerAndNetworkWTF player, String missionString) {
+	private void showToPlayer(JPanel missionJPanel, IPlayer player, String missionString) throws RemoteException {
 		JLabel missionJLabel = new JLabel(missionString);
 		missionJPanel.add(missionJLabel);
 		SwingUtils.createJFrame("Viser oppdraga til " +player.getNamn(), missionJPanel);

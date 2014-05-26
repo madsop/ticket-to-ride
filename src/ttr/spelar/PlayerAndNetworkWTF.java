@@ -14,13 +14,13 @@ import java.util.Collection;
 /**
  * Ein spelar. All nettverkskommunikasjon går via denne, så litt hårate klasse med ein del ad hoc-metodar.
  */
- public class PlayerAndNetworkWTF extends PlayerImpl {
+ public class PlayerAndNetworkWTF extends PlayerImpl implements IPlayer {
 	private static final long serialVersionUID = -3600106049579247030L;
     private CardHandler korthandsamar;
     
 	public PlayerAndNetworkWTF(Core hovud, String namn, Table bord) throws RemoteException {
 		super(hovud, namn, bord);
-        korthandsamar = new CardHandlerImpl(hovud);
+        korthandsamar = new CardHandler(hovud);
 	}
 	
 	/**
@@ -28,15 +28,15 @@ import java.util.Collection;
 	 * Kokt frå distsys, øving 2.
 	 * @param p	The client that is registering as the adversary
 	 */
-	public void registrerKlient(PlayerAndNetworkWTF nyMotspelar) {
+	public void registrerKlient(IPlayer host) {
 		boolean cont = false;
-		for (PlayerAndNetworkWTF eksisterandeSpelar : hovud.getSpelarar()) {
-			if (nyMotspelar == eksisterandeSpelar) {
+		for (IPlayer eksisterandeSpelar : hovud.getSpelarar()) {
+			if (host == eksisterandeSpelar) {
 				cont = true;
 			}
 		}
 		if (!cont) {
-			hovud.getSpelarar().add(nyMotspelar);
+			hovud.getSpelarar().add(host);
 		}
 		else {
 			//	throw new RemoteException("Denne motspelaren er allereie lagt til!");
@@ -44,8 +44,8 @@ import java.util.Collection;
 	}
 	
 	// FASADE
-    public void settSinTur(PlayerAndNetworkWTF s) throws RemoteException { hovud.settSinTur(s); }
-    public ArrayList<PlayerAndNetworkWTF> getSpelarar() { return hovud.getSpelarar(); }
+    public void settSinTur(IPlayer sinTur) throws RemoteException { hovud.settSinTur(sinTur); }
+    public ArrayList<IPlayer> getSpelarar() { return hovud.getSpelarar(); }
     public void receiveMessage(String message){ hovud.receiveMessage(message); }
 	public void showGameOverMessage(String points) { SwingUtils.showMessageDialog(points); }
 
@@ -59,14 +59,14 @@ import java.util.Collection;
     public void removeChosenMissionFromDeck(Mission mission) { hovud.missionHandler_removeChosenMissionFromDeck(mission); }
     
     // Kort
-    public void receiveCard(Colour farge) throws RemoteException { korthandsamar.receiveCard(farge);}
-    public Colour getRandomCardFromTheDeck(int i) throws RemoteException { return korthandsamar.getRandomCardFromTheDeck(i); }
-    public Colour trekkFargekort() throws RemoteException { return korthandsamar.drawRandomCardFromTheDeck(); }
+    public void receiveCard(Colour farge) { korthandsamar.receiveCard(farge);}
+    public Colour getRandomCardFromTheDeck(int i) { return korthandsamar.getRandomCardFromTheDeck(i); }
+    public Colour trekkFargekort() { return korthandsamar.drawRandomCardFromTheDeck(); }
 
-	public int getNumberOfCardsLeftInColour(Colour colour) throws RemoteException { return korthandsamar.getNumberOfCardsLeftInColour(colour); }
-	public int getNumberOfRemainingJokers() throws RemoteException { return korthandsamar.getNumberOfCardsLeftInColour(Colour.valfri); }
+	public int getNumberOfCardsLeftInColour(Colour colour) { return korthandsamar.getNumberOfCardsLeftInColour(colour); }
+	public int getNumberOfRemainingJokers() { return korthandsamar.getNumberOfCardsLeftInColour(Colour.valfri); }
 
-	public void decrementCardsAt(Colour colour, int number) throws RemoteException { korthandsamar.decrementCardsAt(colour, number); }
+	public void decrementCardsAt(Colour colour, int number) { korthandsamar.decrementCardsAt(colour, number); }
 
     // Bord
     public void leggUtFem() { bord.layFiveCardsOutOnTable(); }
@@ -75,10 +75,8 @@ import java.util.Collection;
     public void putCardOnTable(Colour colour, int position){ bord.putOneCardOnTable(colour, position); }
     public boolean areThereTooManyJokersOnTable(){ return bord.areThereTooManyJokersOnTable(); }
 
-	public PlayerAndNetworkWTF getThisAsISpelar() {
-		return this;
-	}
+	public IPlayer getThisAsISpelar() {	return this; }
 
-	public void nybygdRute(Route route, PlayerAndNetworkWTF byggjandeSpelar) { hovud.routeHandler_nybygdRute(route, byggjandeSpelar); }
+	public void nybygdRute(Route route, IPlayer byggjandeSpelar) { hovud.routeHandler_nybygdRute(route, byggjandeSpelar); }
 	public Colour[] getCardsOnTable() { return hovud.getTable().getPaaBordet(); }
 }

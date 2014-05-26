@@ -3,11 +3,13 @@ package ttr.gui.hogresida;
 import ttr.data.Infostrengar;
 import ttr.data.MeldingarModell;
 import ttr.kjerna.Core;
-import ttr.spelar.PlayerAndNetworkWTF;
+import ttr.spelar.IPlayer;
 
 import javax.swing.*;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.rmi.RemoteException;
 
 class ChatListener implements KeyListener {
 	private final Core hovud;
@@ -24,10 +26,14 @@ class ChatListener implements KeyListener {
 	public void keyTyped(KeyEvent arg0) {}
 
 	public void keyReleased(KeyEvent arg0) {
-		sendMessage(arg0);
+		try {
+			sendMessage(arg0);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void sendMessage(KeyEvent arg0) {
+	private void sendMessage(KeyEvent arg0) throws RemoteException {
 		if (arg0.getKeyCode() == KeyEvent.VK_ENTER){
 			String message = getPlayerName() + ": " + chatJTextField.getText();;
 			sendMessageToPlayers(message);
@@ -38,13 +44,13 @@ class ChatListener implements KeyListener {
 		}
 	}
 
-	private String getPlayerName() {
+	private String getPlayerName() throws RemoteException {
 		return hovud.findPlayerInAction().getNamn();
 	}
 
-	private void sendMessageToPlayers(String message) {
+	private void sendMessageToPlayers(String message) throws RemoteException {
 		meldingarmodell.nyMelding(message);
-		for (PlayerAndNetworkWTF spelar : hovud.getSpelarar()){
+		for (IPlayer spelar : hovud.getSpelarar()){
 			spelar.receiveMessage(message);
 		}
 	}

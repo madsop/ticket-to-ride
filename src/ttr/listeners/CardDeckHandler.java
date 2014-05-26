@@ -1,14 +1,14 @@
 package ttr.listeners;
 
+import java.rmi.RemoteException;
+
 import ttr.data.Colour;
 import ttr.kjerna.Core;
-import ttr.spelar.PlayerAndNetworkWTF;
-
-import java.rmi.RemoteException;
+import ttr.spelar.IPlayer;
 
 class CardDeckHandler {
 	public CardDeckHandler(Core hovud) throws RemoteException {
-		PlayerAndNetworkWTF playerInTurn = hovud.findPlayerInAction();
+		IPlayer playerInTurn = hovud.findPlayerInAction();
 		Colour colour = playerInTurn.trekkFargekort();
 		if (colour==null){ return; }
 
@@ -18,7 +18,7 @@ class CardDeckHandler {
 		proceedGame(hovud, playerInTurn);
 	}
 
-	private void proceedGame(Core hovud, PlayerAndNetworkWTF playerInTurn) throws RemoteException {
+	private void proceedGame(Core hovud, IPlayer playerInTurn) throws RemoteException {
 		if (playerInTurn.hasAlreadyDrawnOneCard()) {
 			hovud.nesteSpelar();
 		}

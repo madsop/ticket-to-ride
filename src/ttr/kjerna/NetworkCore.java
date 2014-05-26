@@ -11,7 +11,7 @@ import ttr.nettverk.InitialiserNettverk;
 import ttr.oppdrag.Mission;
 import ttr.oppdrag.MissionHandler;
 import ttr.rute.Route;
-import ttr.spelar.PlayerAndNetworkWTF;
+import ttr.spelar.IPlayer;
 import ttr.turhandsamar.TurHandsamarNetwork;
 import ttr.utgaave.GameVersion;
 
@@ -28,15 +28,15 @@ public class NetworkCore extends Core {
 		givePlayersMissions();
 	}
 
-	private void givePlayersMissions() {
-		for (PlayerAndNetworkWTF player : players){
+	private void givePlayersMissions() throws RemoteException {
+		for (IPlayer player : players){
 			for (Mission mission : player.getOppdrag()){
 				player.removeChosenMissionFromDeck(mission);
 			}
 		}
 	}
 
-	public PlayerAndNetworkWTF findPlayerInAction() {
+	public IPlayer findPlayerInAction() {
 		return minSpelar;
 	}
 
@@ -45,8 +45,8 @@ public class NetworkCore extends Core {
 		turhandsamar = new TurHandsamarNetwork(players);		
 	}
 
-	protected void messageUsersInNetworkGame(Route builtRoute, PlayerAndNetworkWTF buildingPlayer) throws RemoteException {
-		for (PlayerAndNetworkWTF player : players) {
+	protected void messageUsersInNetworkGame(Route builtRoute, IPlayer buildingPlayer) throws RemoteException {
+		for (IPlayer player : players) {
 			player.nybygdRute(builtRoute,buildingPlayer);
 			player.setTogAtt(buildingPlayer.getSpelarNummer()+1, buildingPlayer.getGjenverandeTog());
 		}
@@ -54,12 +54,12 @@ public class NetworkCore extends Core {
 
 	@Override
 	protected String getWhoseTurnText() throws RemoteException {
-		return (minSpelar.equals(kvenSinTur) ? "min tur." : kvenSinTur.getNamn() + " sin tur.");
+		return (minSpelar.getNamn().equals(kvenSinTur.getNamn()) ? "min tur." : kvenSinTur.getNamn() + " sin tur.");
 	}
 
 	@Override
 	public void orientOtherPlayers(int positionOnTable) throws RemoteException {
-		PlayerAndNetworkWTF host = findHost();
+		IPlayer host = findHost();
 		
 		if (host != null){
 			Colour newColour = host.getRandomCardFromTheDeck(positionOnTable);
@@ -70,12 +70,12 @@ public class NetworkCore extends Core {
 		}
 	}
 
-	private PlayerAndNetworkWTF findHost() {
-		PlayerAndNetworkWTF host = null;
+	private IPlayer findHost() throws RemoteException {
+		IPlayer host = null;
 		if (minSpelar.getSpelarNummer()==0) {
 			host = minSpelar; // TODO forsvinn ikkje denne uansett i løpet av for-løkka under?
 		}
-		for (PlayerAndNetworkWTF player : players) {
+		for (IPlayer player : players) {
 			if (player.getSpelarNummer()==0) {
 				return player;
 			}
@@ -83,20 +83,20 @@ public class NetworkCore extends Core {
 		return host;
 	}
 
-	private Colour placeNewCardsOnTable(PlayerAndNetworkWTF host) throws RemoteException {
+	private Colour placeNewCardsOnTable(IPlayer host) throws RemoteException {
 		Colour newColour = null;
 		host.leggUtFem();
 		Colour[] cardsOnTable = host.getCardsOnTable();
 
 		for (int plass = 0; plass < Konstantar.ANTAL_KORT_PÅ_BORDET; plass++){
 			newColour = cardsOnTable[plass];
-			getMinSpelar().putCardOnTable(newColour,plass);
+			minSpelar.putCardOnTable(newColour,plass);
 			newCardPlacedOnTableInNetworkGame(host, newColour, plass);
 		}
 		return newColour;
 	}
 
-	private void newCardPlacedOnTableInNetworkGame(PlayerAndNetworkWTF host, Colour newColour, int i) throws RemoteException {
+	private void newCardPlacedOnTableInNetworkGame(IPlayer host, Colour newColour, int i) throws RemoteException {
 		communicationWithPlayers.newCardPlacedOnTableInNetworkGame(host, newColour, i, this);
 	}
 }

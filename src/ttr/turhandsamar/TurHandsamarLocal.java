@@ -2,21 +2,21 @@ package ttr.turhandsamar;
 
 import java.util.ArrayList;
 
-import ttr.spelar.PlayerAndNetworkWTF;
+import ttr.spelar.IPlayer;
 
 public class TurHandsamarLocal extends TurHandsamar {
 
-	public TurHandsamarLocal(ArrayList<PlayerAndNetworkWTF> spelarar) {
-		super(spelarar);
+	public TurHandsamarLocal(ArrayList<IPlayer> players) {
+		super(players);
 	}
 
 	@Override
-	protected PlayerAndNetworkWTF next(PlayerAndNetworkWTF minSpelar, PlayerAndNetworkWTF kvenSinTur) {
+	protected IPlayer next(IPlayer minSpelar, IPlayer kvenSinTur) {
 		int id = findIdOfNextPlayer(kvenSinTur);
 		return players.get(id);
 	}
 	
-	private int findIdOfNextPlayer(PlayerAndNetworkWTF kvenSinTur) {
+	private int findIdOfNextPlayer(IPlayer kvenSinTur) {
 		int idOfNextPlayer = players.indexOf(kvenSinTur) + 1;
 		return (players.size() == idOfNextPlayer) ? 0 : idOfNextPlayer;
 	}

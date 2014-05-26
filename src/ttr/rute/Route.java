@@ -2,9 +2,10 @@ package ttr.rute;
 
 import ttr.data.Destination;
 import ttr.data.Colour;
-import ttr.spelar.PlayerAndNetworkWTF;
+import ttr.spelar.IPlayer;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.text.MessageFormat;
 
 public class Route implements Serializable {
@@ -14,7 +15,7 @@ public class Route implements Serializable {
 	private final Colour colour;
 	private final boolean tunnel;
 	private final int numberOfRequiredJokers;
-	private PlayerAndNetworkWTF builtBy;
+	private IPlayer builtBy;
 	private final Destination start;
 	private final Destination end;
 
@@ -60,14 +61,18 @@ public class Route implements Serializable {
 		return numberOfRequiredJokers;
 	}
 
-	public void setBuiltBy(PlayerAndNetworkWTF spelar) {
-		builtBy = spelar;
+	public void setBuiltBy(IPlayer iPlayer) {
+		builtBy = iPlayer;
 	}
 
 	public String toString() {
 		String builtByString = "";
 		if (builtBy != null) {
-			builtByString = builtBy.getNamn();
+			try {
+				builtByString = builtBy.getNamn();
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
 		}
 		String string = "{0} - {1}, lengde {2}, av farge {3}, tunnel? {4}, og {5} jokrar krevs for å byggje denne. Ruta er bygd av {6}, og er verdt {7} poeng.";
 		return MessageFormat.format(string,	start, end, length, colour, tunnel,	numberOfRequiredJokers, builtByString, valuesForRoute[length-1]);

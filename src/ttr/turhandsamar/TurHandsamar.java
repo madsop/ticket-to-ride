@@ -1,20 +1,19 @@
 package ttr.turhandsamar;
 
-import ttr.spelar.PlayerAndNetworkWTF;
-
+import ttr.spelar.IPlayer;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public abstract class TurHandsamar {
-    protected final ArrayList<PlayerAndNetworkWTF> players;
+    protected final ArrayList<IPlayer> players;
     
-    TurHandsamar(ArrayList<PlayerAndNetworkWTF> spelarar) {
+    TurHandsamar(ArrayList<IPlayer> spelarar) {
         this.players = spelarar;
     }
 
-    public PlayerAndNetworkWTF nextPlayer(PlayerAndNetworkWTF kvenSinTur, PlayerAndNetworkWTF minSpelar) throws RemoteException{
+    public IPlayer nextPlayer(IPlayer kvenSinTur, IPlayer minSpelar) throws RemoteException {
         return next(kvenSinTur, minSpelar);
     }
     
-	protected abstract PlayerAndNetworkWTF next(PlayerAndNetworkWTF minSpelar, PlayerAndNetworkWTF kvenSinTur) throws RemoteException;
+	protected abstract IPlayer next(IPlayer minSpelar, IPlayer kvenSinTur) throws RemoteException;
 }

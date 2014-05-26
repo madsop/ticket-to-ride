@@ -5,6 +5,7 @@ import ttr.data.Konstantar;
 import ttr.gui.GUI;
 import ttr.gui.SwingUtils;
 import ttr.kjerna.Core;
+import ttr.spelar.IPlayer;
 import ttr.spelar.PlayerAndNetworkWTF;
 
 import javax.swing.*;
@@ -76,7 +77,7 @@ public class InitialiserNettverk {
 	private void startHostingGame(String url) throws RemoteException, MalformedURLException {
 		LocateRegistry.createRegistry(Integer.parseInt(PORT));
 		long time = System.currentTimeMillis();
-		PlayerAndNetworkWTF meg = hovud.getMinSpelar();
+		PlayerAndNetworkWTF meg = (PlayerAndNetworkWTF) hovud.getMinSpelar();
 		Naming.rebind(url, meg); // Legg til spelar i RMI-registeret
 		time = System.currentTimeMillis() - time;
 		System.out.println("Time to register with RMI registry: "+(time/1000)+"s");
@@ -100,7 +101,7 @@ public class InitialiserNettverk {
 
 	} 
 
-	private void faaMedSpelar(PlayerAndNetworkWTF player){
+	private void faaMedSpelar(IPlayer player) throws RemoteException{
 		if (player.getSpelarNummer() == 0) {
 			registerHost(player);
 		}
@@ -114,15 +115,15 @@ public class InitialiserNettverk {
 		player.registrerKlient(hovud.getMinSpelar());
 	}
 
-	private void registerHost(PlayerAndNetworkWTF player) {
+	private void registerHost(IPlayer player) throws RemoteException {
 		hovud.getMinSpelar().setSpelarNummer(player.getSpelarteljar());
 		player.setSpelarteljar(player.getSpelarteljar()+1);
 		gui.getMessagesModel().nyMelding(player.getNamn() +" er vert for spelet.");
 		paaVertBordet = player.getCardsOnTable();
 	}
 
-	void oppdaterAndreSpelarar(PlayerAndNetworkWTF host) {
-		for (PlayerAndNetworkWTF player : host.getSpelarar()) {
+	void oppdaterAndreSpelarar(IPlayer host) throws RemoteException {
+		for (IPlayer player : host.getSpelarar()) {
 			if (!(player.getNamn().equals(hovud.getMinSpelar().toString()))) {
 				//hovud.getSpelarar().add(s);
 				hovud.getMinSpelar().registrerKlient(player);
@@ -133,7 +134,7 @@ public class InitialiserNettverk {
 		}
 	}
 	
-	void ordnePåBordet() {
+	void ordnePåBordet() throws RemoteException {
 		hovud.getMinSpelar().setPaaBord(paaVertBordet);
 	}
 
@@ -151,9 +152,9 @@ public class InitialiserNettverk {
 	}
 
 	private void actuallyJoinGame(String url) throws NotBoundException, 	MalformedURLException, RemoteException {
-		PlayerAndNetworkWTF host = (PlayerAndNetworkWTF)Naming.lookup(url);
+		IPlayer host = (IPlayer)Naming.lookup(url);
 		hovud.getMinSpelar().registrerKlient(host); 
-		for (PlayerAndNetworkWTF player : hovud.getSpelarar()) {
+		for (IPlayer player : hovud.getSpelarar()) {
 			faaMedSpelar(player);
 		}
 

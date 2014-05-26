@@ -10,8 +10,7 @@ import ttr.oppdrag.Mission;
 import ttr.oppdrag.MissionHandler;
 import ttr.rute.Route;
 import ttr.rute.RouteHandler;
-import ttr.rute.RouteHandlerImpl;
-import ttr.spelar.PlayerAndNetworkWTF;
+import ttr.spelar.IPlayer;
 import ttr.turhandsamar.TurHandsamar;
 import ttr.utgaave.GameVersion;
 
@@ -24,11 +23,11 @@ import java.util.Set;
 public abstract class Core {
 	private final GameVersion gameVersion;
 	protected final Table table;
-	protected ArrayList<PlayerAndNetworkWTF> players;
+	protected ArrayList<IPlayer> players;
 	protected final GUI gui;
 
-	protected PlayerAndNetworkWTF kvenSinTur;
-	protected PlayerAndNetworkWTF minSpelar;
+	protected IPlayer kvenSinTur;
+	protected IPlayer minSpelar;
 	protected CommunicationWithPlayers communicationWithPlayers;
 	private MissionHandler oppdragshandsamar;
 	private RouteHandler rutehandsamar;
@@ -40,7 +39,7 @@ public abstract class Core {
 		this.gameVersion = gameVersion;
 		this.table = table;
 		players = new ArrayList<>();
-		rutehandsamar = new RouteHandlerImpl(gameVersion);
+		rutehandsamar = new RouteHandler(gameVersion);
 		oppdragshandsamar = new MissionHandler(gameVersion.getOppdrag());		// Legg til oppdrag
 		bygghjelpar = new ByggHjelpar(gui);
 		createTable();
@@ -49,27 +48,27 @@ public abstract class Core {
 	public abstract void settIGangSpelet(String hostAddress) throws RemoteException;
 	public abstract void orientOtherPlayers(int positionOnTable) throws RemoteException;
 
-	public void setMinSpelar(PlayerAndNetworkWTF spelar){
-		minSpelar = spelar;
+	public void setMinSpelar(IPlayer iPlayer){
+		minSpelar = iPlayer;
 	}
 
 	public Table getTable() {
 		return table;
 	}
 
-	public PlayerAndNetworkWTF getKvenSinTur() {
+	public IPlayer getKvenSinTur() {
 		return kvenSinTur;
 	}
-	public ArrayList<PlayerAndNetworkWTF> getSpelarar() {
+	public ArrayList<IPlayer> getSpelarar() {
 		return players;
 	}
 
-	public PlayerAndNetworkWTF getMinSpelar() {
+	public IPlayer getMinSpelar() {
 		return minSpelar;
 	}
 	
-	public void settSinTur(PlayerAndNetworkWTF spelar) throws RemoteException {
-		kvenSinTur = spelar;
+	public void settSinTur(IPlayer host) throws RemoteException {
+		kvenSinTur = host;
 		gui.showWhoseTurnItIs(findPlayerInAction().getNamn(), getWhoseTurnText());
 	}
 
@@ -82,10 +81,10 @@ public abstract class Core {
 		communicationWithPlayers.sjekkOmFerdig(gui.getMessagesModel(),kvenSinTur,gameVersion.toString(),minSpelar);
 	}
 	
-	public abstract PlayerAndNetworkWTF findPlayerInAction();
+	public abstract IPlayer findPlayerInAction();
 	protected abstract String getWhoseTurnText() throws RemoteException;
 
-	private void markIfItIsMyTurn() {
+	private void markIfItIsMyTurn() throws RemoteException {
 		if (kvenSinTur.getNamn().equals(minSpelar.getNamn())) {
 			gui.getPlayerNameJTextField().setBackground(Color.YELLOW);
 		}
@@ -110,7 +109,7 @@ public abstract class Core {
 
 	protected abstract void createTable() throws RemoteException;
 
-	private void hjelpemetodeBygg(Route bygd, Colour colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF byggjandeSpelar, int jokrar) throws RemoteException {
+	private void hjelpemetodeBygg(Route bygd, Colour colour, int kortKrevd, int krevdJokrar, IPlayer byggjandeSpelar, int jokrar) throws RemoteException {
 		rutehandsamar.newRoute(bygd);
 		messageUsersInNetworkGame(bygd, byggjandeSpelar);
 		gui.getRemainingTrainsLabel()[byggjandeSpelar.getSpelarNummer()+1].setText(String.valueOf(byggjandeSpelar.getGjenverandeTog()));
@@ -120,7 +119,7 @@ public abstract class Core {
 		nesteSpelar();
 	}
 
-	protected abstract void messageUsersInNetworkGame(Route bygd, PlayerAndNetworkWTF byggjandeSpelar) throws RemoteException;
+	protected abstract void messageUsersInNetworkGame(Route bygd, IPlayer byggjandeSpelar) throws RemoteException;
 
 	/** GUI BLOCK **/
 	public void displayGraphicallyThatThereIsNoCardHere(int positionOnTable) {
@@ -144,7 +143,7 @@ public abstract class Core {
 		oppdragshandsamar.removeChosenMissionFromDeck(mission);
 	}
 
-	public void routeHandler_nybygdRute(Route route, PlayerAndNetworkWTF byggjandeSpelar) { //TODO vidare ned til rutehandsamar
+	public void routeHandler_nybygdRute(Route route, IPlayer byggjandeSpelar) { //TODO vidare ned til rutehandsamar
 		route.setBuiltBy(byggjandeSpelar);
 		rutehandsamar.getBuiltRoutes().add(route);
 	}

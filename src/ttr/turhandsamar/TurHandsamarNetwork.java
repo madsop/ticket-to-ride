@@ -3,40 +3,40 @@ package ttr.turhandsamar;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-import ttr.spelar.PlayerAndNetworkWTF;
+import ttr.spelar.IPlayer;
 
 public class TurHandsamarNetwork extends TurHandsamar {
 
-	public TurHandsamarNetwork(ArrayList<PlayerAndNetworkWTF> spelarar) {
+	public TurHandsamarNetwork(ArrayList<IPlayer> spelarar) {
 		super(spelarar);
 	}
 
 	@Override
-	protected PlayerAndNetworkWTF next(PlayerAndNetworkWTF minSpelar, PlayerAndNetworkWTF kvenSinTur) throws RemoteException {
-		PlayerAndNetworkWTF host = findHost(minSpelar);
+	protected IPlayer next(IPlayer minSpelar, IPlayer kvenSinTur) throws RemoteException {
+		IPlayer host = findHost(minSpelar);
         int nextNumber = findNextNumber(kvenSinTur.getSpelarNummer(), host.getSpelarteljar());
-        PlayerAndNetworkWTF sinTur = setPlayersTurn(minSpelar, nextNumber);
+        IPlayer sinTur = setPlayersTurn(minSpelar, nextNumber);
         return sinTur;
 	}
 
-	private PlayerAndNetworkWTF setPlayersTurn(PlayerAndNetworkWTF minSpelar, int nextNumber) throws RemoteException {
-		PlayerAndNetworkWTF sinTur = findPlayerByPlayerNumber(minSpelar, nextNumber);
+	private IPlayer setPlayersTurn(IPlayer minSpelar, int nextNumber) throws RemoteException {
+		IPlayer sinTur = findPlayerByPlayerNumber(minSpelar, nextNumber);
         
-        for (PlayerAndNetworkWTF player : players) {
+        for (IPlayer player : players) {
             player.settSinTur(sinTur);
         }
 		return sinTur;
 	}
     
-	private PlayerAndNetworkWTF findHost(final PlayerAndNetworkWTF myPlayer) {
-		return findPlayerByPlayerNumber(myPlayer, 0);
+	private IPlayer findHost(final IPlayer minSpelar) throws RemoteException {
+		return findPlayerByPlayerNumber(minSpelar, 0);
 	}
 
-	private PlayerAndNetworkWTF findPlayerByPlayerNumber(final PlayerAndNetworkWTF myPlayer, int playerNumber) {
+	private IPlayer findPlayerByPlayerNumber(final IPlayer myPlayer, int playerNumber) throws RemoteException {
 		if (myPlayer.getSpelarNummer() == playerNumber) {
             return myPlayer;
         }
-		for (PlayerAndNetworkWTF player : players) {
+		for (IPlayer player : players) {
 		    if (player.getSpelarNummer() == playerNumber) {
 		       return player;
 		    }

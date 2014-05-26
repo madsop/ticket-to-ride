@@ -2,7 +2,7 @@ package ttr.listeners;
 
 import ttr.kjerna.Core;
 import ttr.rute.Route;
-import ttr.spelar.PlayerAndNetworkWTF;
+import ttr.spelar.IPlayer;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -48,7 +48,7 @@ class BuildRouteHandler {
 		}
 	}
 
-	private boolean playerCanBuildThisRoute(PlayerAndNetworkWTF player, int kortKrevd, int krevdJokrar, int harjokrar) {
+	private boolean playerCanBuildThisRoute(IPlayer player, int kortKrevd, int krevdJokrar, int harjokrar) throws RemoteException {
 		return
 				player.getGjenverandeTog() >= (kortKrevd + krevdJokrar)
 				&& krevdJokrar <= harjokrar; 

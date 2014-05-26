@@ -7,7 +7,7 @@ import ttr.communicationWithPlayers.CommunicationWithPlayersLocal;
 import ttr.gui.GUI;
 import ttr.oppdrag.MissionHandler;
 import ttr.rute.Route;
-import ttr.spelar.PlayerAndNetworkWTF;
+import ttr.spelar.IPlayer;
 import ttr.turhandsamar.TurHandsamarLocal;
 import ttr.utgaave.GameVersion;
 
@@ -17,13 +17,13 @@ public class LocalCore extends Core {
 	}
 
 	public void settIGangSpelet(String hostAddress) throws RemoteException {
-		for (PlayerAndNetworkWTF player : players) {
+		for (IPlayer player : players) {
 			MissionHandler.trekkOppdrag(gui, player, true);
 		}
 		// ??
 	}
 
-	public PlayerAndNetworkWTF findPlayerInAction() {
+	public IPlayer findPlayerInAction() {
 		return kvenSinTur;
 	}
 
@@ -39,7 +39,7 @@ public class LocalCore extends Core {
 		settSinTur(players.get(0));
 	}
 
-	protected void messageUsersInNetworkGame(Route bygd, PlayerAndNetworkWTF byggjandeSpelar) throws RemoteException { }
+	protected void messageUsersInNetworkGame(Route bygd, IPlayer byggjandeSpelar) { }
 
 	@Override
 	protected String getWhoseTurnText() {
@@ -48,7 +48,7 @@ public class LocalCore extends Core {
 
 	@Override
 	public void orientOtherPlayers(int positionOnTable) throws RemoteException {
-		for (PlayerAndNetworkWTF player : getSpelarar()) {
+		for (IPlayer player : getSpelarar()) {
 			player.getRandomCardFromTheDeck(positionOnTable); // TODO kva er det her, og korfor? 
 		}
 	}

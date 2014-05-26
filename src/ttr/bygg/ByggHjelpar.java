@@ -6,9 +6,11 @@ import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.gui.GUI;
 import ttr.rute.Route;
-import ttr.spelar.PlayerAndNetworkWTF;
+import ttr.spelar.IPlayer;
 
 import javax.swing.*;
+
+import java.awt.HeadlessException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -21,19 +23,19 @@ public class ByggHjelpar {
 		this.gui = gui;
 	}
 
-	public ByggjandeInfo bygg(Route routeToBuild, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF buildingPlayer) throws RemoteException {
-		Colour colourToBuildIn = findColourToBuildIn(routeToBuild, kortKrevd, krevdJokrar, buildingPlayer);
+	public ByggjandeInfo bygg(Route routeToBuild, int kortKrevd, int krevdJokrar, IPlayer iPlayer) throws HeadlessException, RemoteException {
+		Colour colourToBuildIn = findColourToBuildIn(routeToBuild, kortKrevd, krevdJokrar, iPlayer);
 		if (colourToBuildIn == null) { return null; }
 		
-		int jokers = chooseNumberOfJokersToUser(routeToBuild, colourToBuildIn, kortKrevd,	krevdJokrar, buildingPlayer);
-		checkIfThePlayerHasEnoughCards(routeToBuild, colourToBuildIn, kortKrevd, krevdJokrar,	buildingPlayer, jokers);
-		buildingPlayer.bygg(routeToBuild);
-		updatePlayersCards(colourToBuildIn, kortKrevd, krevdJokrar, buildingPlayer, jokers);
+		int jokers = chooseNumberOfJokersToUser(routeToBuild, colourToBuildIn, kortKrevd,	krevdJokrar, iPlayer);
+		checkIfThePlayerHasEnoughCards(routeToBuild, colourToBuildIn, kortKrevd, krevdJokrar,	iPlayer, jokers);
+		iPlayer.bygg(routeToBuild);
+		updatePlayersCards(colourToBuildIn, kortKrevd, krevdJokrar, iPlayer, jokers);
 
-		return new ByggjandeInfo(buildingPlayer,jokers, colourToBuildIn);
+		return new ByggjandeInfo(iPlayer,jokers, colourToBuildIn);
 	}
 
-	public ByggjandeInfo byggTunnel(Table bord, Route bygd, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF buildingPlayer) throws RemoteException {
+	public ByggjandeInfo byggTunnel(Table bord, Route bygd, int kortKrevd, int krevdJokrar, IPlayer buildingPlayer) throws HeadlessException, RemoteException {
 		Colour[] treTrekte = drawThreeRandomCards(bord);
 		int ekstra = computeExtraNeededCards(bygd, treTrekte);
 
@@ -66,14 +68,14 @@ public class ByggHjelpar {
 		return extra;
 	}
 	
-	private Colour findColourToBuildIn(Route routeToBuild, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF buildingPlayer) throws RemoteException {
+	private Colour findColourToBuildIn(Route routeToBuild, int kortKrevd, int krevdJokrar, IPlayer buildingPlayer) throws RemoteException {
 		if (routeToBuild.getColour() == Colour.valfri){
 			return byggValfriFarge(buildingPlayer,krevdJokrar,kortKrevd); //TODO fix denne - bruk final på position
 		}
 		return routeToBuild.getColour();
 	}
 
-	private Colour byggValfriFarge(PlayerAndNetworkWTF player, int numberOfDemandedJokers, int numberOfDemandedNormalCards) throws RemoteException {
+	private Colour byggValfriFarge(IPlayer player, int numberOfDemandedJokers, int numberOfDemandedNormalCards) throws RemoteException {
 		int extraJokers = player.getNumberOfRemainingJokers() - numberOfDemandedJokers;
 		System.out.println("ekstrajokrar: " +extraJokers);
 
@@ -85,7 +87,7 @@ public class ByggHjelpar {
 		return null;
 	}
 
-	private ArrayList<Colour> findPossibleColoursToBuildIn(PlayerAndNetworkWTF player, int numberOfDemandedNormalCards, int ekstrajokrar) throws RemoteException {
+	private ArrayList<Colour> findPossibleColoursToBuildIn(IPlayer player, int numberOfDemandedNormalCards, int ekstrajokrar) throws RemoteException {
 		ArrayList<Colour> mulegeFargar = new ArrayList<>();
 		for (Colour colour : Konstantar.FARGAR) {
 			if (canBuildThisRouteInThisColour(player, numberOfDemandedNormalCards,	ekstrajokrar, colour)){
@@ -105,14 +107,14 @@ public class ByggHjelpar {
 		return mulegeFargar.get(colourPosition);
 	}
 
-	private boolean canBuildThisRouteInThisColour(PlayerAndNetworkWTF player, int numberOfDemandedNormalCards, int ekstrajokrar, Colour colour) throws RemoteException {
+	private boolean canBuildThisRouteInThisColour(IPlayer player, int numberOfDemandedNormalCards, int ekstrajokrar, Colour colour) throws RemoteException {
 		return ((colour != Colour.valfri) && (player.getNumberOfCardsLeftInColour(colour) + ekstrajokrar) >= numberOfDemandedNormalCards && ekstrajokrar >= 0) 
 				||
 				(ekstrajokrar >= numberOfDemandedNormalCards);
 	}
 
 	 //TODO denne metoden må jo returnere og ev. sørge for å stoppe bygginga
-	private void checkIfThePlayerHasEnoughCards(Route bygd, Colour colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF byggjandeSpelar, int jokers)	throws RemoteException {
+	private void checkIfThePlayerHasEnoughCards(Route bygd, Colour colour, int kortKrevd, int krevdJokrar, IPlayer byggjandeSpelar, int jokers) throws HeadlessException, RemoteException {
 		if (jokers > byggjandeSpelar.getNumberOfRemainingJokers() || playerDoesNotHaveEnoughCardsInChosenColour(colour, kortKrevd, krevdJokrar, byggjandeSpelar, jokers)){
 			if (bygd.getColour() != Colour.valfri){
 				JOptionPane.showMessageDialog(gui, Infostrengar.IkkjeNokKort);
@@ -120,7 +122,7 @@ public class ByggHjelpar {
 		}
 	}
 
-	private int chooseNumberOfJokersToUser(Route bygd, Colour colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF byggjandeSpelar) throws RemoteException {
+	private int chooseNumberOfJokersToUser(Route bygd, Colour colour, int kortKrevd, int krevdJokrar, IPlayer byggjandeSpelar) throws RemoteException {
 		int jokers = 0;
 		if (byggjandeSpelar.getNumberOfRemainingJokers() > 0) {
 			do {
@@ -130,21 +132,21 @@ public class ByggHjelpar {
 		return jokers;
 	}
 
-	private boolean numberOfChosenJokersNotOK(Colour colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF byggjandeSpelar, int chosenNumberOfJokers) throws RemoteException {
+	private boolean numberOfChosenJokersNotOK(Colour colour, int kortKrevd, int krevdJokrar, IPlayer byggjandeSpelar, int chosenNumberOfJokers) throws RemoteException {
 		return playerHasLessJokersThanHeSays(byggjandeSpelar, chosenNumberOfJokers)
 				|| chosenNumberOfJokers < krevdJokrar
 				|| playerDoesNotHaveEnoughCardsInChosenColour(colour, kortKrevd,	krevdJokrar, byggjandeSpelar, chosenNumberOfJokers);
 	}
 
-	private boolean playerHasLessJokersThanHeSays(PlayerAndNetworkWTF byggjandeSpelar, int chosenNumberOfJokers) throws RemoteException {
+	private boolean playerHasLessJokersThanHeSays(IPlayer byggjandeSpelar, int chosenNumberOfJokers) throws RemoteException {
 		return byggjandeSpelar.getNumberOfRemainingJokers() < chosenNumberOfJokers;
 	}
 
-	private boolean playerDoesNotHaveEnoughCardsInChosenColour(Colour colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF byggjandeSpelar, int chosenNumberOfJokers) throws RemoteException {
+	private boolean playerDoesNotHaveEnoughCardsInChosenColour(Colour colour, int kortKrevd, int krevdJokrar, IPlayer byggjandeSpelar, int chosenNumberOfJokers) throws RemoteException {
 		return byggjandeSpelar.getNumberOfCardsLeftInColour(colour) < kortKrevd - (chosenNumberOfJokers-krevdJokrar);
 	}
 
-	private void updatePlayersCards(Colour colour, int kortKrevd, int krevdJokrar, PlayerAndNetworkWTF byggjandeSpelar, int jokers) throws RemoteException {
+	private void updatePlayersCards(Colour colour, int kortKrevd, int krevdJokrar, IPlayer byggjandeSpelar, int jokers) throws RemoteException {
 		byggjandeSpelar.decrementCardsAt(colour, kortKrevd-(jokers-krevdJokrar));
 		byggjandeSpelar.decrementCardsAt(Colour.valfri, jokers);
 	}
@@ -154,7 +156,7 @@ public class ByggHjelpar {
 				+treTrekte[1] +" og " +treTrekte[2]	+". Altså må du betale " +ekstra +" ekstra kort. Vil du det?");
 	}
 
-	private int velAntalJokrarDuVilBruke(Route route, PlayerAndNetworkWTF player, Colour chosenColour) throws RemoteException {
+	private int velAntalJokrarDuVilBruke(Route route, IPlayer player, Colour chosenColour) throws RemoteException {
 		int playersNumberOfJokers = player.getNumberOfRemainingJokers();
 		int howMany = -1;
 		while (howMany < 0 || howMany > playersNumberOfJokers || howMany > route.getLength()) {

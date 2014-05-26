@@ -3,20 +3,16 @@ package ttr.oppdrag;
 import ttr.data.Destination;
 import ttr.rute.Route;
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class PlayerMissionHandler  extends UnicastRemoteObject  { //TODO sjekk om dette funkar
-	private static final long serialVersionUID = 5194460142995578869L;
-	private Set<Mission> missions;
+public class PlayerMissionHandler /* extends UnicastRemoteObject */ { private Set<Mission> missions;
 	private Map<Destination, Set<Destination>> mapBetweenAandB;
 
-	public PlayerMissionHandler() throws RemoteException {
+	public PlayerMissionHandler() {
 		super();
 		missions = new HashSet<>();
 		initialiseConnectedRoutes();

@@ -2,7 +2,7 @@ package ttr.listeners;
 
 import ttr.data.Colour;
 import ttr.kjerna.Core;
-import ttr.spelar.PlayerAndNetworkWTF;
+import ttr.spelar.IPlayer;
 
 import javax.swing.*;
 
@@ -24,13 +24,13 @@ public class WrapperKortListener implements ActionListener{
 
 	public void actionPerformed(ActionEvent arg0) {
 		try {
-			buttonPressed(arg0);
+			buttonClicked(arg0);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void buttonPressed(ActionEvent arg0) throws RemoteException {
+	private void buttonClicked(ActionEvent arg0) throws RemoteException {
 		if (!hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn())) {
 			JOptionPane.showMessageDialog(frame, "Det er ikkje din tur!");
 			return;
@@ -56,17 +56,12 @@ public class WrapperKortListener implements ActionListener{
 		}
 	}
 
-	private void createButtonForRetrievingCardFromTable(int positionOnTable) {
-		try {
-			retrieveOneCardFromTheTable(positionOnTable,hovud.findPlayerInAction());
-			hovud.orientOtherPlayers(positionOnTable);
-		}
-		catch (RemoteException e) {
-			e.printStackTrace();
-		}
+	private void createButtonForRetrievingCardFromTable(int positionOnTable) throws RemoteException {
+		retrieveOneCardFromTheTable(positionOnTable,hovud.findPlayerInAction());
+		hovud.orientOtherPlayers(positionOnTable);
 	}
 
-	private void retrieveOneCardFromTheTable(int positionOnTable,PlayerAndNetworkWTF kvenSinTur) throws RemoteException {
+	private void retrieveOneCardFromTheTable(int positionOnTable, IPlayer kvenSinTur) throws RemoteException {
 		Colour colour = hovud.getTable().getCardFromTable(positionOnTable);
 		if (colour == null) { return; }
 		if (kvenSinTur.hasAlreadyDrawnOneCard()) {
@@ -77,7 +72,7 @@ public class WrapperKortListener implements ActionListener{
 		}
 	}
 
-	private void retrieveSecondCard(int positionOnTable, PlayerAndNetworkWTF kvenSinTur, Colour colour) throws RemoteException {
+	private void retrieveSecondCard(int positionOnTable, IPlayer kvenSinTur, Colour colour) throws RemoteException {
 		if (colour == Colour.valfri) {
 			JOptionPane.showMessageDialog(frame, "Haha. Nice try. Du kan ikkje ta ein joker frå bordet når du allereie har trekt inn eitt kort");
 			return;
@@ -87,7 +82,7 @@ public class WrapperKortListener implements ActionListener{
 		hovud.nesteSpelar();
 	}
 
-	private void retrieveFirstCard(int positionOnTable, PlayerAndNetworkWTF kvenSinTur, Colour colour) throws RemoteException {
+	private void retrieveFirstCard(int positionOnTable, IPlayer kvenSinTur, Colour colour) throws RemoteException {
 		kvenSinTur.receiveCard(colour);
 		putRandomCardFromTheDeckOnTable(positionOnTable, colour);
 		if (colour == Colour.valfri) {

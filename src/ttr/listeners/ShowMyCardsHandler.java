@@ -2,15 +2,14 @@ package ttr.listeners;
 
 import ttr.data.Konstantar;
 import ttr.gui.SwingUtils;
-import ttr.spelar.PlayerAndNetworkWTF;
-
+import ttr.spelar.IPlayer;
 import javax.swing.*;
 
 import java.awt.*;
 import java.rmi.RemoteException;
 
 class ShowMyCardsHandler {
-	public ShowMyCardsHandler(PlayerAndNetworkWTF playerWhoseCardToShow) throws RemoteException{
+	public ShowMyCardsHandler(IPlayer playerWhoseCardToShow) throws RemoteException{
 		JPanel myCardsPanel = new JPanel();
 		String[] kort = setUpCardText(playerWhoseCardToShow);
 		JLabel[] cardsJLabel = new JLabel[kort.length];
@@ -25,7 +24,7 @@ class ShowMyCardsHandler {
 		SwingUtils.createJFrame("Viser korta til " +playerWhoseCardToShow.getNamn(), myCardsPanel);
 	}
 
-	private String[] setUpCardText(PlayerAndNetworkWTF visSine) throws RemoteException {
+	private String[] setUpCardText(IPlayer visSine) throws RemoteException {
 		String[] kort = new String[Konstantar.FARGAR.length];
 		for (int i = 0; i < Konstantar.FARGAR.length; i++) {
 			kort[i] = Konstantar.FARGAR[i] +": " +visSine.getNumberOfCardsLeftInColour(Konstantar.FARGAR[i]);
@@ -33,7 +32,7 @@ class ShowMyCardsHandler {
 		return kort;
 	}
 
-	private JLabel setUpCardsJLabel(PlayerAndNetworkWTF visSine, String[] kort, int i) throws RemoteException {
+	private JLabel setUpCardsJLabel(IPlayer visSine, String[] kort, int i) throws RemoteException {
 		JLabel label = new JLabel();
 		label.setText(kort[i]);
 		if (visSine.getNumberOfCardsLeftInColour(Konstantar.FARGAR[i]) > 0) {

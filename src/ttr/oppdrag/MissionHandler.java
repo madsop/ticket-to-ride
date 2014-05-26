@@ -2,8 +2,10 @@ package ttr.oppdrag;
 
 import ttr.data.Konstantar;
 import ttr.gui.GUI;
+import ttr.spelar.IPlayer;
 import ttr.spelar.PlayerAndNetworkWTF;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class MissionHandler {
@@ -35,7 +37,7 @@ public class MissionHandler {
 		}
 	}
 
-	public static void trekkOppdrag(GUI gui, PlayerAndNetworkWTF player, boolean start) {
+	public static void trekkOppdrag(GUI gui, IPlayer player, boolean start) throws RemoteException {
 		int numberOfMissionsToPickFrom = start ? Konstantar.ANTAL_STARTOPPDRAG : Konstantar.ANTAL_VELJEOPPDRAG;
 
 		ArrayList<Mission> missions = chooseMissions(gui, numberOfMissionsToPickFrom, getMissionsToChooseFrom(player, numberOfMissionsToPickFrom));
@@ -45,7 +47,7 @@ public class MissionHandler {
 		}
 	}
 
-	private static ArrayList<Mission> getMissionsToChooseFrom(PlayerAndNetworkWTF player, int numberOfMissionsToPickFrom) {
+	private static ArrayList<Mission> getMissionsToChooseFrom(IPlayer player, int numberOfMissionsToPickFrom) throws RemoteException {
 		ArrayList<Mission> missions = new ArrayList<>();
 		for (int i = 0; i < numberOfMissionsToPickFrom; i++) {
 			missions.add(player.trekkOppdragskort());

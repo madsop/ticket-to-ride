@@ -34,7 +34,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
         spelarOppdragshandsamar = new PlayerMissionHandler();
 	}
 	
-	public abstract PlayerAndNetworkWTF getThisAsISpelar();
+	public abstract IPlayer getThisAsISpelar();
 
 	public void bygg(Route rute)  {
 		rute.setBuiltBy(getThisAsISpelar());

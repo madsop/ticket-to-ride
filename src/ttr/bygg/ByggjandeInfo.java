@@ -1,15 +1,15 @@
 package ttr.bygg;
 
 import ttr.data.Colour;
-import ttr.spelar.PlayerAndNetworkWTF;
+import ttr.spelar.IPlayer;
 
 public class ByggjandeInfo {
-    public final PlayerAndNetworkWTF byggjandeSpelar;
+    public final IPlayer byggjandeSpelar;
     public final int jokrar;
 	public final Colour colour;
 
-    public ByggjandeInfo(PlayerAndNetworkWTF byggjandeSpelar, int jokrar, Colour colour) {
-        this.byggjandeSpelar = byggjandeSpelar;
+    public ByggjandeInfo(IPlayer iPlayer, int jokrar, Colour colour) {
+        this.byggjandeSpelar = iPlayer;
         this.jokrar = jokrar;
         this.colour = colour;
     }
