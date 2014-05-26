@@ -4,13 +4,13 @@ import ttr.data.Destination;
 import ttr.data.Colour;
 import ttr.oppdrag.Mission;
 import ttr.rute.Route;
-import ttr.utgaave.AbstractGameVersion;
+import ttr.utgaave.GameVersion;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 
-public final class Nordic extends AbstractGameVersion {
+public final class Nordic extends GameVersion {
 	public static final String tittel = "Nordic countries";
 	private static final String bilde = "nordic_map.jpg";
 	

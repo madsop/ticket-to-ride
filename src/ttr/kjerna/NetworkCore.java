@@ -23,7 +23,7 @@ public class NetworkCore extends Core {
 	public void settIGangSpelet(String hostAddress) throws RemoteException {
 		InitialiserNettverk nettverk = new InitialiserNettverk(gui, hostAddress, this);
 		nettverk.initialiseNetworkGame();
-		MissionHandler.trekkOppdrag(gui, minSpelar, true);
+		MissionHandler.trekkOppdrag(gui, myPlayer, true);
 
 		givePlayersMissions();
 	}
@@ -37,7 +37,7 @@ public class NetworkCore extends Core {
 	}
 
 	public IPlayer findPlayerInAction() {
-		return minSpelar;
+		return myPlayer;
 	}
 
 	protected void createTable() throws RemoteException {
@@ -48,13 +48,13 @@ public class NetworkCore extends Core {
 	protected void messageUsersInNetworkGame(Route builtRoute, IPlayer buildingPlayer) throws RemoteException {
 		for (IPlayer player : players) {
 			player.nybygdRute(builtRoute,buildingPlayer);
-			player.setTogAtt(buildingPlayer.getSpelarNummer()+1, buildingPlayer.getGjenverandeTog());
+			player.setRemainingTrains(buildingPlayer.getSpelarNummer()+1, buildingPlayer.getGjenverandeTog());
 		}
 	}
 
 	@Override
 	protected String getWhoseTurnText() throws RemoteException {
-		return (minSpelar.getNamn().equals(kvenSinTur.getNamn()) ? "min tur." : kvenSinTur.getNamn() + " sin tur.");
+		return (myPlayer.getNamn().equals(playerInTurn.getNamn()) ? "min tur." : playerInTurn.getNamn() + " sin tur.");
 	}
 
 	@Override
@@ -64,7 +64,8 @@ public class NetworkCore extends Core {
 		if (host != null){
 			Colour newColour = host.getRandomCardFromTheDeck(positionOnTable);
 			while (host.areThereTooManyJokersOnTable()) {
-				newColour = placeNewCardsOnTable(host);
+				placeNewCardsOnTable(host);
+				newColour = host.getCardsOnTable()[positionOnTable];
 			}
 			newCardPlacedOnTableInNetworkGame(host, newColour, positionOnTable);
 		}
@@ -72,8 +73,8 @@ public class NetworkCore extends Core {
 
 	private IPlayer findHost() throws RemoteException {
 		IPlayer host = null;
-		if (minSpelar.getSpelarNummer()==0) {
-			host = minSpelar; // TODO forsvinn ikkje denne uansett i løpet av for-løkka under?
+		if (myPlayer.getSpelarNummer()==0) {
+			host = myPlayer; // TODO forsvinn ikkje denne uansett i løpet av for-løkka under?
 		}
 		for (IPlayer player : players) {
 			if (player.getSpelarNummer()==0) {
@@ -83,20 +84,17 @@ public class NetworkCore extends Core {
 		return host;
 	}
 
-	private Colour placeNewCardsOnTable(IPlayer host) throws RemoteException {
-		Colour newColour = null;
+	private void placeNewCardsOnTable(IPlayer host) throws RemoteException {
 		host.leggUtFem();
 		Colour[] cardsOnTable = host.getCardsOnTable();
 
 		for (int plass = 0; plass < Konstantar.ANTAL_KORT_PÅ_BORDET; plass++){
-			newColour = cardsOnTable[plass];
-			minSpelar.putCardOnTable(newColour,plass);
-			newCardPlacedOnTableInNetworkGame(host, newColour, plass);
+			myPlayer.putCardOnTable(cardsOnTable[plass],plass);
+			newCardPlacedOnTableInNetworkGame(host, cardsOnTable[plass], plass);
 		}
-		return newColour;
 	}
 
-	private void newCardPlacedOnTableInNetworkGame(IPlayer host, Colour newColour, int i) throws RemoteException {
-		communicationWithPlayers.newCardPlacedOnTableInNetworkGame(host, newColour, i, this);
+	private void newCardPlacedOnTableInNetworkGame(IPlayer host, Colour newColour, int position) throws RemoteException {
+		communicationWithPlayers.newCardPlacedOnTableInNetworkGame(host, newColour, position, this);
 	}
 }

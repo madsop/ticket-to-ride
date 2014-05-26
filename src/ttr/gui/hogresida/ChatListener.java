@@ -2,7 +2,6 @@ package ttr.gui.hogresida;
 
 import ttr.data.Infostrengar;
 import ttr.data.MeldingarModell;
-import ttr.kjerna.Core;
 import ttr.spelar.IPlayer;
 
 import javax.swing.*;
@@ -10,16 +9,19 @@ import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 class ChatListener implements KeyListener {
-	private final Core hovud;
 	private final JTextField chatJTextField; //TODO denne må vel vekk herifrå?
 	private final MeldingarModell meldingarmodell;
+	private final ArrayList<IPlayer> players;
+	private IPlayer myPlayer;
 
-	public ChatListener(JTextField chat, MeldingarModell messagesModel, Core hovud){
+	public ChatListener(JTextField chat, MeldingarModell messagesModel, IPlayer myPlayer, ArrayList<IPlayer> players) {
 		this.chatJTextField = chat;
 		this.meldingarmodell = messagesModel;
-		this.hovud = hovud;
+		this.players = players;
+		this.myPlayer = myPlayer;
 	}
 
 	public void keyPressed(KeyEvent arg0) {	}
@@ -35,7 +37,7 @@ class ChatListener implements KeyListener {
 
 	private void sendMessage(KeyEvent arg0) throws RemoteException {
 		if (arg0.getKeyCode() == KeyEvent.VK_ENTER){
-			String message = getPlayerName() + ": " + chatJTextField.getText();;
+			String message = myPlayer.getNamn() + ": " + chatJTextField.getText();;
 			sendMessageToPlayers(message);
 			chatJTextField.setText("");
 		}
@@ -44,13 +46,9 @@ class ChatListener implements KeyListener {
 		}
 	}
 
-	private String getPlayerName() throws RemoteException {
-		return hovud.findPlayerInAction().getNamn();
-	}
-
 	private void sendMessageToPlayers(String message) throws RemoteException {
 		meldingarmodell.nyMelding(message);
-		for (IPlayer spelar : hovud.getSpelarar()){
+		for (IPlayer spelar : players){
 			spelar.receiveMessage(message);
 		}
 	}

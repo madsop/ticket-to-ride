@@ -16,11 +16,13 @@ import java.util.ArrayList;
 
 public class ByggHjelpar {
 	private final GUI gui;
+	private TunnelBuildHelper tunnelBuildHelper;
 	
 	//TODO fortener denne å bli splitta i ein kan-bygge-her-klasse og resten? evt. ein colour-finder-klasse
 	
 	public ByggHjelpar(GUI gui) {
 		this.gui = gui;
+		this.tunnelBuildHelper = new TunnelBuildHelper(gui);
 	}
 
 	public ByggjandeInfo bygg(Route routeToBuild, int kortKrevd, int krevdJokrar, IPlayer iPlayer) throws HeadlessException, RemoteException {
@@ -34,46 +36,18 @@ public class ByggHjelpar {
 
 		return new ByggjandeInfo(iPlayer,jokers, colourToBuildIn);
 	}
-
-	public ByggjandeInfo byggTunnel(Table bord, Route bygd, int kortKrevd, int krevdJokrar, IPlayer buildingPlayer) throws HeadlessException, RemoteException {
-		Colour[] treTrekte = drawThreeRandomCards(bord);
-		int ekstra = computeExtraNeededCards(bygd, treTrekte);
-
-		if (askUserIfBuildAnyway(treTrekte, ekstra) == JOptionPane.OK_OPTION) {
-			return bygg(bygd, kortKrevd+ekstra, krevdJokrar, buildingPlayer);
-		}
-		return null;
+	public ByggjandeInfo byggTunnel(Table bord, Route routeToBuild, int kortKrevd, int krevdJokrar, IPlayer buildingPlayer) throws HeadlessException, RemoteException {
+		return bygg(routeToBuild, kortKrevd + tunnelBuildHelper.checkIfTunnelShouldBeBuiltAndHowManyExtraCardsWillBeNeeded(bord, routeToBuild), krevdJokrar, buildingPlayer);
 	}
-
-	private Colour[] drawThreeRandomCards(Table bord) {
-		Colour[] treTrekte = new Colour[3];
-		
-		for (int i = 0; i < treTrekte.length; i++) {
-			treTrekte[i] = bord.getRandomCardFromTheDeck();
-			if (treTrekte[i] == null){
-				JOptionPane.showMessageDialog(gui, Infostrengar.TomtPåBordet);
-				return null;
-			}
-		}
-		return treTrekte;
-	}
-
-	private int computeExtraNeededCards(Route bygd, Colour[] treTrekte) {
-		int extra = 0;
-		for (Colour drawnCard : treTrekte) {
-			if (drawnCard == Colour.valfri || drawnCard == bygd.getColour()) {
-				extra++;
-			}
-		}
-		return extra;
-	}
+	
 	
 	private Colour findColourToBuildIn(Route routeToBuild, int kortKrevd, int krevdJokrar, IPlayer buildingPlayer) throws RemoteException {
 		if (routeToBuild.getColour() == Colour.valfri){
-			return byggValfriFarge(buildingPlayer,krevdJokrar,kortKrevd); //TODO fix denne - bruk final på position
+			return byggValfriFarge(buildingPlayer,krevdJokrar,kortKrevd);
 		}
 		return routeToBuild.getColour();
 	}
+
 
 	private Colour byggValfriFarge(IPlayer player, int numberOfDemandedJokers, int numberOfDemandedNormalCards) throws RemoteException {
 		int extraJokers = player.getNumberOfRemainingJokers() - numberOfDemandedJokers;
@@ -151,10 +125,6 @@ public class ByggHjelpar {
 		byggjandeSpelar.decrementCardsAt(Colour.valfri, jokers);
 	}
 
-	private int askUserIfBuildAnyway(Colour[] treTrekte, int ekstra) {
-		return JOptionPane.showConfirmDialog(gui, Infostrengar.TunnelStartTekst +treTrekte[0] +", "
-				+treTrekte[1] +" og " +treTrekte[2]	+". Altså må du betale " +ekstra +" ekstra kort. Vil du det?");
-	}
 
 	private int velAntalJokrarDuVilBruke(Route route, IPlayer player, Colour chosenColour) throws RemoteException {
 		int playersNumberOfJokers = player.getNumberOfRemainingJokers();

@@ -83,9 +83,8 @@ public class InitialiserNettverk {
 		System.out.println("Time to register with RMI registry: "+(time/1000)+"s");
 		System.out.println("Spelet er starta, vent på at nokon skal kople seg til...");
 		hovud.settSinTur(meg);
-		meg.setSpelarNummer(0);
-		meg.setSpelarteljar(1);
-		gui.getMessagesModel().nyMelding(meg.getNamn() +" er vert for spelet.");
+		meg.setPlayerNumberAndUpdatePlayerCounter(0);
+		gui.receiveMessage(meg.getNamn() +" er vert for spelet.");
 	}
 
 	private String initJoin(String remoteAddress){
@@ -109,16 +108,15 @@ public class InitialiserNettverk {
 		player.receiveMessage(hovud.getMinSpelar().getNamn() + " har vorti med i spelet.");
 
 		if (player.getSpelarNummer()!=0){
-			gui.getMessagesModel().nyMelding(player.getNamn() + " er òg med i spelet.");
+			gui.receiveMessage(player.getNamn() + " er òg med i spelet.");
 		}
 
 		player.registrerKlient(hovud.getMinSpelar());
 	}
 
 	private void registerHost(IPlayer player) throws RemoteException {
-		hovud.getMinSpelar().setSpelarNummer(player.getSpelarteljar());
-		player.setSpelarteljar(player.getSpelarteljar()+1);
-		gui.getMessagesModel().nyMelding(player.getNamn() +" er vert for spelet.");
+		hovud.getMinSpelar().setPlayerNumberAndUpdatePlayerCounter(player.getSpelarteljar());
+		gui.receiveMessage(player.getNamn() +" er vert for spelet.");
 		paaVertBordet = player.getCardsOnTable();
 	}
 
@@ -128,7 +126,7 @@ public class InitialiserNettverk {
 				//hovud.getSpelarar().add(s);
 				hovud.getMinSpelar().registrerKlient(player);
 				player.receiveMessage(hovud.getMinSpelar().getNamn() + " har vorti med i spelet.");
-				gui.getMessagesModel().nyMelding(player.getNamn() + " er òg med i spelet.");
+				gui.receiveMessage(player.getNamn() + " er òg med i spelet.");
 				player.registrerKlient(hovud.getMinSpelar());
 			}
 		}

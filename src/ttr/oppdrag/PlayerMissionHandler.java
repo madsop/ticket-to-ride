@@ -9,7 +9,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class PlayerMissionHandler /* extends UnicastRemoteObject */ { private Set<Mission> missions;
+public class PlayerMissionHandler { 
+	private Set<Mission> missions;
 	private Map<Destination, Set<Destination>> mapBetweenAandB;
 
 	public PlayerMissionHandler() {

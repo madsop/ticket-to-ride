@@ -50,13 +50,13 @@ import java.util.Collection;
 	public void showGameOverMessage(String points) { SwingUtils.showMessageDialog(points); }
 
     // Oppdrag
-    public int getAntalFullfoerteOppdrag() { return spelarOppdragshandsamar.getNumberOfFulfilledMissions(); }
-    public int getOppdragspoeng() { return spelarOppdragshandsamar.getMissionPoints(); }
-    public Collection<Mission> getOppdrag() { return spelarOppdragshandsamar.getMissions(); }
-    public void receiveMission(Mission mission) { spelarOppdragshandsamar.retrieveMission(mission); }
-    public Mission trekkOppdragskort() { return hovud.missionHandler_trekkOppdragskort(); }
-    public boolean isMissionAccomplished(Mission mission) { return spelarOppdragshandsamar.isMissionAccomplished(mission); }
-    public void removeChosenMissionFromDeck(Mission mission) { hovud.missionHandler_removeChosenMissionFromDeck(mission); }
+    public int getAntalFullfoerteOppdrag() { return playerMissionHandler.getNumberOfFulfilledMissions(); }
+    public int getOppdragspoeng() { return playerMissionHandler.getMissionPoints(); }
+    public Collection<Mission> getOppdrag() { return playerMissionHandler.getMissions(); }
+    public void receiveMission(Mission mission) { playerMissionHandler.retrieveMission(mission); }
+    public Mission trekkOppdragskort() { return hovud.drawMission(); }
+    public boolean isMissionAccomplished(Mission mission) { return playerMissionHandler.isMissionAccomplished(mission); }
+    public void removeChosenMissionFromDeck(Mission mission) { hovud.removeChosenMissionFromDeck(mission); }
     
     // Kort
     public void receiveCard(Colour farge) { korthandsamar.receiveCard(farge);}
@@ -70,13 +70,15 @@ import java.util.Collection;
 
     // Bord
     public void leggUtFem() { bord.layFiveCardsOutOnTable(); }
-    public void putCardsInDeck(Colour colour, int number) { bord.addCardsToDeck(colour, number); }    
-    public void setPaaBord(Colour[] f) { bord.setPaaBordet(f); }
+	public void updateDeckOnTable(Colour colour, int kortKrevd, int krevdJokrar, int jokrar) { bord.updateDeckOnTable(colour, kortKrevd, krevdJokrar, jokrar); }
+    public void setPaaBord(Colour[] f) { bord.putCardsOnTable(f); }
     public void putCardOnTable(Colour colour, int position){ bord.putOneCardOnTable(colour, position); }
     public boolean areThereTooManyJokersOnTable(){ return bord.areThereTooManyJokersOnTable(); }
 
 	public IPlayer getThisAsISpelar() {	return this; }
 
-	public void nybygdRute(Route route, IPlayer byggjandeSpelar) { hovud.routeHandler_nybygdRute(route, byggjandeSpelar); }
-	public Colour[] getCardsOnTable() { return hovud.getTable().getPaaBordet(); }
+	public void nybygdRute(Route route, IPlayer byggjandeSpelar) { hovud.nybygdRute(route, byggjandeSpelar); }
+	public Colour[] getCardsOnTable() { return hovud.getTable().getCardsOpenOnTable(); }
+	
+	public void setRemainingTrains(int position, int numberOfTrains) { hovud.displayNumberOfRemainingTrains(position, numberOfTrains); }
 }

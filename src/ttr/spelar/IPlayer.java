@@ -57,8 +57,6 @@ public interface IPlayer extends Remote {
 	// Bord
 	public abstract void leggUtFem() throws RemoteException;
 
-	public abstract void putCardsInDeck(Colour colour, int number) throws RemoteException;
-
 	public abstract void setPaaBord(Colour[] f) throws RemoteException;
 
 	public abstract void putCardOnTable(Colour colour, int position) throws RemoteException;
@@ -79,17 +77,17 @@ public interface IPlayer extends Remote {
 
 	public abstract boolean hasAlreadyDrawnOneCard() throws RemoteException;
 
-	public abstract void setTogAtt(int position, int numberOfTrains) throws RemoteException;
+	public abstract void setRemainingTrains(int position, int numberOfTrains) throws RemoteException;
 
-	public abstract void setSpelarNummer(int nummer) throws RemoteException;
+	public abstract void setPlayerNumberAndUpdatePlayerCounter(int nummer) throws RemoteException;
 
 	public abstract int getSpelarteljar() throws RemoteException;
-
-	public abstract void setSpelarteljar(int teljar) throws RemoteException;
 
 	public abstract Collection<Route> getBygdeRuter() throws RemoteException;
 
 	public abstract String getNamn() throws RemoteException;
 
 	public abstract int getGjenverandeTog() throws RemoteException;
+	
+	public void updateDeckOnTable(Colour colour, int kortKrevd, int krevdJokrar, int jokrar) throws RemoteException;
 }

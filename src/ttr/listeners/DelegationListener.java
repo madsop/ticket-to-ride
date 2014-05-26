@@ -15,11 +15,10 @@ public class DelegationListener implements ActionListener {
     private final Core hovud;
     private final JButton visBygde,visMineKort,visMineOppdrag,trekkOppdrag,bygg;
     private final JFrame frame;
-	public DelegationListener(GUI gui, Core hovud, JButton visBygde,
-                            JButton visMineKort, JButton visMineOppdrag, JButton trekkOppdrag, JButton bygg,
-                            JFrame frame) {
+    
+	public DelegationListener(GUI gui, Core core, JButton visBygde, JButton visMineKort, JButton visMineOppdrag, JButton trekkOppdrag, JButton bygg, JFrame frame) {
         this.gui = gui;
-        this.hovud = hovud;
+        this.hovud = core;
         this.visBygde = visBygde;
         this.visMineKort = visMineKort;
         this.visMineOppdrag = visMineOppdrag;
@@ -27,7 +26,6 @@ public class DelegationListener implements ActionListener {
         this.bygg = bygg;
         this.frame = frame;
     }
-
 
     public void actionPerformed(ActionEvent arg0) {
         try {
@@ -47,7 +45,7 @@ public class DelegationListener implements ActionListener {
                 new TrekkOppdragHandler(hovud,gui);
             }
             else if (arg0.getSource() == bygg) {
-                new BuildRouteHandler(hovud,frame);
+                new BuildRouteHandler(hovud.findRoutesNotYetBuilt(), hovud.findPlayerInAction().getNumberOfRemainingJokers(), hovud, frame);
             }
             else if (arg0.getSource() == visMineKort) {
                 new ShowMyCardsHandler(hovud.findPlayerInAction());
@@ -56,7 +54,7 @@ public class DelegationListener implements ActionListener {
                 new ShowMyMissionsHandler(hovud.findPlayerInAction());
             }
             else if (arg0.getSource() == visBygde) {
-                new ShowBuiltRoutesHandler(hovud, frame);
+                new ShowBuiltRoutesHandler(hovud.getAllBuiltRoutes(), frame);
             }
         }
         catch (RemoteException e2) {

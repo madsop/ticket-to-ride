@@ -3,8 +3,6 @@ package ttr.oppdrag;
 import ttr.data.Konstantar;
 import ttr.gui.GUI;
 import ttr.spelar.IPlayer;
-import ttr.spelar.PlayerAndNetworkWTF;
-
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 

@@ -18,8 +18,7 @@ public class CommunicationWithPlayersNetwork extends CommunicationWithPlayers {
 
 	public void updateOtherPlayers(Colour colour, int kortKrevd, int numberOfJokers, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException {				
 		for (IPlayer player : players) {
-			player.putCardsInDeck(colour, (kortKrevd-(numberOfJokers-krevdJokrar)));
-			player.putCardsInDeck(Colour.valfri, numberOfJokers);
+			player.updateDeckOnTable(colour, kortKrevd, krevdJokrar, numberOfJokers);
 			player.receiveMessage(byggjandeNamn + " bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
 		}
 	}

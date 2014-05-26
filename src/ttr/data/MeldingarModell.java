@@ -1,11 +1,10 @@
 package ttr.data;
 
-import javax.swing.*;
-
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
+import javax.swing.AbstractListModel;
 
 public class MeldingarModell extends AbstractListModel<String> {
 	private static final long serialVersionUID = -6448830036131823839L;

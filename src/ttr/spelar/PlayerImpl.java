@@ -15,23 +15,23 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	private static final long serialVersionUID = -6844537139622798129L;
 	protected Core hovud;
 	protected Table bord;
-    protected PlayerMissionHandler spelarOppdragshandsamar;
+    protected PlayerMissionHandler playerMissionHandler;
 
-	private static int spelarteljar = 0;    //TODO bør flyttes vekk. Kanskje til hovud.
-	private int spelarNummer;
-	private String namn;
-	protected ArrayList<Route> bygdeRuter; // Delvis unaudsynt pga. harEgBygdMellomAogB
+	private int playerNumber;
+	private String name;
+	protected ArrayList<Route> builtRoutes; // Delvis unaudsynt pga. harEgBygdMellomAogB
 
+	private static int playerCounter = 0;    //TODO bør flyttes vekk. Kanskje til hovud.
 	private boolean einValdAllereie; //TODO denne bør vel ikkje vera her?
 	
 	public PlayerImpl (Core hovud, String namn, Table bord) throws RemoteException{
 		super();
 		this.hovud = hovud;
 		this.bord = bord;
-		this.namn = namn;
+		this.name = namn;
 		einValdAllereie = false;
-		bygdeRuter = new ArrayList<>();
-        spelarOppdragshandsamar = new PlayerMissionHandler();
+		builtRoutes = new ArrayList<>();
+        playerMissionHandler = new PlayerMissionHandler();
 	}
 	
 	public abstract IPlayer getThisAsISpelar();
@@ -39,32 +39,31 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	public void bygg(Route rute)  {
 		rute.setBuiltBy(getThisAsISpelar());
 		// Fjern kort frå spelaren og legg dei i stokken eller ved sida av?
-		bygdeRuter.add(rute);
-        spelarOppdragshandsamar.markRouteAsBuilt(rute);
+		builtRoutes.add(rute);
+        playerMissionHandler.markRouteAsBuilt(rute);
 	}
 
 	public void setEittKortTrektInn(boolean b) {
 		einValdAllereie = b;
 	}
-	public int getSpelarNummer() {
-		return spelarNummer;
-	}
 	public boolean hasAlreadyDrawnOneCard() {
 		return einValdAllereie;
 	}
 
-	public void setTogAtt(int position, int numberOfTrains) { hovud.displayNumberOfRemainingTrains(position, numberOfTrains); }
-	public void setSpelarNummer(int nummer) { spelarNummer = nummer; }
-	public int getSpelarteljar() { return spelarteljar; }
-	public void setSpelarteljar(int teljar) { spelarteljar = teljar; }
-	public Collection<Route> getBygdeRuter() { return bygdeRuter; }
+	public int getSpelarNummer() { return playerNumber; }
+	public int getSpelarteljar() { return playerCounter; }
+	public void setPlayerNumberAndUpdatePlayerCounter(int number) { 
+		playerNumber = number;
+		playerCounter = number + 1;
+	}
+	public Collection<Route> getBygdeRuter() { return builtRoutes; }
 
-	public String getNamn() { return namn; }
+	public String getNamn() { return name; }
 
 	public int getGjenverandeTog() {
-		int brukteTog = bygdeRuter.stream().mapToInt(x -> x.getLength()).sum();
+		int brukteTog = builtRoutes.stream().mapToInt(x -> x.getLength()).sum();
 		return Konstantar.ANTAL_TOG - brukteTog;
 	}
 
-	public String toString() { return namn; }
+	public String toString() { return name; }
 }

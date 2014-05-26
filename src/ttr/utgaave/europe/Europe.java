@@ -4,12 +4,12 @@ import ttr.data.Destination;
 import ttr.data.Colour;
 import ttr.oppdrag.Mission;
 import ttr.rute.Route;
-import ttr.utgaave.AbstractGameVersion;
+import ttr.utgaave.GameVersion;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Europe extends AbstractGameVersion {
+public class Europe extends GameVersion {
 	private static final String tittel = "Europe";
 	private static final String bilde = "";
 	

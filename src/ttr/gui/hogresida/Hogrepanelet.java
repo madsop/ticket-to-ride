@@ -18,7 +18,7 @@ public class Hogrepanelet extends JPanel {
     private JTextField spelarnamn;
     private final JFrame frame;
 
-    private JButton[] kortButtons;
+    private JButton[] cardButtons;
     private JLabel[] togAtt;
     private JButton trekkOppdrag,bygg,visBygde,visMineOppdrag,visMineKort, kortBunke;
 
@@ -26,17 +26,10 @@ public class Hogrepanelet extends JPanel {
         this.frame = frame;
     }
 
-    public JButton[] getKortButtons(){
-        return kortButtons;
-    }
-
-    public JTextField getSpelarnamn() {
-        return spelarnamn;
-    }
-
-    public JLabel[] getTogAtt() {
-        return togAtt;
-    }
+    public void displayGraphicallyThatThereIsNoCardHere(int positionOnTable) {
+		cardButtons[positionOnTable].setBackground(Color.GRAY);
+		cardButtons[positionOnTable].setText("Tom");
+	}
 
     public void byggHogrepanelet(){
         GridBagLayout hogregbl = new GridBagLayout();
@@ -125,8 +118,8 @@ public class Hogrepanelet extends JPanel {
         visFargekorta(d);
     }
     
-    public void addListeners(Core hovud, GUI gui){
-        DelegationListener listener = new DelegationListener(gui, hovud, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
+    public void addListeners(Core core, GUI gui){
+        DelegationListener listener = new DelegationListener(gui, core, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
         trekkOppdrag.addActionListener(listener);
         bygg.addActionListener(listener);
         visMineKort.addActionListener(listener);
@@ -134,16 +127,16 @@ public class Hogrepanelet extends JPanel {
         visBygde.addActionListener(listener);
 
 
-        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, kortButtons, hovud, frame);
+        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, cardButtons, core, frame);
         kortBunke.addActionListener(kortListener);
-        for (JButton button : kortButtons){
+        for (JButton button : cardButtons){
             button.addActionListener(kortListener);
         }
     }
 
     public void teiknOppKortPåBordet(int position, Colour colour) {
-        kortButtons[position].setForeground(Color.BLACK);
-        kortButtons[position].setBackground(Konstantar.fargeTilColor(colour));
+        cardButtons[position].setForeground(Color.BLACK);
+        cardButtons[position].setBackground(Konstantar.fargeTilColor(colour));
         String colourText;
         switch (colour) {
             case blå:
@@ -169,7 +162,7 @@ public class Hogrepanelet extends JPanel {
                 break;
             case svart:
                 colourText = "Svart";
-                kortButtons[position].setForeground(Color.WHITE);
+                cardButtons[position].setForeground(Color.WHITE);
                 break;
             case valfri:
                 colourText = "Joker";
@@ -178,7 +171,7 @@ public class Hogrepanelet extends JPanel {
                 colourText = "Ops";
                 break;
         }
-        kortButtons[position].setText(colourText);
+        cardButtons[position].setText(colourText);
     }
 
     private void visFargekorta(GridBagConstraints d) {
@@ -189,7 +182,7 @@ public class Hogrepanelet extends JPanel {
         kortBunke.setMinimumSize(Konstantar.KORTKNAPP);
         this.add(kortBunke,d);
 
-        kortButtons = new JButton[5];
+        cardButtons = new JButton[5];
 
         int tel = 0;
         d.gridx = 1;
@@ -215,9 +208,21 @@ public class Hogrepanelet extends JPanel {
     }
 
     private void mekkKortButton(int counter,GridBagConstraints d){
-        kortButtons[counter] = new JButton("kort " +counter);
-        kortButtons[counter].setMinimumSize(Konstantar.KORTKNAPP);
-        kortButtons[counter].setBackground(Color.BLACK);
-        this.add(kortButtons[counter],d);
+        cardButtons[counter] = new JButton("kort " +counter);
+        cardButtons[counter].setMinimumSize(Konstantar.KORTKNAPP);
+        cardButtons[counter].setBackground(Color.BLACK);
+        this.add(cardButtons[counter],d);
     }
+
+	public void setRemainingTrains(int position, int numberOfTrains) {
+		togAtt[position].setText(String.valueOf(numberOfTrains));		
+	}
+
+	public void setPlayerName(String newPlayerName) {
+		spelarnamn.setText(newPlayerName);		
+	}
+
+	public void displayGraphicallyThatItIsMyTurn() {
+		spelarnamn.setBackground(Color.YELLOW);
+	}
 }

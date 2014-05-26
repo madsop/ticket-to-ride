@@ -14,7 +14,6 @@ import ttr.spelar.IPlayer;
 import ttr.turhandsamar.TurHandsamar;
 import ttr.utgaave.GameVersion;
 
-import java.awt.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Set;
@@ -26,22 +25,22 @@ public abstract class Core {
 	protected ArrayList<IPlayer> players;
 	protected final GUI gui;
 
-	protected IPlayer kvenSinTur;
-	protected IPlayer minSpelar;
+	protected IPlayer playerInTurn;
+	protected IPlayer myPlayer;
 	protected CommunicationWithPlayers communicationWithPlayers;
-	private MissionHandler oppdragshandsamar;
-	private RouteHandler rutehandsamar;
+	private MissionHandler missionHandler;
+	private RouteHandler routeHandler;
 	protected TurHandsamar turhandsamar;
-	private ByggHjelpar bygghjelpar;
+	private ByggHjelpar buildingHelper;
 
 	public Core(GUI gui, Table table, GameVersion gameVersion) throws RemoteException {
 		this.gui = gui;
 		this.gameVersion = gameVersion;
 		this.table = table;
 		players = new ArrayList<>();
-		rutehandsamar = new RouteHandler(gameVersion);
-		oppdragshandsamar = new MissionHandler(gameVersion.getOppdrag());		// Legg til oppdrag
-		bygghjelpar = new ByggHjelpar(gui);
+		routeHandler = new RouteHandler(gameVersion);
+		missionHandler = new MissionHandler(gameVersion.getOppdrag());		// Legg til oppdrag
+		buildingHelper = new ByggHjelpar(gui);
 		createTable();
 	}
 
@@ -49,7 +48,7 @@ public abstract class Core {
 	public abstract void orientOtherPlayers(int positionOnTable) throws RemoteException;
 
 	public void setMinSpelar(IPlayer iPlayer){
-		minSpelar = iPlayer;
+		myPlayer = iPlayer;
 	}
 
 	public Table getTable() {
@@ -57,102 +56,102 @@ public abstract class Core {
 	}
 
 	public IPlayer getKvenSinTur() {
-		return kvenSinTur;
+		return playerInTurn;
 	}
 	public ArrayList<IPlayer> getSpelarar() {
 		return players;
 	}
 
 	public IPlayer getMinSpelar() {
-		return minSpelar;
+		return myPlayer;
 	}
 	
 	public void settSinTur(IPlayer host) throws RemoteException {
-		kvenSinTur = host;
+		playerInTurn = host;
 		gui.showWhoseTurnItIs(findPlayerInAction().getNamn(), getWhoseTurnText());
 	}
 
 	public void nesteSpelar() throws RemoteException {
-		kvenSinTur = turhandsamar.nextPlayer(kvenSinTur,minSpelar);
+		playerInTurn = turhandsamar.nextPlayer(playerInTurn,myPlayer);
 		markIfItIsMyTurn();
 		gui.showWhoseTurnItIs(findPlayerInAction().getNamn(), getWhoseTurnText());
-		kvenSinTur.setEittKortTrektInn(false);
+		playerInTurn.setEittKortTrektInn(false);
 
-		communicationWithPlayers.sjekkOmFerdig(gui.getMessagesModel(),kvenSinTur,gameVersion.toString(),minSpelar);
+		communicationWithPlayers.sjekkOmFerdig(gui.getMessagesModel(),playerInTurn,gameVersion.toString(),myPlayer);
 	}
 	
 	public abstract IPlayer findPlayerInAction();
 	protected abstract String getWhoseTurnText() throws RemoteException;
 
 	private void markIfItIsMyTurn() throws RemoteException {
-		if (kvenSinTur.getNamn().equals(minSpelar.getNamn())) {
-			gui.getPlayerNameJTextField().setBackground(Color.YELLOW);
+		if (playerInTurn.getNamn().equals(myPlayer.getNamn())) {
+			gui.displayGraphicallyThatItIsMyTurn();
 		}
 	}
 	
 	public void bygg(Route bygd, int kortKrevd, int krevdJokrar) throws RemoteException {
-		ByggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd, kortKrevd, krevdJokrar, findPlayerInAction());
+		ByggjandeInfo byggjandeInfo = buildingHelper.bygg(bygd, kortKrevd, krevdJokrar, findPlayerInAction());
 		if (byggjandeInfo == null) { return; }		 // TODO betre tilbakemelding her
 		hjelpemetodeBygg(bygd, byggjandeInfo.colour, kortKrevd, krevdJokrar, byggjandeInfo.byggjandeSpelar, byggjandeInfo.jokrar);
 	}
 
 	//TODO kanskje byggTunnel og bygg bør smelte saman...
 	public void byggTunnel(Route bygd, int kortKrevd, int krevdJokrar) throws RemoteException {
-		ByggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(table, bygd, kortKrevd, krevdJokrar, findPlayerInAction());
+		ByggjandeInfo byggjandeInfo = buildingHelper.byggTunnel(table, bygd, kortKrevd, krevdJokrar, findPlayerInAction());
 		if (byggjandeInfo == null) { return; }		 // TODO betre tilbakemelding her
 		hjelpemetodeBygg(bygd, byggjandeInfo.colour, kortKrevd, krevdJokrar, byggjandeInfo.byggjandeSpelar, byggjandeInfo.jokrar);
-	}
-
-	public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Colour f) throws RemoteException {
-		communicationWithPlayers.sendMessageAboutCard(kort, tilfeldig, f, kvenSinTur.getNamn(), this);
 	}
 
 	protected abstract void createTable() throws RemoteException;
 
 	private void hjelpemetodeBygg(Route bygd, Colour colour, int kortKrevd, int krevdJokrar, IPlayer byggjandeSpelar, int jokrar) throws RemoteException {
-		rutehandsamar.newRoute(bygd);
+		routeHandler.newRoute(bygd);
 		messageUsersInNetworkGame(bygd, byggjandeSpelar);
-		gui.getRemainingTrainsLabel()[byggjandeSpelar.getSpelarNummer()+1].setText(String.valueOf(byggjandeSpelar.getGjenverandeTog()));
+		gui.setRemainingTrains(byggjandeSpelar.getSpelarNummer() + 1, byggjandeSpelar.getGjenverandeTog());
 		table.updateDeckOnTable(colour, kortKrevd, krevdJokrar, jokrar);
-		gui.getMessagesModel().nyMelding(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
+		gui.receiveMessage(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
 		communicationWithPlayers.updateOtherPlayers(colour, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
 		nesteSpelar();
 	}
 
 	protected abstract void messageUsersInNetworkGame(Route bygd, IPlayer byggjandeSpelar) throws RemoteException;
 
-	/** GUI BLOCK **/
+
+	/** FORWARDING HERIRÅ OG NED **/
 	public void displayGraphicallyThatThereIsNoCardHere(int positionOnTable) {
 		gui.displayGraphicallyThatThereIsNoCardHere(positionOnTable);
 	}
 
 	public void displayNumberOfRemainingTrains(int position, int numberOfTrains) {
-		gui.getRemainingTrainsLabel()[position].setText(String.valueOf(numberOfTrains));
+		gui.setRemainingTrains(position, numberOfTrains);
 	}
 	
 	public void receiveMessage(String message) {
-		gui.getMessagesModel().nyMelding(message);
-	}
-	
-
-	public Mission missionHandler_trekkOppdragskort()  { //TODO flytt vidare inn i oppdragshandsamar
-		return oppdragshandsamar.trekkOppdragskort();
+		gui.receiveMessage(message);
 	}
 
-	public void missionHandler_removeChosenMissionFromDeck(Mission mission) { //TODO flytt vidare inn i oppdragshandsamar?
-		oppdragshandsamar.removeChosenMissionFromDeck(mission);
+	public Mission drawMission()  { //TODO flytt vidare inn i oppdragshandsamar
+		return missionHandler.trekkOppdragskort();
 	}
 
-	public void routeHandler_nybygdRute(Route route, IPlayer byggjandeSpelar) { //TODO vidare ned til rutehandsamar
+	public void removeChosenMissionFromDeck(Mission mission) { //TODO flytt vidare inn i oppdragshandsamar?
+		missionHandler.removeChosenMissionFromDeck(mission);
+	}
+
+	public void nybygdRute(Route route, IPlayer byggjandeSpelar) { //TODO vidare ned til rutehandsamar
 		route.setBuiltBy(byggjandeSpelar);
-		rutehandsamar.getBuiltRoutes().add(route);
+		routeHandler.getBuiltRoutes().add(route);
 	}
 	
 	public Set<Route> findRoutesNotYetBuilt() throws RemoteException {
-		return rutehandsamar.findRoutesNotYetBuilt(players);
+		return routeHandler.findRoutesNotYetBuilt(players);
 	}
 
-	public Set<Route> routeHandler_getAlleBygdeRuter() {
-		return rutehandsamar.getBuiltRoutes();
+	public Set<Route> getAllBuiltRoutes() {
+		return routeHandler.getBuiltRoutes();
+	}
+
+	public void sendMessageAboutCard(boolean isColourCard, boolean isRandom, Colour colour) throws RemoteException {
+		communicationWithPlayers.sendMessageAboutCard(isColourCard, isRandom, colour, playerInTurn.getNamn(), this);
 	}
 }

@@ -116,8 +116,8 @@ public abstract class CommunicationWithPlayers {
 
 		localOrNetworkSpecificMessageStuff(hovud.getMinSpelar(), melding);
 		
-		for (IPlayer player : hovud.getSpelarar()){
-			if (hovud.getKvenSinTur()==player){ //TODO eh, hæ?
+		for (IPlayer player : hovud.getSpelarar()) {
+			if (hovud.getKvenSinTur()==player) { //TODO eh, hæ?
 				sendMessageToPlayer(card, random, handlandespelarsNamn, melding, player);
 			}
 		}
@@ -129,7 +129,7 @@ public abstract class CommunicationWithPlayers {
 		if (!random){
 			player.receiveMessage(melding);
 		}
-		else if(card && random){
+		else if(card){
 			player.receiveMessage(handlandespelarsNamn + " trakk tilfeldig.");
 		}
 	}

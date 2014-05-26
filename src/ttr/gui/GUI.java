@@ -15,9 +15,8 @@ import java.util.ArrayList;
 public class GUI extends JPanel {
 	private static final long serialVersionUID = -1540067881602979318L;
 	private final Meldingspanel messagePanel;
-    private Hogrepanelet right;
+    private final Hogrepanelet right;
     private final MissionChooser missionChooser;
-
 
     public GUI(ImagePanel imagePanel, MissionChooser missionChooser, Meldingspanel messagePanel, Hogrepanelet right){
         this.missionChooser = missionChooser;
@@ -26,15 +25,10 @@ public class GUI extends JPanel {
 
         GridBagLayout gridBagLayout = new GridBagLayout();
 		setLayout(gridBagLayout);
-		GridBagConstraints gridBagConstraints;
-		gridBagConstraints = new GridBagConstraints();
-		gridBagConstraints.anchor = GridBagConstraints.WEST;
-
-		gridBagConstraints.ipadx = 0;
-		gridBagConstraints.ipady = 0;
+		GridBagConstraints gridBagConstraints = setUpGridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 0;
-		add((JPanel) imagePanel,gridBagConstraints);
+		add(imagePanel,gridBagConstraints);
 
 		gridBagConstraints.gridx = 1;
         right.byggHogrepanelet();
@@ -44,8 +38,17 @@ public class GUI extends JPanel {
 		add(messagePanel,gridBagConstraints);
 	}
 
-    public void setHovud(Core core){
-        messagePanel.prepareChat(core);
+	private GridBagConstraints setUpGridBagConstraints() {
+		GridBagConstraints gridBagConstraints = new GridBagConstraints();
+		gridBagConstraints.anchor = GridBagConstraints.WEST;
+
+		gridBagConstraints.ipadx = 0;
+		gridBagConstraints.ipady = 0;
+		return gridBagConstraints;
+	}
+
+    public void setHovud(Core core){ //TODO liker ikkje denne heller
+        messagePanel.prepareChat(core.findPlayerInAction(), core.getSpelarar());
         right.addListeners(core, this);
     }
 
@@ -54,19 +57,20 @@ public class GUI extends JPanel {
     }
 
 	public void showWhoseTurnItIs(String myPlayerName, String whoseTurnText) {
-        right.getSpelarnamn().setText("Eg er " + myPlayerName + ", og det er " + whoseTurnText + ".");
-	}
-
-    public JTextField getPlayerNameJTextField() { return right.getSpelarnamn(); }
-    public JLabel[] getRemainingTrainsLabel() { return right.getTogAtt(); }
-    public void drawCardsOnTable(int plass, Colour farge){ right.teiknOppKortPåBordet(plass, farge); }
-    public JButton[] getCardButtons(){ return right.getKortButtons(); }
-
-    public ArrayList<Mission> chooseMissions(ArrayList<Mission> missions) { return missionChooser.setUpMissionChooser(missions); }
+        right.setPlayerName("Eg er " + myPlayerName + ", og det er " + whoseTurnText + ".");
+	}	
 
     public void displayGraphicallyThatThereIsNoCardHere(int positionOnTable) {
 		JOptionPane.showMessageDialog(this, "Det er ikkje noko kort der, ser du vel.");
-		getCardButtons()[positionOnTable].setBackground(Color.GRAY); //TODO dette e rjo litt ekkelt
-		getCardButtons()[positionOnTable].setText("Tom");
+		right.displayGraphicallyThatThereIsNoCardHere(positionOnTable);
 	}
+
+    public void drawCardsOnTable(int plass, Colour farge){ right.teiknOppKortPåBordet(plass, farge); }
+    public ArrayList<Mission> chooseMissions(ArrayList<Mission> missions) { return missionChooser.setUpMissionChooser(missions); }
+
+	public void setRemainingTrains(int position, int numberOfTrains) { right.setRemainingTrains(position, numberOfTrains); }
+	public void displayGraphicallyThatItIsMyTurn() { right.displayGraphicallyThatItIsMyTurn();	}
+
+	public void receiveMessage(String message) { messagePanel.getMeldingarModell().nyMelding(message);}
+
 }

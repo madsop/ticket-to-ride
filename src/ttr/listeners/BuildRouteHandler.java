@@ -12,14 +12,12 @@ import java.util.Set;
 
 class BuildRouteHandler {
 
-	public BuildRouteHandler(Core core, JFrame frame) throws RemoteException {
-		Set<Route> notYetBuiltRoutes = core.findRoutesNotYetBuilt();
+	public BuildRouteHandler(Set<Route> notYetBuiltRoutes, int playersNumberOfJokers, Core core, JFrame frame) throws RemoteException {
 		Route routeWantedToBuild = letUserChooseRouteToBuild(frame, notYetBuiltRoutes);
 		if (routeWantedToBuild == null) { return; }
 
 		int normalCardsDemanded = routeWantedToBuild.getLength()-routeWantedToBuild.getNumberOfRequiredJokers();
 		int numberOfDemandedJokers = routeWantedToBuild.getNumberOfRequiredJokers();
-		int playersNumberOfJokers = core.findPlayerInAction().getNumberOfRemainingJokers();
 
 		buildRoute(core, frame, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, playersNumberOfJokers);
 	}
@@ -39,12 +37,13 @@ class BuildRouteHandler {
 				JOptionPane.QUESTION_MESSAGE, null, ruterArray.toArray(), ruterArray.iterator().next());
 	}
 
-	private void buildRoute(Core hovud, Route routeWantedToBuild, int kortKrevd, int krevdJokrar) throws RemoteException {
+	private void buildRoute(Core core, Route routeWantedToBuild, int kortKrevd, int krevdJokrar) throws RemoteException {
+		//TODO kanskje heller ein propertychange enn dette rotet her?
 		if (routeWantedToBuild.isTunnel()) {
-			hovud.byggTunnel(routeWantedToBuild, kortKrevd, krevdJokrar);
+			core.byggTunnel(routeWantedToBuild, kortKrevd, krevdJokrar);
 		}
 		else {
-			hovud.bygg(routeWantedToBuild, kortKrevd, krevdJokrar);
+			core.bygg(routeWantedToBuild, kortKrevd, krevdJokrar);
 		}
 	}
 

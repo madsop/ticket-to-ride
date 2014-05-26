@@ -1,19 +1,21 @@
 package ttr.listeners;
 
+import java.util.Set;
+
 import ttr.gui.SwingUtils;
-import ttr.kjerna.Core;
+import ttr.rute.Route;
 
 import javax.swing.*;
 
 class ShowBuiltRoutesHandler {
-	public ShowBuiltRoutesHandler(Core hovud, JFrame frame) {
-		if (hovud.routeHandler_getAlleBygdeRuter().size() <= 0) {             
+	public ShowBuiltRoutesHandler(Set<Route> allBuiltRoutes, JFrame frame) {
+		if (allBuiltRoutes.size() <= 0) {             
 			JOptionPane.showMessageDialog(frame, "Det er ikkje bygd noka rute enno. Bli den første!");
 			return;
 		}
 
 		JPanel bygde = new JPanel();
-		JList<Object> bygd = new JList<>(hovud.routeHandler_getAlleBygdeRuter().toArray());
+		JList<Object> bygd = new JList<>(allBuiltRoutes.toArray());
 
 		/*	if (hovud.isNett()){
                // Finn spel-verten

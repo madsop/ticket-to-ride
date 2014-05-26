@@ -24,7 +24,7 @@ public class LocalCore extends Core {
 	}
 
 	public IPlayer findPlayerInAction() {
-		return kvenSinTur;
+		return playerInTurn;
 	}
 
 	protected void createTable() throws RemoteException {
@@ -35,7 +35,7 @@ public class LocalCore extends Core {
 
 	private void createPlayersAndSetUpForLocalGame() throws RemoteException {
 		players = communicationWithPlayers.createPlayersForLocalGame(this,table); //todo playes må komme inn i arraylista her på eit vis
-		if (minSpelar == null) {setMinSpelar(players.get(0)); }
+		if (myPlayer == null) {setMinSpelar(players.get(0)); }
 		settSinTur(players.get(0));
 	}
 

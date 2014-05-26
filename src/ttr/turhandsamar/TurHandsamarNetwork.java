@@ -47,9 +47,6 @@ public class TurHandsamarNetwork extends TurHandsamar {
 
 
 	private int findNextNumber(final int no, int playerCount) {
-		if (no+1 < playerCount) {
-            return no+1;
-        }
-        return 0;
+		return (no+1 < playerCount) ? no+1 : 0;
 	}
 }

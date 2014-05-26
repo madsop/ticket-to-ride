@@ -3,7 +3,7 @@ package ttr.gui.hogresida;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.data.MeldingarModell;
-import ttr.kjerna.Core;
+import ttr.spelar.IPlayer;
 
 import javax.swing.*;
 
@@ -12,6 +12,7 @@ import com.google.inject.Inject;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
 public class Meldingspanel extends JPanel implements PropertyChangeListener {
 	private static final long serialVersionUID = -2415687333214663696L;
@@ -37,9 +38,9 @@ public class Meldingspanel extends JPanel implements PropertyChangeListener {
 		this.setPreferredSize(new Dimension(Konstantar.MELDINGSPANEL,Konstantar.HOGDE));
 	}
 
-	public void prepareChat(Core hovud){
+	public void prepareChat(IPlayer myPlayer, ArrayList<IPlayer> players) {
 		JTextField chat = new JTextField(Infostrengar.starttekst);
-		chat.addKeyListener(new ChatListener(chat, messagemodel, hovud));
+		chat.addKeyListener(new ChatListener(chat, messagemodel, myPlayer, players));
 		chat.setPreferredSize(Konstantar.CHATDIM);
 		this.add(chat);
 	}
