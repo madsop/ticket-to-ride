@@ -3,8 +3,6 @@ package ttr.communicationWithPlayers;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
-
 import ttr.bord.Table;
 import ttr.data.Colour;
 import ttr.data.MeldingarModell;
@@ -14,7 +12,7 @@ import ttr.kjerna.Core;
 import ttr.rute.Route;
 import ttr.spelar.PlayerAndNetworkWTF;
 
-public class CommunicationWithPlayersNetwork extends CommunicationWithPlayersImpl {
+public class CommunicationWithPlayersNetwork extends CommunicationWithPlayers {
 	public CommunicationWithPlayersNetwork(ArrayList<PlayerAndNetworkWTF> spelarar) {
 		super(spelarar);
 	}
@@ -34,7 +32,7 @@ public class CommunicationWithPlayersNetwork extends CommunicationWithPlayersImp
 	}
 
 	@Override
-	public void sjekkOmFerdig(MeldingarModell meldingarModell, PlayerAndNetworkWTF kvenSinTur, String speltittel, PlayerAndNetworkWTF minSpelar, Set<Route> ruter) throws RemoteException{
+	public void sjekkOmFerdig(MeldingarModell meldingarModell, PlayerAndNetworkWTF kvenSinTur, String speltittel, PlayerAndNetworkWTF minSpelar) throws RemoteException{
 		if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
 			orientPlayersThatTheGameIsOver(meldingarModell);
 
@@ -45,14 +43,14 @@ public class CommunicationWithPlayersNetwork extends CommunicationWithPlayersImp
 			addGameSpecificBonus(meldingarModell, speltittel, minSpelar, totalpoeng);
 
 			String pointsString = Infostrengar.SpeletErFerdig;
-			totalpoeng[minSpelar.getSpelarNummer()] = reknUtPoeng(minSpelar,ruter);
+			totalpoeng[minSpelar.getSpelarNummer()] = reknUtPoeng(minSpelar);
 			pointsString += informTheOthersAboutMyPoints(meldingarModell, minSpelar, totalpoeng);
 			vinnar = minSpelar;
 			vinnarpoeng = totalpoeng[minSpelar.getSpelarNummer()];
 
 			for (PlayerAndNetworkWTF player : players) {
-				PlayerAndNetworkWTF leiar = reknUtPoengOgFinnVinnar(totalpoeng,player,vinnarpoeng,vinnar,meldingarModell,ruter );
-				vinnarpoeng = reknUtPoeng(leiar,ruter);
+				PlayerAndNetworkWTF leiar = reknUtPoengOgFinnVinnar(totalpoeng,player,vinnarpoeng,vinnar,meldingarModell);
+				vinnarpoeng = reknUtPoeng(leiar);
 			}
 			avsluttSpeletMedSuksess(vinnar,pointsString,meldingarModell);
 		}
@@ -77,18 +75,18 @@ public class CommunicationWithPlayersNetwork extends CommunicationWithPlayersImp
 		}
 	}
 
-	private boolean iAmHost(PlayerAndNetworkWTF vert, Core hovud) throws RemoteException {
+	private boolean iAmHost(PlayerAndNetworkWTF vert, Core hovud) {
 		return vert.getNamn().equals(hovud.getMinSpelar().getNamn());
 	}
 
-	private void orientPlayersAboutNewCardOnTable(Colour nyFarge, int position, Collection<PlayerAndNetworkWTF> players) throws RemoteException {
+	private void orientPlayersAboutNewCardOnTable(Colour nyFarge, int position, Collection<PlayerAndNetworkWTF> players) {
 		for (PlayerAndNetworkWTF player : players){
 			// metode for å legge kortet host nettopp trakk på plass i på bordet hos spelar s
 			player.putCardOnTable(nyFarge,position);
 		}
 	}
 
-	private void orientPlayersAndHostAboutNewCardOnTable(PlayerAndNetworkWTF host, Colour nyFarge, int position, ArrayList<PlayerAndNetworkWTF> players, PlayerAndNetworkWTF myPlayer) throws RemoteException {
+	private void orientPlayersAndHostAboutNewCardOnTable(PlayerAndNetworkWTF host, Colour nyFarge, int position, ArrayList<PlayerAndNetworkWTF> players, PlayerAndNetworkWTF myPlayer) {
 		myPlayer.putCardOnTable(nyFarge, position);
 		for (PlayerAndNetworkWTF player : players){
 			if (!host.getNamn().equals(player.getNamn())){

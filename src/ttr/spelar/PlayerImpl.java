@@ -36,7 +36,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	
 	public abstract PlayerAndNetworkWTF getThisAsISpelar();
 
-	public void bygg(Route rute) throws RemoteException  {
+	public void bygg(Route rute)  {
 		rute.setBuiltBy(getThisAsISpelar());
 		// Fjern kort frå spelaren og legg dei i stokken eller ved sida av?
 		bygdeRuter.add(rute);

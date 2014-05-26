@@ -28,11 +28,11 @@ public class TurHandsamarNetwork extends TurHandsamar {
 		return sinTur;
 	}
     
-	private PlayerAndNetworkWTF findHost(final PlayerAndNetworkWTF myPlayer) throws RemoteException {
+	private PlayerAndNetworkWTF findHost(final PlayerAndNetworkWTF myPlayer) {
 		return findPlayerByPlayerNumber(myPlayer, 0);
 	}
 
-	private PlayerAndNetworkWTF findPlayerByPlayerNumber(final PlayerAndNetworkWTF myPlayer, int playerNumber) throws RemoteException {
+	private PlayerAndNetworkWTF findPlayerByPlayerNumber(final PlayerAndNetworkWTF myPlayer, int playerNumber) {
 		if (myPlayer.getSpelarNummer() == playerNumber) {
             return myPlayer;
         }

@@ -18,7 +18,7 @@ public class Route implements Serializable {
 	private final Destination start;
 	private final Destination end;
 
-	public Route(int routeId, Destination start, Destination end, int length, Colour colour, boolean tunnel, int numberOfRequiredJokers) {
+	public Route(@SuppressWarnings("unused") int routeId, Destination start, Destination end, int length, Colour colour, boolean tunnel, int numberOfRequiredJokers) {
 		this(start, end, length, colour, tunnel, numberOfRequiredJokers);
 	}
 

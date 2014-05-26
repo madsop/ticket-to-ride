@@ -36,13 +36,13 @@ public class RouteHandlerImpl implements RouteHandler {
 	}
 
 	//TODO Lagringa av kven som har bygd kva rute generelt bør kunne gjerast mykje enklare..
-	private void findAllBuiltRoutes(Collection<PlayerAndNetworkWTF> players) throws RemoteException {
+	private void findAllBuiltRoutes(Collection<PlayerAndNetworkWTF> players) {
 		for (PlayerAndNetworkWTF player : players) {
 			findRoutesBuiltByThisPlayer(player);
 		}
 	}
 
-	private void findRoutesBuiltByThisPlayer(PlayerAndNetworkWTF player) throws RemoteException {
+	private void findRoutesBuiltByThisPlayer(PlayerAndNetworkWTF player) {
 		allRoutes.addAll(player.getBygdeRuter());
 	}
 

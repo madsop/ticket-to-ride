@@ -19,7 +19,6 @@ import javax.swing.*;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import java.awt.*;
 import java.rmi.RemoteException;
 
 public class Main {
@@ -77,7 +76,7 @@ public class Main {
 	private void setUpJFrame(GameVersion utgaave, JFrame frame, GUI gui) {
 		frame.setTitle(frame.getTitle() + " - " +utgaave);
         frame.setPreferredSize(Konstantar.VINDUSSTORLEIK);
-        frame.setContentPane((Container) gui);
+        frame.setContentPane(gui);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,8 +1,6 @@
 package ttr.gui;
 
 import java.awt.Color;
-import java.awt.Component;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -21,5 +19,5 @@ public class SwingUtils {
     public static String showInputDialog(String string) { return JOptionPane.showInputDialog(null, string); }
    
 	public static void showMessageDialog(String message) { showMessageDialog(null, message); }
-	public static void showMessageDialog(GUI gui, String message) { JOptionPane.showMessageDialog((Component) gui, message); }
+	public static void showMessageDialog(GUI gui, String message) { JOptionPane.showMessageDialog(gui, message); }
 }

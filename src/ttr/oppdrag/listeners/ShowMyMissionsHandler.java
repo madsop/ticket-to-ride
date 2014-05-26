@@ -6,10 +6,8 @@ import ttr.spelar.PlayerAndNetworkWTF;
 
 import javax.swing.*;
 
-import java.rmi.RemoteException;
-
 public class ShowMyMissionsHandler {
-	public ShowMyMissionsHandler(PlayerAndNetworkWTF player) throws RemoteException {
+	public ShowMyMissionsHandler(PlayerAndNetworkWTF player) {
 		JPanel missionJPanel = new JPanel();
 
 		String missionString = player.getNamn() +": ";
@@ -22,7 +20,7 @@ public class ShowMyMissionsHandler {
 		showToPlayer(missionJPanel, player, missionString);
 	}
 
-	private String prepareMissionString(PlayerAndNetworkWTF player, Mission mission) throws RemoteException {
+	private String prepareMissionString(PlayerAndNetworkWTF player, Mission mission) {
 		String missionString = mission.toString();
 		if (player.isMissionAccomplished(mission)){
 			missionString += " (OK)";
@@ -31,7 +29,7 @@ public class ShowMyMissionsHandler {
 		return missionString;
 	}
 
-	private void showToPlayer(JPanel missionJPanel, PlayerAndNetworkWTF player, String missionString) throws RemoteException {
+	private void showToPlayer(JPanel missionJPanel, PlayerAndNetworkWTF player, String missionString) {
 		JLabel missionJLabel = new JLabel(missionString);
 		missionJPanel.add(missionJLabel);
 		SwingUtils.createJFrame("Viser oppdraga til " +player.getNamn(), missionJPanel);

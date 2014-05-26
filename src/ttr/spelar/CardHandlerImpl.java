@@ -52,7 +52,7 @@ public class CardHandlerImpl extends UnicastRemoteObject implements CardHandler 
 	}
 
 	public Colour drawRandomCardFromTheDeck() {
-		return hovud.getTable().getRandomCardFromTheDeck(0);
+		return hovud.getTable().getRandomCardFromTheDeck();
 	}
 
 	public int getNumberOfCardsLeftInColour(Colour colour) throws RemoteException {

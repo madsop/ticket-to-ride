@@ -44,12 +44,12 @@ public class Table {
 	}
 	
 	public Colour getRandomCardFromTheDeckAndPutOnTable(int position) {
-		Colour colour = getRandomCardFromTheDeck(position);
+		Colour colour = getRandomCardFromTheDeck();
 		putCardOnTable(position, colour);
 		return colour;
 	}
 
-	public Colour getRandomCardFromTheDeck(int plass) {
+	public Colour getRandomCardFromTheDeck() {
 		Colour randomColour = deck.getCardInRandomColourFromTheDeck();
 		if (randomColour == null) {
 			System.out.println("stokk!");

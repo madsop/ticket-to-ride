@@ -4,7 +4,6 @@ import ttr.data.Konstantar;
 import ttr.gui.GUI;
 import ttr.spelar.PlayerAndNetworkWTF;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class MissionHandler {
@@ -15,11 +14,11 @@ public class MissionHandler {
 		reshuffleMissions();
 	}
 
-	public void removeChosenMissionFromDeck(Mission mission) throws RemoteException { //TODO flytt vidare inn i oppdragshandsamar?
+	public void removeChosenMissionFromDeck(Mission mission) { //TODO flytt vidare inn i oppdragshandsamar?
 		remainingMissions.remove(mission);
 	}
 
-	public Mission trekkOppdragskort() throws RemoteException  {
+	public Mission trekkOppdragskort()  {
 		if (remainingMissions.size() > 0) {
 			return remainingMissions.remove(0);
 			//System.out.println(trekt.getDestinasjonar().toArray()[1]);
@@ -36,7 +35,7 @@ public class MissionHandler {
 		}
 	}
 
-	public static void trekkOppdrag(GUI gui, PlayerAndNetworkWTF player, boolean start) throws RemoteException {
+	public static void trekkOppdrag(GUI gui, PlayerAndNetworkWTF player, boolean start) {
 		int numberOfMissionsToPickFrom = start ? Konstantar.ANTAL_STARTOPPDRAG : Konstantar.ANTAL_VELJEOPPDRAG;
 
 		ArrayList<Mission> missions = chooseMissions(gui, numberOfMissionsToPickFrom, getMissionsToChooseFrom(player, numberOfMissionsToPickFrom));
@@ -46,7 +45,7 @@ public class MissionHandler {
 		}
 	}
 
-	private static ArrayList<Mission> getMissionsToChooseFrom(PlayerAndNetworkWTF player, int numberOfMissionsToPickFrom) throws RemoteException {
+	private static ArrayList<Mission> getMissionsToChooseFrom(PlayerAndNetworkWTF player, int numberOfMissionsToPickFrom) {
 		ArrayList<Mission> missions = new ArrayList<>();
 		for (int i = 0; i < numberOfMissionsToPickFrom; i++) {
 			missions.add(player.trekkOppdragskort());

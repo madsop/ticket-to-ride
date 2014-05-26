@@ -38,10 +38,10 @@ public class GUI extends JPanel {
 
 		gridBagConstraints.gridx = 1;
         right.byggHogrepanelet();
-		add((JPanel) right,gridBagConstraints);
+		add(right,gridBagConstraints);
 
 		gridBagConstraints.gridx = 2;
-		add((JPanel) messagePanel,gridBagConstraints);
+		add(messagePanel,gridBagConstraints);
 	}
 
     public void setHovud(Core core){

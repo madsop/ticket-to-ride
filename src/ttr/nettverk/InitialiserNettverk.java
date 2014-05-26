@@ -36,7 +36,7 @@ public class InitialiserNettverk {
 		hovud.setMinSpelar(spelar);
 
 		Object[] options = {"Nytt spel", "Bli med i spel"};
-		int option = JOptionPane.showOptionDialog((Component) gui, "Start spel eller bli med i spel?", "Nytt spel", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]); // Vel å starte spel
+		int option = JOptionPane.showOptionDialog(gui, "Start spel eller bli med i spel?", "Nytt spel", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]); // Vel å starte spel
 		if(option == 0){
 			hostGame();
 		}else if (option == 1){ // Vel å bli med i eit spel
@@ -67,7 +67,7 @@ public class InitialiserNettverk {
 		try {
 			startHostingGame(url);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog((Component) gui, "Kunne ikkje starta spelet. Det er sikkert porten som er opptatt.");
+			JOptionPane.showMessageDialog(gui, "Kunne ikkje starta spelet. Det er sikkert porten som er opptatt.");
 			e.printStackTrace();
 			initialiseNetworkGame(); // Vi prøver om att.
 		}
@@ -93,14 +93,14 @@ public class InitialiserNettverk {
 		System.out.println(url);
 
 		if (hovud.getSpelarar().size()+1 >= Konstantar.MAKS_ANTAL_SPELARAR) {
-			JOptionPane.showMessageDialog((Component) gui, "Synd, men det kan ikkje vera med fleire spelarar enn dei som no spelar. Betre lukke neste gong!");
+			JOptionPane.showMessageDialog(gui, "Synd, men det kan ikkje vera med fleire spelarar enn dei som no spelar. Betre lukke neste gong!");
 			System.exit(0);
 		}
 		return url;
 
 	} 
 
-	private void faaMedSpelar(PlayerAndNetworkWTF player) throws RemoteException{
+	private void faaMedSpelar(PlayerAndNetworkWTF player){
 		if (player.getSpelarNummer() == 0) {
 			registerHost(player);
 		}
@@ -114,16 +114,16 @@ public class InitialiserNettverk {
 		player.registrerKlient(hovud.getMinSpelar());
 	}
 
-	private void registerHost(PlayerAndNetworkWTF player) throws RemoteException {
+	private void registerHost(PlayerAndNetworkWTF player) {
 		hovud.getMinSpelar().setSpelarNummer(player.getSpelarteljar());
 		player.setSpelarteljar(player.getSpelarteljar()+1);
 		gui.getMessagesModel().nyMelding(player.getNamn() +" er vert for spelet.");
 		paaVertBordet = player.getCardsOnTable();
 	}
 
-	void oppdaterAndreSpelarar(PlayerAndNetworkWTF host) throws RemoteException{
-		for (PlayerAndNetworkWTF player : host.getSpelarar()){
-			if (!(player.getNamn().equals(hovud.getMinSpelar().toString()))){
+	void oppdaterAndreSpelarar(PlayerAndNetworkWTF host) {
+		for (PlayerAndNetworkWTF player : host.getSpelarar()) {
+			if (!(player.getNamn().equals(hovud.getMinSpelar().toString()))) {
 				//hovud.getSpelarar().add(s);
 				hovud.getMinSpelar().registrerKlient(player);
 				player.receiveMessage(hovud.getMinSpelar().getNamn() + " har vorti med i spelet.");
@@ -133,12 +133,8 @@ public class InitialiserNettverk {
 		}
 	}
 	
-	void ordnePåBordet() throws RemoteException {
-		Colour[] paaBord = new Colour[paaVertBordet.length];
-		for (int i = 0; i < paaBord.length; i++) {
-			paaBord[i] = paaVertBordet[i];
-		}
-		hovud.getMinSpelar().setPaaBord(paaBord);
+	void ordnePåBordet() {
+		hovud.getMinSpelar().setPaaBord(paaVertBordet);
 	}
 
 	void joinGame(String remoteAddress) throws HeadlessException, RemoteException {
@@ -148,7 +144,7 @@ public class InitialiserNettverk {
 			actuallyJoinGame(url);
 		}
 		catch (Exception e) {
-			JOptionPane.showMessageDialog((Component) gui, "Klarte dessverre ikkje å bli med i spelet.");
+			JOptionPane.showMessageDialog(gui, "Klarte dessverre ikkje å bli med i spelet.");
 			e.printStackTrace();
 			initialiseNetworkGame(); // We try again
 		}

@@ -79,29 +79,29 @@ public abstract class Core {
 		gui.showWhoseTurnItIs(findPlayerInAction().getNamn(), getWhoseTurnText());
 		kvenSinTur.setEittKortTrektInn(false);
 
-		communicationWithPlayers.sjekkOmFerdig(gui.getMessagesModel(),kvenSinTur,gameVersion.toString(),minSpelar,rutehandsamar.getRoutes());
+		communicationWithPlayers.sjekkOmFerdig(gui.getMessagesModel(),kvenSinTur,gameVersion.toString(),minSpelar);
 	}
 	
 	public abstract PlayerAndNetworkWTF findPlayerInAction();
 	protected abstract String getWhoseTurnText() throws RemoteException;
 
-	private void markIfItIsMyTurn() throws RemoteException {
+	private void markIfItIsMyTurn() {
 		if (kvenSinTur.getNamn().equals(minSpelar.getNamn())) {
 			gui.getPlayerNameJTextField().setBackground(Color.YELLOW);
 		}
 	}
 	
-	public void bygg(Route bygd, Colour colour, int kortKrevd, int krevdJokrar) throws RemoteException {
-		ByggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd,colour,kortKrevd,krevdJokrar,findPlayerInAction());
+	public void bygg(Route bygd, int kortKrevd, int krevdJokrar) throws RemoteException {
+		ByggjandeInfo byggjandeInfo = bygghjelpar.bygg(bygd, kortKrevd, krevdJokrar, findPlayerInAction());
 		if (byggjandeInfo == null) { return; }		 // TODO betre tilbakemelding her
-		hjelpemetodeBygg(bygd, colour, kortKrevd, krevdJokrar, byggjandeInfo.byggjandeSpelar, byggjandeInfo.jokrar);
+		hjelpemetodeBygg(bygd, byggjandeInfo.colour, kortKrevd, krevdJokrar, byggjandeInfo.byggjandeSpelar, byggjandeInfo.jokrar);
 	}
 
 	//TODO kanskje byggTunnel og bygg bør smelte saman...
-	public void byggTunnel(Route bygd, Colour colour, int kortKrevd, int krevdJokrar) throws RemoteException {
-		ByggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(table, bygd, colour, kortKrevd, krevdJokrar, findPlayerInAction());
+	public void byggTunnel(Route bygd, int kortKrevd, int krevdJokrar) throws RemoteException {
+		ByggjandeInfo byggjandeInfo = bygghjelpar.byggTunnel(table, bygd, kortKrevd, krevdJokrar, findPlayerInAction());
 		if (byggjandeInfo == null) { return; }		 // TODO betre tilbakemelding her
-		hjelpemetodeBygg(bygd, colour, kortKrevd, krevdJokrar, byggjandeInfo.byggjandeSpelar, byggjandeInfo.jokrar);
+		hjelpemetodeBygg(bygd, byggjandeInfo.colour, kortKrevd, krevdJokrar, byggjandeInfo.byggjandeSpelar, byggjandeInfo.jokrar);
 	}
 
 	public void sendMessageAboutCard(boolean kort, boolean tilfeldig, Colour f) throws RemoteException {
@@ -136,11 +136,11 @@ public abstract class Core {
 	}
 	
 
-	public Mission missionHandler_trekkOppdragskort() throws RemoteException  { //TODO flytt vidare inn i oppdragshandsamar
+	public Mission missionHandler_trekkOppdragskort()  { //TODO flytt vidare inn i oppdragshandsamar
 		return oppdragshandsamar.trekkOppdragskort();
 	}
 
-	public void missionHandler_removeChosenMissionFromDeck(Mission mission) throws RemoteException { //TODO flytt vidare inn i oppdragshandsamar?
+	public void missionHandler_removeChosenMissionFromDeck(Mission mission) { //TODO flytt vidare inn i oppdragshandsamar?
 		oppdragshandsamar.removeChosenMissionFromDeck(mission);
 	}
 

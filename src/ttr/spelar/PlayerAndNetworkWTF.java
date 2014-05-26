@@ -46,17 +46,17 @@ import java.util.Collection;
 	// FASADE
     public void settSinTur(PlayerAndNetworkWTF s) throws RemoteException { hovud.settSinTur(s); }
     public ArrayList<PlayerAndNetworkWTF> getSpelarar() { return hovud.getSpelarar(); }
-    public void receiveMessage(String message) throws RemoteException{ hovud.receiveMessage(message); }
-	public void showGameOverMessage(String points) throws RemoteException { SwingUtils.showMessageDialog(points); }
+    public void receiveMessage(String message){ hovud.receiveMessage(message); }
+	public void showGameOverMessage(String points) { SwingUtils.showMessageDialog(points); }
 
     // Oppdrag
-    public int getAntalFullfoerteOppdrag() throws RemoteException { return spelarOppdragshandsamar.getNumberOfFulfilledMissions(); }
-    public int getOppdragspoeng() throws RemoteException { return spelarOppdragshandsamar.getMissionPoints(); }
-    public Collection<Mission> getOppdrag() throws RemoteException { return spelarOppdragshandsamar.getMissions(); }
-    public void receiveMission(Mission mission) throws RemoteException { spelarOppdragshandsamar.retrieveMission(mission); }
-    public Mission trekkOppdragskort() throws RemoteException { return hovud.missionHandler_trekkOppdragskort(); }
-    public boolean isMissionAccomplished(Mission mission) throws RemoteException { return spelarOppdragshandsamar.isMissionAccomplished(mission); }
-    public void removeChosenMissionFromDeck(Mission mission) throws RemoteException { hovud.missionHandler_removeChosenMissionFromDeck(mission); }
+    public int getAntalFullfoerteOppdrag() { return spelarOppdragshandsamar.getNumberOfFulfilledMissions(); }
+    public int getOppdragspoeng() { return spelarOppdragshandsamar.getMissionPoints(); }
+    public Collection<Mission> getOppdrag() { return spelarOppdragshandsamar.getMissions(); }
+    public void receiveMission(Mission mission) { spelarOppdragshandsamar.retrieveMission(mission); }
+    public Mission trekkOppdragskort() { return hovud.missionHandler_trekkOppdragskort(); }
+    public boolean isMissionAccomplished(Mission mission) { return spelarOppdragshandsamar.isMissionAccomplished(mission); }
+    public void removeChosenMissionFromDeck(Mission mission) { hovud.missionHandler_removeChosenMissionFromDeck(mission); }
     
     // Kort
     public void receiveCard(Colour farge) throws RemoteException { korthandsamar.receiveCard(farge);}
@@ -70,15 +70,15 @@ import java.util.Collection;
 
     // Bord
     public void leggUtFem() { bord.layFiveCardsOutOnTable(); }
-    public void putCardsInDeck(Colour colour, int number) throws RemoteException { bord.addCardsToDeck(colour, number); }    
+    public void putCardsInDeck(Colour colour, int number) { bord.addCardsToDeck(colour, number); }    
     public void setPaaBord(Colour[] f) { bord.setPaaBordet(f); }
-    public void putCardOnTable(Colour colour, int position) throws RemoteException{ bord.putOneCardOnTable(colour, position); }
-    public boolean areThereTooManyJokersOnTable() throws RemoteException{ return bord.areThereTooManyJokersOnTable(); }
+    public void putCardOnTable(Colour colour, int position){ bord.putOneCardOnTable(colour, position); }
+    public boolean areThereTooManyJokersOnTable(){ return bord.areThereTooManyJokersOnTable(); }
 
 	public PlayerAndNetworkWTF getThisAsISpelar() {
 		return this;
 	}
 
-	public void nybygdRute(Route route, PlayerAndNetworkWTF byggjandeSpelar) throws RemoteException { hovud.routeHandler_nybygdRute(route, byggjandeSpelar); }
-	public Colour[] getCardsOnTable() throws RemoteException { return hovud.getTable().getPaaBordet(); }
+	public void nybygdRute(Route route, PlayerAndNetworkWTF byggjandeSpelar) { hovud.routeHandler_nybygdRute(route, byggjandeSpelar); }
+	public Colour[] getCardsOnTable() { return hovud.getTable().getPaaBordet(); }
 }

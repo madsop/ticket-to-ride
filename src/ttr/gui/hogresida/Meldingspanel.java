@@ -12,9 +12,8 @@ import com.google.inject.Inject;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.Serializable;
 
-public class Meldingspanel extends JPanel implements PropertyChangeListener, Serializable {
+public class Meldingspanel extends JPanel implements PropertyChangeListener {
 	private static final long serialVersionUID = -2415687333214663696L;
 
 	private MeldingarModell messagemodel;

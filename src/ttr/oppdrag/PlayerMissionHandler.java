@@ -3,7 +3,6 @@ package ttr.oppdrag;
 import ttr.data.Destination;
 import ttr.rute.Route;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Collection;
@@ -12,7 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class PlayerMissionHandler extends UnicastRemoteObject implements Remote {
+public class PlayerMissionHandler  extends UnicastRemoteObject  { //TODO sjekk om dette funkar
 	private static final long serialVersionUID = 5194460142995578869L;
 	private Set<Mission> missions;
 	private Map<Destination, Set<Destination>> mapBetweenAandB;
@@ -23,15 +22,15 @@ public class PlayerMissionHandler extends UnicastRemoteObject implements Remote 
 		initialiseConnectedRoutes();
 	}
 
-	public void retrieveMission(Mission mission) throws RemoteException{
+	public void retrieveMission(Mission mission){
 		this.missions.add(mission);
 	}
 
-	public Collection<Mission> getMissions() throws RemoteException  {
+	public Collection<Mission> getMissions()  {
 		return missions;
 	}
 	
-	public int getMissionPoints() throws RemoteException  { //TODO skill ut alt som har med å avslutte spelet i ei eiga klasse?
+	public int getMissionPoints()  { //TODO skill ut alt som har med å avslutte spelet i ei eiga klasse?
 		int totalMissionValue = 0;
 		for (Mission mission : missions) {
 			if (isMissionAccomplished(mission)) {
@@ -47,11 +46,11 @@ public class PlayerMissionHandler extends UnicastRemoteObject implements Remote 
 		return mapBetweenAandB.get(mission.getStart()).contains(mission.getEnd()) || mapBetweenAandB.get(mission.getEnd()).contains(mission.getStart());
 	}
 
-	public int getNumberOfFulfilledMissions() throws RemoteException{
+	public int getNumberOfFulfilledMissions(){
 		return (int) missions.stream().filter(x -> isMissionAccomplished(x)).count();
 	}
 
-	public void markRouteAsBuilt(Route route) throws RemoteException {
+	public void markRouteAsBuilt(Route route) {
 		// Sjekk for fullførde oppdrag?
 		mapBetweenAandB.get(route.getStart()).add(route.getEnd());
 		mapBetweenAandB.get(route.getEnd()).add(route.getStart());

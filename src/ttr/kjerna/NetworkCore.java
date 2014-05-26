@@ -28,7 +28,7 @@ public class NetworkCore extends Core {
 		givePlayersMissions();
 	}
 
-	private void givePlayersMissions() throws RemoteException {
+	private void givePlayersMissions() {
 		for (PlayerAndNetworkWTF player : players){
 			for (Mission mission : player.getOppdrag()){
 				player.removeChosenMissionFromDeck(mission);
@@ -70,12 +70,12 @@ public class NetworkCore extends Core {
 		}
 	}
 
-	private PlayerAndNetworkWTF findHost() throws RemoteException {
+	private PlayerAndNetworkWTF findHost() {
 		PlayerAndNetworkWTF host = null;
 		if (minSpelar.getSpelarNummer()==0) {
 			host = minSpelar; // TODO forsvinn ikkje denne uansett i løpet av for-løkka under?
 		}
-		for (PlayerAndNetworkWTF player : getSpelarar()) {
+		for (PlayerAndNetworkWTF player : players) {
 			if (player.getSpelarNummer()==0) {
 				return player;
 			}

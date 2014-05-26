@@ -3,8 +3,6 @@ package ttr.utgaave.nordic;
 import ttr.data.Destination;
 import ttr.data.Colour;
 import ttr.oppdrag.Mission;
-import ttr.oppdrag.Mission;
-import ttr.rute.Route;
 import ttr.rute.Route;
 import ttr.utgaave.AbstractGameVersion;
 import java.util.ArrayList;

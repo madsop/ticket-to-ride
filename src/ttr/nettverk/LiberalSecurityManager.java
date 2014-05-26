@@ -12,7 +12,7 @@ class LiberalSecurityManager extends SecurityManager {
     private final Hashtable<Permission, Permission> grantedPermissions;
 
     public LiberalSecurityManager() {
-		grantedPermissions = new Hashtable<Permission, Permission>();
+		grantedPermissions = new Hashtable<>();
     }
 
 	/**

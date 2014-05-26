@@ -6,12 +6,11 @@ import ttr.oppdrag.listeners.TrekkOppdragHandler;
 import ttr.oppdrag.listeners.ShowMyMissionsHandler;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
-public class DelegationListener implements ActionListener{
+public class DelegationListener implements ActionListener {
     private final GUI gui;
     private final Core hovud;
     private final JButton visBygde,visMineKort,visMineOppdrag,trekkOppdrag,bygg;
@@ -34,13 +33,13 @@ public class DelegationListener implements ActionListener{
         try {
             if (!hovud.getMinSpelar().getNamn().equals(hovud.getKvenSinTur().getNamn())) {
                 if (!(arg0.getSource() == visBygde || arg0.getSource() == visMineKort || arg0.getSource() == visMineOppdrag)) {
-                    JOptionPane.showMessageDialog((Component) gui, "Det er ikkje din tur!");
+                    JOptionPane.showMessageDialog(gui, "Det er ikkje din tur!");
                     return;
                 }
             }
             if (hovud.findPlayerInAction().hasAlreadyDrawnOneCard() &&
             		(arg0.getSource() == trekkOppdrag || arg0.getSource() == bygg)) {
-            	JOptionPane.showMessageDialog((Component) gui, "Du har allereie trekt eitt kort. Da kan du ikkje bygge eller trekke oppdrag, du må trekke eitt kort til.");
+            	JOptionPane.showMessageDialog(gui, "Du har allereie trekt eitt kort. Da kan du ikkje bygge eller trekke oppdrag, du må trekke eitt kort til.");
                 return;
             }
 

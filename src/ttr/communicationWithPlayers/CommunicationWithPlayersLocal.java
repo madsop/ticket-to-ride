@@ -3,7 +3,6 @@ package ttr.communicationWithPlayers;
 import java.awt.HeadlessException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Set;
 
 import javax.swing.JOptionPane;
 
@@ -16,7 +15,7 @@ import ttr.kjerna.Core;
 import ttr.rute.Route;
 import ttr.spelar.PlayerAndNetworkWTF;
 
-public class CommunicationWithPlayersLocal extends CommunicationWithPlayersImpl {
+public class CommunicationWithPlayersLocal extends CommunicationWithPlayers {
 
 	public CommunicationWithPlayersLocal(ArrayList<PlayerAndNetworkWTF> spelarar) {
 		super(spelarar);
@@ -35,7 +34,7 @@ public class CommunicationWithPlayersLocal extends CommunicationWithPlayersImpl 
 	public void updateOtherPlayers(Colour colour, int kortKrevd, int jokrar, int krevdJokrar, String byggjandeNamn, Route bygd) throws RemoteException { }
 
 	@Override
-	public void sjekkOmFerdig(MeldingarModell meldingarModell,	PlayerAndNetworkWTF kvenSinTur, String speltittel, PlayerAndNetworkWTF minSpelar, Set<Route> ruter)
+	public void sjekkOmFerdig(MeldingarModell meldingarModell,	PlayerAndNetworkWTF kvenSinTur, String speltittel, PlayerAndNetworkWTF minSpelar)
 					throws RemoteException {
 		if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
 			orientPlayersThatTheGameIsOver(meldingarModell);
@@ -49,8 +48,8 @@ public class CommunicationWithPlayersLocal extends CommunicationWithPlayersImpl 
 			String pointsString = Infostrengar.SpeletErFerdig;
 
 			for (PlayerAndNetworkWTF player : players) {
-				PlayerAndNetworkWTF leiar = reknUtPoengOgFinnVinnar(totalpoeng,player,vinnarpoeng,vinnar,meldingarModell,ruter );
-				vinnarpoeng = reknUtPoeng(leiar,ruter);
+				PlayerAndNetworkWTF leiar = reknUtPoengOgFinnVinnar(totalpoeng,player,vinnarpoeng,vinnar,meldingarModell);
+				vinnarpoeng = reknUtPoeng(leiar);
 			}
 			avsluttSpeletMedSuksess(vinnar,pointsString,meldingarModell);
 		}
