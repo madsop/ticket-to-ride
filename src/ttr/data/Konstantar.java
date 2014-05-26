@@ -14,14 +14,14 @@ public class Konstantar {
 	public static final int MAKS_ANTAL_SPELARAR = 3;
 	public static final int AVSLUTT_SPELET = 3;
 	public static final int ANTAL_VELJEOPPDRAG = 3;
-	
+
 	// GUI
 	public static final int HOGDE = 650;
 	public static final int BREIDDE = 1200;
 	public static final int DIFF = 50;
 	public static final int MELDINGSPANELBREIDDE = 200;
 	public static final int MELDINGSPANEL = MELDINGSPANELBREIDDE+20;
-    public static final Dimension VINDUSSTORLEIK = new Dimension(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
+	public static final Dimension VINDUSSTORLEIK = new Dimension(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
 	public static final int hogrebreidde = BREIDDE/3;
 	public static final Dimension KNAPP = new Dimension(150,40);
 	public static final Dimension KORTKNAPP = new Dimension(70,90);
@@ -29,47 +29,29 @@ public class Konstantar {
 	public static final Dimension CHATDIM = new Dimension(200,40);
 	public static final Font TOGTALFONT = new Font(Font.SERIF,Font.BOLD,20);
 	public static final Insets INSETS = new Insets(10,10,10,10);
-	
-	/**
-	 * Gjer om frå farge til Color. Merk: joker (valfri) blir cyan
-	 * @param farge - kva for farge ein skal gjera om
-	 * @return - fargen i Color
-	 */
+
 	public static Color fargeTilColor(Colour farge) {
-		Color ret;
 		switch (farge) {
 		case blå:
-			ret = Color.BLUE;
-			break;
+			return Color.BLUE;
 		case gul:
-			ret =  Color.YELLOW;
-			break;
+			return Color.YELLOW;
 		case raud:
-			ret = Color.RED;
-			break;
+			return Color.RED;
 		case grønn:
-			ret = Color.GREEN;
-			break;
+			return Color.GREEN;
 		case kvit:
-			ret = Color.WHITE;
-			break;
+			return Color.WHITE;
 		case lilla:
-			ret = Color.PINK;
-			break;
+			return Color.PINK;
 		case oransje:
-			ret = Color.ORANGE;
-			break;
+			return Color.ORANGE;
 		case svart:
-			ret = Color.BLACK;
-			break;
+			return Color.BLACK;
 		case valfri:
-			ret = Color.CYAN;
-			break;
+			return Color.CYAN;
 		default:
-			ret = Color.BLACK;
-			break;
+			return Color.BLACK;
 		}
-		return ret;
 	}
 }
-

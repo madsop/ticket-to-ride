@@ -32,17 +32,16 @@ public class EnoughCardsChecker {
 
 	//TODO denne metoden må jo returnere og ev. sørge for å stoppe bygginga
 	void checkIfThePlayerHasEnoughCards(Route bygd, Colour colour, int kortKrevd, int krevdJokrar, IPlayer byggjandeSpelar, int jokers) throws HeadlessException, RemoteException {
-		if (jokers > byggjandeSpelar.getNumberOfRemainingJokers() || playerDoesNotHaveEnoughCardsInChosenColour(colour, kortKrevd, krevdJokrar, byggjandeSpelar, jokers)){
-			if (bygd.getColour() != Colour.valfri){
-				JOptionPane.showMessageDialog(gui, Infostrengar.IkkjeNokKort);
-			}
+		if ( (jokers > byggjandeSpelar.getNumberOfRemainingJokers() || playerDoesNotHaveEnoughCardsInChosenColour(colour, kortKrevd, krevdJokrar, byggjandeSpelar, jokers))
+				&& (bygd.getColour() != Colour.valfri)) {
+			JOptionPane.showMessageDialog(gui, Infostrengar.IkkjeNokKort);
 		}
 	}
 
-	boolean numberOfChosenJokersNotOK(Colour colour, int kortKrevd, int krevdJokrar, IPlayer byggjandeSpelar, int chosenNumberOfJokers) throws RemoteException {
-		return playerHasLessJokersThanHeSays(byggjandeSpelar, chosenNumberOfJokers)
-				|| chosenNumberOfJokers < krevdJokrar
-				|| playerDoesNotHaveEnoughCardsInChosenColour(colour, kortKrevd,	krevdJokrar, byggjandeSpelar, chosenNumberOfJokers);
+	boolean numberOfChosenJokersNotOK(Colour colour, int kortKrevd, int numberOfDemandedJokers, IPlayer byggjandeSpelar, int chosenNumberOfJokers) throws RemoteException {
+		return byggjandeSpelar.getNumberOfRemainingJokers() < chosenNumberOfJokers
+				|| chosenNumberOfJokers < numberOfDemandedJokers
+				|| playerDoesNotHaveEnoughCardsInChosenColour(colour, kortKrevd, numberOfDemandedJokers, byggjandeSpelar, chosenNumberOfJokers);
 	}
 
 	private boolean canBuildThisRouteInThisColour(IPlayer player, int numberOfDemandedNormalCards, int ekstrajokrar, Colour colour) throws RemoteException {
@@ -53,9 +52,5 @@ public class EnoughCardsChecker {
 
 	private boolean playerDoesNotHaveEnoughCardsInChosenColour(Colour colour, int kortKrevd, int krevdJokrar, IPlayer byggjandeSpelar, int chosenNumberOfJokers) throws RemoteException {
 		return byggjandeSpelar.getNumberOfCardsLeftInColour(colour) < kortKrevd - (chosenNumberOfJokers-krevdJokrar);
-	}
-
-	private boolean playerHasLessJokersThanHeSays(IPlayer byggjandeSpelar, int chosenNumberOfJokers) throws RemoteException {
-		return byggjandeSpelar.getNumberOfRemainingJokers() < chosenNumberOfJokers;
 	}
 }

@@ -39,8 +39,7 @@ public class DelegationListener implements ActionListener {
                     return;
                 }
             }
-            if (hovud.findPlayerInAction().hasAlreadyDrawnOneCard() &&
-            		(arg0.getSource() == trekkOppdrag || arg0.getSource() == bygg)) {
+            if (hovud.findPlayerInAction().hasAlreadyDrawnOneCard() && (arg0.getSource() == trekkOppdrag || arg0.getSource() == bygg)) {
             	JOptionPane.showMessageDialog(gui, "Du har allereie trekt eitt kort. Da kan du ikkje bygge eller trekke oppdrag, du må trekke eitt kort til.");
                 return;
             }

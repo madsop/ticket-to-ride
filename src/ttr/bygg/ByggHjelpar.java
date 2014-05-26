@@ -26,20 +26,20 @@ public class ByggHjelpar {
 		this.enoughCardsChecker = new EnoughCardsChecker(gui);
 	}
 
-	public ByggjandeInfo bygg(Route routeToBuild, int kortKrevd, int krevdJokrar, IPlayer iPlayer) throws HeadlessException, RemoteException {
-		Colour colourToBuildIn = findColourToBuildIn(routeToBuild, kortKrevd, krevdJokrar, iPlayer);
+	public ByggjandeInfo buildRoute(Route routeToBuild, int kortKrevd, int krevdJokrar, IPlayer buildingPlayer) throws HeadlessException, RemoteException {
+		Colour colourToBuildIn = findColourToBuildIn(routeToBuild, kortKrevd, krevdJokrar, buildingPlayer);
 		if (colourToBuildIn == null) { return null; }
 
-		int jokers = chooseNumberOfJokersToUser(routeToBuild, colourToBuildIn, kortKrevd,	krevdJokrar, iPlayer);
-		enoughCardsChecker.checkIfThePlayerHasEnoughCards(routeToBuild, colourToBuildIn, kortKrevd, krevdJokrar,	iPlayer, jokers);
-		iPlayer.bygg(routeToBuild);
-		updatePlayersCards(colourToBuildIn, kortKrevd, krevdJokrar, iPlayer, jokers);
+		int jokers = chooseNumberOfJokersToUser(routeToBuild, colourToBuildIn, kortKrevd,	krevdJokrar, buildingPlayer);
+		enoughCardsChecker.checkIfThePlayerHasEnoughCards(routeToBuild, colourToBuildIn, kortKrevd, krevdJokrar,	buildingPlayer, jokers);
+		buildingPlayer.bygg(routeToBuild);
+		updatePlayersCards(colourToBuildIn, kortKrevd, krevdJokrar, buildingPlayer, jokers);
 
-		return new ByggjandeInfo(iPlayer,jokers, colourToBuildIn);
+		return new ByggjandeInfo(buildingPlayer, jokers, colourToBuildIn);
 	}
 	
-	public ByggjandeInfo byggTunnel(Table bord, Route routeToBuild, int kortKrevd, int krevdJokrar, IPlayer buildingPlayer) throws HeadlessException, RemoteException {
-		return bygg(routeToBuild, kortKrevd + tunnelBuildHelper.checkIfTunnelShouldBeBuiltAndHowManyExtraCardsWillBeNeeded(bord, routeToBuild), krevdJokrar, buildingPlayer);
+	public ByggjandeInfo buildTunnel(Table bord, Route routeToBuild, int kortKrevd, int krevdJokrar, IPlayer buildingPlayer) throws HeadlessException, RemoteException {
+		return buildRoute(routeToBuild, kortKrevd + tunnelBuildHelper.checkIfTunnelShouldBeBuiltAndHowManyExtraCardsWillBeNeeded(bord, routeToBuild), krevdJokrar, buildingPlayer);
 	}
 
 	private Colour findColourToBuildIn(Route routeToBuild, int kortKrevd, int krevdJokrar, IPlayer buildingPlayer) throws RemoteException {

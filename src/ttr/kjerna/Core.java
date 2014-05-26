@@ -46,6 +46,10 @@ public abstract class Core {
 
 	public abstract void settIGangSpelet(String hostAddress) throws RemoteException;
 	public abstract void orientOtherPlayers(int positionOnTable) throws RemoteException;
+	public abstract IPlayer findPlayerInAction();
+	protected abstract String getWhoseTurnText() throws RemoteException;
+	protected abstract void messageUsersInNetworkGame(Route bygd, IPlayer byggjandeSpelar) throws RemoteException;
+	protected abstract void createTable() throws RemoteException;
 
 	public void setMinSpelar(IPlayer iPlayer){
 		myPlayer = iPlayer;
@@ -79,9 +83,6 @@ public abstract class Core {
 
 		communicationWithPlayers.sjekkOmFerdig(gui.getMessagesModel(),playerInTurn,gameVersion.toString(),myPlayer);
 	}
-	
-	public abstract IPlayer findPlayerInAction();
-	protected abstract String getWhoseTurnText() throws RemoteException;
 
 	private void markIfItIsMyTurn() throws RemoteException {
 		if (playerInTurn.getNamn().equals(myPlayer.getNamn())) {
@@ -90,19 +91,17 @@ public abstract class Core {
 	}
 	
 	public void bygg(Route bygd, int kortKrevd, int krevdJokrar) throws RemoteException {
-		ByggjandeInfo byggjandeInfo = buildingHelper.bygg(bygd, kortKrevd, krevdJokrar, findPlayerInAction());
+		ByggjandeInfo byggjandeInfo = buildingHelper.buildRoute(bygd, kortKrevd, krevdJokrar, findPlayerInAction());
 		if (byggjandeInfo == null) { return; }		 // TODO betre tilbakemelding her
 		hjelpemetodeBygg(bygd, byggjandeInfo.colour, kortKrevd, krevdJokrar, byggjandeInfo.byggjandeSpelar, byggjandeInfo.jokrar);
 	}
 
-	//TODO kanskje byggTunnel og bygg bør smelte saman...
+	//TODO kanskje byggTunnel og bygg bør smelte saman?
 	public void byggTunnel(Route bygd, int kortKrevd, int krevdJokrar) throws RemoteException {
-		ByggjandeInfo byggjandeInfo = buildingHelper.byggTunnel(table, bygd, kortKrevd, krevdJokrar, findPlayerInAction());
+		ByggjandeInfo byggjandeInfo = buildingHelper.buildTunnel(table, bygd, kortKrevd, krevdJokrar, findPlayerInAction());
 		if (byggjandeInfo == null) { return; }		 // TODO betre tilbakemelding her
 		hjelpemetodeBygg(bygd, byggjandeInfo.colour, kortKrevd, krevdJokrar, byggjandeInfo.byggjandeSpelar, byggjandeInfo.jokrar);
 	}
-
-	protected abstract void createTable() throws RemoteException;
 
 	private void hjelpemetodeBygg(Route bygd, Colour colour, int kortKrevd, int krevdJokrar, IPlayer byggjandeSpelar, int jokrar) throws RemoteException {
 		routeHandler.newRoute(bygd);
@@ -113,8 +112,6 @@ public abstract class Core {
 		communicationWithPlayers.updateOtherPlayers(colour, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
 		nesteSpelar();
 	}
-
-	protected abstract void messageUsersInNetworkGame(Route bygd, IPlayer byggjandeSpelar) throws RemoteException;
 
 
 	/** FORWARDING HERIRÅ OG NED **/
@@ -151,6 +148,7 @@ public abstract class Core {
 		return routeHandler.getBuiltRoutes();
 	}
 
+	 //TODO denne bør vel splittast i to metodar, ein for fargekort og ein for oppdrag
 	public void sendMessageAboutCard(boolean isColourCard, boolean isRandom, Colour colour) throws RemoteException {
 		communicationWithPlayers.sendMessageAboutCard(isColourCard, isRandom, colour, playerInTurn.getNamn(), this);
 	}

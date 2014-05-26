@@ -1,163 +1,60 @@
 package ttr.nettverk;
 
-import ttr.data.Colour;
-import ttr.data.Konstantar;
 import ttr.gui.GUI;
 import ttr.gui.SwingUtils;
 import ttr.kjerna.Core;
-import ttr.spelar.IPlayer;
 import ttr.spelar.PlayerAndNetworkWTF;
 
 import javax.swing.*;
 
 import java.awt.*;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 
 public class InitialiserNettverk {
-	//TODO denne klassa treng refaktorisering frå h
-	private final String hostAddress;
 	private final String PORT = "1226";
 	private final GUI gui;
-	private final Core hovud;
-	private Colour[] paaVertBordet; //TODO korfor er denne int? Pga serialisering?
+	private final Core core;
+	private GameJoiner gameJoiner;
+	private GameHoster gameHoster;
 
-	public InitialiserNettverk(GUI gui, String hostAddress, Core hovud) {
-		this.hostAddress = hostAddress;
+	public InitialiserNettverk(GUI gui, String hostAddress, Core core) {
 		this.gui = gui;
-		this.hovud = hovud;
-		paaVertBordet = new Colour[Konstantar.ANTAL_KORT_PÅ_BORDET];
+		this.core = core;
+		this.gameHoster = new GameHoster(hostAddress, PORT, gui, core);
+		this.gameJoiner = new GameJoiner(gui, core, PORT);
 	}
 
 	public void initialiseNetworkGame() throws HeadlessException, RemoteException {
-		PlayerAndNetworkWTF spelar = new PlayerAndNetworkWTF(hovud,SwingUtils.showInputDialog("Skriv inn namnet ditt"),hovud.getTable());
-		hovud.setMinSpelar(spelar);
+		PlayerAndNetworkWTF spelar = new PlayerAndNetworkWTF(core, SwingUtils.showInputDialog("Skriv inn namnet ditt"), core.getTable());
+		core.setMinSpelar(spelar);
 
+		chooseBetweenHostAndJoin();
+	}
+
+	private void chooseBetweenHostAndJoin() throws RemoteException {
 		Object[] options = {"Nytt spel", "Bli med i spel"};
 		int option = JOptionPane.showOptionDialog(gui, "Start spel eller bli med i spel?", "Nytt spel", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]); // Vel å starte spel
-		if(option == 0){
+		if (option == 0) {
 			hostGame();
-		}else if (option == 1){ // Vel å bli med i eit spel
-			joinGame(findRemoteAddress());
+		} else if (option == 1) {
+			joinGame();
 		}
-		else { // Vel å avbryte
+		else {
 			System.exit(0);
 		}
 	}
 
-	private String findRemoteAddress() {
-		String remoteAddress = JOptionPane.showInputDialog("Kven vil du kople deg til? (IP-adresse eller hostnamn)");
-		if (remoteAddress.equals("") || remoteAddress.length()==0) {
-			remoteAddress = "localhost"; 
-		}
-		System.out.println(remoteAddress);
-		return remoteAddress;
-	}
-
-	void hostGame() throws HeadlessException, RemoteException {
-		System.setSecurityManager(new LiberalSecurityManager());
-		String address = hostAddress+":"+PORT;
-		String url = "rmi://"+address+"/ISpelar"; // URL-en min i RMI-registeret.
-		System.out.println(hovud.getMinSpelar().getNamn() +" er spelar nummer " 
-				+hovud.getMinSpelar().getSpelarNummer());
-		hovud.getTable().layFiveCardsOutOnTable();
-		System.out.println(url);
-		try {
-			startHostingGame(url);
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(gui, "Kunne ikkje starta spelet. Det er sikkert porten som er opptatt.");
-			e.printStackTrace();
-			initialiseNetworkGame(); // Vi prøver om att.
+	private void hostGame() throws RemoteException {
+		boolean successfullyHosting = gameHoster.hostGame();
+		if(!successfullyHosting) {
+			initialiseNetworkGame();
 		}
 	}
 
-	private void startHostingGame(String url) throws RemoteException, MalformedURLException {
-		LocateRegistry.createRegistry(Integer.parseInt(PORT));
-		long time = System.currentTimeMillis();
-		PlayerAndNetworkWTF meg = (PlayerAndNetworkWTF) hovud.getMinSpelar();
-		Naming.rebind(url, meg); // Legg til spelar i RMI-registeret
-		time = System.currentTimeMillis() - time;
-		System.out.println("Time to register with RMI registry: "+(time/1000)+"s");
-		System.out.println("Spelet er starta, vent på at nokon skal kople seg til...");
-		hovud.settSinTur(meg);
-		meg.setPlayerNumberAndUpdatePlayerCounter(0);
-		gui.receiveMessage(meg.getNamn() +" er vert for spelet.");
-	}
-
-	private String initJoin(String remoteAddress){
-		System.setSecurityManager(new LiberalSecurityManager());
-		String url = "rmi://"+remoteAddress+":"+PORT+"/ISpelar"; // URL-en til verten i RMI-registeret.
-		System.out.println(url);
-
-		if (hovud.getSpelarar().size()+1 >= Konstantar.MAKS_ANTAL_SPELARAR) {
-			JOptionPane.showMessageDialog(gui, "Synd, men det kan ikkje vera med fleire spelarar enn dei som no spelar. Betre lukke neste gong!");
-			System.exit(0);
+	private void joinGame() throws RemoteException {
+		boolean successfullyJoining = gameJoiner.joinGame(); 
+		if (!successfullyJoining) {
+			initialiseNetworkGame();
 		}
-		return url;
-
-	} 
-
-	private void faaMedSpelar(IPlayer player) throws RemoteException{
-		if (player.getSpelarNummer() == 0) {
-			registerHost(player);
-		}
-
-		player.receiveMessage(hovud.getMinSpelar().getNamn() + " har vorti med i spelet.");
-
-		if (player.getSpelarNummer()!=0){
-			gui.receiveMessage(player.getNamn() + " er òg med i spelet.");
-		}
-
-		player.registrerKlient(hovud.getMinSpelar());
-	}
-
-	private void registerHost(IPlayer player) throws RemoteException {
-		hovud.getMinSpelar().setPlayerNumberAndUpdatePlayerCounter(player.getSpelarteljar());
-		gui.receiveMessage(player.getNamn() +" er vert for spelet.");
-		paaVertBordet = player.getCardsOnTable();
-	}
-
-	void oppdaterAndreSpelarar(IPlayer host) throws RemoteException {
-		for (IPlayer player : host.getSpelarar()) {
-			if (!(player.getNamn().equals(hovud.getMinSpelar().toString()))) {
-				//hovud.getSpelarar().add(s);
-				hovud.getMinSpelar().registrerKlient(player);
-				player.receiveMessage(hovud.getMinSpelar().getNamn() + " har vorti med i spelet.");
-				gui.receiveMessage(player.getNamn() + " er òg med i spelet.");
-				player.registrerKlient(hovud.getMinSpelar());
-			}
-		}
-	}
-	
-	void ordnePåBordet() throws RemoteException {
-		hovud.getMinSpelar().setPaaBord(paaVertBordet);
-	}
-
-	void joinGame(String remoteAddress) throws HeadlessException, RemoteException {
-		String url = initJoin(remoteAddress);
-
-		try {
-			actuallyJoinGame(url);
-		}
-		catch (Exception e) {
-			JOptionPane.showMessageDialog(gui, "Klarte dessverre ikkje å bli med i spelet.");
-			e.printStackTrace();
-			initialiseNetworkGame(); // We try again
-		}
-	}
-
-	private void actuallyJoinGame(String url) throws NotBoundException, 	MalformedURLException, RemoteException {
-		IPlayer host = (IPlayer)Naming.lookup(url);
-		hovud.getMinSpelar().registrerKlient(host); 
-		for (IPlayer player : hovud.getSpelarar()) {
-			faaMedSpelar(player);
-		}
-
-		ordnePåBordet();
-		oppdaterAndreSpelarar(host);
-		hovud.settSinTur(host);
 	}
 }
