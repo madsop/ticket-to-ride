@@ -10,7 +10,7 @@ public class Mission implements Serializable {
 	private final Destination end;
 	private final int value;
 	
-	public Mission(@SuppressWarnings("unused") int missionId, Destination start, Destination end, int value) {
+	public Mission(int missionId, Destination start, Destination end, int value) {
 		this(start, end, value);
 	}
 	

@@ -4,35 +4,17 @@ import ttr.data.Colour;
 import ttr.data.Konstantar;
 import ttr.kjerna.Core;
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CardHandler extends UnicastRemoteObject {
-	private static final long serialVersionUID = 3899317463384337994L;
+public class CardHandler {
 	private Core hovud;
 	private Map<Colour, Integer> cards;
 
-	CardHandler(Core hovud) throws RemoteException {
+	CardHandler(Core hovud) {
 		super();
 		this.hovud = hovud;
 		faaInitielleFargekort();
-	}
-
-	private void initialiseCards() {
-		cards = new HashMap<>();
-		for (Colour colour : Colour.values()) {
-			cards.put(colour, 0);
-		}
-	}
-
-	private void faaInitielleFargekort() {
-		initialiseCards();
-		for (int startkortPosisjon = 0; startkortPosisjon < Konstantar.ANTAL_STARTKORT; startkortPosisjon++) {
-			Colour trekt = drawRandomCardFromTheDeck();
-			cards.put(trekt, cards.get(trekt)+1); //todo denne feilar som berre pokker..hmm
-		}
 	}
 
 	public Colour getRandomCardFromTheDeck(int positionOnTable) {
@@ -61,5 +43,20 @@ public class CardHandler extends UnicastRemoteObject {
 
 	public void decrementCardsAt(Colour colour, int number) {
 		cards.put(colour, cards.get(colour) - number);
+	}
+
+	private void faaInitielleFargekort() {
+		initialiseCards();
+		for (int startkortPosisjon = 0; startkortPosisjon < Konstantar.ANTAL_STARTKORT; startkortPosisjon++) {
+			Colour trekt = drawRandomCardFromTheDeck();
+			cards.put(trekt, cards.get(trekt) + 1); //todo denne feilar som berre pokker..hmm
+		}
+	}
+
+	private void initialiseCards() {
+		cards = new HashMap<>();
+		for (Colour colour : Colour.values()) {
+			cards.put(colour, 0);
+		}
 	}
 }

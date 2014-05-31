@@ -14,7 +14,7 @@ public class MissionHandler {
 		reshuffleMissions();
 	}
 
-	public void removeChosenMissionFromDeck(Mission mission) { //TODO flytt vidare inn i oppdragshandsamar?
+	public void removeChosenMissionFromDeck(Mission mission) {
 		remainingMissions.remove(mission);
 	}
 

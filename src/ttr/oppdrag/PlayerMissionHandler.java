@@ -20,7 +20,7 @@ public class PlayerMissionHandler {
 	}
 
 	public void retrieveMission(Mission mission){
-		this.missions.add(mission);
+		missions.add(mission);
 	}
 
 	public Collection<Mission> getMissions()  {
@@ -28,23 +28,22 @@ public class PlayerMissionHandler {
 	}
 	
 	public int getMissionPoints()  { //TODO skill ut alt som har med å avslutte spelet i ei eiga klasse?
-		int totalMissionValue = 0;
-		for (Mission mission : missions) {
-			if (isMissionAccomplished(mission)) {
-				totalMissionValue += mission.getValue();
-			} else {
-				totalMissionValue -= mission.getValue();
-			}
-		}
-		return totalMissionValue;
-	}
-	
-	public boolean isMissionAccomplished(Mission mission) {
-		return mapBetweenAandB.get(mission.getStart()).contains(mission.getEnd()) || mapBetweenAandB.get(mission.getEnd()).contains(mission.getStart());
+		return missions.stream().mapToInt(
+				mission -> isMissionAccomplished(mission) ? mission.getValue() : -mission.getValue()).sum();
 	}
 
 	public int getNumberOfFulfilledMissions(){
 		return (int) missions.stream().filter(x -> isMissionAccomplished(x)).count();
+	}	
+	
+	
+	
+	// MapBetweenAandB
+	
+	
+	public boolean isMissionAccomplished(Mission mission) {
+		return mapBetweenAandB.get(mission.getStart()).contains(mission.getEnd()) 
+				|| mapBetweenAandB.get(mission.getEnd()).contains(mission.getStart());
 	}
 
 	public void markRouteAsBuilt(Route route) {

@@ -5,7 +5,6 @@ import ttr.data.Colour;
 import ttr.spelar.IPlayer;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
 import java.text.MessageFormat;
 
 public class Route implements Serializable {
@@ -19,7 +18,7 @@ public class Route implements Serializable {
 	private final Destination start;
 	private final Destination end;
 
-	public Route(@SuppressWarnings("unused") int routeId, Destination start, Destination end, int length, Colour colour, boolean tunnel, int numberOfRequiredJokers) {
+	public Route(int routeId, Destination start, Destination end, int length, Colour colour, boolean tunnel, int numberOfRequiredJokers) {
 		this(start, end, length, colour, tunnel, numberOfRequiredJokers);
 	}
 
@@ -66,16 +65,8 @@ public class Route implements Serializable {
 	}
 
 	public String toString() {
-		String builtByString = "";
-		if (builtBy != null) {
-			try {
-				builtByString = builtBy.getNamn();
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-		}
 		String string = "{0} - {1}, lengde {2}, av farge {3}, tunnel? {4}, og {5} jokrar krevs for å byggje denne. Ruta er bygd av {6}, og er verdt {7} poeng.";
-		return MessageFormat.format(string,	start, end, length, colour, tunnel,	numberOfRequiredJokers, builtByString, valuesForRoute[length-1]);
+		return MessageFormat.format(string,	start, end, length, colour, tunnel,	numberOfRequiredJokers, builtBy, valuesForRoute[length-1]);
 
 	}
 }

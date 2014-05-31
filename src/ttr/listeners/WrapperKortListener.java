@@ -14,7 +14,7 @@ public class WrapperKortListener implements ActionListener {
 	private final JButton cardDeckButton;
 	private final JButton[] cardButtons;
 	private final Core core;
-	private final JFrame frame;
+	private final JFrame frame; //TODO liker ikkje at denne må med hit...
 	
 	public WrapperKortListener(JButton kortBunke, JButton[] kortButtons, Core hovud, JFrame frame){
 		this.cardDeckButton = kortBunke;
@@ -35,25 +35,10 @@ public class WrapperKortListener implements ActionListener {
 		if (!core.getMinSpelar().getNamn().equals(core.getKvenSinTur().getNamn())) {
 			JOptionPane.showMessageDialog(frame, "Det er ikkje din tur!");
 			return;
-			
 		}
-		if (arg0.getSource() == cardDeckButton) {
-			new CardDeckHandler(core);
-		}
-		else if (arg0.getSource() == cardButtons[0]) {
-			createButtonForRetrievingCardFromTable(0);
-		}
-		else if (arg0.getSource() == cardButtons[1]) {
-			createButtonForRetrievingCardFromTable(1);
-		}
-		else if (arg0.getSource() == cardButtons[2]) {
-			createButtonForRetrievingCardFromTable(2);
-		}
-		else if (arg0.getSource() == cardButtons[3]) {
-			createButtonForRetrievingCardFromTable(3);
-		}
-		else if (arg0.getSource() == cardButtons[4]) {
-			createButtonForRetrievingCardFromTable(4);
+		if (arg0.getSource() == cardDeckButton) { new CardDeckHandler(core); }
+		for (int i = 0; i < cardButtons.length; i++) {
+			if (arg0.getSource() == cardButtons[i]) { createButtonForRetrievingCardFromTable(i); }
 		}
 	}
 
@@ -65,12 +50,21 @@ public class WrapperKortListener implements ActionListener {
 	private void retrieveOneCardFromTheTable(int positionOnTable, IPlayer kvenSinTur) throws RemoteException {
 		Colour colour = core.getTable().getCardFromTable(positionOnTable);
 		if (colour == null) { return; }
-		if (kvenSinTur.hasAlreadyDrawnOneCard()) {
-			retrieveSecondCard(positionOnTable, kvenSinTur, colour);
-		}
-		else {
+		if (!kvenSinTur.hasAlreadyDrawnOneCard()) {
 			retrieveFirstCard(positionOnTable, kvenSinTur, colour);
 		}
+		else {
+			retrieveSecondCard(positionOnTable, kvenSinTur, colour);
+		}
+	}
+
+	private void retrieveFirstCard(int positionOnTable, IPlayer kvenSinTur, Colour colour) throws RemoteException {
+		kvenSinTur.receiveCard(colour);
+		putRandomCardFromTheDeckOnTable(positionOnTable, colour);
+		if (colour == Colour.valfri) {
+			core.nesteSpelar();
+		}
+		kvenSinTur.setEittKortTrektInn(true);
 	}
 
 	private void retrieveSecondCard(int positionOnTable, IPlayer kvenSinTur, Colour colour) throws RemoteException {
@@ -81,15 +75,6 @@ public class WrapperKortListener implements ActionListener {
 		kvenSinTur.receiveCard(colour);
 		putRandomCardFromTheDeckOnTable(positionOnTable, colour);
 		core.nesteSpelar();
-	}
-
-	private void retrieveFirstCard(int positionOnTable, IPlayer kvenSinTur, Colour colour) throws RemoteException {
-		kvenSinTur.receiveCard(colour);
-		putRandomCardFromTheDeckOnTable(positionOnTable, colour);
-		if (colour == Colour.valfri) {
-			core.nesteSpelar();
-		}
-		kvenSinTur.setEittKortTrektInn(true);
 	}
 
 	private void putRandomCardFromTheDeckOnTable(int positionOnTable, Colour colour) throws RemoteException {
