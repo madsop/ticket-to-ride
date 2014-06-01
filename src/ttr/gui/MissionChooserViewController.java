@@ -6,35 +6,41 @@ import ttr.oppdrag.Mission;
 import ttr.utgaave.GameVersion;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
-public class MissionChooser {
+public class MissionChooserViewController {
+	private MissionChooserModel missionChooserModel;
 	private final GameVersion gameVersion;
 	private final JFrame frame;
 	private JDialog missionChooserDialog;
 	private JPanel choosePanel;
-	private ArrayList<Mission> chosenMissions; //todo: dette er ikkje gui-stuff
 	private HashMap<JCheckBox,Mission> missionsToChooseFrom;
 	private JButton okButton;
 
-	public MissionChooser(GameVersion spel, JFrame frame){
+	public MissionChooserViewController(GameVersion spel, JFrame frame){
 		this.gameVersion = spel;
 		this.frame = frame;
+		this.missionChooserModel = new MissionChooserModel(); //TODO Dependency injection
+		missionChooserModel.addPropertyChangeListener(new MissionChooserPropertyChangeListener());
 	}
 
-	public ArrayList<Mission> setUpMissionChooser(ArrayList<Mission> missionsToChooseFrom) {
-		chosenMissions = new ArrayList<>();
+	public Collection<Mission> setUpMissionChooser(ArrayList<Mission> missionsToChooseFrom) {
 		this.missionsToChooseFrom = new HashMap<>();
+		missionChooserModel.populate(missionsToChooseFrom);
 		setUpChoosePanel();
 		setUpCheckBoxes(missionsToChooseFrom);
 		setUpOKButton();
 
 		fixMissionChooserGUIBox(drawAndSetupMap());
-		return chosenMissions;
+		return missionChooserModel.getChosenMissions();
 	}
 
 	private void setUpChoosePanel() {
@@ -94,6 +100,17 @@ public class MissionChooser {
 		return heile;
 	}
 
+	private class MissionChooserPropertyChangeListener implements PropertyChangeListener {
+		public void propertyChange(PropertyChangeEvent event) {
+			JCheckBox boxClicked = missionsToChooseFrom.entrySet().stream()
+					.filter(entry -> entry.getValue().toString().equals(event.getPropertyName()))
+					.map(x -> x.getKey()).findAny().get();
+			boxClicked.setSelected((boolean) event.getNewValue());
+			if ((boolean) event.getNewValue()) {
+				okButton.setEnabled(true);
+			}
+		}
+	}
 
 	/**
 	 * Blir kalla når spelaren har vald oppdragEinKanVeljeNyeOppdragFrå, og (freistar å/) trykker ok.
@@ -103,33 +120,24 @@ public class MissionChooser {
 		private void perform(Object clickedItem){
 			if (missionsToChooseFrom.containsKey(clickedItem)){
 				JCheckBox clicked = (JCheckBox)clickedItem;
-				if (chosenMissions.contains(missionsToChooseFrom.get(clicked))){
-					uncheck(clicked);
+				if (clicked.isSelected()) {
+					missionChooserModel.addMission(missionsToChooseFrom.get(clicked));
 				}
 				else{
-					check(clicked);
+					missionChooserModel.removeMission(missionsToChooseFrom.get(clicked));
 				}
 			}
-		}
-
-		private void uncheck(JCheckBox clicked) {
-			chosenMissions.remove(missionsToChooseFrom.get(clicked));
-			clicked.setSelected(false);
-		}
-
-		private void check(JCheckBox clicked) {
-			chosenMissions.add(missionsToChooseFrom.get(clicked));
-			clicked.setSelected(true);
-			okButton.setEnabled(true);
 		}
 
 		public void actionPerformed(ActionEvent arg0) {
-			if (arg0.getSource() == okButton && (chosenMissions.size() >= missionsToChooseFrom.size()-2)){
+			if (arg0.getSource() == okButton && missionChooserModel.isSelectionOK()) {
 				missionChooserDialog.dispose();
 				return;
 			}
+
 			perform(arg0.getSource());
-			if (chosenMissions.size() < missionsToChooseFrom.size() -2){
+			
+			if (!missionChooserModel.isSelectionOK()) {
 				okButton.setEnabled(false);
 			}
 		}

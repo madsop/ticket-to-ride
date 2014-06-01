@@ -12,14 +12,15 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class GUI extends JPanel {
 	private static final long serialVersionUID = -1540067881602979318L;
 	private final Meldingspanel messagePanel;
     private final Hogrepanelet right;
-    private final MissionChooser missionChooser;
+    private final MissionChooserViewController missionChooser;
 
-    public GUI(ImagePanel imagePanel, MissionChooser missionChooser, Meldingspanel messagePanel, Hogrepanelet right){
+    public GUI(ImagePanel imagePanel, MissionChooserViewController missionChooser, Meldingspanel messagePanel, Hogrepanelet right){
         this.missionChooser = missionChooser;
         this.messagePanel = messagePanel;
         this.right = right;
@@ -67,7 +68,7 @@ public class GUI extends JPanel {
 	}
 
     public void drawCardsOnTable(int plass, Colour farge){ right.teiknOppKortPåBordet(plass, farge); }
-    public ArrayList<Mission> chooseMissions(ArrayList<Mission> missions) { return missionChooser.setUpMissionChooser(missions); }
+    public Collection<Mission> chooseMissions(ArrayList<Mission> missions) { return missionChooser.setUpMissionChooser(missions); }
 
 	public void setRemainingTrains(int position, int numberOfTrains) { right.setRemainingTrains(position, numberOfTrains); }
 	public void displayGraphicallyThatItIsMyTurn() { right.displayGraphicallyThatItIsMyTurn();	}

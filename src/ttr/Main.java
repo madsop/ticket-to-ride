@@ -64,7 +64,7 @@ public class Main {
     
     private GUI setUpGUI(GameVersion gameVersion, JFrame frame) {
         ImagePanel picturePanel = new ImagePanel(gameVersion);
-        MissionChooser missionChooser = new MissionChooser(gameVersion,frame);
+        MissionChooserViewController missionChooser = new MissionChooserViewController(gameVersion,frame);
 
         Hogrepanelet rightpanel = new Hogrepanelet(frame);
         GUI gui = new GUI(picturePanel, missionChooser, injector.getInstance(Meldingspanel.class), rightpanel);        // TODO: dependency injection	
