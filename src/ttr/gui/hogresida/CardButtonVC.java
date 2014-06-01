@@ -58,6 +58,10 @@ public class CardButtonVC extends JButton {
                 return "Ops";
         }
 	}
+
+	public void setThisAsPropertyChangeListener(Table table) {
+		table.addPropertyChangeListener(new CardChangeListener());		
+	}
 	
 	private class CardChangeListener implements PropertyChangeListener {
 		public void propertyChange(PropertyChangeEvent evt) {
@@ -65,10 +69,5 @@ public class CardButtonVC extends JButton {
 				drawCardOnTable((Colour) evt.getNewValue());
 			}
 		}
-		
-	}
-
-	public void setThisAsPropertyChangeListener(Table table) {
-		table.addPropertyChangeListener(new CardChangeListener());		
 	}
 }

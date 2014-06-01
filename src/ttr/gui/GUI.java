@@ -1,6 +1,5 @@
 package ttr.gui;
 
-import ttr.data.Colour;
 import ttr.data.MeldingarModell;
 import ttr.gui.hogresida.Hogrepanelet;
 import ttr.gui.hogresida.Meldingspanel;
@@ -67,7 +66,6 @@ public class GUI extends JPanel {
 		right.displayGraphicallyThatThereIsNoCardHere(positionOnTable);
 	}
 
-    public void drawCardsOnTable(int plass, Colour farge){ right.teiknOppKortPåBordet(plass, farge); }
     public Collection<Mission> chooseMissions(ArrayList<Mission> missions) { return missionChooser.setUpMissionChooser(missions); }
 
 	public void setRemainingTrains(int position, int numberOfTrains) { right.setRemainingTrains(position, numberOfTrains); }

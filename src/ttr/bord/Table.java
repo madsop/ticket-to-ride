@@ -7,12 +7,10 @@ import ttr.data.Konstantar;
 import ttr.gui.GUI;
 
 public class Table {
-	private final GUI gui;
 	private Deck deck;
 	private CardsOnTable cardsOnTable;
 
 	public Table(GUI gui, boolean isNetworkGame, Deck deck) {
-		this.gui = gui;
 		this.deck = deck;
 		this.cardsOnTable = new CardsOnTable();
 
@@ -32,7 +30,6 @@ public class Table {
 		if (colour != null) {
 			cardsOnTable.putCardOnTable(position, colour);
 			deck.removeCardFromDeck(colour);
-			gui.drawCardsOnTable(position, colour);
 		}
 		else { // TODO fas ut denne
 			System.err.println("oops");

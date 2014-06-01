@@ -1,6 +1,5 @@
 package ttr.gui.hogresida;
 
-import ttr.data.Colour;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.gui.GUI;
@@ -12,7 +11,6 @@ import ttr.oppdrag.MissionHandler;
 import javax.swing.*;
 
 import java.awt.*;
-
 
 public class Hogrepanelet extends JPanel {
 	private static final long serialVersionUID = 5138678205804362548L;
@@ -45,8 +43,6 @@ public class Hogrepanelet extends JPanel {
         gridBagConstraints.gridy = 0;
         this.add(spelarnamn, gridBagConstraints);
         
-        
-
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.gridy = 1;
         trekkOppdrag = new JButton(Infostrengar.trekkOppdragLabel);
@@ -130,16 +126,11 @@ public class Hogrepanelet extends JPanel {
         visBygde.addActionListener(listener);
 
         WrapperKortListener kortListener = new WrapperKortListener(kortBunke, cardButtons, core, frame);
-        //TODO MVC
         kortBunke.addActionListener(kortListener);
         for (CardButtonVC cardButton : cardButtons) {
             cardButton.addActionListener(kortListener);
             cardButton.setThisAsPropertyChangeListener(core.getTable());
         }
-    }
-
-    public void teiknOppKortPåBordet(int position, Colour colour) {
-//        cardButtons[position].drawCardOnTable(colour);
     }
 
     private void visFargekorta(GridBagConstraints gridBagConstraints) {
