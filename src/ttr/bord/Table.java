@@ -1,5 +1,7 @@
 package ttr.bord;
 
+import java.beans.PropertyChangeListener;
+
 import ttr.data.Colour;
 import ttr.data.Konstantar;
 import ttr.gui.GUI;
@@ -78,5 +80,9 @@ public class Table {
 	public void updateDeckOnTable(Colour colour, int numberOfCardsDemanded, int numberOfJokersDemanded, int numberOfJokers) {
 		deck.addCards(colour, numberOfCardsDemanded - (numberOfJokers - numberOfJokersDemanded));
 		deck.addCards(Colour.valfri, numberOfJokers);
+	}
+
+	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		cardsOnTable.addPropertyChangeListener(propertyChangeListener);
 	}
 }

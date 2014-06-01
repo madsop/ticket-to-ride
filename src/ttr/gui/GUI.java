@@ -74,5 +74,4 @@ public class GUI extends JPanel {
 	public void displayGraphicallyThatItIsMyTurn() { right.displayGraphicallyThatItIsMyTurn();	}
 
 	public void receiveMessage(String message) { messagePanel.getMeldingarModell().nyMelding(message);}
-
 }

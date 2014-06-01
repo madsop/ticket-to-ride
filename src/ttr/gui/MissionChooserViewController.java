@@ -22,7 +22,7 @@ public class MissionChooserViewController {
 	private final JFrame frame;
 	private JDialog missionChooserDialog;
 	private JPanel choosePanel;
-	private HashMap<JCheckBox,Mission> missionsToChooseFrom;
+	private HashMap<JCheckBox,Mission> missionsToChooseFrom; //TODO ikkje heilt glad for denne
 	private JButton okButton;
 
 	public MissionChooserViewController(GameVersion spel, JFrame frame){
@@ -45,14 +45,12 @@ public class MissionChooserViewController {
 
 	private void setUpChoosePanel() {
 		choosePanel = new JPanel();
-		GridLayout gl = new GridLayout(0, 2);
-		choosePanel.setLayout(gl);
+		choosePanel.setLayout(new GridLayout(0, 2));
 	}
 
 	private JScrollPane drawAndSetupMap() {
 		ImageIcon kartet = new ImageIcon(gameVersion.getBakgrunnsbildet());
-		JLabel kartImplementasjonen = new JLabel(kartet);
-		return setUpScrollPane(kartet, kartImplementasjonen);
+		return setUpScrollPane(kartet, new JLabel(kartet));
 	}
 
 	private void setUpOKButton() {
