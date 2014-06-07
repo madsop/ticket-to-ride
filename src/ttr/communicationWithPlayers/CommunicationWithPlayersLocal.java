@@ -12,6 +12,7 @@ import ttr.data.MeldingarModell;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.kjerna.Core;
+import ttr.oppdrag.PlayerMissionHandler;
 import ttr.rute.Route;
 import ttr.spelar.IPlayer;
 import ttr.spelar.PlayerAndNetworkWTF;
@@ -37,23 +38,8 @@ public class CommunicationWithPlayersLocal extends CommunicationWithPlayers {
 	@Override
 	public void sjekkOmFerdig(MeldingarModell meldingarModell,	IPlayer kvenSinTur, String speltittel, IPlayer minSpelar) throws RemoteException {
 		if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
-			orientPlayersThatTheGameIsOver(meldingarModell);
-
-			int[] totalpoeng = new int[players.size()];
-
-			IPlayer vinnar = null;
-			int vinnarpoeng = 0;
-			addGameSpecificBonus(meldingarModell, speltittel, minSpelar, totalpoeng);
-
-			String pointsString = Infostrengar.SpeletErFerdig;
-
-			for (IPlayer player : players) {
-				IPlayer leiar = reknUtPoengOgFinnVinnar(totalpoeng,player,vinnarpoeng,vinnar,meldingarModell);
-				vinnarpoeng = reknUtPoeng(leiar);
-			}
-			avsluttSpeletMedSuksess(vinnar,pointsString,meldingarModell);
+			new GameFinisherLocal(players).finishGame(meldingarModell, speltittel, minSpelar);
 		}
-
 	}
 
 	private int addPlayers() {
@@ -68,17 +54,11 @@ public class CommunicationWithPlayersLocal extends CommunicationWithPlayers {
 	private ArrayList<IPlayer> createPlayers(Core hovud, Table bord, int antalSpelarar) throws HeadlessException, RemoteException {
 		players = new ArrayList<>();
 		for (int i = 1; i <= antalSpelarar; i++) {
-			players.add(new PlayerAndNetworkWTF(hovud,JOptionPane.showInputDialog(null,Infostrengar.SkrivInnSpelarnamn +i),bord));
+			players.add(new PlayerAndNetworkWTF(hovud,JOptionPane.showInputDialog(null,Infostrengar.SkrivInnSpelarnamn +i),bord, new PlayerMissionHandler()));
 		}
 		return players;
 	}
 	
-	@Override
-	protected void orientOthers(MeldingarModell meldingarModell) { }
-
-	@Override
-	protected void orientNetwork(MeldingarModell meldingarModell, IPlayer playerWithMostMissionsAccomplished, int bestNumberOfMissionsAccomplished) { }
-
 	@Override
 	protected void localOrNetworkSpecificMessageStuff(IPlayer myPlayer, String melding) { }
 

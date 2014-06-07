@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import ttr.data.Konstantar;
-import ttr.kjerna.Core;
 import ttr.oppdrag.PlayerMissionHandler;
 import ttr.rute.Route;
 
@@ -21,12 +20,12 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	protected static int playerCounter = 0;    //TODO bør flyttes vekk. Kanskje til hovud.
 	private boolean einValdAllereie; //TODO denne bør vel ikkje vera her?
 	
-	public PlayerImpl (Core hovud, String namn) throws RemoteException{
+	public PlayerImpl (String namn, PlayerMissionHandler playerMissionHandler) throws RemoteException{
 		super();
 		this.name = namn;
 		einValdAllereie = false;
 		builtRoutes = new ArrayList<>();
-        playerMissionHandler = new PlayerMissionHandler(); // TODO DI?
+        this.playerMissionHandler = playerMissionHandler; // TODO DI?
 	}
 	
 	public abstract IPlayer getThisAsISpelar();

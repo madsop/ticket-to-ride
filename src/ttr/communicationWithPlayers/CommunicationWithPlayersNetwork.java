@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import ttr.bord.Table;
 import ttr.data.Colour;
 import ttr.data.MeldingarModell;
-import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.kjerna.Core;
 import ttr.rute.Route;
@@ -24,37 +23,10 @@ public class CommunicationWithPlayersNetwork extends CommunicationWithPlayers {
 	}
 
 	@Override
-	protected void orientNetwork(MeldingarModell meldingarModell, IPlayer playerWithMostMissionsAccomplished, int bestNumberOfMissionsAccomplished) throws RemoteException {
-		meldingarModell.nyMelding(playerWithMostMissionsAccomplished.getNamn() + " klarte flest oppdrag, " + bestNumberOfMissionsAccomplished);
-	}
-
-	@Override
 	public void sjekkOmFerdig(MeldingarModell meldingarModell, IPlayer kvenSinTur, String speltittel, IPlayer minSpelar) throws RemoteException {
 		if (kvenSinTur.getGjenverandeTog() < Konstantar.AVSLUTT_SPELET) {
-			orientPlayersThatTheGameIsOver(meldingarModell);
-
-			int[] totalpoeng = new int[players.size() + 1];
-
-			IPlayer vinnar = null;
-			int vinnarpoeng = 0;
-			addGameSpecificBonus(meldingarModell, speltittel, minSpelar, totalpoeng);
-
-			String pointsString = Infostrengar.SpeletErFerdig;
-			totalpoeng[minSpelar.getSpelarNummer()] = reknUtPoeng(minSpelar);
-			pointsString += informTheOthersAboutMyPoints(meldingarModell, minSpelar, totalpoeng);
-			vinnar = minSpelar;
-			vinnarpoeng = totalpoeng[minSpelar.getSpelarNummer()];
-
-			for (IPlayer player : players) {
-				IPlayer leiar = reknUtPoengOgFinnVinnar(totalpoeng,player,vinnarpoeng,vinnar,meldingarModell);
-				vinnarpoeng = reknUtPoeng(leiar);
-			}
-			avsluttSpeletMedSuksess(vinnar,pointsString,meldingarModell);
+			new GameFinisherNetwork(players).finishGame(meldingarModell, kvenSinTur, speltittel, minSpelar);
 		}
-	}
-	
-	protected void orientOthers(MeldingarModell meldingarModell) {
-		meldingarModell.nyMelding(Infostrengar.SpeletErFerdig);
 	}
 	
 	@Override

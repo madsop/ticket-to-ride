@@ -11,6 +11,7 @@ import ttr.gui.GUI;
 import ttr.nettverk.InitialiserNettverk;
 import ttr.oppdrag.Mission;
 import ttr.oppdrag.MissionHandler;
+import ttr.oppdrag.PlayerMissionHandler;
 import ttr.rute.Route;
 import ttr.rute.RouteHandler;
 import ttr.spelar.IPlayer;
@@ -23,7 +24,7 @@ public class NetworkCore extends Core {
 	}
 
 	public void settIGangSpelet(String hostAddress) throws RemoteException {
-		InitialiserNettverk nettverk = new InitialiserNettverk(gui, hostAddress, this);
+		InitialiserNettverk nettverk = new InitialiserNettverk(gui, hostAddress, this, new PlayerMissionHandler());
 		nettverk.initialiseNetworkGame();
 		missionHandler.trekkOppdrag(gui, myPlayer, true);
 

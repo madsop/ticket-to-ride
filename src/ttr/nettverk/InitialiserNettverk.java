@@ -3,6 +3,7 @@ package ttr.nettverk;
 import ttr.gui.GUI;
 import ttr.gui.SwingUtils;
 import ttr.kjerna.Core;
+import ttr.oppdrag.PlayerMissionHandler;
 import ttr.spelar.PlayerAndNetworkWTF;
 
 import javax.swing.*;
@@ -16,16 +17,19 @@ public class InitialiserNettverk {
 	private final Core core;
 	private GameJoiner gameJoiner;
 	private GameHoster gameHoster;
+	private PlayerMissionHandler playerMissionHandler;
 
-	public InitialiserNettverk(GUI gui, String hostAddress, Core core) {
+	public InitialiserNettverk(GUI gui, String hostAddress, Core core, PlayerMissionHandler playerMissionHandler) {
 		this.gui = gui;
 		this.core = core;
+		this.playerMissionHandler = playerMissionHandler;
 		this.gameHoster = new GameHoster(hostAddress, PORT, gui, core);
 		this.gameJoiner = new GameJoiner(gui, core, PORT);
 	}
 
 	public void initialiseNetworkGame() throws HeadlessException, RemoteException {
-		PlayerAndNetworkWTF spelar = new PlayerAndNetworkWTF(core, SwingUtils.showInputDialog("Skriv inn namnet ditt"), core.getTable());
+		PlayerAndNetworkWTF spelar = new PlayerAndNetworkWTF(core, 
+				SwingUtils.showInputDialog("Skriv inn namnet ditt"), core.getTable(), playerMissionHandler);
 		core.setMinSpelar(spelar);
 
 		chooseBetweenHostAndJoin();

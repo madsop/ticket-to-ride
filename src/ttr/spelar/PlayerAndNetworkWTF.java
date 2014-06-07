@@ -5,6 +5,7 @@ import ttr.data.Colour;
 import ttr.gui.SwingUtils;
 import ttr.kjerna.Core;
 import ttr.oppdrag.Mission;
+import ttr.oppdrag.PlayerMissionHandler;
 import ttr.rute.Route;
 
 import java.rmi.RemoteException;
@@ -21,11 +22,11 @@ import java.util.Collection;
 	private Table bord;
 	private Core hovud;
     
-	public PlayerAndNetworkWTF(Core hovud, String namn, Table bord) throws RemoteException {
-		super(hovud, namn);
+	public PlayerAndNetworkWTF(Core hovud, String namn, Table bord, PlayerMissionHandler playerMissionHandler) throws RemoteException {
+		super(namn, playerMissionHandler);
         this.bord = bord;
         this.hovud = hovud;
-		korthandsamar = new CardHandler(hovud);
+		korthandsamar = new CardHandler(hovud); //TODO DI?
 	}
 	
 	/**
