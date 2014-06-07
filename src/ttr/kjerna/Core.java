@@ -36,15 +36,15 @@ public abstract class Core {
 	private ByggHjelpar buildingHelper;
 	private PropertyChangeSupport propertyChangeSupport;
 
-	public Core(GUI gui, Table table, GameVersion gameVersion, ByggHjelpar buildingHelper) throws RemoteException {
+	public Core(GUI gui, Table table, GameVersion gameVersion, ByggHjelpar buildingHelper, MissionHandler missionHandler) throws RemoteException {
 		this.gui = gui;
 		this.gameVersion = gameVersion;
 		this.table = table;
 		this.buildingHelper = buildingHelper;
+		this.missionHandler = missionHandler;
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		players = new ArrayList<>();
 		routeHandler = new RouteHandler(gameVersion);
-		missionHandler = new MissionHandler(gameVersion.getOppdrag());		// Legg til oppdrag
 		createTable();
 	}
 
@@ -162,10 +162,6 @@ public abstract class Core {
 	 //TODO denne bør vel splittast i to metodar, ein for fargekort og ein for oppdrag
 	public void sendMessageAboutCard(boolean isColourCard, boolean isRandom, Colour colour) throws RemoteException {
 		communicationWithPlayers.sendMessageAboutCard(isColourCard, isRandom, colour, playerInTurn.getNamn(), this);
-	}
-
-	public MissionHandler getMissionHandler() {
-		return missionHandler; //TODO denne må bort etter kvart som DI kjem på plass
 	}
 
 	public void trekkOppdrag() throws RemoteException {

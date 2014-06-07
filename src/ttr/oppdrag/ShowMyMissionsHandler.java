@@ -1,10 +1,10 @@
-package ttr.oppdrag.listeners;
+package ttr.oppdrag;
 
 import java.rmi.RemoteException;
 
 import ttr.gui.SwingUtils;
-import ttr.oppdrag.Mission;
 import ttr.spelar.IPlayer;
+
 import javax.swing.*;
 
 public class ShowMyMissionsHandler {
@@ -12,11 +12,11 @@ public class ShowMyMissionsHandler {
 		JPanel missionJPanel = new JPanel();
 
 		String missionString = player.getNamn() +": ";
-
 		
 		for (Mission mission : player.getOppdrag()) {
 			missionString += prepareMissionString(player, mission);
 		}
+		
 		missionString = missionString.substring(0, missionString.length() - 2) + ".";		
 		showToPlayer(missionJPanel, player, missionString);
 	}

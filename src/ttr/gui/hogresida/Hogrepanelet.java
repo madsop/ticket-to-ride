@@ -168,7 +168,11 @@ public class Hogrepanelet extends JPanel implements PropertyChangeListener {
 	public void displayGraphicallyThatItIsMyTurn() {
 		spelarnamn.setBackground(Color.YELLOW);
 	}
-
+	
+	public void setRemainingTrains(int position, int numberOfTrains) {
+		remainingTrainsLabel[position].setText(String.valueOf(numberOfTrains));		
+	}
+	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		int position = Integer.parseInt(evt.getPropertyName().substring(evt.getPropertyName().length() - 2));

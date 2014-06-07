@@ -15,7 +15,7 @@ public class ImagePanel extends JPanel {
 	private final Image bildet;
 
 	@Inject
-	public ImagePanel(GameVersion spel){
+	public ImagePanel(GameVersion spel) {
 		URL bakgrunnsbildeURL = spel.getBakgrunnsbildet();
 		bildet = new ImageIcon(bakgrunnsbildeURL).getImage();
 	}

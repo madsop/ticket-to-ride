@@ -2,12 +2,15 @@ package ttr.bord;
 
 import java.util.HashMap;
 
+import com.google.inject.Inject;
+
 import ttr.data.Colour;
 import ttr.data.Konstantar;
 
 public class Deck {
 	private HashMap<Colour, Integer> cardsLeft;
 
+	@Inject
 	public Deck() {
 		cardsLeft = new HashMap<>();
 		for (Colour colour : Colour.values()) {

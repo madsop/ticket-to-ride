@@ -3,6 +3,8 @@ package ttr.bord;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import com.google.inject.Inject;
+
 import ttr.data.Colour;
 import ttr.data.Konstantar;
 
@@ -10,6 +12,7 @@ public class CardsOnTable {
     private Colour[] cardsOpenOnTable;
 	private PropertyChangeSupport propertyChangeSupport;
 
+	@Inject
     public CardsOnTable() {
     	cardsOpenOnTable = new Colour[Konstantar.ANTAL_KORT_PÅ_BORDET];
     	propertyChangeSupport = new PropertyChangeSupport(this);

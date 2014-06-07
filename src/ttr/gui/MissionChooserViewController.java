@@ -12,23 +12,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
 public class MissionChooserViewController {
 	private MissionChooserModel missionChooserModel;
-	private final GameVersion gameVersion;
-	private final JFrame frame;
+	private URL backgroundImageURL;
 	private JDialog missionChooserDialog;
 	private JPanel choosePanel;
 	private HashMap<JCheckBox,Mission> missionsToChooseFrom; //TODO ikkje heilt glad for denne
 	private JButton okButton;
 
-	public MissionChooserViewController(GameVersion spel, JFrame frame){
-		this.gameVersion = spel;
-		this.frame = frame;
-		this.missionChooserModel = new MissionChooserModel(); //TODO Dependency injection
+	public MissionChooserViewController(GameVersion spel, MissionChooserModel missionChooserModel) {
+		this.backgroundImageURL = spel.getBakgrunnsbildet();
+		this.missionChooserModel = missionChooserModel;
 		missionChooserModel.addPropertyChangeListener(new MissionChooserPropertyChangeListener());
 	}
 
@@ -49,7 +48,7 @@ public class MissionChooserViewController {
 	}
 
 	private JScrollPane drawAndSetupMap() {
-		ImageIcon kartet = new ImageIcon(gameVersion.getBakgrunnsbildet());
+		ImageIcon kartet = new ImageIcon(backgroundImageURL);
 		return setUpScrollPane(kartet, new JLabel(kartet));
 	}
 
@@ -86,7 +85,7 @@ public class MissionChooserViewController {
 	}
 
 	private void fixMissionChooserGUIBox(JScrollPane jsp) {
-		missionChooserDialog = new JDialog(frame,Infostrengar.VelOppdragLabel,true);
+		missionChooserDialog = new JDialog((JFrame) null,Infostrengar.VelOppdragLabel,true);
 		missionChooserDialog.setContentPane(fixJPanel(jsp));
 		missionChooserDialog.pack();
 		missionChooserDialog.setVisible(true);

@@ -32,6 +32,7 @@ public class ByggHjelpar {
 
 		int jokers = chooseNumberOfJokersToUser(routeToBuild, colourToBuildIn, kortKrevd,	krevdJokrar, buildingPlayer);
 		enoughCardsChecker.checkIfThePlayerHasEnoughCards(routeToBuild, colourToBuildIn, kortKrevd, krevdJokrar,	buildingPlayer, jokers);
+		//TODO avbryt om ikkje sjekken over held
 		buildingPlayer.bygg(routeToBuild);
 		updatePlayersCards(colourToBuildIn, kortKrevd, krevdJokrar, buildingPlayer, jokers);
 

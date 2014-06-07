@@ -4,7 +4,6 @@ import ttr.data.MeldingarModell;
 import ttr.gui.hogresida.Hogrepanelet;
 import ttr.gui.hogresida.Meldingspanel;
 import ttr.kjerna.Core;
-import ttr.oppdrag.Mission;
 import ttr.oppdrag.MissionHandler;
 import ttr.spelar.IPlayer;
 
@@ -12,16 +11,13 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class GUI extends JPanel {
 	private static final long serialVersionUID = -1540067881602979318L;
 	private final Meldingspanel messagePanel;
     private final Hogrepanelet right;
-    private final MissionChooserViewController missionChooser;
 
-    public GUI(ImagePanel imagePanel, MissionChooserViewController missionChooser, Meldingspanel messagePanel, Hogrepanelet right) {
-        this.missionChooser = missionChooser;
+    public GUI(ImagePanel imagePanel, Meldingspanel messagePanel, Hogrepanelet right) {
         this.messagePanel = messagePanel;
         this.right = right;
 
@@ -68,9 +64,7 @@ public class GUI extends JPanel {
 		right.displayGraphicallyThatThereIsNoCardHere(positionOnTable);
 	}
 
-    public Collection<Mission> chooseMissions(ArrayList<Mission> missions) { return missionChooser.setUpMissionChooser(missions); }
-
-	public void setRemainingTrains(int position, int numberOfTrains) { //right.setRemainingTrains(position, numberOfTrains); 
+	public void setRemainingTrains(int position, int numberOfTrains) { right.setRemainingTrains(position, numberOfTrains); 
 	}
 	public void displayGraphicallyThatItIsMyTurn() { right.displayGraphicallyThatItIsMyTurn();	}
 

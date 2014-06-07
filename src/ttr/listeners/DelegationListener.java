@@ -1,7 +1,7 @@
 package ttr.listeners;
 
 import ttr.kjerna.Core;
-import ttr.oppdrag.listeners.ShowMyMissionsHandler;
+import ttr.oppdrag.ShowMyMissionsHandler;
 
 import javax.swing.*;
 

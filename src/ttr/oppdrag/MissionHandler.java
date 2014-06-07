@@ -2,6 +2,7 @@ package ttr.oppdrag;
 
 import ttr.data.Konstantar;
 import ttr.gui.GUI;
+import ttr.gui.MissionChooserViewController;
 import ttr.spelar.IPlayer;
 
 import java.rmi.RemoteException;
@@ -10,9 +11,11 @@ import java.util.Collection;
 
 public class MissionHandler {
 	private final ArrayList<Mission> remainingMissions;
+	private MissionChooserViewController missionChooserViewController;
 
-	public MissionHandler(ArrayList<Mission> missions){
+	public MissionHandler(ArrayList<Mission> missions, MissionChooserViewController missionChooserViewController) {
 		remainingMissions = missions;
+		this.missionChooserViewController = missionChooserViewController;
 		reshuffleMissions();
 	}
 
@@ -57,7 +60,7 @@ public class MissionHandler {
 	private Collection<Mission> chooseMissions(GUI gui, int numberOfMissionsToPickFrom, ArrayList<Mission> missions) {
 		Collection<Mission> chosenMissions = new ArrayList<>();
 		while (chosenMissions.size() < numberOfMissionsToPickFrom-2) {
-			chosenMissions = gui.chooseMissions(missions);
+			chosenMissions = missionChooserViewController.setUpMissionChooser(missions);
 		}
 		return chosenMissions;
 	}

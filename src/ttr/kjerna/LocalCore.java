@@ -6,14 +6,15 @@ import ttr.bord.Table;
 import ttr.bygg.ByggHjelpar;
 import ttr.communicationWithPlayers.CommunicationWithPlayersLocal;
 import ttr.gui.GUI;
+import ttr.oppdrag.MissionHandler;
 import ttr.rute.Route;
 import ttr.spelar.IPlayer;
 import ttr.turhandsamar.TurHandsamarLocal;
 import ttr.utgaave.GameVersion;
 
 public class LocalCore extends Core {
-	public LocalCore(GUI gui, Table table, GameVersion gameVersion, ByggHjelpar buildingHelper) throws RemoteException {
-		super(gui, table, gameVersion, buildingHelper);
+	public LocalCore(GUI gui, Table table, GameVersion gameVersion, ByggHjelpar buildingHelper, MissionHandler missionHandler) throws RemoteException {
+		super(gui, table, gameVersion, buildingHelper, missionHandler);
 	}
 
 	public void settIGangSpelet(String hostAddress) throws RemoteException {

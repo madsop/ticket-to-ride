@@ -10,14 +10,15 @@ import ttr.data.Konstantar;
 import ttr.gui.GUI;
 import ttr.nettverk.InitialiserNettverk;
 import ttr.oppdrag.Mission;
+import ttr.oppdrag.MissionHandler;
 import ttr.rute.Route;
 import ttr.spelar.IPlayer;
 import ttr.turhandsamar.TurHandsamarNetwork;
 import ttr.utgaave.GameVersion;
 
 public class NetworkCore extends Core {
-	public NetworkCore(GUI gui, Table table, GameVersion gameVersion, ByggHjelpar buildingHelper) throws RemoteException  {
-		super(gui, table, gameVersion, buildingHelper);
+	public NetworkCore(GUI gui, Table table, GameVersion gameVersion, ByggHjelpar buildingHelper, MissionHandler missionHandler) throws RemoteException  {
+		super(gui, table, gameVersion, buildingHelper, missionHandler);
 	}
 
 	public void settIGangSpelet(String hostAddress) throws RemoteException {

@@ -2,21 +2,19 @@ package ttr.bord;
 
 import java.beans.PropertyChangeListener;
 
+import com.google.inject.Inject;
+
 import ttr.data.Colour;
 import ttr.data.Konstantar;
-import ttr.gui.GUI;
 
 public class Table {
 	private Deck deck;
 	private CardsOnTable cardsOnTable;
 
-	public Table(GUI gui, boolean isNetworkGame, Deck deck) {
+	@Inject
+	public Table(Deck deck, CardsOnTable cardsOnTable) {
 		this.deck = deck;
-		this.cardsOnTable = new CardsOnTable();
-
-		if (!isNetworkGame){ // TODO: Få generalisert bort denne if-en
-			layFiveCardsOutOnTable();
-		}
+		this.cardsOnTable = cardsOnTable;
 	}
 
 	public void putCardsOnTable(Colour[] cardsToPutOnTable) {
