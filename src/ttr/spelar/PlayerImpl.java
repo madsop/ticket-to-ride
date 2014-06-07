@@ -21,7 +21,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	private String name;
 	protected ArrayList<Route> builtRoutes; // Delvis unaudsynt pga. harEgBygdMellomAogB
 
-	private static int playerCounter = 0;    //TODO bør flyttes vekk. Kanskje til hovud.
+	protected static int playerCounter = 0;    //TODO bør flyttes vekk. Kanskje til hovud.
 	private boolean einValdAllereie; //TODO denne bør vel ikkje vera her?
 	
 	public PlayerImpl (Core hovud, String namn, Table bord) throws RemoteException{

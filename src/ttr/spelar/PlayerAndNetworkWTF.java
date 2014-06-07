@@ -37,6 +37,7 @@ import java.util.Collection;
 		}
 		if (!cont) {
 			hovud.getSpelarar().add(host);
+			playerCounter++;
 		}
 		else {
 			//	throw new RemoteException("Denne motspelaren er allereie lagt til!");
