@@ -14,13 +14,11 @@ public class WrapperKortListener implements ActionListener {
 	private final JButton cardDeckButton;
 	private final JButton[] cardButtons;
 	private final Core core;
-	private final JFrame frame; //TODO liker ikkje at denne må med hit...
 	
-	public WrapperKortListener(JButton kortBunke, JButton[] kortButtons, Core hovud, JFrame frame){
+	public WrapperKortListener(JButton kortBunke, JButton[] kortButtons, Core hovud) {
 		this.cardDeckButton = kortBunke;
 		this.cardButtons = kortButtons;
 		this.core = hovud;
-		this.frame = frame;
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
@@ -33,7 +31,7 @@ public class WrapperKortListener implements ActionListener {
 
 	private void buttonClicked(ActionEvent arg0) throws RemoteException {
 		if (!core.getMinSpelar().getNamn().equals(core.getKvenSinTur().getNamn())) {
-			JOptionPane.showMessageDialog(frame, "Det er ikkje din tur!");
+			JOptionPane.showMessageDialog(null, "Det er ikkje din tur!");
 			return;
 		}
 		if (arg0.getSource() == cardDeckButton) { new CardDeckHandler(core); }
@@ -69,7 +67,7 @@ public class WrapperKortListener implements ActionListener {
 
 	private void retrieveSecondCard(int positionOnTable, IPlayer kvenSinTur, Colour colour) throws RemoteException {
 		if (colour == Colour.valfri) {
-			JOptionPane.showMessageDialog(frame, "Haha. Nice try. Du kan ikkje ta ein joker frå bordet når du allereie har trekt inn eitt kort");
+			JOptionPane.showMessageDialog(null, "Haha. Nice try. Du kan ikkje ta ein joker frå bordet når du allereie har trekt inn eitt kort");
 			return;
 		}
 		kvenSinTur.receiveCard(colour);

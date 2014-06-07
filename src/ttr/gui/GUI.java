@@ -20,7 +20,7 @@ public class GUI extends JPanel {
     private final Hogrepanelet right;
     private final MissionChooserViewController missionChooser;
 
-    public GUI(ImagePanel imagePanel, MissionChooserViewController missionChooser, Meldingspanel messagePanel, Hogrepanelet right){
+    public GUI(ImagePanel imagePanel, MissionChooserViewController missionChooser, Meldingspanel messagePanel, Hogrepanelet right) {
         this.missionChooser = missionChooser;
         this.messagePanel = messagePanel;
         this.right = right;
@@ -28,8 +28,9 @@ public class GUI extends JPanel {
         GridBagLayout gridBagLayout = new GridBagLayout();
 		setLayout(gridBagLayout);
 		GridBagConstraints gridBagConstraints = setUpGridBagConstraints();
-		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 0;
+
+		gridBagConstraints.gridx = 0;
 		add(imagePanel,gridBagConstraints);
 
 		gridBagConstraints.gridx = 1;
@@ -50,7 +51,8 @@ public class GUI extends JPanel {
 	}
 
     public void setHovud(MissionHandler missionHandler, Core core){ //TODO liker ikkje denne heller
-        right.addListeners(missionHandler, core, this);
+        right.addListeners(missionHandler, core);
+        core.addPropertyChangeListener(right);
     }
 
     public MeldingarModell getMessagesModel(){ //TODO få bort denne?
@@ -68,12 +70,12 @@ public class GUI extends JPanel {
 
     public Collection<Mission> chooseMissions(ArrayList<Mission> missions) { return missionChooser.setUpMissionChooser(missions); }
 
-	public void setRemainingTrains(int position, int numberOfTrains) { right.setRemainingTrains(position, numberOfTrains); }
+	public void setRemainingTrains(int position, int numberOfTrains) { //right.setRemainingTrains(position, numberOfTrains); 
+	}
 	public void displayGraphicallyThatItIsMyTurn() { right.displayGraphicallyThatItIsMyTurn();	}
 
-	public void receiveMessage(String message) { messagePanel.getMeldingarModell().nyMelding(message);}
+	//TODO det er vel denne som gir syklar
+	public void receiveMessage(String message) { messagePanel.getMeldingarModell().newRemoteMessage(message);}
 
-	public void addChatListener(IPlayer myPlayer, ArrayList<IPlayer> players) {
-		messagePanel.addChatListener(myPlayer, players);
-	}
+	public void addChatListener(IPlayer myPlayer, ArrayList<IPlayer> players) { messagePanel.addChatListener(myPlayer, players); }
 }

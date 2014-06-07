@@ -2,7 +2,6 @@ package ttr.gui.hogresida;
 
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
-import ttr.gui.GUI;
 import ttr.kjerna.Core;
 import ttr.listeners.DelegationListener;
 import ttr.listeners.WrapperKortListener;
@@ -11,19 +10,16 @@ import ttr.oppdrag.MissionHandler;
 import javax.swing.*;
 
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class Hogrepanelet extends JPanel {
+public class Hogrepanelet extends JPanel implements PropertyChangeListener {
 	private static final long serialVersionUID = 5138678205804362548L;
     private JTextField spelarnamn;
-    private final JFrame frame;
 
     private CardButtonVC[] cardButtons;
-    private JLabel[] togAtt;
+    private JLabel[] remainingTrainsLabel;
     private JButton trekkOppdrag,bygg,visBygde,visMineOppdrag,visMineKort, kortBunke;
-
-    public Hogrepanelet(JFrame frame){
-        this.frame = frame;
-    }
 
     public void displayGraphicallyThatThereIsNoCardHere(int positionOnTable) {
     	cardButtons[positionOnTable].displayGraphicallyThatThereIsNoCardHere();
@@ -71,32 +67,32 @@ public class Hogrepanelet extends JPanel {
         visMineKort.setMinimumSize(Konstantar.KNAPP);
         this.add(visMineKort, gridBagConstraints);
 
-        togAtt = new JLabel[4];
+        remainingTrainsLabel = new JLabel[4];
 
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridx = 0;
-        togAtt[0] = new JLabel(Infostrengar.TogAttLabel);
-        togAtt[0].setFont(Konstantar.TOGTALFONT);
-        this.add(togAtt[0], gridBagConstraints);
+        remainingTrainsLabel[0] = new JLabel(Infostrengar.TogAttLabel);
+        remainingTrainsLabel[0].setFont(Konstantar.TOGTALFONT);
+        this.add(remainingTrainsLabel[0], gridBagConstraints);
 
         gridBagConstraints.gridy = 5;
-        togAtt[1] = new JLabel(String.valueOf(Konstantar.ANTAL_TOG));
-        togAtt[1].setForeground(Color.WHITE);
-        togAtt[1].setFont(Konstantar.TOGTALFONT);
-        this.add(togAtt[1], gridBagConstraints);
+        remainingTrainsLabel[1] = new JLabel(String.valueOf(Konstantar.ANTAL_TOG));
+        remainingTrainsLabel[1].setForeground(Color.WHITE);
+        remainingTrainsLabel[1].setFont(Konstantar.TOGTALFONT);
+        this.add(remainingTrainsLabel[1], gridBagConstraints);
 
         gridBagConstraints.gridx = 1;
-        togAtt[2] = new JLabel(String.valueOf(Konstantar.ANTAL_TOG));
-        togAtt[2].setForeground(Color.BLACK);
-        togAtt[2].setFont(Konstantar.TOGTALFONT);
-        this.add(togAtt[2], gridBagConstraints);
+        remainingTrainsLabel[2] = new JLabel(String.valueOf(Konstantar.ANTAL_TOG));
+        remainingTrainsLabel[2].setForeground(Color.BLACK);
+        remainingTrainsLabel[2].setFont(Konstantar.TOGTALFONT);
+        this.add(remainingTrainsLabel[2], gridBagConstraints);
 
         gridBagConstraints.gridy = 6;
         gridBagConstraints.gridx = 0;
-        togAtt[3] = new JLabel(String.valueOf(Konstantar.ANTAL_TOG));
-        togAtt[3].setForeground(Color.PINK);
-        togAtt[3].setFont(Konstantar.TOGTALFONT);
-        this.add(togAtt[3], gridBagConstraints);
+        remainingTrainsLabel[3] = new JLabel(String.valueOf(Konstantar.ANTAL_TOG));
+        remainingTrainsLabel[3].setForeground(Color.PINK);
+        remainingTrainsLabel[3].setFont(Konstantar.TOGTALFONT);
+        this.add(remainingTrainsLabel[3], gridBagConstraints);
 
         visFargekorta(gridBagConstraints);
     }
@@ -117,15 +113,15 @@ public class Hogrepanelet extends JPanel {
         return gridBagConstraints;
 	}
     
-    public void addListeners(MissionHandler missionHandler, Core core, GUI gui) {
-        DelegationListener listener = new DelegationListener(missionHandler, gui, core, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg, frame);
+    public void addListeners(MissionHandler missionHandler, Core core) {
+        DelegationListener listener = new DelegationListener(core, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg);
         trekkOppdrag.addActionListener(listener);
         bygg.addActionListener(listener);
         visMineKort.addActionListener(listener);
         visMineOppdrag.addActionListener(listener);
         visBygde.addActionListener(listener);
 
-        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, cardButtons, core, frame);
+        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, cardButtons, core);
         kortBunke.addActionListener(kortListener);
         for (CardButtonVC cardButton : cardButtons) {
             cardButton.addActionListener(kortListener);
@@ -165,15 +161,19 @@ public class Hogrepanelet extends JPanel {
     	this.add(cardButtons[counter], gridBagConstraints);
     }
 
-	public void setRemainingTrains(int position, int numberOfTrains) {
-		togAtt[position].setText(String.valueOf(numberOfTrains));		
-	}
-
 	public void setPlayerName(String newPlayerName) {
 		spelarnamn.setText(newPlayerName);		
 	}
 
 	public void displayGraphicallyThatItIsMyTurn() {
 		spelarnamn.setBackground(Color.YELLOW);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		int position = Integer.parseInt(evt.getPropertyName().substring(evt.getPropertyName().length() - 2));
+		String numberOfTrains = "" + evt.getNewValue();
+		remainingTrainsLabel[position].setText(numberOfTrains);
+		//TODO forenkle
 	}
 }

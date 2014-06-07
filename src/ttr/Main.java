@@ -2,6 +2,7 @@ package ttr;
 
 import ttr.bord.Table;
 import ttr.bord.Deck;
+import ttr.bygg.ByggHjelpar;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.gui.*;
@@ -42,7 +43,8 @@ public class Main {
         boolean isNetworkGame = (JOptionPane.showConfirmDialog(null, Infostrengar.velOmNettverkEllerIkkje) == JOptionPane.YES_OPTION);
         GUI gui = setUpGUI(gameVersion,frame);
         Table table = new Table(gui, isNetworkGame, injector.getInstance(Deck.class));
-        Core core = isNetworkGame ? new NetworkCore(gui, table, gameVersion) : new LocalCore(gui, table, gameVersion);
+        ByggHjelpar buildingHelper = injector.getInstance(ByggHjelpar.class);
+        Core core = isNetworkGame ? new NetworkCore(gui, table, gameVersion, buildingHelper) : new LocalCore(gui, table, gameVersion, buildingHelper);
         gui.setHovud(core.getMissionHandler(), core);
         core.settIGangSpelet(getHostName(args));
 	}
@@ -66,7 +68,7 @@ public class Main {
         ImagePanel picturePanel = new ImagePanel(gameVersion);
         MissionChooserViewController missionChooser = new MissionChooserViewController(gameVersion,frame);
 
-        Hogrepanelet rightpanel = new Hogrepanelet(frame);
+        Hogrepanelet rightpanel = injector.getInstance(Hogrepanelet.class);
         GUI gui = new GUI(picturePanel, missionChooser, injector.getInstance(Meldingspanel.class), rightpanel);        // TODO: dependency injection	
         setUpJFrame(gameVersion, frame, gui);
         return gui;

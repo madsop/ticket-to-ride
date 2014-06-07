@@ -1,27 +1,25 @@
 package ttr.gui.hogresida;
 
 import ttr.data.Infostrengar;
-import ttr.data.MeldingarModell;
 import ttr.spelar.IPlayer;
 
 import javax.swing.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
 class ChatListener implements KeyListener {
-	private final JTextField chatJTextField; //TODO denne må vel vekk herifrå?
-	private final MeldingarModell meldingarmodell; //todo pcs
-	private final ArrayList<IPlayer> players;
+	private final PropertyChangeSupport propertyChangeSupport;
+	private final JTextField chatJTextField; //TODO denne må vel vekk herifrå? Eller?	
 	private IPlayer myPlayer;
 
-	public ChatListener(JTextField chat, MeldingarModell messagesModel, IPlayer myPlayer, ArrayList<IPlayer> players) {
+	public ChatListener(JTextField chat, IPlayer myPlayer) {
 		this.chatJTextField = chat;
-		this.meldingarmodell = messagesModel;
-		this.players = players;
 		this.myPlayer = myPlayer;
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 	}
 
 	public void keyPressed(KeyEvent arg0) {	}
@@ -38,18 +36,16 @@ class ChatListener implements KeyListener {
 	private void sendMessage(KeyEvent arg0) throws RemoteException {
 		if (arg0.getKeyCode() == KeyEvent.VK_ENTER){
 			String message = myPlayer.getNamn() + ": " + chatJTextField.getText();;
-			sendMessageToPlayers(message);
 			chatJTextField.setText("");
+			
+			propertyChangeSupport.firePropertyChange("chat", "", message);
 		}
 		else if (chatJTextField.getText().contains(Infostrengar.starttekst)){
 			chatJTextField.setText(String.valueOf(arg0.getKeyChar()));
 		}
 	}
-
-	private void sendMessageToPlayers(String message) throws RemoteException {
-		meldingarmodell.nyMelding(message);
-		for (IPlayer spelar : players){
-			spelar.receiveMessage(message);
-		}
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		propertyChangeSupport.addPropertyChangeListener(listener);
 	}
 }

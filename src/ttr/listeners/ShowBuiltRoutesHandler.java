@@ -8,9 +8,9 @@ import ttr.rute.Route;
 import javax.swing.*;
 
 class ShowBuiltRoutesHandler {
-	public ShowBuiltRoutesHandler(Set<Route> allBuiltRoutes, JFrame frame) {
+	public ShowBuiltRoutesHandler(Set<Route> allBuiltRoutes) {
 		if (allBuiltRoutes.size() <= 0) {             
-			JOptionPane.showMessageDialog(frame, "Det er ikkje bygd noka rute enno. Bli den første!");
+			JOptionPane.showMessageDialog(null, "Det er ikkje bygd noka rute enno. Bli den første!");
 			return;
 		}
 

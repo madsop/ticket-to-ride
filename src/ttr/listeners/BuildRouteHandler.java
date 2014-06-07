@@ -12,23 +12,23 @@ import java.util.Set;
 
 class BuildRouteHandler {
 
-	public BuildRouteHandler(Set<Route> notYetBuiltRoutes, int playersNumberOfJokers, Core core, JFrame frame) throws RemoteException {
-		Route routeWantedToBuild = letUserChooseRouteToBuild(frame, notYetBuiltRoutes);
+	public BuildRouteHandler(Set<Route> notYetBuiltRoutes, int playersNumberOfJokers, Core core) throws RemoteException {
+		Route routeWantedToBuild = letUserChooseRouteToBuild(null, notYetBuiltRoutes);
 		if (routeWantedToBuild == null) { return; }
 
 		int normalCardsDemanded = routeWantedToBuild.getLength()-routeWantedToBuild.getNumberOfRequiredJokers();
 		int numberOfDemandedJokers = routeWantedToBuild.getNumberOfRequiredJokers();
 
-		buildRoute(core, frame, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, playersNumberOfJokers);
+		buildRoute(core, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, playersNumberOfJokers);
 	}
 
-	private void buildRoute(Core core, JFrame frame, Route routeWantedToBuild,	int normalCardsDemanded, 
+	private void buildRoute(Core core, Route routeWantedToBuild,	int normalCardsDemanded, 
 			int numberOfDemandedJokers, int playersNumberOfJokers) throws RemoteException {
 		if (playerCanBuildThisRoute(core.findPlayerInAction(), normalCardsDemanded, numberOfDemandedJokers, playersNumberOfJokers) ){
 			buildRoute(core, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers);
 		}
 		else { //TODO god feilmelding her.
-			JOptionPane.showMessageDialog(frame, "Synd, men du har ikkje nok kort til å byggje denne ruta enno. Trekk inn kort, du.");
+			JOptionPane.showMessageDialog(null, "Synd, men du har ikkje nok kort til å byggje denne ruta enno. Trekk inn kort, du.");
 		}
 	}
 

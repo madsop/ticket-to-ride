@@ -14,6 +14,8 @@ import ttr.spelar.IPlayer;
 import ttr.turhandsamar.TurHandsamar;
 import ttr.utgaave.GameVersion;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Set;
@@ -32,15 +34,17 @@ public abstract class Core {
 	private RouteHandler routeHandler;
 	protected TurHandsamar turhandsamar;
 	private ByggHjelpar buildingHelper;
+	private PropertyChangeSupport propertyChangeSupport;
 
-	public Core(GUI gui, Table table, GameVersion gameVersion) throws RemoteException {
+	public Core(GUI gui, Table table, GameVersion gameVersion, ByggHjelpar buildingHelper) throws RemoteException {
 		this.gui = gui;
 		this.gameVersion = gameVersion;
 		this.table = table;
+		this.buildingHelper = buildingHelper;
+		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		players = new ArrayList<>();
 		routeHandler = new RouteHandler(gameVersion);
 		missionHandler = new MissionHandler(gameVersion.getOppdrag());		// Legg til oppdrag
-		buildingHelper = new ByggHjelpar(gui);
 		createTable();
 	}
 
@@ -55,6 +59,10 @@ public abstract class Core {
 		myPlayer = iPlayer;
 	}
 
+	public IPlayer getMinSpelar() {
+		return myPlayer;
+	}
+
 	public Table getTable() {
 		return table;
 	}
@@ -62,12 +70,9 @@ public abstract class Core {
 	public IPlayer getKvenSinTur() {
 		return playerInTurn;
 	}
+	
 	public ArrayList<IPlayer> getSpelarar() {
 		return players;
-	}
-
-	public IPlayer getMinSpelar() {
-		return myPlayer;
 	}
 	
 	public void settSinTur(IPlayer host) throws RemoteException {
@@ -107,10 +112,16 @@ public abstract class Core {
 		routeHandler.newRoute(bygd);
 		messageUsersInNetworkGame(bygd, byggjandeSpelar);
 		gui.setRemainingTrains(byggjandeSpelar.getSpelarNummer() + 1, byggjandeSpelar.getGjenverandeTog());
+		//TODO fyr property change på eit fint vis
+		propertyChangeSupport.firePropertyChange("remainingTrains" + byggjandeSpelar.getSpelarNummer() + 1, "", byggjandeSpelar.getGjenverandeTog());
 		table.updateDeckOnTable(colour, kortKrevd, krevdJokrar, jokrar);
 		gui.receiveMessage(byggjandeSpelar.getNamn() + "  bygde ruta " +bygd.getStart() + " - " +bygd.getEnd() + " i farge " + bygd.getColour());
 		communicationWithPlayers.updateOtherPlayers(colour, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
 		nesteSpelar();
+	}
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		propertyChangeSupport.addPropertyChangeListener(listener);
 	}
 
 
@@ -155,5 +166,11 @@ public abstract class Core {
 
 	public MissionHandler getMissionHandler() {
 		return missionHandler; //TODO denne må bort etter kvart som DI kjem på plass
+	}
+
+	public void trekkOppdrag() throws RemoteException {
+		sendMessageAboutCard(false, false, Colour.blå);
+        missionHandler.trekkOppdrag(gui, findPlayerInAction(), false);
+        nesteSpelar();
 	}
 }

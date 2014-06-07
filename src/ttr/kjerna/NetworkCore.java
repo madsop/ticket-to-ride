@@ -3,6 +3,7 @@ package ttr.kjerna;
 import java.rmi.RemoteException;
 
 import ttr.bord.Table;
+import ttr.bygg.ByggHjelpar;
 import ttr.communicationWithPlayers.CommunicationWithPlayersNetwork;
 import ttr.data.Colour;
 import ttr.data.Konstantar;
@@ -15,8 +16,8 @@ import ttr.turhandsamar.TurHandsamarNetwork;
 import ttr.utgaave.GameVersion;
 
 public class NetworkCore extends Core {
-	public NetworkCore(GUI gui, Table table, GameVersion gameVersion) throws RemoteException  {
-		super(gui, table, gameVersion);
+	public NetworkCore(GUI gui, Table table, GameVersion gameVersion, ByggHjelpar buildingHelper) throws RemoteException  {
+		super(gui, table, gameVersion, buildingHelper);
 	}
 
 	public void settIGangSpelet(String hostAddress) throws RemoteException {
@@ -53,12 +54,10 @@ public class NetworkCore extends Core {
 		}
 	}
 
-	@Override
 	protected String getWhoseTurnText() throws RemoteException {
 		return (myPlayer.getNamn().equals(playerInTurn.getNamn()) ? "min tur." : playerInTurn.getNamn() + " sin tur.");
 	}
 
-	@Override
 	public void orientOtherPlayers(int positionOnTable) throws RemoteException {
 		IPlayer host = findHost();
 		

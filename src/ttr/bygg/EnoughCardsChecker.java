@@ -9,16 +9,10 @@ import javax.swing.JOptionPane;
 import ttr.data.Colour;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
-import ttr.gui.GUI;
 import ttr.rute.Route;
 import ttr.spelar.IPlayer;
 
 public class EnoughCardsChecker {
-	private GUI gui;
-
-	public EnoughCardsChecker(GUI gui) {
-		this.gui = gui;
-	}
 
 	ArrayList<Colour> findPossibleColoursToBuildIn(IPlayer player, int numberOfDemandedNormalCards, int ekstrajokrar) throws RemoteException {
 		ArrayList<Colour> mulegeFargar = new ArrayList<>();
@@ -34,7 +28,7 @@ public class EnoughCardsChecker {
 	void checkIfThePlayerHasEnoughCards(Route bygd, Colour colour, int kortKrevd, int krevdJokrar, IPlayer byggjandeSpelar, int jokers) throws HeadlessException, RemoteException {
 		if ( (jokers > byggjandeSpelar.getNumberOfRemainingJokers() || playerDoesNotHaveEnoughCardsInChosenColour(colour, kortKrevd, krevdJokrar, byggjandeSpelar, jokers))
 				&& (bygd.getColour() != Colour.valfri)) {
-			JOptionPane.showMessageDialog(gui, Infostrengar.IkkjeNokKort);
+			JOptionPane.showMessageDialog(null, Infostrengar.IkkjeNokKort);
 		}
 	}
 

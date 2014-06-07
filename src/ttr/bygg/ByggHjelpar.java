@@ -3,27 +3,27 @@ package ttr.bygg;
 import ttr.bord.Table;
 import ttr.data.Colour;
 import ttr.data.Infostrengar;
-import ttr.gui.GUI;
 import ttr.rute.Route;
 import ttr.spelar.IPlayer;
 
 import javax.swing.*;
+
+import com.google.inject.Inject;
 
 import java.awt.HeadlessException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class ByggHjelpar {
-	private final GUI gui;
 	private TunnelBuildHelper tunnelBuildHelper;
 	private EnoughCardsChecker enoughCardsChecker;
 
 	//TODO fortener denne å bli splitta i ein kan-bygge-her-klasse og resten? evt. ein colour-finder-klasse
 
-	public ByggHjelpar(GUI gui) {
-		this.gui = gui;
-		this.tunnelBuildHelper = new TunnelBuildHelper(gui);
-		this.enoughCardsChecker = new EnoughCardsChecker(gui);
+	@Inject
+	public ByggHjelpar(TunnelBuildHelper tunnelBuildHelper, EnoughCardsChecker enoughCardsChecker) {
+		this.tunnelBuildHelper = tunnelBuildHelper;
+		this.enoughCardsChecker = enoughCardsChecker;
 	}
 
 	public ByggjandeInfo buildRoute(Route routeToBuild, int kortKrevd, int krevdJokrar, IPlayer buildingPlayer) throws HeadlessException, RemoteException {
@@ -61,7 +61,7 @@ public class ByggHjelpar {
 	private Colour chooseColourToBuildIn(ArrayList<Colour> mulegeFargar) {
 		int colourPosition = mulegeFargar.size() + 1;
 		while (colourPosition<0 || colourPosition > mulegeFargar.size()){
-			colourPosition = JOptionPane.showOptionDialog(gui, Infostrengar.VelFargeÅByggeILabel, Infostrengar.VelFargeÅByggeILabel, 
+			colourPosition = JOptionPane.showOptionDialog(null, Infostrengar.VelFargeÅByggeILabel, Infostrengar.VelFargeÅByggeILabel, 
 					JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, mulegeFargar.toArray(), mulegeFargar.get(0));
 			if (colourPosition==-1){ return null; }
 		}

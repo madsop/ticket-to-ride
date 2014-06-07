@@ -28,6 +28,11 @@ public class MeldingarModell extends AbstractListModel<String> {
 		meldingar.add(melding);
 		pcs.firePropertyChange(MELDINGAR_PROPERTY,"",melding);
 	}
+	
+	public void newRemoteMessage(String message) {
+		meldingar.add(message);
+		pcs.firePropertyChange("remote", "", message);
+	}
 
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener(listener);
