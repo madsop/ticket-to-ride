@@ -36,6 +36,7 @@ public class LocalCore extends Core {
 		players = communicationWithPlayers.createPlayersForLocalGame(this,table); //todo playes må komme inn i arraylista her på eit vis
 		if (myPlayer == null) {setMinSpelar(players.get(0)); }
 		settSinTur(players.get(0));
+		gui.addChatListener(myPlayer, players);
 	}
 
 	protected void messageUsersInNetworkGame(Route bygd, IPlayer byggjandeSpelar) { }

@@ -19,6 +19,7 @@ public class Meldingspanel extends JPanel implements PropertyChangeListener {
 
 	private MeldingarModell messagemodel;
 	private final JList<String> messages;
+	private JTextField chat;
 
 	@Inject
 	public Meldingspanel() {
@@ -36,13 +37,14 @@ public class Meldingspanel extends JPanel implements PropertyChangeListener {
 		this.add(messagePane);
 
 		this.setPreferredSize(new Dimension(Konstantar.MELDINGSPANEL,Konstantar.HOGDE));
-	}
 
-	public void prepareChat(IPlayer myPlayer, ArrayList<IPlayer> players) {
-		JTextField chat = new JTextField(Infostrengar.starttekst);
-		chat.addKeyListener(new ChatListener(chat, messagemodel, myPlayer, players));
+		chat = new JTextField(Infostrengar.starttekst);
 		chat.setPreferredSize(Konstantar.CHATDIM);
 		this.add(chat);
+	}
+	
+	public void addChatListener(IPlayer myPlayer, ArrayList<IPlayer> players) {
+		chat.addKeyListener(new ChatListener(chat, messagemodel, myPlayer, players));
 	}
 
 	public MeldingarModell getMeldingarModell(){ //TODO dette bør vera muleg å unngå

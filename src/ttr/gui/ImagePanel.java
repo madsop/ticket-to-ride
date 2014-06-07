@@ -22,7 +22,7 @@ public class ImagePanel extends JPanel {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		int imageHeight = Konstantar.VINDUSSTORLEIK.height * 6/7;
+		int imageHeight = Konstantar.VINDUSSTORLEIK.height * 2/7;
 		int imageWidth = computeImageWidth(imageHeight);
 		this.setPreferredSize(new Dimension(imageWidth + 50, imageHeight + 50));
 		try {

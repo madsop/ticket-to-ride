@@ -25,6 +25,8 @@ public class NetworkCore extends Core {
 		missionHandler.trekkOppdrag(gui, myPlayer, true);
 
 		givePlayersMissions();
+
+		gui.addChatListener(myPlayer, players);
 	}
 
 	private void givePlayersMissions() throws RemoteException {
@@ -41,7 +43,7 @@ public class NetworkCore extends Core {
 
 	protected void createTable() throws RemoteException {
 		communicationWithPlayers = new CommunicationWithPlayersNetwork(players);
-		turhandsamar = new TurHandsamarNetwork(players);		
+		turhandsamar = new TurHandsamarNetwork(players);
 	}
 
 	protected void messageUsersInNetworkGame(Route builtRoute, IPlayer buildingPlayer) throws RemoteException {

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 class ChatListener implements KeyListener {
 	private final JTextField chatJTextField; //TODO denne må vel vekk herifrå?
-	private final MeldingarModell meldingarmodell;
+	private final MeldingarModell meldingarmodell; //todo pcs
 	private final ArrayList<IPlayer> players;
 	private IPlayer myPlayer;
 

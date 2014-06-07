@@ -6,6 +6,7 @@ import ttr.gui.hogresida.Meldingspanel;
 import ttr.kjerna.Core;
 import ttr.oppdrag.Mission;
 import ttr.oppdrag.MissionHandler;
+import ttr.spelar.IPlayer;
 
 import javax.swing.*;
 
@@ -49,7 +50,6 @@ public class GUI extends JPanel {
 	}
 
     public void setHovud(MissionHandler missionHandler, Core core){ //TODO liker ikkje denne heller
-        messagePanel.prepareChat(core.findPlayerInAction(), core.getSpelarar());
         right.addListeners(missionHandler, core, this);
     }
 
@@ -72,4 +72,8 @@ public class GUI extends JPanel {
 	public void displayGraphicallyThatItIsMyTurn() { right.displayGraphicallyThatItIsMyTurn();	}
 
 	public void receiveMessage(String message) { messagePanel.getMeldingarModell().nyMelding(message);}
+
+	public void addChatListener(IPlayer myPlayer, ArrayList<IPlayer> players) {
+		messagePanel.addChatListener(myPlayer, players);
+	}
 }
