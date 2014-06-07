@@ -113,7 +113,7 @@ public abstract class Core {
 	private void hjelpemetodeBygg(Route bygd, Colour colour, int kortKrevd, int krevdJokrar, IPlayer byggjandeSpelar, int jokrar) throws RemoteException {
 		routeHandler.newRoute(bygd);
 		messageUsersInNetworkGame(bygd, byggjandeSpelar);
-		gui.setRemainingTrains(byggjandeSpelar.getSpelarNummer() + 1, byggjandeSpelar.getGjenverandeTog());
+//		gui.setRemainingTrains(byggjandeSpelar.getSpelarNummer() + 1, byggjandeSpelar.getGjenverandeTog());
 		//TODO fyr property change på eit fint vis
 		propertyChangeSupport.firePropertyChange("remainingTrains" + byggjandeSpelar.getSpelarNummer() + 1, "", byggjandeSpelar.getGjenverandeTog());
 		table.updateDeckOnTable(colour, kortKrevd, krevdJokrar, jokrar);

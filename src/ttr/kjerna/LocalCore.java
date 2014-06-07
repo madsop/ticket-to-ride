@@ -32,14 +32,15 @@ public class LocalCore extends Core {
 	protected void createTable() throws RemoteException {
 		communicationWithPlayers = new CommunicationWithPlayersLocal(players); // TODO dependency injection?
 		createPlayersAndSetUpForLocalGame();
-		turhandsamar = new TurHandsamarLocal(players);	
+		turhandsamar = new TurHandsamarLocal(players);
+		table.layFiveCardsOutOnTable();
 	}
 
 	private void createPlayersAndSetUpForLocalGame() throws RemoteException {
 		players = communicationWithPlayers.createPlayersForLocalGame(this,table); //todo playes må komme inn i arraylista her på eit vis
 		if (myPlayer == null) {setMinSpelar(players.get(0)); }
 		settSinTur(players.get(0));
-		gui.addChatListener(myPlayer, players);
+		gui.addChatListener(myPlayer.getNamn(), players);
 	}
 
 	protected void messageUsersInNetworkGame(Route bygd, IPlayer byggjandeSpelar) { }

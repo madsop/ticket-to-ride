@@ -2,7 +2,6 @@ package ttr.gui;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.stream.Collectors;
@@ -34,7 +33,7 @@ public class MissionChooserModel {
 		propertyChangeSupport.addPropertyChangeListener(propertyChangeListener);
 	}
 
-	public void populate(ArrayList<Mission> missionsToChooseFrom) {
+	public void populate(Collection<Mission> missionsToChooseFrom) {
 		missionsToChooseBetween = new HashMap<>();
 		missionsToChooseFrom.forEach(mission -> missionsToChooseBetween.put(mission, false));
 	}

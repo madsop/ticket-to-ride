@@ -131,6 +131,7 @@ public class Hogrepanelet extends JPanel implements PropertyChangeListener {
 
     private void visFargekorta(GridBagConstraints gridBagConstraints) {
         // Fargekorta på bordet
+    	// TODO vil ha desse i sitt eiget jpanel
         gridBagConstraints.gridy = 7;
         kortBunke = new JButton(Infostrengar.TrekkFråBunkenLabel);
         kortBunke.setMinimumSize(Konstantar.KORTKNAPP);

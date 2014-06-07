@@ -5,7 +5,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import ttr.bord.Table;
 import ttr.data.Konstantar;
 import ttr.kjerna.Core;
 import ttr.oppdrag.PlayerMissionHandler;
@@ -13,8 +12,6 @@ import ttr.rute.Route;
 
 public abstract class PlayerImpl extends UnicastRemoteObject {
 	private static final long serialVersionUID = -6844537139622798129L;
-	protected Core hovud;
-	protected Table bord;
     protected PlayerMissionHandler playerMissionHandler;
 
 	private int playerNumber;
@@ -24,14 +21,12 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	protected static int playerCounter = 0;    //TODO bør flyttes vekk. Kanskje til hovud.
 	private boolean einValdAllereie; //TODO denne bør vel ikkje vera her?
 	
-	public PlayerImpl (Core hovud, String namn, Table bord) throws RemoteException{
+	public PlayerImpl (Core hovud, String namn) throws RemoteException{
 		super();
-		this.hovud = hovud;
-		this.bord = bord;
 		this.name = namn;
 		einValdAllereie = false;
 		builtRoutes = new ArrayList<>();
-        playerMissionHandler = new PlayerMissionHandler();
+        playerMissionHandler = new PlayerMissionHandler(); // TODO DI?
 	}
 	
 	public abstract IPlayer getThisAsISpelar();
@@ -58,7 +53,7 @@ public abstract class PlayerImpl extends UnicastRemoteObject {
 	}
 	public Collection<Route> getBygdeRuter() { return builtRoutes; }
 
-	public String getNamn() { return name; }
+	public String getNamn() { return toString(); }
 
 	public int getGjenverandeTog() {
 		int brukteTog = builtRoutes.stream().mapToInt(x -> x.getLength()).sum();

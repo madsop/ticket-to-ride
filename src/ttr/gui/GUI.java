@@ -71,5 +71,5 @@ public class GUI extends JPanel {
 	//TODO det er vel denne som gir syklar
 	public void receiveMessage(String message) { messagePanel.getMeldingarModell().newRemoteMessage(message);}
 
-	public void addChatListener(IPlayer myPlayer, ArrayList<IPlayer> players) { messagePanel.addChatListener(myPlayer, players); }
+	public void addChatListener(String myPlayerName, ArrayList<IPlayer> players) { messagePanel.addChatListener(myPlayerName, players); }
 }

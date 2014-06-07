@@ -29,7 +29,7 @@ public class NetworkCore extends Core {
 
 		givePlayersMissions();
 
-		gui.addChatListener(myPlayer, players);
+		gui.addChatListener(myPlayer.getNamn(), players);
 	}
 
 	private void givePlayersMissions() throws RemoteException {

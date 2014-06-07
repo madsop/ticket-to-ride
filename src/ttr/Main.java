@@ -1,27 +1,22 @@
 package ttr;
 
-import ttr.bord.Table;
-import ttr.bygg.ByggHjelpar;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.gui.*;
-import ttr.gui.hogresida.Hogrepanelet;
-import ttr.gui.hogresida.Meldingspanel;
 import ttr.kjerna.Core;
-import ttr.kjerna.LocalCore;
-import ttr.kjerna.NetworkCore;
+import ttr.kjerna.CoreFactory;
 import ttr.oppdrag.MissionHandler;
-import ttr.rute.RouteHandler;
 import ttr.utgaave.GameVersion;
 import ttr.utgaave.europe.Europe;
 import ttr.utgaave.nordic.Nordic;
-
-import javax.swing.*;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import java.rmi.RemoteException;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class Main {
 	private Injector injector;
@@ -38,21 +33,16 @@ public class Main {
 		this.injector = Guice.createInjector();
 
 		boolean isNetworkGame = (JOptionPane.showConfirmDialog(null, Infostrengar.velOmNettverkEllerIkkje) == JOptionPane.YES_OPTION);
-		Table table = injector.getInstance(Table.class);
-		if (!isNetworkGame){ // TODO: Få generalisert bort denne if-en
-			table.layFiveCardsOutOnTable();
-		}
-		ByggHjelpar buildingHelper = injector.getInstance(ByggHjelpar.class);
-
+		
 		GameVersion gameVersion = chooseGameVersion();
 		MissionHandler missionHandler = new MissionHandler(gameVersion.getOppdrag(), 
 				new MissionChooserViewController(gameVersion, injector.getInstance(MissionChooserModel.class)));
-		RouteHandler routeHandler = new RouteHandler(gameVersion);
 
-		GUI gui = setUpGUI(gameVersion);
-		Core core = isNetworkGame ? 
-				new NetworkCore(gui, table, gameVersion, buildingHelper, missionHandler, routeHandler) : 
-				new LocalCore(gui, table, gameVersion, buildingHelper, missionHandler, routeHandler);
+		ImagePanel picturePanel = new ImagePanel(gameVersion);
+		
+		GUI gui = injector.getInstance(GUIFactory.class).createGUI(picturePanel);
+		setUpJFrame(gameVersion, gui);
+		Core core = injector.getInstance(CoreFactory.class).createCore(gui, missionHandler, gameVersion, isNetworkGame);
 		gui.setHovud(missionHandler, core);
 		core.settIGangSpelet(getHostName(args));
 	}
@@ -70,14 +60,6 @@ public class Main {
 				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, gameVersions, gameVersions[0]);
 		if (chosenGameID < 0 || chosenGameID >= gameVersions.length){ System.exit(0); }
 		return gameVersions[chosenGameID];
-	}
-
-	private GUI setUpGUI(GameVersion gameVersion) {
-		ImagePanel picturePanel = new ImagePanel(gameVersion);
-		
-		GUI gui = new GUI(picturePanel, injector.getInstance(Meldingspanel.class), injector.getInstance(Hogrepanelet.class));        // TODO: dependency injection	
-		setUpJFrame(gameVersion, gui);
-		return gui;
 	}
 
 	private void setUpJFrame(GameVersion utgaave, GUI gui) {

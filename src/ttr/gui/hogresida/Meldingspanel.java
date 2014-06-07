@@ -47,10 +47,10 @@ public class Meldingspanel extends JPanel implements PropertyChangeListener {
 		this.add(chat);
 	}
 	
-	public void addChatListener(IPlayer myPlayer, ArrayList<IPlayer> players) {
+	public void addChatListener(String myPlayerName, ArrayList<IPlayer> players) {
 		this.otherPlayers = players;
 //		this.otherPlayers.remove(myPlayer);
-		chatListener = new ChatListener(chat, myPlayer);
+		chatListener = new ChatListener(chat, myPlayerName);
 		chat.addKeyListener(chatListener);
 		chatListener.addPropertyChangeListener(this);
 	}

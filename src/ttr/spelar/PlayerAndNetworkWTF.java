@@ -14,13 +14,18 @@ import java.util.Collection;
 /**
  * Ein spelar. All nettverkskommunikasjon går via denne, så litt hårate klasse med ein del ad hoc-metodar.
  */
+//TODO døp om denne klassa til facade og frikople frå playerimpl
  public class PlayerAndNetworkWTF extends PlayerImpl implements IPlayer {
 	private static final long serialVersionUID = -3600106049579247030L;
     private CardHandler korthandsamar;
+	private Table bord;
+	private Core hovud;
     
 	public PlayerAndNetworkWTF(Core hovud, String namn, Table bord) throws RemoteException {
-		super(hovud, namn, bord);
-        korthandsamar = new CardHandler(hovud);
+		super(hovud, namn);
+        this.bord = bord;
+        this.hovud = hovud;
+		korthandsamar = new CardHandler(hovud);
 	}
 	
 	/**

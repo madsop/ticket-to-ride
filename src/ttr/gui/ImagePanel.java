@@ -8,7 +8,6 @@ import javax.swing.*;
 import com.google.inject.Inject;
 
 import java.awt.*;
-import java.net.URL;
 
 public class ImagePanel extends JPanel {
 	private static final long serialVersionUID = -2629995315390856995L;
@@ -16,21 +15,15 @@ public class ImagePanel extends JPanel {
 
 	@Inject
 	public ImagePanel(GameVersion spel) {
-		URL bakgrunnsbildeURL = spel.getBakgrunnsbildet();
-		bildet = new ImageIcon(bakgrunnsbildeURL).getImage();
+		bildet = new ImageIcon(spel.getBakgrunnsbildet()).getImage();
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics graphics) {
 		int imageHeight = Konstantar.VINDUSSTORLEIK.height * 2/7;
 		int imageWidth = computeImageWidth(imageHeight);
 		this.setPreferredSize(new Dimension(imageWidth + 50, imageHeight + 50));
-		try {
-			g.drawImage(bildet, 0, 25, imageWidth, imageHeight, null);
-		}
-		catch (NullPointerException npe) {
-			npe.printStackTrace();
-		}
+		graphics.drawImage(bildet, 0, 25, imageWidth, imageHeight, null);
 	}
 
 	private int computeImageWidth(int imageHeight) {

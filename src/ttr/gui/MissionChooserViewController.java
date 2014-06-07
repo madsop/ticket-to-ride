@@ -110,12 +110,21 @@ public class MissionChooserViewController {
 			}
 		}
 	}
-
-	/**
-	 * Blir kalla når spelaren har vald oppdragEinKanVeljeNyeOppdragFrå, og (freistar å/) trykker ok.
-	 * Nett no veldig ad-hoc-a. Bør for-løkke-styres eller noko.
-	 */
+	
 	private class OkClickedForMissionChooseListener implements ActionListener {
+		public void actionPerformed(ActionEvent arg0) {
+			if (arg0.getSource() == okButton && missionChooserModel.isSelectionOK()) {
+				missionChooserDialog.dispose();
+				return;
+			}
+
+			perform(arg0.getSource());
+
+			if (!missionChooserModel.isSelectionOK()) {
+				okButton.setEnabled(false);
+			}
+		}
+
 		private void perform(Object clickedItem){
 			if (missionsToChooseFrom.containsKey(clickedItem)){
 				JCheckBox clicked = (JCheckBox)clickedItem;
@@ -125,19 +134,6 @@ public class MissionChooserViewController {
 				else{
 					missionChooserModel.removeMission(missionsToChooseFrom.get(clicked));
 				}
-			}
-		}
-
-		public void actionPerformed(ActionEvent arg0) {
-			if (arg0.getSource() == okButton && missionChooserModel.isSelectionOK()) {
-				missionChooserDialog.dispose();
-				return;
-			}
-
-			perform(arg0.getSource());
-			
-			if (!missionChooserModel.isSelectionOK()) {
-				okButton.setEnabled(false);
 			}
 		}
 	}
