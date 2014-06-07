@@ -63,7 +63,9 @@ public class MissionChooserViewController {
 	private void setUpCheckBoxes(ArrayList<Mission> missionsToChooseFrom){ //TODO legg inn handtering for når oppdragsbunken er tom
 		for (Mission mission : missionsToChooseFrom){
 			JCheckBox missionCheckBox = createAndConfigureMissionCheckBox();
-			choosePanel.add(new JTextField(mission.toString()));
+			JTextField textfield = new JTextField(mission.toString());
+			textfield.setEditable(false);
+			choosePanel.add(textfield);
 			choosePanel.add(missionCheckBox);
 			this.missionsToChooseFrom.put(missionCheckBox,mission);
 		}
