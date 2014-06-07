@@ -12,13 +12,14 @@ import ttr.nettverk.InitialiserNettverk;
 import ttr.oppdrag.Mission;
 import ttr.oppdrag.MissionHandler;
 import ttr.rute.Route;
+import ttr.rute.RouteHandler;
 import ttr.spelar.IPlayer;
 import ttr.turhandsamar.TurHandsamarNetwork;
 import ttr.utgaave.GameVersion;
 
 public class NetworkCore extends Core {
-	public NetworkCore(GUI gui, Table table, GameVersion gameVersion, ByggHjelpar buildingHelper, MissionHandler missionHandler) throws RemoteException  {
-		super(gui, table, gameVersion, buildingHelper, missionHandler);
+	public NetworkCore(GUI gui, Table table, GameVersion gameVersion, ByggHjelpar buildingHelper, MissionHandler missionHandler, RouteHandler routeHandler) throws RemoteException  {
+		super(gui, table, gameVersion, buildingHelper, missionHandler, routeHandler);
 	}
 
 	public void settIGangSpelet(String hostAddress) throws RemoteException {

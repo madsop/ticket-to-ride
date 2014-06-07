@@ -20,6 +20,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 // Handterer kven sin tur det er, og oppsett i startfasen av spelet
 public abstract class Core {
 	private final GameVersion gameVersion;
@@ -36,15 +38,15 @@ public abstract class Core {
 	private ByggHjelpar buildingHelper;
 	private PropertyChangeSupport propertyChangeSupport;
 
-	public Core(GUI gui, Table table, GameVersion gameVersion, ByggHjelpar buildingHelper, MissionHandler missionHandler) throws RemoteException {
+	public Core(GUI gui, Table table, GameVersion gameVersion, ByggHjelpar buildingHelper, MissionHandler missionHandler, RouteHandler routeHandler) throws RemoteException {
 		this.gui = gui;
 		this.gameVersion = gameVersion;
 		this.table = table;
 		this.buildingHelper = buildingHelper;
 		this.missionHandler = missionHandler;
+		this.routeHandler = routeHandler;
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		players = new ArrayList<>();
-		routeHandler = new RouteHandler(gameVersion);
 		createTable();
 	}
 
@@ -70,11 +72,11 @@ public abstract class Core {
 	public IPlayer getKvenSinTur() {
 		return playerInTurn;
 	}
-	
+
 	public ArrayList<IPlayer> getSpelarar() {
 		return players;
 	}
-	
+
 	public void settSinTur(IPlayer host) throws RemoteException {
 		playerInTurn = host;
 		gui.showWhoseTurnItIs(findPlayerInAction().getNamn(), getWhoseTurnText());
@@ -94,7 +96,7 @@ public abstract class Core {
 			gui.displayGraphicallyThatItIsMyTurn();
 		}
 	}
-	
+
 	public void bygg(Route bygd, int kortKrevd, int krevdJokrar) throws RemoteException {
 		ByggjandeInfo byggjandeInfo = buildingHelper.buildRoute(bygd, kortKrevd, krevdJokrar, findPlayerInAction());
 		if (byggjandeInfo == null) { return; }		 // TODO betre tilbakemelding her
@@ -119,7 +121,7 @@ public abstract class Core {
 		communicationWithPlayers.updateOtherPlayers(colour, kortKrevd, jokrar, krevdJokrar, byggjandeSpelar.getNamn(), bygd);
 		nesteSpelar();
 	}
-	
+
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		propertyChangeSupport.addPropertyChangeListener(listener);
 	}
@@ -133,7 +135,7 @@ public abstract class Core {
 	public void displayNumberOfRemainingTrains(int position, int numberOfTrains) {
 		gui.setRemainingTrains(position, numberOfTrains);
 	}
-	
+
 	public void receiveMessage(String message) {
 		gui.receiveMessage(message);
 	}
@@ -150,7 +152,7 @@ public abstract class Core {
 		route.setBuiltBy(byggjandeSpelar);
 		routeHandler.getBuiltRoutes().add(route);
 	}
-	
+
 	public Set<Route> findRoutesNotYetBuilt() throws RemoteException {
 		return routeHandler.findRoutesNotYetBuilt(players);
 	}
@@ -159,14 +161,72 @@ public abstract class Core {
 		return routeHandler.getBuiltRoutes();
 	}
 
-	 //TODO denne bør vel splittast i to metodar, ein for fargekort og ein for oppdrag
+	//TODO denne bør vel splittast i to metodar, ein for fargekort og ein for oppdrag
 	public void sendMessageAboutCard(boolean isColourCard, boolean isRandom, Colour colour) throws RemoteException {
 		communicationWithPlayers.sendMessageAboutCard(isColourCard, isRandom, colour, playerInTurn.getNamn(), this);
 	}
 
 	public void trekkOppdrag() throws RemoteException {
 		sendMessageAboutCard(false, false, Colour.blå);
-        missionHandler.trekkOppdrag(gui, findPlayerInAction(), false);
-        nesteSpelar();
+		missionHandler.trekkOppdrag(gui, findPlayerInAction(), false);
+		nesteSpelar();
+	}
+
+	public Colour getRandomCardFromTheDeck(int positionOnTable) {
+		Colour colourOfTheRandomCard = table.getRandomCardFromTheDeckAndPutOnTable(positionOnTable);
+
+		if (colourOfTheRandomCard == null){
+			displayGraphicallyThatThereIsNoCardHere(positionOnTable);
+			return null;
+		}
+
+		table.putOneCardOnTable(colourOfTheRandomCard, positionOnTable);
+		return colourOfTheRandomCard;
+	}
+
+
+
+	//TODO alt under her høyrer saman og bør jo helst finne seg si eiga klasse
+	public void createButtonForRetrievingCardFromTable(int positionOnTable) throws RemoteException {
+		CardListener cardListener = new CardListener();
+		cardListener.retrieveOneCardFromTheTable(positionOnTable, findPlayerInAction());
+		orientOtherPlayers(positionOnTable);
+	}
+
+	private class CardListener {
+		void retrieveOneCardFromTheTable(int positionOnTable, IPlayer kvenSinTur) throws RemoteException {
+			Colour colour = table.getCardFromTable(positionOnTable);
+			if (colour == null) { return; }
+			if (!kvenSinTur.hasAlreadyDrawnOneCard()) {
+				retrieveFirstCard(positionOnTable, kvenSinTur, colour);
+			}
+			else {
+				retrieveSecondCard(positionOnTable, kvenSinTur, colour);
+			}
+		}
+
+		private void retrieveFirstCard(int positionOnTable, IPlayer kvenSinTur, Colour colour) throws RemoteException {
+			kvenSinTur.receiveCard(colour);
+			putRandomCardFromTheDeckOnTable(positionOnTable, colour);
+			if (colour == Colour.valfri) {
+				nesteSpelar();
+			}
+			kvenSinTur.setEittKortTrektInn(true);
+		}
+
+		private void retrieveSecondCard(int positionOnTable, IPlayer kvenSinTur, Colour colour) throws RemoteException {
+			if (colour == Colour.valfri) {
+				JOptionPane.showMessageDialog(null, "Haha. Nice try. Du kan ikkje ta ein joker frå bordet når du allereie har trekt inn eitt kort");
+				return;
+			}
+			kvenSinTur.receiveCard(colour);
+			putRandomCardFromTheDeckOnTable(positionOnTable, colour);
+			nesteSpelar();
+		}
+
+		private void putRandomCardFromTheDeckOnTable(int positionOnTable, Colour colour) throws RemoteException {
+			sendMessageAboutCard(true,false,colour);
+			table.getRandomCardFromTheDeckAndPutOnTable(positionOnTable);
+		}
 	}
 }

@@ -8,13 +8,14 @@ import ttr.communicationWithPlayers.CommunicationWithPlayersLocal;
 import ttr.gui.GUI;
 import ttr.oppdrag.MissionHandler;
 import ttr.rute.Route;
+import ttr.rute.RouteHandler;
 import ttr.spelar.IPlayer;
 import ttr.turhandsamar.TurHandsamarLocal;
 import ttr.utgaave.GameVersion;
 
 public class LocalCore extends Core {
-	public LocalCore(GUI gui, Table table, GameVersion gameVersion, ByggHjelpar buildingHelper, MissionHandler missionHandler) throws RemoteException {
-		super(gui, table, gameVersion, buildingHelper, missionHandler);
+	public LocalCore(GUI gui, Table table, GameVersion gameVersion, ByggHjelpar buildingHelper, MissionHandler missionHandler, RouteHandler routeHandler) throws RemoteException {
+		super(gui, table, gameVersion, buildingHelper, missionHandler, routeHandler);
 	}
 
 	public void settIGangSpelet(String hostAddress) throws RemoteException {

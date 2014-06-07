@@ -61,13 +61,13 @@ import java.util.Collection;
     
     // Kort
     public void receiveCard(Colour farge) { korthandsamar.receiveCard(farge);}
-    public Colour getRandomCardFromTheDeck(int i) { return korthandsamar.getRandomCardFromTheDeck(i); }
-    public Colour trekkFargekort() { return korthandsamar.drawRandomCardFromTheDeck(); }
+    public Colour getRandomCardFromTheDeck(int i) { return hovud.getRandomCardFromTheDeck(i); }
+    public Colour trekkFargekort() { return hovud.getTable().getRandomCardFromTheDeck(); }
 
 	public int getNumberOfCardsLeftInColour(Colour colour) { return korthandsamar.getNumberOfCardsLeftInColour(colour); }
 	public int getNumberOfRemainingJokers() { return korthandsamar.getNumberOfCardsLeftInColour(Colour.valfri); }
 
-	public void decrementCardsAt(Colour colour, int number) { korthandsamar.decrementCardsAt(colour, number); }
+	public void decrementCardsAt(Colour colour, int number) { korthandsamar.useCards(colour, number); }
 
     // Bord
     public void leggUtFem() { bord.layFiveCardsOutOnTable(); }

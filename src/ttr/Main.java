@@ -11,6 +11,7 @@ import ttr.kjerna.Core;
 import ttr.kjerna.LocalCore;
 import ttr.kjerna.NetworkCore;
 import ttr.oppdrag.MissionHandler;
+import ttr.rute.RouteHandler;
 import ttr.utgaave.GameVersion;
 import ttr.utgaave.europe.Europe;
 import ttr.utgaave.nordic.Nordic;
@@ -46,11 +47,12 @@ public class Main {
 		GameVersion gameVersion = chooseGameVersion();
 		MissionHandler missionHandler = new MissionHandler(gameVersion.getOppdrag(), 
 				new MissionChooserViewController(gameVersion, injector.getInstance(MissionChooserModel.class)));
+		RouteHandler routeHandler = new RouteHandler(gameVersion);
 
 		GUI gui = setUpGUI(gameVersion);
 		Core core = isNetworkGame ? 
-				new NetworkCore(gui, table, gameVersion, buildingHelper, missionHandler) : 
-				new LocalCore(gui, table, gameVersion, buildingHelper, missionHandler);
+				new NetworkCore(gui, table, gameVersion, buildingHelper, missionHandler, routeHandler) : 
+				new LocalCore(gui, table, gameVersion, buildingHelper, missionHandler, routeHandler);
 		gui.setHovud(missionHandler, core);
 		core.settIGangSpelet(getHostName(args));
 	}
