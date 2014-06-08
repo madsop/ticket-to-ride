@@ -10,16 +10,21 @@ import javax.swing.JOptionPane;
 import java.rmi.RemoteException;
 import java.util.Set;
 
-class BuildRouteHandler {
+public class BuildRouteHandler extends DelegationListener {
+	public BuildRouteHandler(Core core) {
+		super(core);
+	}
 
-	public BuildRouteHandler(Set<Route> notYetBuiltRoutes, int playersNumberOfJokers, Core core) throws RemoteException {
+	public void specific() throws RemoteException {
+		Set<Route> notYetBuiltRoutes = core.findRoutesNotYetBuilt();
+		
 		Route routeWantedToBuild = letUserChooseRouteToBuild(null, notYetBuiltRoutes);
 		if (routeWantedToBuild == null) { return; }
 
 		int normalCardsDemanded = routeWantedToBuild.getLength()-routeWantedToBuild.getNumberOfRequiredJokers();
 		int numberOfDemandedJokers = routeWantedToBuild.getNumberOfRequiredJokers();
 
-		buildRoute(core, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, playersNumberOfJokers);
+		buildRoute(core, routeWantedToBuild, normalCardsDemanded, numberOfDemandedJokers, core.findPlayerInAction().getNumberOfRemainingJokers());
 	}
 
 	private void buildRoute(Core core, Route routeWantedToBuild,	int normalCardsDemanded, 

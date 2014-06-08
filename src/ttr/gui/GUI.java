@@ -64,8 +64,7 @@ public class GUI extends JPanel {
 		right.displayGraphicallyThatThereIsNoCardHere(positionOnTable);
 	}
 
-	public void setRemainingTrains(int position, int numberOfTrains) { right.setRemainingTrains(position, numberOfTrains); 
-	}
+	public void setRemainingTrains(int position, int numberOfTrains) { right.setRemainingTrains(position, numberOfTrains); }
 	public void displayGraphicallyThatItIsMyTurn() { right.displayGraphicallyThatItIsMyTurn();	}
 
 	//TODO det er vel denne som gir syklar

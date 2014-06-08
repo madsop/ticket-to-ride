@@ -8,14 +8,12 @@ import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
 public class WrapperKortListener implements ActionListener {
-	private final JButton cardDeckButton;
-	private final JButton[] cardButtons;
 	private final Core core;
+	private final int positionOnTable;
 	
-	public WrapperKortListener(JButton kortBunke, JButton[] kortButtons, Core hovud) {
-		this.cardDeckButton = kortBunke;
-		this.cardButtons = kortButtons;
+	public WrapperKortListener(Core hovud, int positionOnTable) {
 		this.core = hovud;
+		this.positionOnTable = positionOnTable;
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
@@ -31,9 +29,6 @@ public class WrapperKortListener implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Det er ikkje din tur!");
 			return;
 		}
-		if (arg0.getSource() == cardDeckButton) { new CardDeckHandler(core); }
-		for (int i = 0; i < cardButtons.length; i++) {
-			if (arg0.getSource() == cardButtons[i]) { core.createButtonForRetrievingCardFromTable(i); }
-		}
+		core.createButtonForRetrievingCardFromTable(positionOnTable);
 	}
 }

@@ -3,9 +3,14 @@ package ttr.gui.hogresida;
 import ttr.data.Infostrengar;
 import ttr.data.Konstantar;
 import ttr.kjerna.Core;
-import ttr.listeners.DelegationListener;
+import ttr.listeners.BuildRouteHandler;
+import ttr.listeners.CardDeckHandler;
+import ttr.listeners.DrawMissionHandler;
+import ttr.listeners.ShowBuiltRoutesHandler;
+import ttr.listeners.ShowMyCardsHandler;
 import ttr.listeners.WrapperKortListener;
 import ttr.oppdrag.MissionHandler;
+import ttr.oppdrag.ShowMyMissionsHandler;
 
 import javax.swing.*;
 
@@ -114,18 +119,16 @@ public class Hogrepanelet extends JPanel implements PropertyChangeListener {
 	}
     
     public void addListeners(MissionHandler missionHandler, Core core) {
-        DelegationListener listener = new DelegationListener(core, visBygde, visMineKort, visMineOppdrag, trekkOppdrag, bygg);
-        trekkOppdrag.addActionListener(listener);
-        bygg.addActionListener(listener);
-        visMineKort.addActionListener(listener);
-        visMineOppdrag.addActionListener(listener);
-        visBygde.addActionListener(listener);
+        trekkOppdrag.addActionListener(new DrawMissionHandler(core));
+        bygg.addActionListener(new BuildRouteHandler(core));
+        visMineKort.addActionListener(new ShowMyCardsHandler(core));
+        visMineOppdrag.addActionListener(new ShowMyMissionsHandler(core));
+        visBygde.addActionListener(new ShowBuiltRoutesHandler(core));
 
-        WrapperKortListener kortListener = new WrapperKortListener(kortBunke, cardButtons, core);
-        kortBunke.addActionListener(kortListener);
-        for (CardButtonVC cardButton : cardButtons) {
-            cardButton.addActionListener(kortListener);
-            cardButton.setThisAsPropertyChangeListener(core.getTable());
+        kortBunke.addActionListener(new CardDeckHandler(core));
+        for (int i = 0; i < cardButtons.length; i++) {
+        	cardButtons[i].addActionListener(new WrapperKortListener(core, i));
+            cardButtons[i].setThisAsPropertyChangeListener(core.getTable());
         }
     }
 

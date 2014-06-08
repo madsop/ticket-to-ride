@@ -1,21 +1,27 @@
 package ttr.listeners;
 
-import java.util.Set;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import ttr.gui.SwingUtils;
-import ttr.rute.Route;
-
+import ttr.kjerna.Core;
 import javax.swing.*;
 
-class ShowBuiltRoutesHandler {
-	public ShowBuiltRoutesHandler(Set<Route> allBuiltRoutes) {
-		if (allBuiltRoutes.size() <= 0) {             
+public class ShowBuiltRoutesHandler implements ActionListener {
+	private Core core;
+
+	public ShowBuiltRoutesHandler(Core core) {
+		this.core = core;
+			}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (core.getAllBuiltRoutes().size() <= 0) {             
 			JOptionPane.showMessageDialog(null, "Det er ikkje bygd noka rute enno. Bli den første!");
 			return;
 		}
 
 		JPanel bygde = new JPanel();
-		JList<Object> bygd = new JList<>(allBuiltRoutes.toArray());
+		JList<Object> bygd = new JList<>(core.getAllBuiltRoutes().toArray());
 
 		/*	if (hovud.isNett()){
                // Finn spel-verten
@@ -33,6 +39,7 @@ class ShowBuiltRoutesHandler {
 		 */
 
 		bygde.add(bygd);
-		SwingUtils.createJFrame("Desse rutene er bygd",bygde);
+		SwingUtils.createJFrame("Desse rutene er bygd", bygde);
+
 	}
 }
